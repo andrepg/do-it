@@ -6,33 +6,57 @@ export const Task = GObject.registerClass({
   GTypeName: "Task",
   Template: 'resource:///br/dev/startap/tasks/ui/task.ui',
   Properties: {
+    'taskId': GObject.ParamSpec.int('taskId', 'Task Id', 'Task unique id', GObject.ParamFlags.READABLE, 0),
     'title': GObject.ParamSpec.string('title', 'Title', 'Title of task', GObject.ParamFlags.READWRITE, ''),
     'done': GObject.ParamSpec.boolean('done', 'Done', 'Task status', GObject.ParamFlags.READWRITE, '')
   },
   InternalChildren: [
     "task_entry_status",
-    "task_entry_title"
+    "task_entry_title",
+    "task_entry_delete",
   ],
+  Signals: {
+    'task-updated': {},
+    'task-deleted': {
+      param_types: [GObject.TYPE_OBJECT]
+    },
+  }
 }, class Task extends Gtk.ListBoxRow {
 
-  _init(title = "", done = false) {
+  _init(taskId, title = "", done = false) {
     super._init();
 
+    this._id = taskId;
     this._title = title;
     this._done = done;
 
-    console.log(this);
+    this._set_default_values();
+    this._attach_events();
+  }
 
-    this._task_entry_title.set_text(title);
-    this._task_entry_status.set_active(done);
-
-    this._task_entry_title.connect("changed", () => {
-      this.title = this._task_entry_title.text;
+  _attach_events() {
+    this._task_entry_title.connect("apply", () => {
+      this._title = this._task_entry_title.text;
+      this.emit('task-updated');
     });
 
     this._task_entry_status.connect("toggled", () => {
-      this.done = this._task_entry_status.active;
+      this._done = this._task_entry_status.active;
+      this.emit('task-updated');
     });
+
+    this._task_entry_delete.connect('clicked', () => {
+      this.emit('task-deleted', this)
+    });
+  }
+
+  _set_default_values() {
+    this._task_entry_title.set_text(this._title);
+    this._task_entry_status.set_active(this._done);
+  }
+
+  get taskId() {
+    return this._id
   }
 
   get title() {
@@ -55,6 +79,14 @@ export const Task = GObject.registerClass({
 
   to_widget() {
     return this;
+  }
+
+  to_object() {
+    return {
+      taskId: this._id,
+      title: this._title,
+      done: this._done
+    }
   }
 });
 

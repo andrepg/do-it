@@ -1,5 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <interface>
+  <requires lib="Adw" version="1.0"/>
+  <requires lib="gio" version="2.0"/>
+  <requires lib="gtk" version="4.0"/>
+  <requires lib="libadwaita" version="1.7"/>
   <template class="Task" parent="GtkListBoxRow">
     <property name="activatable">False</property>
     <property name="selectable">False</property>
@@ -8,16 +12,25 @@
       <object class="GtkBox">
         <property name="valign">start</property>
         <child>
-          <object class="GtkCheckButton" id="task_entry_status">
-            <property name="width-request">1</property>
-          </object>
-        </child>
-        <child>
-          <object class="GtkEntry" id="task_entry_title">
+          <object class="AdwEntryRow" id="task_entry_title">
+            <property name="title">Task description</property>
             <property name="enable-emoji-completion">True</property>
-            <property name="has-frame">False</property>
+            <property name="show-apply-button">True</property>
             <property name="hexpand">True</property>
             <property name="width-request">2</property>
+
+            <child>
+              <object class="GtkCheckButton" id="task_entry_status">
+                <property name="width-request">1</property>
+              </object>
+            </child>
+
+            <child>
+              <object class="GtkButton" id="task_entry_delete">
+                <property name="width-request">1</property>
+                <property name="icon-name">user-trash-symbolic</property>
+              </object>
+            </child>
           </object>
         </child>
       </object>

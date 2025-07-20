@@ -19,7 +19,6 @@
  */
 
 import GObject from 'gi://GObject';
-import Gtk from 'gi://Gtk';
 import Gio from 'gi://Gio';
 import Adw from 'gi://Adw';
 
@@ -55,16 +54,49 @@ export const TasksWindow = GObject.registerClass({
 
   _initializeTasks() {
     for (let task of this.persistence.readFromFile()) {
-      this.taskStore.append(new Task(task.title, task.done))
+      this.taskStore.append(new Task(task.taskId, task.title, task.done))
     }
   }
 
   _addTask() {
-    const task = new Task(this._task_new_entry.get_text());
+    const task = new Task(
+      this.taskStore.n_items + 1,
+      this._task_new_entry.get_text()
+    );
+
+    task.connect('task-updated', () => this._saveDatabase());
+    task.connect('task-deleted', this._deleteRow.bind(this));
 
     this.taskStore.append(task);
 
+    this._saveDatabase();
+
     this._task_new_entry.set_text("");
+
+    // TODO Here we can fire a Toast
+  }
+
+  _deleteRow(task) {
+    const [found, position] = this.taskStore.find(task);
+
+    if (found) {
+      this.taskStore.remove(position);
+
+      this._saveDatabase();
+    }
+  }
+
+  async _saveDatabase() {
+    const list_count = this.taskStore.n_items;
+
+    const tasks = [];
+
+    for (let i = 0; i < list_count; i++) {
+      const task = this.taskStore.get_item(i).to_object()
+      tasks.push(task);
+    }
+
+    this.persistence.saveToFile(tasks);
   }
 });
 
