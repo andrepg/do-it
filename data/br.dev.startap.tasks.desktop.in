@@ -1,0 +1,10 @@
+[Desktop Entry]
+Name=tasks
+Exec=br.dev.startap.tasks
+Icon=br.dev.startap.tasks
+Terminal=false
+Type=Application
+Categories=Utility;
+Keywords=GTK;
+StartupNotify=true
+DBusActivatable=true

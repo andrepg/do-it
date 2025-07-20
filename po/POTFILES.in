@@ -1,0 +1,8 @@
+# List of source files containing translatable strings.
+# Please keep this file sorted alphabetically.
+data/br.dev.startap.tasks.desktop.in
+data/br.dev.startap.tasks.metainfo.xml.in
+data/br.dev.startap.tasks.gschema.xml
+src/main.js
+src/window.js
+src/window.ui

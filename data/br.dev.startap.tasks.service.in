@@ -1,0 +1,3 @@
+[D-BUS Service]
+Name=br.dev.startap.tasks
+Exec=@bindir@/br.dev.startap.tasks --gapplication-service
