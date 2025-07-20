@@ -20,15 +20,51 @@
 
 import GObject from 'gi://GObject';
 import Gtk from 'gi://Gtk';
+import Gio from 'gi://Gio';
 import Adw from 'gi://Adw';
 
+import { Task } from "./js/task.js"
+import { Persistence } from './js/persistence.js';
+
 export const TasksWindow = GObject.registerClass({
-    GTypeName: 'TasksWindow',
-    Template: 'resource:///br/dev/startap/tasks/window.ui',
-    //InternalChildren: ['label'],
+  GTypeName: 'TasksWindow',
+  Template: 'resource:///br/dev/startap/tasks/ui/window.ui',
+  InternalChildren: [
+    "list_box_pending",
+    "task_new_entry",
+    "task_new_button"
+  ],
 }, class TasksWindow extends Adw.ApplicationWindow {
-    constructor(application) {
-        super({ application });
+  taskStore;
+
+  constructor(application) {
+    super({ application });
+
+    this.persistence = new Persistence();
+    this.taskStore = new Gio.ListStore({ item_type: Task });
+
+    this._initializeTasks();
+
+    this._task_new_button.connect('clicked', this._addTask.bind(this))
+
+    this._list_box_pending.bind_model(
+      this.taskStore,
+      (task) => task.to_widget()
+    );
+  }
+
+  _initializeTasks() {
+    for (let task of this.persistence.readFromFile()) {
+      this.taskStore.append(new Task(task.title, task.done))
     }
+  }
+
+  _addTask() {
+    const task = new Task(this._task_new_entry.get_text());
+
+    this.taskStore.append(task);
+
+    this._task_new_entry.set_text("");
+  }
 });
 

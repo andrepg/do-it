@@ -3,5 +3,8 @@
   <gresource prefix="/br/dev/startap/tasks/js">
     <file>main.js</file>
     <file>window.js</file>
+    <file>js/persistence.js</file>
+    <file>js/task.js</file>
   </gresource>
 </gresources>
+

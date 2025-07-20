@@ -1,4 +1,4 @@
-<?xml version='1.0' encoding='UTF-8'?>
+<?xml version="1.0" encoding="UTF-8"?>
 <!-- Created with Cambalache 0.96.1 -->
 <interface>
   <!-- interface-name window.ui -->
@@ -36,14 +36,14 @@
                 <property name="margin-top">4</property>
                 <property name="spacing">12</property>
                 <child>
-                  <object class="GtkEntry">
+                  <object class="GtkEntry" id="task_new_entry">
                     <property name="enable-emoji-completion">True</property>
                     <property name="hexpand">True</property>
                     <property name="show-emoji-icon">True</property>
                   </object>
                 </child>
                 <child>
-                  <object class="GtkButton">
+                  <object class="GtkButton" id="task_new_button">
                     <property name="icon-name">value-increase-symbolic</property>
                     <property name="label">Criar</property>
                   </object>
@@ -76,35 +76,10 @@
                     <property name="margin-top">8</property>
                     <property name="valign">start</property>
                     <child>
-                      <object class="GtkListBox">
+                      <object class="GtkListBox" id="list_box_pending">
                         <property name="css-name">list-boxed</property>
                         <property name="selection-mode">none</property>
                         <property name="valign">start</property>
-                        <child>
-                          <object class="GtkListBoxRow" id="list_item_template">
-                            <property name="activatable">False</property>
-                            <property name="selectable">False</property>
-                            <property name="vexpand">True</property>
-                            <child>
-                              <object class="GtkBox">
-                                <property name="valign">start</property>
-                                <child>
-                                  <object class="GtkCheckButton" id="checkbox">
-                                    <property name="width-request">1</property>
-                                  </object>
-                                </child>
-                                <child>
-                                  <object class="GtkEntry" id="entry">
-                                    <property name="enable-emoji-completion">True</property>
-                                    <property name="has-frame">False</property>
-                                    <property name="hexpand">True</property>
-                                    <property name="width-request">2</property>
-                                  </object>
-                                </child>
-                              </object>
-                            </child>
-                          </object>
-                        </child>
                       </object>
                     </child>
                   </object>
@@ -142,3 +117,4 @@
     </section>
   </menu>
 </interface>
+
