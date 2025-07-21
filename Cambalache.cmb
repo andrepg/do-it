@@ -2,6 +2,7 @@
 <!DOCTYPE cambalache-project SYSTEM "cambalache-project.dtd">
 <!-- Created with Cambalache 0.96.1 -->
 <cambalache-project version="0.96.0" target_tk="gtk-4.0">
-  <ui template-class="TasksWindow" filename="src/ui/window.ui" sha256="33efe51006833bfe91f25ba30bf47bfb6e039034225cc47c4c13a2f415bb2c06"/>
-  <ui filename="src/ui/confirm-task-delete.ui" sha256="923b01d88ea8e2b07e6ab7ff18d55273e64049e33430895366ed932d8d9166a0"/>
+  <ui template-class="TasksWindow" filename="src/ui/window.ui" sha256="bc1931dd43f95472f6865733ef72c98636e7cfc6181eea628e035b745fb7ab90"/>
+  <ui template-class="Task" filename="src/ui/task.ui" sha256="b308703db609e519c8d1c3ef0caf949c0f19b2ef6f61c6cd5a40893aae86de55"/>
+  <ui template-class="ConfirmTaskDeleteDialog" filename="src/ui/confirm-task-delete.ui" sha256="8e2bec4a04cc44652de7bb6f1b06c418c592b31fb842dc1064bdc3e522e437de"/>
 </cambalache-project>
