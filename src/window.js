@@ -56,6 +56,7 @@ export const TasksWindow = GObject.registerClass({
         );
 
         this.setupDeletePendingButton();
+        this.setupDeleteFinishedButton();
     }
 
     setupDeleteFinishedButton() {
@@ -77,15 +78,23 @@ export const TasksWindow = GObject.registerClass({
         this._delete_pending.connect('clicked', () => {
             const dialog = new ConfirmTaskDeleteDialog();
 
+            dialog.choose(this, null, null);
+
             dialog.connect('response', (_, response) => {
                 if (response == RESPONSES.confirm.action) {
                     this.taskStorePending.remove_all();
                     this.persistTasks();
                 }
             });
-
-            dialog.choose(this, null, null);
         });
+    }
+
+    syncActiveButtonStatus() {
+        this._delete_pending.set_can_target(this.taskStorePending.n_items > 0)
+        this._delete_finished.set_can_target(this.taskStoreFinished.n_items > 0)
+
+        this._delete_pending.set_opacity(this.taskStorePending.n_items > 0 ? 1 : 0.2)
+        this._delete_finished.set_opacity(this.taskStoreFinished.n_items > 0 ? 1 : 0.2)
     }
 
     /**
@@ -96,6 +105,9 @@ export const TasksWindow = GObject.registerClass({
         this.persistence = new Persistence();
         this.taskStorePending = new Gio.ListStore({ item_type: Task });
         this.taskStoreFinished = new Gio.ListStore({ item_type: Task });
+
+        this.taskStorePending.connect('items-changed', this.syncActiveButtonStatus.bind(this))
+        this.taskStoreFinished.connect('items-changed', this.syncActiveButtonStatus.bind(this))
 
         for (let item of this.persistence.readFromFile()) {
             const task = new Task(item.taskId, item.title, item.done);
@@ -113,7 +125,17 @@ export const TasksWindow = GObject.registerClass({
       */
     attatchTaskEvents(task) {
         task.connect('task-updated', this.updateTask.bind(this));
-        task.connect('task-deleted', this.deleteTask.bind(this));
+        task.connect('task-deleted', function() {
+            const dialog = new ConfirmTaskDeleteDialog({ heading: "Delete this task?" });
+
+            dialog.connect('response', (_, response) => {
+                if (response == RESPONSES.confirm.action) {
+                    this.deleteTask(task)
+                }
+            });
+
+            dialog.choose(this, null, null);
+        });
     }
 
     /**

@@ -1,12 +1,12 @@
-<?xml version="1.0" encoding="UTF-8"?>
+<?xml version='1.0' encoding='UTF-8'?>
 <!-- Created with Cambalache 0.96.1 -->
 <interface>
+  <!-- interface-name confirm-task-delete.ui -->
   <requires lib="gtk" version="4.18"/>
   <requires lib="libadwaita" version="1.6"/>
-  <template class="ConfirmTaskDeleteDialog">
+  <template class="ConfirmTaskDeleteDialog" parent="AdwAlertDialog">
     <property name="body">This is an irreversible and destructive action. Do you want to proceed?</property>
-    <property name="heading">Delete all tasks</property>
+    <property name="heading">Really delete all tasks?</property>
     <property name="title">Confirm deletion</property>
   </template>
 </interface>
-
