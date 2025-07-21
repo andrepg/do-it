@@ -3,8 +3,10 @@
   <gresource prefix="/br/dev/startap/tasks/js">
     <file>main.js</file>
     <file>window.js</file>
+    <file>static.js</file>
     <file>js/persistence.js</file>
     <file>js/task.js</file>
+    <file>js/confirm-task-delete.js</file>
   </gresource>
 </gresources>
 

@@ -3,6 +3,7 @@
   <gresource prefix="/br/dev/startap/tasks">
     <file preprocess="xml-stripblanks">ui/window.ui</file>
     <file preprocess="xml-stripblanks">ui/task.ui</file>
+    <file preprocess="xml-stripblanks">ui/confirm-task-delete.ui</file>
     <file preprocess="xml-stripblanks">gtk/help-overlay.ui</file>
   </gresource>
 </gresources>

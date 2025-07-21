@@ -24,149 +24,186 @@ import Adw from 'gi://Adw';
 
 import { Task } from "./js/task.js"
 import { Persistence } from './js/persistence.js';
+import { ConfirmTaskDeleteDialog } from './js/confirm-task-delete.js';
+import { RESPONSES } from "./static.js";
 
 export const TasksWindow = GObject.registerClass({
-  GTypeName: 'TasksWindow',
-  Template: 'resource:///br/dev/startap/tasks/ui/window.ui',
-  InternalChildren: [
-    "list_box_pending",
-    "list_box_finished",
-    "main_window",
-    "task_new_entry",
-    "task_new_button"
-  ],
+    GTypeName: 'TasksWindow',
+    Template: 'resource:///br/dev/startap/tasks/ui/window.ui',
+    InternalChildren: [
+        "list_box_pending",
+        "list_box_finished",
+        "delete_pending",
+        "delete_finished",
+        "task_new_entry",
+    ],
 }, class TasksWindow extends Adw.ApplicationWindow {
-  constructor(application) {
-    super({ application });
+    constructor(application) {
+        super({ application });
 
-    this._initializeTasks();
+        this.loadTasksFirstTime();
 
-    this._task_new_button.connect('clicked', this._addTask.bind(this))
+        this._task_new_entry.connect('apply', this.createTask.bind(this))
 
-    this._list_box_pending.bind_model(
-      this.taskStorePending,
-      (task) => task.to_widget()
-    );
+        this._list_box_pending.bind_model(
+            this.taskStorePending,
+            (task) => task.to_widget()
+        );
 
-    this._list_box_finished.bind_model(
-      this.taskStoreFinished,
-      (task) => task.to_widget()
-    );
-  }
+        this._list_box_finished.bind_model(
+            this.taskStoreFinished,
+            (task) => task.to_widget()
+        );
 
-  /**
-  * Initialize our tasks lists, both pending and finished
-  * from data returned from persistence class
-  */
-  _initializeTasks() {
-    this.persistence = new Persistence();
-    this.taskStorePending = new Gio.ListStore({ item_type: Task });
-    this.taskStoreFinished = new Gio.ListStore({ item_type: Task });
-
-    for (let item of this.persistence.readFromFile()) {
-      const task = new Task(item.taskId, item.title, item.done);
-      this._attachTaskEvents(task);
-      if (task._done) {
-        this.taskStoreFinished.append(task)
-      } else {
-        this.taskStorePending.append(task)
-      }
+        this.setupDeletePendingButton();
     }
-  }
 
-  /**
-    * Attach task events to handle update and deletion from each task
+    setupDeleteFinishedButton() {
+        this._delete_finished.connect('clicked', () => {
+            const dialog = new ConfirmTaskDeleteDialog();
+
+            dialog.choose(this, null, null);
+
+            dialog.connect('response', (_, response) => {
+                if (response == RESPONSES.confirm.action) {
+                    this.taskStoreFinished.remove_all();
+                    this.persistTasks();
+                }
+            });
+        });
+    }
+
+    setupDeletePendingButton() {
+        this._delete_pending.connect('clicked', () => {
+            const dialog = new ConfirmTaskDeleteDialog();
+
+            dialog.connect('response', (_, response) => {
+                if (response == RESPONSES.confirm.action) {
+                    this.taskStorePending.remove_all();
+                    this.persistTasks();
+                }
+            });
+
+            dialog.choose(this, null, null);
+        });
+    }
+
+    /**
+    * Initialize our tasks lists, both pending and finished
+    * from data returned from persistence class
     */
-  _attachTaskEvents(task) {
-    task.connect('task-updated', this._updateTask.bind(this));
-    task.connect('task-deleted', this._deleteRow.bind(this));
-  }
+    loadTasksFirstTime() {
+        this.persistence = new Persistence();
+        this.taskStorePending = new Gio.ListStore({ item_type: Task });
+        this.taskStoreFinished = new Gio.ListStore({ item_type: Task });
 
-  /**
-    * Add a new task to pending store and persist on disk
-    */
-  _addTask() {
-    const task = new Task(
-      this.taskStorePending.n_items + 1,
-      this._task_new_entry.get_text()
-    );
-
-    this._attachTaskEvents(task);
-
-    this.taskStorePending.append(task);
-
-    this._saveDatabase();
-
-    this._task_new_entry.set_text("");
-
-    // TODO Here we can fire a Toast
-  }
-
-  /**
-    * Update a single task, change store position (when marked as done)
-    * and calls persistence to save user data
-    */
-  _updateTask(task) {
-    const [found_pending, position_pending] = this.taskStorePending.find(task);
-    const [found_finished, position_finished] = this.taskStoreFinished.find(task);
-
-    if (task._done && found_pending) {
-      this.taskStorePending.remove(position_pending);
-      this.taskStoreFinished.append(task);
+        for (let item of this.persistence.readFromFile()) {
+            const task = new Task(item.taskId, item.title, item.done);
+            this.attatchTaskEvents(task);
+            if (task._done) {
+                this.taskStoreFinished.append(task)
+            } else {
+                this.taskStorePending.append(task)
+            }
+        }
     }
 
-    if (!task._done && found_finished) {
-      this.taskStoreFinished.remove(position_finished);
-      this.taskStorePending.append(task);
+    /**
+      * Attach task events to handle update and deletion from each task
+      */
+    attatchTaskEvents(task) {
+        task.connect('task-updated', this.updateTask.bind(this));
+        task.connect('task-deleted', this.deleteTask.bind(this));
     }
 
-    this._saveDatabase();
-  }
+    /**
+      * Add a new task to pending store and persist on disk
+      */
+    createTask() {
+        const title = this._task_new_entry.get_text();
 
-  /**
-    * Delete a row from list store, depending on current
-    * task status
-    */
-  _deleteRow(task) {
-    let [found, position] = this.taskStorePending.find(task);
+        if (title.trim() == '') return;
 
-    if (task._done) {
-      [found, position] = this.taskStoreFinished.find(task);
+        const task = new Task(
+            this.taskStorePending.n_items + 1,
+            title.trim()
+        );
+
+        this.attatchTaskEvents(task);
+
+        this.taskStorePending.append(task);
+
+        this.persistTasks();
+
+        this._task_new_entry.set_text("");
+
+        // TODO Here we can fire a Toast
     }
 
-    if (found && task._done) {
-      this.taskStoreFinished.remove(position);
+    /**
+      * Update a single task, change store position (when marked as done)
+      * and calls persistence to save user data
+      */
+    updateTask(task) {
+        const [found_pending, position_pending] = this.taskStorePending.find(task);
+        const [found_finished, position_finished] = this.taskStoreFinished.find(task);
+
+        if (task._done && found_pending) {
+            this.taskStorePending.remove(position_pending);
+            this.taskStoreFinished.append(task);
+        }
+
+        if (!task._done && found_finished) {
+            this.taskStoreFinished.remove(position_finished);
+            this.taskStorePending.append(task);
+        }
+
+        this.persistTasks();
     }
 
-    if (found && !task._done) {
-      this.taskStorePending.remove(position);
+    /**
+      * Delete a row from list store, depending on current
+      * task status
+      */
+    deleteTask(task) {
+        let [found, position] = this.taskStorePending.find(task);
+
+        if (task._done) {
+            [found, position] = this.taskStoreFinished.find(task);
+        }
+
+        if (found && task._done) {
+            this.taskStoreFinished.remove(position);
+        }
+
+        if (found && !task._done) {
+            this.taskStorePending.remove(position);
+        }
+
+        // TODO Here we can fire a Toast
+        this.persistTasks();
     }
 
-    // TODO Here we can fire a Toast
-    this._saveDatabase();
-  }
+    /**
+      * Save current database in user folder, persisting our information
+      */
+    persistTasks() {
+        const finished_count = this.taskStoreFinished.n_items;
+        const pending_count = this.taskStorePending.n_items;
 
-  /**
-    * Save current database in user folder, persisting our information
-    */
-  _saveDatabase() {
-    const finished_count = this.taskStoreFinished.n_items;
-    const pending_count = this.taskStorePending.n_items;
+        const tasks = [];
 
-    const tasks = [];
+        for (let i = 0; i < finished_count; i++) {
+            const task = this.taskStoreFinished.get_item(i).to_object()
+            tasks.push(task);
+        }
 
-    for (let i = 0; i < finished_count; i++) {
-      const task = this.taskStoreFinished.get_item(i).to_object()
-      tasks.push(task);
+        for (let i = 0; i < pending_count; i++) {
+            const task = this.taskStorePending.get_item(i).to_object()
+            tasks.push(task);
+        }
+
+        this.persistence.saveToFile(tasks);
     }
-
-    for (let i = 0; i < pending_count; i++) {
-      const task = this.taskStorePending.get_item(i).to_object()
-      tasks.push(task);
-    }
-
-    this.persistence.saveToFile(tasks);
-  }
-
 });
 
