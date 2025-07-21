@@ -53,7 +53,7 @@
           </object>
         </child>
         <child>
-          <object class="GtkScrolledWindow">
+          <object class="GtkScrolledWindow" id="main_window">
             <property name="min-content-height">200</property>
             <child>
               <object class="GtkFlowBox">
@@ -88,6 +88,22 @@
                   <object class="AdwWindowTitle">
                     <property name="subtitle">All you have acomplished</property>
                     <property name="title">🥳 Finished</property>
+                  </object>
+                </child>
+                <child>
+                  <object class="AdwClamp">
+                    <property name="margin-bottom">8</property>
+                    <property name="margin-end">12</property>
+                    <property name="margin-start">12</property>
+                    <property name="margin-top">8</property>
+                    <property name="valign">start</property>
+                    <child>
+                      <object class="GtkListBox" id="list_box_finished">
+                        <property name="css-name">list-boxed</property>
+                        <property name="selection-mode">none</property>
+                        <property name="valign">start</property>
+                      </object>
+                    </child>
                   </object>
                 </child>
               </object>

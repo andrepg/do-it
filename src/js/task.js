@@ -1,5 +1,4 @@
 import GObject from "gi://GObject";
-import Gio from "gi://Gio";
 import Gtk from "gi://Gtk";
 
 export const Task = GObject.registerClass({
@@ -16,7 +15,9 @@ export const Task = GObject.registerClass({
     "task_entry_delete",
   ],
   Signals: {
-    'task-updated': {},
+    'task-updated': {
+      param_types: [GObject.TYPE_OBJECT]
+    },
     'task-deleted': {
       param_types: [GObject.TYPE_OBJECT]
     },
@@ -37,12 +38,12 @@ export const Task = GObject.registerClass({
   _attach_events() {
     this._task_entry_title.connect("apply", () => {
       this._title = this._task_entry_title.text;
-      this.emit('task-updated');
+      this.emit('task-updated', this);
     });
 
     this._task_entry_status.connect("toggled", () => {
       this._done = this._task_entry_status.active;
-      this.emit('task-updated');
+      this.emit('task-updated', this);
     });
 
     this._task_entry_delete.connect('clicked', () => {

@@ -36,13 +36,30 @@ export class Persistence {
 
     const decoder = new TextDecoder('utf-8');
 
-    const file_content = decoder.decode(
-      this.databaseFile.load_contents(null).contents
-    );
+    let [_, content] = this.databaseFile.load_contents(null);
+
+    const file_content = decoder.decode(content);
 
     return file_content.trim() == ""
       ? []
       : JSON.parse(file_content);
+  }
+
+  saveToFile(data) {
+    this.createFileIfNotExists();
+
+    const encoder = new TextEncoder('utf-8');
+    const file = encoder.encode(JSON.stringify(data));
+
+    const result = this.databaseFile.replace_contents(
+      file, // ByteArray to save
+      null, // old file etag
+      true, // if we should make a backup
+      Gio.FileCreateFlags.PRIVATE,
+      null,
+    );
+
+    GLib.free(this.databaseFile);
   }
 }
 

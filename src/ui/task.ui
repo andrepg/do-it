@@ -28,6 +28,11 @@
             <child>
               <object class="GtkButton" id="task_entry_delete">
                 <property name="width-request">1</property>
+                <property name="has-frame">False</property>
+                <property name="vexpand">False</property>
+                <property name="hexpand">False</property>
+                <property name="valign">center</property>
+                <property name="halign">center</property>
                 <property name="icon-name">user-trash-symbolic</property>
               </object>
             </child>
