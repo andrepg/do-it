@@ -1,6 +1,10 @@
 {
     "id" : "br.dev.startap.tasks",
-    "tags": ["tasks", "todo", "task management"],
+    "tags" : [
+        "tasks",
+        "todo",
+        "task management"
+    ],
     "runtime" : "org.gnome.Platform",
     "runtime-version" : "48",
     "sdk" : "org.gnome.Sdk",
@@ -17,7 +21,8 @@
         "--socket=wayland"
     ],
     "build-options" : {
-        "append-path" : "/usr/lib/sdk/typescript/bin:/usr/lib/sdk/node20/bin"
+        "append-path" : "/usr/lib/sdk/typescript/bin:/usr/lib/sdk/node20/bin",
+        "env" : {}
     },
     "cleanup" : [
         "/include",
@@ -33,13 +38,15 @@
     "modules" : [
         {
             "name" : "tasks",
-            "builddir" : true,
             "buildsystem" : "meson",
             "sources" : [
                 {
                     "type" : "git",
                     "url" : "file:///var/home/andre/Projects"
                 }
+            ],
+            "config-opts" : [
+                "--libdir=lib"
             ]
         }
     ]
