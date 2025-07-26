@@ -36,6 +36,7 @@ export const TasksWindow = GObject.registerClass({
         "delete_pending",
         "delete_finished",
         "task_new_entry",
+        'finished_container'
     ],
 }, class TasksWindow extends Adw.ApplicationWindow {
     constructor(application) {
@@ -90,11 +91,10 @@ export const TasksWindow = GObject.registerClass({
     }
 
     syncActiveButtonStatus() {
-        this._delete_pending.set_can_target(this.taskStorePending.n_items > 0)
-        this._delete_finished.set_can_target(this.taskStoreFinished.n_items > 0)
-
-        this._delete_pending.set_opacity(this.taskStorePending.n_items > 0 ? 1 : 0.2)
-        this._delete_finished.set_opacity(this.taskStoreFinished.n_items > 0 ? 1 : 0.2)
+        this._delete_pending.set_sensitive(this.taskStorePending.n_items > 0)
+        this._delete_finished.set_sensitive(this.taskStoreFinished.n_items > 0)        
+        
+        this._finished_container.set_visible(this.taskStoreFinished.n_items > 0);
     }
 
     /**

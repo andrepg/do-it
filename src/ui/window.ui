@@ -48,83 +48,83 @@
                 <property name="selection-mode">none</property>
                 <property name="valign">start</property>
                 <child>
-                  <object class="GtkBox">
-                    <property name="focusable">True</property>
-                    <property name="margin-end">8</property>
-                    <property name="margin-start">8</property>
-                    <property name="spacing">16</property>
-                    <child>
-                      <object class="AdwWindowTitle">
-                        <property name="hexpand">True</property>
-                        <property name="subtitle">What you still need to master</property>
-                        <property name="title">👀 Pending</property>
-                      </object>
-                    </child>
-                    <child>
-                      <object class="GtkButton" id="delete_pending">
-                        <property name="css-classes">error</property>
-                        <property name="has-frame">False</property>
-                        <property name="icon-name">user-trash-full-symbolic</property>
-                        <property name="label">Delete all</property>
-                      </object>
-                    </child>
-                  </object>
-                </child>
-                <child>
                   <object class="AdwClamp">
-                    <property name="accessible-role">list-box</property>
-                    <property name="margin-bottom">8</property>
-                    <property name="margin-end">12</property>
-                    <property name="margin-start">12</property>
-                    <property name="margin-top">8</property>
                     <property name="maximum-size">800</property>
                     <property name="valign">start</property>
                     <child>
-                      <object class="GtkListBox" id="list_box_pending">
-                        <property name="css-classes">boxed-list</property>
-                        <property name="selection-mode">none</property>
-                        <property name="valign">start</property>
+                      <object class="GtkBox">
+                        <property name="margin-end">8</property>
+                        <property name="margin-start">8</property>
+                        <property name="orientation">vertical</property>
+                        <property name="spacing">16</property>
+                        <child>
+                          <object class="GtkBox">
+                            <child>
+                              <object class="AdwWindowTitle">
+                                <property name="hexpand">True</property>
+                                <property name="subtitle">What you still need to master</property>
+                                <property name="title">👀 Pending</property>
+                              </object>
+                            </child>
+                            <child>
+                              <object class="GtkButton" id="delete_pending">
+                                <property name="css-classes">error</property>
+                                <property name="has-frame">False</property>
+                                <property name="icon-name">user-trash-full-symbolic</property>
+                                <property name="label">Delete all</property>
+                              </object>
+                            </child>
+                          </object>
+                        </child>
+                        <child>
+                          <object class="GtkListBox" id="list_box_pending">
+                            <property name="css-classes">boxed-list</property>
+                            <property name="focusable">False</property>
+                            <property name="selection-mode">none</property>
+                            <property name="valign">start</property>
+                          </object>
+                        </child>
                       </object>
                     </child>
                   </object>
                 </child>
                 <child>
-                  <object class="GtkBox">
-                    <property name="margin-end">8</property>
-                    <property name="margin-start">8</property>
-                    <property name="spacing">16</property>
-                    <child>
-                      <object class="AdwWindowTitle">
-                        <property name="hexpand">True</property>
-                        <property name="subtitle">All you have acomplished</property>
-                        <property name="title">🥳 Finished</property>
-                      </object>
-                    </child>
-                    <child>
-                      <object class="GtkButton" id="delete_finished">
-                        <property name="css-classes">error</property>
-                        <property name="has-frame">False</property>
-                        <property name="icon-name">user-trash-full-symbolic</property>
-                        <property name="label">Delete all</property>
-                        <property name="receives-default">False</property>
-                      </object>
-                    </child>
-                  </object>
-                </child>
-                <child>
-                  <object class="AdwClamp">
-                    <property name="accessible-role">list-box</property>
-                    <property name="margin-bottom">8</property>
-                    <property name="margin-end">12</property>
-                    <property name="margin-start">12</property>
-                    <property name="margin-top">8</property>
+                  <object class="AdwClamp" id="finished_container">
                     <property name="maximum-size">800</property>
                     <property name="valign">start</property>
                     <child>
-                      <object class="GtkListBox" id="list_box_finished">
-                        <property name="css-classes">boxed-list</property>
-                        <property name="selection-mode">none</property>
-                        <property name="valign">start</property>
+                      <object class="GtkBox">
+                        <property name="margin-end">8</property>
+                        <property name="margin-start">8</property>
+                        <property name="orientation">vertical</property>
+                        <property name="spacing">16</property>
+                        <child>
+                          <object class="GtkBox">
+                            <child>
+                              <object class="AdwWindowTitle">
+                                <property name="can-focus">False</property>
+                                <property name="hexpand">True</property>
+                                <property name="subtitle">All you have acomplished</property>
+                                <property name="title">🥳 Finished</property>
+                              </object>
+                            </child>
+                            <child>
+                              <object class="GtkButton" id="delete_finished">
+                                <property name="css-classes">error</property>
+                                <property name="has-frame">False</property>
+                                <property name="icon-name">user-trash-full-symbolic</property>
+                                <property name="label">Delete all</property>
+                              </object>
+                            </child>
+                          </object>
+                        </child>
+                        <child>
+                          <object class="GtkListBox" id="list_box_finished">
+                            <property name="css-classes">boxed-list</property>
+                            <property name="selection-mode">none</property>
+                            <property name="valign">start</property>
+                          </object>
+                        </child>
                       </object>
                     </child>
                   </object>
