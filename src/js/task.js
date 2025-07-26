@@ -1,6 +1,6 @@
 import GObject from "gi://GObject";
 import Gtk from "gi://Gtk";
-import Adw from "gi://Adw";
+import GLib from "gi://GLib";
 
 export const Task = GObject.registerClass({
     GTypeName: "Task",
@@ -13,6 +13,7 @@ export const Task = GObject.registerClass({
     InternalChildren: [
         'task_done',
         'task_entry',
+        'task_label',
         'task_delete'
     ],
     Signals: {
@@ -31,9 +32,20 @@ export const Task = GObject.registerClass({
         this._id = taskId;
         this._title = title;
         this._done = done;
-
+        
         this._set_default_values();
         this._attach_events();
+        this._setProperties()
+    }
+    
+    _setProperties() {
+        this.set_opacity(!this._done ? 1 : 0.5);
+        this._task_label.set_markup(
+            `<s>${GLib.markup_escape_text(this._task_entry.get_text(), -1)}</s>`
+        );
+        
+        this._task_label.set_visible(this._done);
+        this._task_entry.set_visible(!this._done);
     }
 
     _attach_events() {
@@ -44,6 +56,8 @@ export const Task = GObject.registerClass({
 
         this._task_done.connect("toggled", () => {
             this._done = this._task_done.active;
+            this._setProperties();
+            
             this.emit('task-updated', this);
         });
 
