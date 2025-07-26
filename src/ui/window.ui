@@ -28,21 +28,11 @@
             <property name="hexpand-set">True</property>
             <property name="valign">end</property>
             <child>
-              <object class="GtkBox">
+              <object class="AdwEntryRow" id="task_new_entry">
+                <property name="enable-emoji-completion">True</property>
                 <property name="hexpand">True</property>
-                <property name="margin-bottom">4</property>
-                <property name="margin-end">8</property>
-                <property name="margin-start">8</property>
-                <property name="margin-top">4</property>
-                <property name="spacing">12</property>
-                <child>
-                  <object class="AdwEntryRow" id="task_new_entry">
-                    <property name="enable-emoji-completion">True</property>
-                    <property name="hexpand">True</property>
-                    <property name="show-apply-button">True</property>
-                    <property name="title">Create new task</property>
-                  </object>
-                </child>
+                <property name="show-apply-button">True</property>
+                <property name="title">Create new task</property>
               </object>
             </child>
           </object>
@@ -87,12 +77,12 @@
                     <property name="margin-end">12</property>
                     <property name="margin-start">12</property>
                     <property name="margin-top">8</property>
+                    <property name="maximum-size">800</property>
                     <property name="valign">start</property>
                     <child>
                       <object class="GtkListBox" id="list_box_pending">
                         <property name="css-classes">boxed-list</property>
                         <property name="selection-mode">none</property>
-                        <property name="show-separators">True</property>
                         <property name="valign">start</property>
                       </object>
                     </child>
@@ -129,12 +119,12 @@
                     <property name="margin-end">12</property>
                     <property name="margin-start">12</property>
                     <property name="margin-top">8</property>
+                    <property name="maximum-size">800</property>
                     <property name="valign">start</property>
                     <child>
                       <object class="GtkListBox" id="list_box_finished">
                         <property name="css-classes">boxed-list</property>
                         <property name="selection-mode">none</property>
-                        <property name="show-separators">True</property>
                         <property name="valign">start</property>
                       </object>
                     </child>

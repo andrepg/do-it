@@ -22,10 +22,10 @@ import GObject from 'gi://GObject';
 import Gio from 'gi://Gio';
 import Adw from 'gi://Adw';
 
-import { Task } from "./js/task.js"
-import { Persistence } from './js/persistence.js';
-import { ConfirmTaskDeleteDialog } from './js/confirm-task-delete.js';
-import { RESPONSES } from "./static.js";
+import { Task } from "./task.js"
+import { Persistence } from './persistence.js';
+import { ConfirmTaskDeleteDialog } from './confirm-task-delete.js';
+import { RESPONSES } from "../static.js";
 
 export const TasksWindow = GObject.registerClass({
     GTypeName: 'TasksWindow',
@@ -132,10 +132,10 @@ export const TasksWindow = GObject.registerClass({
                 if (response == RESPONSES.confirm.action) {
                     this.deleteTask(task)
                 }
-            });
+            })
 
             dialog.choose(this, null, null);
-        });
+        }.bind(this));
     }
 
     /**
@@ -228,4 +228,5 @@ export const TasksWindow = GObject.registerClass({
         this.persistence.saveToFile(tasks);
     }
 });
+
 
