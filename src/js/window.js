@@ -29,7 +29,7 @@ import { RESPONSES } from "../static.js";
 
 export const TasksWindow = GObject.registerClass({
     GTypeName: 'TasksWindow',
-    Template: 'resource:///br/dev/startap/tasks/ui/window.ui',
+    Template: 'resource:///io/github/andrepg/Doit/ui/window.ui',
     InternalChildren: [
         "list_box_pending",
         "list_box_finished",

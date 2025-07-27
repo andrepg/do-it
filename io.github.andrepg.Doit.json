@@ -1,5 +1,5 @@
 {
-    "id" : "br.dev.startap.tasks",
+    "id" : "io.github.andrepg.Doit",
     "tags" : [
         "tasks",
         "todo",
@@ -12,7 +12,7 @@
         "org.freedesktop.Sdk.Extension.node20",
         "org.freedesktop.Sdk.Extension.typescript"
     ],
-    "command" : "br.dev.startap.tasks",
+    "command" : "io.github.andrepg.Doit",
     "finish-args" : [
         "--share=network",
         "--share=ipc",
@@ -22,7 +22,7 @@
     ],
     "build-options" : {
         "append-path" : "/usr/lib/sdk/typescript/bin:/usr/lib/sdk/node20/bin",
-        "env" : {}
+        "env" : {        }
     },
     "cleanup" : [
         "/include",
@@ -37,7 +37,7 @@
     ],
     "modules" : [
         {
-            "name" : "tasks",
+            "name" : "Doit",
             "buildsystem" : "meson",
             "sources" : [
                 {

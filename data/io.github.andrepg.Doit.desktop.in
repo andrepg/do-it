@@ -1,7 +1,7 @@
 [Desktop Entry]
-Name=tasks
-Exec=br.dev.startap.tasks
-Icon=br.dev.startap.tasks
+Name=Doit
+Exec=io.github.andrepg.Doit
+Icon=io.github.andrepg.Doit
 Terminal=false
 Type=Application
 Categories=Utility;

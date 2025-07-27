@@ -4,7 +4,7 @@ import { RESPONSES } from "../static.js";
 
 export const ConfirmTaskDeleteDialog = GObject.registerClass({
     GTypeName: "ConfirmTaskDeleteDialog",
-    Template: "resource:///br/dev/startap/tasks/ui/confirm-task-delete.ui"
+    Template: "resource:///io/github/andrepg/Doit/ui/confirm-task-delete.ui"
 }, class ConfirmTaskDeleteDialog extends Adw.AlertDialog {
     _init(params) {
         super._init(params);
