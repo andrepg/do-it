@@ -1,4 +1,4 @@
-application_id = 'br.dev.startap.tasks'
+application_id = 'io.github.andrepg.Doit'
 
 scalable_dir = 'hicolor' / 'scalable' / 'apps'
 install_data(

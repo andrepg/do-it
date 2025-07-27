@@ -4,7 +4,7 @@ import GLib from "gi://GLib";
 
 export const Task = GObject.registerClass({
     GTypeName: "Task",
-    Template: 'resource:///br/dev/startap/tasks/ui/task.ui',
+    Template: 'resource:///io/github/andrepg/Doit/ui/task.ui',
     Properties: {
         'taskId': GObject.ParamSpec.int('taskId', 'Task Id', 'Task unique id', GObject.ParamFlags.READABLE, 0),
         'title': GObject.ParamSpec.string('title', 'Title', 'Title of task', GObject.ParamFlags.READWRITE, ''),

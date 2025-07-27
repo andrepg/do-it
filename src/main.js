@@ -27,13 +27,13 @@ import { TasksWindow } from './js/window.js';
 pkg.initGettext();
 pkg.initFormat();
 
-export const TasksApplication = GObject.registerClass(
-    class TasksApplication extends Adw.Application {
+export const DoitApplication = GObject.registerClass(
+    class DoitApplication extends Adw.Application {
         constructor() {
             super({
-                application_id: 'br.dev.startap.tasks',
+                application_id: 'io.github.andrepg.Doit',
                 flags: Gio.ApplicationFlags.DEFAULT_FLAGS,
-                resource_base_path: '/br/dev/startap/tasks'
+                resource_base_path: '/io/github/andrepg/Doit'
             });
 
             this.setupAboutDialogAction();
@@ -44,8 +44,8 @@ export const TasksApplication = GObject.registerClass(
             const show_about_action = new Gio.SimpleAction({ name: 'about' });
             show_about_action.connect('activate', _ => {
                 const aboutParams = {
-                    application_name: 'tasks',
-                    application_icon: 'br.dev.startap.tasks',
+                    application_name: 'Doit',
+                    application_icon: 'io.github.andrepg.Doit',
                     developer_name: 'André Paul Grandsire',
                     version: '0.1.0',
                     developers: [
@@ -84,6 +84,6 @@ export const TasksApplication = GObject.registerClass(
 );
 
 export function main(argv) {
-    const application = new TasksApplication();
+    const application = new DoitApplication();
     return application.runAsync(argv);
 }

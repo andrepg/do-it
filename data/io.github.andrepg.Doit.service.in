@@ -1,0 +1,3 @@
+[D-BUS Service]
+Name=io.github.andrepg.Doit
+Exec=@bindir@/io.github.andrepg.Doit --gapplication-service

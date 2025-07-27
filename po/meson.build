@@ -1,1 +1,1 @@
-i18n.gettext('tasks', preset: 'glib')
+i18n.gettext('Doit', preset: 'glib')

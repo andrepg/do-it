@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <gresources>
-  <gresource prefix="/br/dev/startap/tasks/js">
+  <gresource prefix="/io/github/andrepg/Doit/js">
     <file>main.js</file>
     <file>static.js</file>
     <file>js/window.js</file>
