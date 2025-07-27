@@ -36,9 +36,16 @@ essential, assembling the application core:
 ### Local database
 
 > [!Note]
-> 🚧 We still haven't designed our database. 
+> As noted before, this app is privacy-oriented. 
+
+Your tasks are stored locally, in a JSON file inside the app data itself. 
+In a Linux Flatpak environment, it should be `~/.var/app/io.github.andrepg.Doit/data`. 
+
+🔄 _If you want to make your own backup, that's the folder!_
+
+🎯 _We plan to create another JSON file, to keep a user actions history and allow to undo actions._
 
 ### Export tasks
 
 > [!Note]
-> The export function should export current tasks overall panorama 
+> We do plan to create a export function, but not now.
