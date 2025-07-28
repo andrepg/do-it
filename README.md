@@ -51,3 +51,7 @@ In a Linux Flatpak environment, it should be `~/.var/app/io.github.andrepg.Doit/
 
 > [!Note]
 > We do plan to create a export function, but not now.
+
+## Sponsored by
+[![Sponsored by GitAds](https://gitads.dev/v1/ad-serve?source=andrepg/do-it@github)](https://gitads.dev/v1/ad-track?source=andrepg/do-it@github)
+
