@@ -1,3 +1,5 @@
+<!-- GitAds-Verify: I6LVITSW7RXSYY2TKEDQAN1FTRG3RSN9 -->
+
 # ✅ Deadly simple tasks
 
 This is, as in its name, a **deadly simple task** manager. I've used a lot of 
