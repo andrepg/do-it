@@ -42,8 +42,8 @@
             "builddir": true,
             "sources" : [
                 {
-                    "type" : "path",
-                    "url" : "./"
+                    "type" : "dir",
+                    "path" : "./"                    
                 }
             ],
             "config-opts" : [
