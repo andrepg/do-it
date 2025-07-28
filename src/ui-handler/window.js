@@ -59,7 +59,7 @@ export const TasksWindow = GObject.registerClass({
         );
 
         this.setupDeletePendingButton();
-        this.setupDeleteFinishedButton();        
+        this.setupDeleteFinishedButton();
     }
 
     setupDeleteFinishedButton() {
@@ -98,7 +98,7 @@ export const TasksWindow = GObject.registerClass({
     */
     loadTasksFirstTime() {
         this.persistence = new Persistence();
-        
+
         this.taskStorePending = new TaskListStore({ item_type: Task });
         this.taskStoreFinished = new TaskListStore({ item_type: Task });
 
@@ -198,7 +198,7 @@ export const TasksWindow = GObject.registerClass({
         }
 
         this.persistTasks();
-        
+
         this._toast_overlay.add_toast(
             new Adw.Toast({ title: `Tasks deleted` })
         );
@@ -208,22 +208,10 @@ export const TasksWindow = GObject.registerClass({
       * Save current database in user folder, persisting our information
       */
     persistTasks() {
-        const finished_count = this.taskStoreFinished.n_items;
-        const pending_count = this.taskStorePending.n_items;
-
-        const tasks = [];
-
-        for (let i = 0; i < finished_count; i++) {
-            const task = this.taskStoreFinished.get_item(i).to_object()
-            tasks.push(task);
-        }
-
-        for (let i = 0; i < pending_count; i++) {
-            const task = this.taskStorePending.get_item(i).to_object()
-            tasks.push(task);
-        }
-
-        this.persistence.saveToFile(tasks);
+        this.persistence.saveToFile([]
+            .push(...this.taskStorePending.get_all())
+            .push(...this.taskStoreFinished.get_all())
+        );
     }
 });
 
