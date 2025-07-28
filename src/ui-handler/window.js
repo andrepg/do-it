@@ -104,7 +104,7 @@ export const TasksWindow = GObject.registerClass({
 
         for (let item of this.persistence.readFromFile()) {
             const task = new Task(item.taskId, item.title, item.done);
-            this.attatchTaskEvents(task);
+            this.connectTaskEvents(task);
             if (task._done) {
                 this.taskStoreFinished.append(task)
             } else {
@@ -116,9 +116,9 @@ export const TasksWindow = GObject.registerClass({
     /**
       * Attach task events to handle update and deletion from each task
       */
-    attatchTaskEvents(task) {
+    connectTaskEvents(task) {
         task.connect('task-updated', this.updateTask.bind(this));
-        task.connect('task-deleted', function() {
+        task.connect('task-deleted', function () {
             const dialog = new ConfirmTaskDeleteDialog({ heading: "Delete this task?" });
 
             dialog.connect('response', (_, response) => {
@@ -144,7 +144,7 @@ export const TasksWindow = GObject.registerClass({
             title.trim()
         );
 
-        this.attatchTaskEvents(task);
+        this.connectTaskEvents(task);
 
         this.taskStorePending.append(task);
 
