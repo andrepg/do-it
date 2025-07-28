@@ -3,7 +3,7 @@ import Gio from 'gi://Gio';
 
 export class Persistence {
     constructor(filename = 'data.json') {
-        this.databaseDir = GLib.get_user_config_dir();
+        this.databaseDir = GLib.get_user_data_dir();
 
         this.databaseFile = Gio.File.new_for_path(
             GLib.build_filenamev([this.databaseDir, filename])
