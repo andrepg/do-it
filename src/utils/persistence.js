@@ -2,11 +2,11 @@ import GLib from 'gi://GLib';
 import Gio from 'gi://Gio';
 
 export class Persistence {
-    constructor() {
+    constructor(filename = 'data.json') {
         this.databaseDir = GLib.get_user_config_dir();
 
         this.databaseFile = Gio.File.new_for_path(
-            GLib.build_filenamev([this.databaseDir, 'data.json'])
+            GLib.build_filenamev([this.databaseDir, filename])
         );
 
         this.databaseFilePath = this.databaseFile.get_path();

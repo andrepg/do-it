@@ -22,7 +22,7 @@ import GObject from 'gi://GObject';
 import Gio from 'gi://Gio';
 import Adw from 'gi://Adw';
 
-import { TasksWindow } from './js/window.js';
+import { TasksWindow } from './ui-handler/window.js';
 
 pkg.initGettext();
 pkg.initFormat();

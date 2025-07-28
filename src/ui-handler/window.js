@@ -23,7 +23,8 @@ import Gio from 'gi://Gio';
 import Adw from 'gi://Adw';
 
 import { Task } from "./task.js"
-import { Persistence } from './persistence.js';
+import { Persistence } from '../utils/persistence.js';
+import { TaskListStore } from '../utils/list-store.js';
 import { ConfirmTaskDeleteDialog } from './confirm-task-delete.js';
 import { RESPONSES } from "../static.js";
 
@@ -36,6 +37,7 @@ export const TasksWindow = GObject.registerClass({
         "delete_pending",
         "delete_finished",
         "task_new_entry",
+        "toast_overlay",
         'finished_container'
     ],
 }, class TasksWindow extends Adw.ApplicationWindow {
@@ -44,7 +46,7 @@ export const TasksWindow = GObject.registerClass({
 
         this.loadTasksFirstTime();
 
-        this._task_new_entry.connect('apply', this.createTask.bind(this))
+        this._task_new_entry.connect('activate', this.createTask.bind(this))
 
         this._list_box_pending.bind_model(
             this.taskStorePending,
@@ -57,7 +59,7 @@ export const TasksWindow = GObject.registerClass({
         );
 
         this.setupDeletePendingButton();
-        this.setupDeleteFinishedButton();
+        this.setupDeleteFinishedButton();        
     }
 
     setupDeleteFinishedButton() {
@@ -90,24 +92,15 @@ export const TasksWindow = GObject.registerClass({
         });
     }
 
-    syncActiveButtonStatus() {
-        this._delete_pending.set_sensitive(this.taskStorePending.n_items > 0)
-        this._delete_finished.set_sensitive(this.taskStoreFinished.n_items > 0)        
-        
-        this._finished_container.set_visible(this.taskStoreFinished.n_items > 0);
-    }
-
     /**
     * Initialize our tasks lists, both pending and finished
     * from data returned from persistence class
     */
     loadTasksFirstTime() {
         this.persistence = new Persistence();
-        this.taskStorePending = new Gio.ListStore({ item_type: Task });
-        this.taskStoreFinished = new Gio.ListStore({ item_type: Task });
-
-        this.taskStorePending.connect('items-changed', this.syncActiveButtonStatus.bind(this))
-        this.taskStoreFinished.connect('items-changed', this.syncActiveButtonStatus.bind(this))
+        
+        this.taskStorePending = new TaskListStore({ item_type: Task });
+        this.taskStoreFinished = new TaskListStore({ item_type: Task });
 
         for (let item of this.persistence.readFromFile()) {
             const task = new Task(item.taskId, item.title, item.done);
@@ -159,7 +152,9 @@ export const TasksWindow = GObject.registerClass({
 
         this._task_new_entry.set_text("");
 
-        // TODO Here we can fire a Toast
+        this._toast_overlay.add_toast(
+            new Adw.Toast({ title: `Task "${task.title}" created` })
+        );
     }
 
     /**
@@ -202,8 +197,11 @@ export const TasksWindow = GObject.registerClass({
             this.taskStorePending.remove(position);
         }
 
-        // TODO Here we can fire a Toast
         this.persistTasks();
+        
+        this._toast_overlay.add_toast(
+            new Adw.Toast({ title: `Tasks deleted` })
+        );
     }
 
     /**
