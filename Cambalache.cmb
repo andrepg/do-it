@@ -2,14 +2,8 @@
 <!DOCTYPE cambalache-project SYSTEM "cambalache-project.dtd">
 <!-- Created with Cambalache 0.96.1 -->
 <cambalache-project version="0.96.0" target_tk="gtk-4.0">
-  <ui template-class="TasksWindow" filename="src/ui/window.ui" sha256="95a153aa76e261be31ee398a8c25ef97d3fc12391447a00863973bc16bc1b51d">
-    <requires>list_empty_box</requires>
-  </ui>
+  <ui template-class="ListEmptyBox" filename="src/ui/empty_tasks.ui" sha256="5908c4568076ed374293926067cb5a2dbc6a9afd65962324392985d3f756c06f"/>
   <ui template-class="Task" filename="src/ui/task.ui" sha256="9a92e8142e8d17db592792264cd1f581212a175d31729b7c09c250b14f7a0f77"/>
   <ui template-class="ConfirmTaskDeleteDialog" filename="src/ui/confirm-task-delete.ui" sha256="8e2bec4a04cc44652de7bb6f1b06c418c592b31fb842dc1064bdc3e522e437de"/>
-  <ui template-class="list_empty_box" filename="src/ui/empty_tasks.ui" sha256="5c7b08092db507bf57cd33d76efffacd3dcc9149ca5ffd40181d0c7be7f5fefb"/>
-  <ui>
-    <content><![CDATA[<interface/>
-]]></content>
-  </ui>
+  <ui template-class="TasksWindow" filename="src/ui/window.ui" sha256="d9bbc8dd9ff89a8663f8d35fdb8bfd951ae1b8b611ef8c78e4240be417085e0f"/>
 </cambalache-project>

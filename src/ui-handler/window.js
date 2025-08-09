@@ -44,7 +44,7 @@ export const TasksWindow = GObject.registerClass({
     constructor(application) {
         super({ application });
 
-        this.loadTasksFirstTime();
+        this.loadFromPersistence();
 
         this._task_new_entry.connect('activate', this.createTask.bind(this))
 
@@ -96,11 +96,15 @@ export const TasksWindow = GObject.registerClass({
     * Initialize our tasks lists, both pending and finished
     * from data returned from persistence class
     */
-    loadTasksFirstTime() {
+    loadFromPersistence() {
         this.persistence = new Persistence();
 
         this.taskStorePending = new TaskListStore({ item_type: Task });
         this.taskStoreFinished = new TaskListStore({ item_type: Task });
+       
+        this.taskStoreFinished.connect('items-changed', (list) => {
+            this._finished_container.set_visible(list.get_count() > 0)
+        });      
 
         for (let item of this.persistence.readFromFile()) {
             const task = new Task(item.taskId, item.title, item.done);
@@ -111,6 +115,10 @@ export const TasksWindow = GObject.registerClass({
                 this.taskStorePending.append(task)
             }
         }
+        
+        this._finished_container.set_visible(
+            this.taskStoreFinished.get_count() > 0
+        )
     }
 
     /**
@@ -208,10 +216,12 @@ export const TasksWindow = GObject.registerClass({
       * Save current database in user folder, persisting our information
       */
     persistTasks() {
-        this.persistence.saveToFile([]
-            .push(...this.taskStorePending.get_all())
-            .push(...this.taskStoreFinished.get_all())
-        );
+        const tasks = [];
+        
+        tasks.push(...this.taskStorePending.get_all());
+        tasks.push(...this.taskStoreFinished.get_all());
+        
+        this.persistence.saveToFile(tasks);
     }
 });
 

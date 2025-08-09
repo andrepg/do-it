@@ -36,6 +36,8 @@ export class Persistence {
 
         const file_content = decoder.decode(content);
 
+        GLib.free(this.databaseFile);
+        
         return file_content.trim() == ""
             ? []
             : JSON.parse(file_content);

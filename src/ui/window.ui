@@ -9,6 +9,7 @@
   <template class="TasksWindow" parent="AdwApplicationWindow">
     <property name="content">
       <object class="AdwToolbarView">
+        <property name="bottom-bar-style">raised</property>
         <property name="hexpand">True</property>
         <child type="top">
           <object class="AdwHeaderBar">
@@ -40,10 +41,6 @@
                 <property name="margin-bottom">4</property>
                 <property name="margin-top">4</property>
                 <property name="placeholder-text">What do you need to do?</property>
-                <property name="primary-icon-activatable">False</property>
-                <property name="primary-icon-sensitive">False</property>
-                <property name="secondary-icon-activatable">False</property>
-                <property name="secondary-icon-sensitive">False</property>
                 <property name="show-emoji-icon">True</property>
                 <property name="truncate-multiline">True</property>
               </object>
