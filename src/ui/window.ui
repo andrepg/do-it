@@ -9,7 +9,6 @@
   <template class="TasksWindow" parent="AdwApplicationWindow">
     <property name="content">
       <object class="AdwToolbarView">
-        <property name="bottom-bar-style">raised</property>
         <property name="hexpand">True</property>
         <child type="top">
           <object class="AdwHeaderBar">
