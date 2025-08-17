@@ -18,15 +18,9 @@
  * SPDX-License-Identifier: GPL-3.0-or-later
  */
 
-import GObject from 'gi://GObject';
-import Gio from 'gi://Gio';
-import Adw from 'gi://Adw';
+const { GObject, Adw, Gio } = imports.gi;
 
-import { Task } from "./task.js"
 import { Persistence } from '../utils/persistence.js';
-import { TaskListStore } from '../utils/list-store.js';
-import { ConfirmTaskDeleteDialog } from './confirm-task-delete.js';
-import { RESPONSES } from "../static.js";
 import { TaskList } from './task-list.js';
 
 export const TasksWindow = GObject.registerClass({
@@ -56,9 +50,11 @@ export const TasksWindow = GObject.registerClass({
 
         this._setup_pending_task_list();
         this._setup_finished_task_list();
+
+        this._load_tasks_from_database();
     }
 
-    _initial_load_up() {
+    _load_tasks_from_database() {
         const tasks = (new Persistence).readFromFile()
 
         tasks.forEach(task => {
@@ -115,6 +111,10 @@ export const TasksWindow = GObject.registerClass({
         this._toast_overlay.add_toast(
             new Adw.Toast({ title: `Task "${title.trim()}" created` })
         );
+    }
+
+    display_toast(toast) {
+        this._toast_overlay.add_toast(toast)
     }
 });
 
