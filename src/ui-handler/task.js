@@ -59,6 +59,8 @@ export const Task = GObject.registerClass({
 
         this._task_label.set_visible(this._done);
         this._task_entry.set_visible(!this._done);
+
+        this.set_visible(!this._deleted)
     }
 
     _attach_events() {
@@ -77,10 +79,14 @@ export const Task = GObject.registerClass({
             this.emit('task-updated', this);
         });
 
-        this._task_delete.connect(
-            'clicked', 
-            () => this.emit('task-deleted', this)
-        );
+        this._task_delete.connect('clicked', () => {
+            this._deleted = true;
+            
+            this._set_default_values()
+            this._set_properties()
+            
+            this.emit('task-deleted', this)
+        });
     }
 
     _set_default_values() {
