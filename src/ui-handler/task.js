@@ -14,6 +14,10 @@ const TaskProperties = {
     'done': GObject.ParamSpec.boolean(
         'done', 'Done', 'Task status',
         GObject.ParamFlags.READWRITE, ''
+    ),
+    'deleted': GObject.ParamSpec.boolean(
+        'deleted', 'Deleted', 'Deletion task status',
+        GObject.ParamFlags.READWRITE, ''
     )
 }
 
@@ -37,12 +41,13 @@ export const Task = GObject.registerClass({
     }
 }, class Task extends Gtk.ListBoxRow {
 
-    _init(taskId = 0, title = "", done = false) {
+    _init(taskId = 0, title = "", done = false, deleted = false) {
         super._init();
 
         this._id = taskId;
         this._title = title;
         this._done = done;
+        this._deleted = deleted;
 
         this._set_default_values();
         this._attach_events();
@@ -116,7 +121,8 @@ export const Task = GObject.registerClass({
         return {
             taskId: this._id,
             title: this._title,
-            done: this._done
+            done: this._done,
+            deleted: this._deleted,
         }
     }
 });
