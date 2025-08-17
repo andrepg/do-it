@@ -1,0 +1,44 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<interface>
+  <!-- interface-name task-list.ui -->
+  <requires lib="Adw" version="1.0" />
+  <requires lib="Gio" version="2.0" />
+  <requires lib="Gtk" version="4.0" />
+  <requires lib="libadwaita" version="1.7" />
+
+  <template class="TaskList" parent="GtkBox">
+    <property name="margin-start">8</property>
+    <property name="margin-end">8</property>
+    <property name="spacing">16</property>
+    <property name="orientation">vertical</property>
+    <child>
+      <object class="GtkBox">
+        <child>
+          <object class="AdwWindowTitle" id="task_list_title">
+            <property name="can-focus">False</property>
+            <property name="hexpand">True</property>
+            <property name="title" translatable="yes">Title</property>
+            <property name="subtitle" translatable="yes">Subtitle here</property>
+          </object>
+        </child>
+        <child>
+          <object class="GtkButton" id="task_list_delete_all">
+            <property name="css-classes">error</property>
+            <property name="sensitive">False</property>
+            <property name="has-frame">False</property>
+            <property name="icon-name">user-trash-full-symbolic</property>
+            <property name="label">Delete all</property>
+          </object>
+        </child>
+      </object>
+    </child>
+
+    <child>
+      <object class="GtkListBox" id="task_listbox">
+        <property name="css-classes">boxed-list</property>
+        <property name="selection-mode">none</property>
+        <property name="valign">start</property>
+      </object>
+    </child>
+  </template>
+</interface>

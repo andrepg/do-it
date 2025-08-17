@@ -27,201 +27,94 @@ import { Persistence } from '../utils/persistence.js';
 import { TaskListStore } from '../utils/list-store.js';
 import { ConfirmTaskDeleteDialog } from './confirm-task-delete.js';
 import { RESPONSES } from "../static.js";
+import { TaskList } from './task-list.js';
 
 export const TasksWindow = GObject.registerClass({
     GTypeName: 'TasksWindow',
     Template: 'resource:///io/github/andrepg/Doit/ui/window.ui',
     InternalChildren: [
-        "list_box_pending",
-        "list_box_finished",
-        "delete_pending",
-        "delete_finished",
         "task_new_entry",
         "toast_overlay",
-        'finished_container'
+        "list_flow_box"
     ],
 }, class TasksWindow extends Adw.ApplicationWindow {
+    /**
+     * @var TaskListStore store to hold pending tasks
+     */
+    _pending_task_list;
+
+    /**
+     * @var TaskListStore store to hold finished tasks
+     */
+    _finished_task_list;
+
     constructor(application) {
         super({ application });
 
-        this.loadFromPersistence();
+        // Connect our main New Task button event with task creation
+        this._task_new_entry.connect('activate', this._createTask.bind(this))
 
-        this._task_new_entry.connect('activate', this.createTask.bind(this))
-
-        this._list_box_pending.bind_model(
-            this.taskStorePending,
-            (task) => task.to_widget()
-        );
-
-        this._list_box_finished.bind_model(
-            this.taskStoreFinished,
-            (task) => task.to_widget()
-        );
-
-        this.setupDeletePendingButton();
-        this.setupDeleteFinishedButton();
+        this._setup_pending_task_list();
+        this._setup_finished_task_list();
     }
 
-    setupDeleteFinishedButton() {
-        this._delete_finished.connect('clicked', () => {
-            const dialog = new ConfirmTaskDeleteDialog();
+    _initial_load_up() {
+        const tasks = (new Persistence).readFromFile()
 
-            dialog.choose(this, null, null);
-
-            dialog.connect('response', (_, response) => {
-                if (response == RESPONSES.confirm.action) {
-                    this.taskStoreFinished.remove_all();
-                    this.persistTasks();
-                }
-            });
-        });
-    }
-
-    setupDeletePendingButton() {
-        this._delete_pending.connect('clicked', () => {
-            const dialog = new ConfirmTaskDeleteDialog();
-
-            dialog.choose(this, null, null);
-
-            dialog.connect('response', (_, response) => {
-                if (response == RESPONSES.confirm.action) {
-                    this.taskStorePending.remove_all();
-                    this.persistTasks();
-                }
-            });
-        });
-    }
-
-    /**
-    * Initialize our tasks lists, both pending and finished
-    * from data returned from persistence class
-    */
-    loadFromPersistence() {
-        this.persistence = new Persistence();
-
-        this.taskStorePending = new TaskListStore({ item_type: Task });
-        this.taskStoreFinished = new TaskListStore({ item_type: Task });
-       
-        this.taskStoreFinished.connect('items-changed', (list) => {
-            this._finished_container.set_visible(list.get_count() > 0)
-        });      
-
-        for (let item of this.persistence.readFromFile()) {
-            const task = new Task(item.taskId, item.title, item.done);
-            this.connectTaskEvents(task);
-            if (task._done) {
-                this.taskStoreFinished.append(task)
-            } else {
-                this.taskStorePending.append(task)
+        tasks.forEach(task => {
+            if (task.done) {
+                this._finished_task_list.add_task(task);
+                return;
             }
-        }
-        
-        this._finished_container.set_visible(
-            this.taskStoreFinished.get_count() > 0
-        )
+
+            this._pending_task_list.add_task(task)
+        });
+    }
+
+    _setup_pending_task_list() {
+        this._pending_task_list = new TaskList(
+            "💪 Pending",
+            "All you need to accomplish in your workflow"
+        );
+
+        let pending_clamp = new Adw.Clamp();
+        pending_clamp.set_maximum_size(960);
+        pending_clamp.set_child(this._pending_task_list);
+
+        this._list_flow_box.append(pending_clamp);
+    }
+
+    _setup_finished_task_list() {
+        this._finished_task_list = new TaskList(
+            "✅ Finished",
+            "You already master all these tasks!"
+        );
+
+        let finished_clamp = new Adw.Clamp();
+        finished_clamp.set_maximum_size(960);
+        finished_clamp.set_child(this._finished_task_list);
+
+        this._list_flow_box.append(finished_clamp);
     }
 
     /**
-      * Attach task events to handle update and deletion from each task
-      */
-    connectTaskEvents(task) {
-        task.connect('task-updated', this.updateTask.bind(this));
-        task.connect('task-deleted', function () {
-            const dialog = new ConfirmTaskDeleteDialog({ heading: "Delete this task?" });
-
-            dialog.connect('response', (_, response) => {
-                if (response == RESPONSES.confirm.action) {
-                    this.deleteTask(task)
-                }
-            })
-
-            dialog.choose(this, null, null);
-        }.bind(this));
-    }
-
-    /**
-      * Add a new task to pending store and persist on disk
-      */
-    createTask() {
+     * Add a new task to pending store and persist on disk
+     */
+    _createTask() {
         const title = this._task_new_entry.get_text();
 
         if (title.trim() == '') return;
-
-        const task = new Task(
-            this.taskStorePending.n_items + 1,
-            title.trim()
-        );
-
-        this.connectTaskEvents(task);
-
-        this.taskStorePending.append(task);
-
-        this.persistTasks();
-
+    
+        console.log("[window] Ask Pending list to add new task");
+        this._pending_task_list.add_task({title: title.trim()})
+        
+        console.log("[window] Cleaning up interface and inputs");
         this._task_new_entry.set_text("");
 
+        console.log("[window] Dispatching user feedback");
         this._toast_overlay.add_toast(
-            new Adw.Toast({ title: `Task "${task.title}" created` })
+            new Adw.Toast({ title: `Task "${title.trim()}" created` })
         );
-    }
-
-    /**
-      * Update a single task, change store position (when marked as done)
-      * and calls persistence to save user data
-      */
-    updateTask(task) {
-        const [found_pending, position_pending] = this.taskStorePending.find(task);
-        const [found_finished, position_finished] = this.taskStoreFinished.find(task);
-
-        if (task._done && found_pending) {
-            this.taskStorePending.remove(position_pending);
-            this.taskStoreFinished.append(task);
-        }
-
-        if (!task._done && found_finished) {
-            this.taskStoreFinished.remove(position_finished);
-            this.taskStorePending.append(task);
-        }
-
-        this.persistTasks();
-    }
-
-    /**
-      * Delete a row from list store, depending on current
-      * task status
-      */
-    deleteTask(task) {
-        let [found, position] = this.taskStorePending.find(task);
-
-        if (task._done) {
-            [found, position] = this.taskStoreFinished.find(task);
-        }
-
-        if (found && task._done) {
-            this.taskStoreFinished.remove(position);
-        }
-
-        if (found && !task._done) {
-            this.taskStorePending.remove(position);
-        }
-
-        this.persistTasks();
-
-        this._toast_overlay.add_toast(
-            new Adw.Toast({ title: `Tasks deleted` })
-        );
-    }
-
-    /**
-      * Save current database in user folder, persisting our information
-      */
-    persistTasks() {
-        const tasks = [];
-        
-        tasks.push(...this.taskStorePending.get_all());
-        tasks.push(...this.taskStoreFinished.get_all());
-        
-        this.persistence.saveToFile(tasks);
     }
 });
 

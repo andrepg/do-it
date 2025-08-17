@@ -113,6 +113,15 @@ export const Task = GObject.registerClass({
         this.notify('done');
     }
 
+    get deleted() {
+        return this._deleted;
+    }
+
+    set deleted(value) {
+        this._deleted = value;
+        this.notify('deleted');
+    }
+
     to_widget() {
         return this;
     }
