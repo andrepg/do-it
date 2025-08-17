@@ -1,7 +1,7 @@
 import { TaskListStore } from "../utils/list-store.js";
 import { Task } from "./task.js";
 
-const { GObject, Gtk } = imports.gi;
+const { GObject, Gtk, Adw } = imports.gi;
 
 const TaskListProperties = {
     'title': GObject.ParamSpec.string(
@@ -11,7 +11,7 @@ const TaskListProperties = {
     'subtitle': GObject.ParamSpec.string(
         "subtitle", "List subtitle", "List subtitle to show to user",
         GObject.ParamFlags.READWRITE, "A list description"
-    ),
+    )
 }
 
 export const TaskList = GObject.registerClass({
@@ -44,16 +44,9 @@ export const TaskList = GObject.registerClass({
 
     _setup_list_store() {
         console.log(`[task-list] Initializing list store`);
-
         this._list_store = new TaskListStore({ type: Task });
 
-        console.log(`[task-list] Attach items-changed event`);
-
-        this._list_store.connect(
-            'items-changed',
-            this._set_visibility.bind(this)
-        )
-
+        console.log(`[task-list] Binding task model and list box`);
         this._task_listbox.bind_model(this._list_store, task => task.to_widget());
     }
 
@@ -67,17 +60,43 @@ export const TaskList = GObject.registerClass({
 
         const taskObj = new Task(
             this._list_store.get_count() + 1,
-            task.title
+            task.title,
+            task.done || false,
+            task.deleted || false,
         );
 
-        taskObj.set_visible(!task.deleted)
+        taskObj.connect('task-updated', this._process_task_updated.bind(this));
+        taskObj.connect('task-deleted', this._process_task_deleted.bind(this));
 
         this._list_store.append(taskObj)
+
+        if (!this.get_visible()) {
+            this._set_visibility()
+        }
     }
 
     get_count() {
         return this._list_store.get_count();
     }
 
-    to_list_object() { }
+    _process_task_updated() {
+        console.log(`[toast] Setup user feedback after task update`);
+
+        // TODO Still missing toast notification
+     }
+
+    _process_task_deleted(task) {       
+        console.log(`[toast] Setup user feedback after task deletion`);
+        
+        let toast = Adw.Toast.new(`Task ${task.title} deleted`);
+
+        toast.set_priority(Adw.ToastPriority.ADW_TOAST_PRIORITY_HIGH);
+        toast.set_button_label("Undo");
+        toast.connect('button-clicked', _ => {
+            console.log(`[toast] Undo task delete - ${task.get_title()}`);
+            task.set_deleted(false)
+        })       
+
+        this.get_root().display_toast(toast);
+    }
 });
