@@ -23,7 +23,11 @@ export const TaskList = GObject.registerClass({
         'task_list_delete_all',
         'task_listbox',
     ],
-    Signals: {}
+    Signals: {
+        'items-changed': {
+            param_types: [GObject.TYPE_OBJECT]
+        }
+    }
 }, class TaskList extends Gtk.Box {
 
     _init(title = "", subtitle = "") {

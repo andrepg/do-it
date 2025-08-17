@@ -33,12 +33,16 @@ export const TasksWindow = GObject.registerClass({
     ],
 }, class TasksWindow extends Adw.ApplicationWindow {
     /**
-     * @var TaskListStore store to hold pending tasks
-     */
+     * Store to hold pending tasks
+    * @type {TaskList}
+    * @private
+    */
     _pending_task_list;
 
     /**
-     * @var TaskListStore store to hold finished tasks
+     * Stores the list of tasks that have been completed.
+     * @type {TaskList}
+     * @private
      */
     _finished_task_list;
 
@@ -67,11 +71,21 @@ export const TasksWindow = GObject.registerClass({
         });
     }
 
+    _save_tasks_to_database() {
+        const tasks = [];
+
+        tasks.push(...this._pending_task_list.get_list().get_all());
+        tasks.push(...this._finished_task_list.get_list().get_all());
+
+        (new Persistence).saveToFile(tasks);
+    }
+
     _setup_pending_task_list() {
         this._pending_task_list = new TaskList(
             "💪 Pending",
             "All you need to accomplish in your workflow"
         );
+        this._pending_task_list.connect('items-changed', () => {})
 
         let pending_clamp = new Adw.Clamp();
         pending_clamp.set_maximum_size(960);
@@ -85,6 +99,7 @@ export const TasksWindow = GObject.registerClass({
             "✅ Finished",
             "You already master all these tasks!"
         );
+        this._finished_task_list.connect('items-changed', () => {})
 
         let finished_clamp = new Adw.Clamp();
         finished_clamp.set_maximum_size(960);
@@ -100,17 +115,17 @@ export const TasksWindow = GObject.registerClass({
         const title = this._task_new_entry.get_text();
 
         if (title.trim() == '') return;
-    
+
         console.log("[window] Ask Pending list to add new task");
-        this._pending_task_list.add_task({title: title.trim()})
-        
+        this._pending_task_list.add_task({ title: title.trim() })
+
         console.log("[window] Cleaning up interface and inputs");
         this._task_new_entry.set_text("");
 
         console.log("[window] Dispatching user feedback");
-        this._toast_overlay.add_toast(
-            new Adw.Toast({ title: `Task "${title.trim()}" created` })
-        );
+        this.display_toast(new Adw.Toast({ title: `Task "${title.trim()}" created` }));
+
+        this._save_tasks_to_database()
     }
 
     display_toast(toast) {
