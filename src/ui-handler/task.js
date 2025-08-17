@@ -55,7 +55,7 @@ export const Task = GObject.registerClass({
     }
 
     _set_properties() {
-        this.set_opacity(!this._done ? 1 : 0.5);        
+        this.set_opacity(!this._done ? 1 : 0.5);
 
         this._task_label.set_visible(this._done);
         this._task_entry.set_visible(!this._done);
@@ -66,66 +66,52 @@ export const Task = GObject.registerClass({
     _attach_events() {
         this._task_entry.connect("changed", () => {
             this._title = this._task_entry.get_text();
-            
             this.emit('task-updated', this);
         });
 
         this._task_done.connect("toggled", () => {
-            this._done = this._task_done.active;
-            
-            this._set_default_values();
-            this._set_properties();
-
+            this.set_done(this._task_done.active);
             this.emit('task-updated', this);
         });
 
         this._task_delete.connect('clicked', () => {
-            this._deleted = true;
-            
-            this._set_default_values()
-            this._set_properties()
-            
+            this.set_deleted(true)
             this.emit('task-deleted', this)
         });
     }
 
     _set_default_values() {
         const markup_text = GLib.markup_escape_text(this._title, -1);
-        
+
         this._task_label.set_markup(`<s>${markup_text}</s>`);
         this._task_entry.set_text(this._title);
         this._task_done.set_active(this._done);
     }
 
-    get taskId() {
-        return this._id
+    get_title() {
+        return this._title
     }
 
-    get title() {
-        return this._title;
-    }
-
-    set title(value) {
-        this._title = value;
-        this.notify('title');
-    }
-
-    get done() {
+    get_done() {
         return this._done;
     }
 
-    set done(value) {
-        this._done = value
-        this.notify('done');
+    set_done(value) {
+        console.log(`[task] ${this._title} - set done state to ${value}`);
+
+        this._done = value;
+
+        this._set_default_values()
+        this._set_properties()
     }
 
-    get deleted() {
-        return this._deleted;
-    }
-
-    set deleted(value) {
+    set_deleted(value) {
+        console.log(`[task] ${this._title} - set deleted state to ${value}`);
+        
         this._deleted = value;
-        this.notify('deleted');
+
+        this._set_default_values()
+        this._set_properties()
     }
 
     to_widget() {
