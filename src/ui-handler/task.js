@@ -3,121 +3,136 @@ import Gtk from "gi://Gtk";
 import GLib from "gi://GLib";
 
 const TaskProperties = {
-    'taskId': GObject.ParamSpec.int(
-        'taskId', 'Task Id', 'Task unique id',
-        GObject.ParamFlags.READABLE, 0
-    ),
-    'title': GObject.ParamSpec.string(
-        'title', 'Title', 'Title task',
-        GObject.ParamFlags.READWRITE, ''
-    ),
-    'done': GObject.ParamSpec.boolean(
-        'done', 'Done', 'Task status',
-        GObject.ParamFlags.READWRITE, ''
-    )
-}
+  taskId: GObject.ParamSpec.int(
+    "taskId",
+    "Task Id",
+    "Task unique id",
+    GObject.ParamFlags.READABLE,
+    0,
+  ),
+  title: GObject.ParamSpec.string(
+    "title",
+    "Title",
+    "Title task",
+    GObject.ParamFlags.READWRITE,
+    "",
+  ),
+  done: GObject.ParamSpec.boolean(
+    "done",
+    "Done",
+    "Task status",
+    GObject.ParamFlags.READWRITE,
+    "",
+  ),
+  deleted: GObject.ParamSpec.boolean(
+    "deleted",
+    "Deleted",
+    "Deletion task status",
+    GObject.ParamFlags.READWRITE,
+    "",
+  ),
+};
 
-export const Task = GObject.registerClass({
+export const Task = GObject.registerClass(
+  {
     GTypeName: "Task",
-    Template: 'resource:///io/github/andrepg/Doit/ui/task.ui',
+    Template: "resource:///io/github/andrepg/Doit/ui/task.ui",
     Properties: TaskProperties,
-    InternalChildren: [
-        'task_done',
-        'task_entry',
-        'task_label',
-        'task_delete'
-    ],
+    InternalChildren: ["task_done", "task_entry", "task_label", "task_delete"],
     Signals: {
-        'task-updated': {
-            param_types: [GObject.TYPE_OBJECT]
-        },
-        'task-deleted': {
-            param_types: [GObject.TYPE_OBJECT]
-        },
-    }
-}, class Task extends Gtk.ListBoxRow {
+      "task-updated": {
+        param_types: [GObject.TYPE_OBJECT],
+      },
+      "task-deleted": {
+        param_types: [GObject.TYPE_OBJECT],
+      },
+    },
+  },
+  class Task extends Gtk.ListBoxRow {
+    _init(taskId = 0, title = "", done = false, deleted = false) {
+      super._init();
 
-    _init(taskId = 0, title = "", done = false) {
-        super._init();
+      this._id = taskId;
+      this._title = title;
+      this._done = done;
+      this._deleted = deleted;
 
-        this._id = taskId;
-        this._title = title;
-        this._done = done;
-
-        this._set_default_values();
-        this._attach_events();
-        this._set_properties();
+      this._set_default_values();
+      this._attach_events();
+      this._set_properties();
     }
 
     _set_properties() {
-        this.set_opacity(!this._done ? 1 : 0.5);        
+      this.set_opacity(!this._done ? 1 : 0.5);
 
-        this._task_label.set_visible(this._done);
-        this._task_entry.set_visible(!this._done);
+      this._task_label.set_visible(this._done);
+      this._task_entry.set_visible(!this._done);
+
+      this.set_visible(!this._deleted);
     }
 
     _attach_events() {
-        this._task_entry.connect("changed", () => {
-            this._title = this._task_entry.get_text();
-            
-            this.emit('task-updated', this);
-        });
+      this._task_entry.connect("changed", () => {
+        this._title = this._task_entry.get_text();
+        this.emit("task-updated", this);
+      });
 
-        this._task_done.connect("toggled", () => {
-            this._done = this._task_done.active;
-            
-            this._set_default_values();
-            this._set_properties();
+      this._task_done.connect("toggled", () => {
+        this.set_done(this._task_done.active);
+        this.emit("task-updated", this);
+      });
 
-            this.emit('task-updated', this);
-        });
-
-        this._task_delete.connect(
-            'clicked', 
-            () => this.emit('task-deleted', this)
-        );
+      this._task_delete.connect("clicked", () => {
+        this.set_deleted(true);
+        this.emit("task-deleted", this);
+      });
     }
 
     _set_default_values() {
-        const markup_text = GLib.markup_escape_text(this._title, -1);
-        
-        this._task_label.set_markup(`<s>${markup_text}</s>`);
-        this._task_entry.set_text(this._title);
-        this._task_done.set_active(this._done);
+      const markup_text = GLib.markup_escape_text(this._title, -1);
+
+      this._task_label.set_markup(`<s>${markup_text}</s>`);
+      this._task_entry.set_text(this._title);
+      this._task_done.set_active(this._done);
     }
 
-    get taskId() {
-        return this._id
+    get_title() {
+      return this._title;
     }
 
-    get title() {
-        return this._title;
+    get_done() {
+      return this._done;
     }
 
-    set title(value) {
-        this._title = value;
-        this.notify('title');
+    set_done(value) {
+      console.log(`[task] ${this._title} - set done state to ${value}`);
+
+      this._done = value;
+
+      this._set_default_values();
+      this._set_properties();
     }
 
-    get done() {
-        return this._done;
-    }
+    set_deleted(value) {
+      console.log(`[task] ${this._title} - set deleted state to ${value}`);
 
-    set done(value) {
-        this._done = value
-        this.notify('done');
+      this._deleted = value;
+
+      this._set_default_values();
+      this._set_properties();
     }
 
     to_widget() {
-        return this;
+      return this;
     }
 
     to_object() {
-        return {
-            taskId: this._id,
-            title: this._title,
-            done: this._done
-        }
+      return {
+        taskId: this._id,
+        title: this._title,
+        done: this._done,
+        deleted: this._deleted,
+      };
     }
-});
-
+  },
+);
