@@ -3,9 +3,11 @@
   <gresource prefix="/io/github/andrepg/Doit/js">
     <file>main.js</file>
     <file>static.js</file>
-    <file>ui-handler/window.js</file>
+
     <file>utils/persistence.js</file>
     <file>utils/list-store.js</file>
+
+    <file>ui-handler/window.js</file>
     <file>ui-handler/task.js</file>
     <file>ui-handler/task-list.js</file>
     <file>ui-handler/confirm-task-delete.js</file>
