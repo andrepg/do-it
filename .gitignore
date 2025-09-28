@@ -1,3 +1,5 @@
 .flatpak/
 .vscode/
 _build
+
+**/*.json~
