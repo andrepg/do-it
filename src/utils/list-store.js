@@ -32,6 +32,8 @@ export const TaskListStore = GObject.registerClass({
     const task = this._create_task(title)
 
     this.append(task.to_widget())
+
+    this.persist()
   }
 
   _create_task(title, done = false, deleted = false, taskId = null) {

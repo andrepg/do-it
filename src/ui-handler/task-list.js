@@ -1,6 +1,3 @@
-import { TaskListStore } from "../utils/list-store.js";
-import { Task } from "./task.js";
-
 const { GObject, Gtk, Adw } = imports.gi;
 
 const TaskListProperties = {
@@ -62,3 +59,19 @@ export const TaskList = GObject.registerClass(
     return this.list_store.get_count();
   }
 });
+
+export const CreateTaskList = (listStore) => {
+  const _task_list = new TaskList(
+    "Your tasks",
+    "Plan your day wisely to check them all at the end."
+  );
+
+  _task_list.bind(listStore)
+
+  let _list_clamp = new Adw.Clamp();
+
+  _list_clamp.set_maximum_size(960);
+  _list_clamp.set_child(_task_list);
+
+  return _list_clamp;
+}

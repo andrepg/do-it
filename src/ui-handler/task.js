@@ -57,30 +57,34 @@ export const Task = GObject.registerClass(
       this._done = done;
       this._deleted = deleted;
 
-        this._set_task_format();
-        this._attach_ui_events();
-        this._set_ui_format();
+      this._set_task_format();
+      this._attach_ui_events();
+      this._set_ui_format();
     }
 
     _set_ui_format() {
-        this.set_opacity(!this._done ? 1 : 0.5);
+      this.set_opacity(!this._done ? 1 : 0.5);
 
-        this._task_label.set_visible(this._done);
-        this._task_entry.set_visible(!this._done);
+      this._task_label.set_visible(this._done);
+      this._task_entry.set_visible(!this._done);
     }
 
     _attach_ui_events() {
-        this._task_entry.connect("changed",
-            (entry) => this.set_title(entry.get_text())
-        )
+      this._task_entry.connect("changed",
+        (entry) => this.set_title(entry.get_text())
+      )
 
-        this._task_done.connect("toggled",
-            (checkbox) => this.set_done(checkbox.get_active())
-        )
+      this._task_done.connect("toggled",
+        (checkbox) => this.set_done(checkbox.get_active())
+      )
+
+      this._task_delete.connect("clicked",
+        () => this.set_deleted(Date.now())
+      );
     }
 
     _set_task_format() {
-        const markup_text = GLib.markup_escape_text(this._title, -1);
+      const markup_text = GLib.markup_escape_text(this._title, -1);
 
       this._task_label.set_markup(`<s>${markup_text}</s>`);
       this._task_entry.set_text(this._title);
@@ -96,27 +100,29 @@ export const Task = GObject.registerClass(
     }
 
     set_title(value) {
-        this._title = value
+      this._title = value
 
-        this._set_ui_format()
+      this._set_ui_format()
 
-        this.emit('task-updated', this)
+      this.emit('task-updated', this)
     }
 
     set_done(value) {
       console.log(`[task] ${this._title} - set done state to ${value}`);
 
-        this._done = value
+      this._done = value
 
-        this._set_ui_format()
+      this._set_ui_format()
 
-        this.emit('task-updated', this)
+      this.emit('task-updated', this)
     }
 
     set_deleted(value) {
-        console.log(`[task] ${this._title} - set deleted state to ${value}`);
+      console.log(`[task] ${this._title} - set deleted state to ${value}`);
 
-        this._deleted = value;
+      this._deleted = value;
+
+      this.emit('task-deleted', this)
     }
 
     to_widget() {

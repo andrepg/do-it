@@ -20,9 +20,8 @@
 
 const { GObject, Adw } = imports.gi;
 
-import { Persistence } from "../utils/persistence.js";
 import { TaskListStore } from "../utils/list-store.js";
-import { TaskList } from "./task-list.js";
+import { CreateTaskList } from "./task-list.js";
 import { Task } from "./task.js";
 
 export const TasksWindow = GObject.registerClass(
@@ -32,14 +31,6 @@ export const TasksWindow = GObject.registerClass(
     InternalChildren: ["task_new_entry", "toast_overlay", "list_flow_box"],
   },
   class TasksWindow extends Adw.ApplicationWindow {
-    /**
-     * Store to hold pending tasks
-    * @type {TaskList}
-    * @private
-    */
-    _task_list;
-
-
     /**
     * Our list store and persistence handler
     * @type {TaskListStore}
@@ -56,38 +47,16 @@ export const TasksWindow = GObject.registerClass(
       this._list_store.load()
 
       // Connect our main New Task button event with task creation
-      this._task_new_entry.connect("activate", this._createTask.bind(this));
+      this._task_new_entry.connect("activate", this.createTask.bind(this));
 
-      this._setup_task_list_ui();
+      this._list_flow_box.append(CreateTaskList(this._list_store));
     }
 
-    _setup_task_list_ui() {
-      const task = new TaskList(
-        "Your tasks",
-        "Y of them unfinished"
-      );
-
-      task.bind(this._list_store)
-
-      task.connect('items-changed', () => {
-        this._list_store.persist()
-        task.set_title(`${task.get_count()} tasks`)
-      })
-
-      let pending_clamp = new Adw.Clamp();
-
-      pending_clamp.set_maximum_size(960);
-      pending_clamp.set_child(task);
-
-      this._list_flow_box.append(pending_clamp);
-
-      this._task_list = task;
-    }
 
     /**
      * Add a new task to pending store and persist on disk
      */
-    _createTask() {
+    createTask() {
       const title = this._task_new_entry.get_text();
 
       if (title.trim() == "") return;
@@ -96,21 +65,18 @@ export const TasksWindow = GObject.registerClass(
 
       this._list_store.new_task(title.trim())
 
-      this._list_store.persist();
-
       console.log("[window] Cleaning up interface and inputs");
       this._task_new_entry.set_text("");
 
       console.log("[window] Dispatching user feedback");
-      this.display_toast(
-        new Adw.Toast({ title: `Task "${title.trim()}" created` }),
+      this.display_message_toast(
+        `Task ${title} created`
       );
     }
 
-    _delete_task() { }
-
-    display_toast(toast) {
-      this._toast_overlay.add_toast(toast);
+    display_message_toast(message) {
+      this._toast_overlay.add_toast(new Adw.Toast({ title: message }))
     }
-  },
+
+  }
 );
