@@ -42,8 +42,6 @@ export const TaskList = GObject.registerClass(
 
     this._task_list_title.set_title(title);
     this._task_list_title.set_subtitle(subtitle);
-
-    console.log(this.list_store)
   }
 
   get_list() {
@@ -62,36 +60,5 @@ export const TaskList = GObject.registerClass(
 
   get_count() {
     return this.list_store.get_count();
-  }
-
-  _process_task_updated() {
-    console.log('[task-list] Receiving task-updated signal')
-
-    this.list_store.persist()
-
-    this.emit("items-changed")
-  }
-
-  _process_task_deleted(task) {
-    console.info('[task-list] Receiving task-deleted signal')
-
-    this.list_store.persist()
-
-    this.emit("items-changed")
-  }
-
-  _process_task_deleted(task) {
-    console.log(`[toast] Setup user feedback after task deletion`);
-
-    let toast = Adw.Toast.new(`Task ${task.title} deleted`);
-
-    toast.set_priority(Adw.ToastPriority.ADW_TOAST_PRIORITY_HIGH);
-    toast.set_button_label("Undo");
-    toast.connect("button-clicked", (_) => {
-      console.log(`[toast] Undo task delete - ${task.get_title()}`);
-      task.set_deleted(false);
-    });
-
-    this.get_root().display_toast(toast);
   }
 });

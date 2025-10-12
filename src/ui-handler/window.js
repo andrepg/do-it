@@ -53,6 +53,8 @@ export const TasksWindow = GObject.registerClass(
       console.log(`[task-list] Initializing list store`);
       this._list_store = new TaskListStore({ type: Task });
 
+      this._list_store.load()
+
       // Connect our main New Task button event with task creation
       this._task_new_entry.connect("activate", this._createTask.bind(this));
 
@@ -93,6 +95,8 @@ export const TasksWindow = GObject.registerClass(
       console.log("[window] Ask Pending list to add new task");
 
       this._list_store.new_task(title.trim())
+
+      this._list_store.persist();
 
       console.log("[window] Cleaning up interface and inputs");
       this._task_new_entry.set_text("");

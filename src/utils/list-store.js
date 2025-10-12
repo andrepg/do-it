@@ -10,17 +10,8 @@ export const TaskListStore = GObject.registerClass({
   InternalChildren: [],
   Signals: {},
 }, class TaskListStoreObject extends Gio.ListStore {
-  /**
-  * Handles the database persistence from our list store
-  * @type {Persistence}
-  * @private
-  */
-  _persistence;
-
   _init() {
     super._init({ item_type: Task });
-
-    this._persistence = new Persistence;
   }
 
   get_all() {
@@ -38,18 +29,34 @@ export const TaskListStore = GObject.registerClass({
   }
 
   new_task(title) {
+    const task = this._create_task(title)
+
+    this.append(task.to_widget())
+  }
+
+  _create_task(title, done = false, deleted = false, taskId = null) {
     const task = new Task(
-      this.get_count() + 1,
+      taskId ?? this.get_count() + 1,
       title,
-      false,
-      false
+      done,
+      deleted
     );
 
-    task.connect('task-updated', () => console.log("updated"))
-    task.connect('task-deleted', () => console.log("deleted"))
+    task.connect('task-updated', () => {
+      console.log("[list-store] Received task-updated signal.")
 
-    this.append(task)
+      this.persist()
+    })
+
+    task.connect('task-deleted', () => {
+      console.log("[list-store] Received task-deleted signal.")
+
+      this.persist()
+    })
+
+    return task;
   }
+
 
   persist() {
     console.log("[persistence] Saving tasks to database");
@@ -62,21 +69,15 @@ export const TaskListStore = GObject.registerClass({
 
     const items = (new Persistence).readFromFile()
 
-    console.log(items)
+    items.forEach(item => {
+      const widget = this._create_task(
+        item.title,
+        item.done,
+        item.deleted,
+        item.taskId
+      )
+
+      this.append(widget)
+    })
   }
-  /***
-  ");
-
-  const items = (new Persistence).readFromFile().forEach(
-    item => {
-      const task = new Task(item.id, item.title, item.done, item.deleted)
-
-      task.connect('task-updated', this.persist())
-      task.connect('task-deleted', this.persist())
-
-      this.append(task)
-
-
-  */
-
 })
