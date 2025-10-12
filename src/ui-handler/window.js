@@ -18,7 +18,7 @@
  * SPDX-License-Identifier: GPL-3.0-or-later
  */
 
-const { GObject, Adw, Gio } = imports.gi;
+const { GObject, Adw } = imports.gi;
 
 import { Persistence } from "../utils/persistence.js";
 import { TaskList } from "./task-list.js";
@@ -32,17 +32,10 @@ export const TasksWindow = GObject.registerClass(
   class TasksWindow extends Adw.ApplicationWindow {
     /**
      * Store to hold pending tasks
-     * @type {TaskList}
-     * @private
-     */
-    _pending_task_list;
-
-    /**
-     * Stores the list of tasks that have been completed.
-     * @type {TaskList}
-     * @private
-     */
-    _finished_task_list;
+    * @type {TaskList}
+    * @private
+    */
+    _task_list;
 
     constructor(application) {
       super({ application });
@@ -50,60 +43,27 @@ export const TasksWindow = GObject.registerClass(
       // Connect our main New Task button event with task creation
       this._task_new_entry.connect("activate", this._createTask.bind(this));
 
-      this._setup_pending_task_list();
-      this._setup_finished_task_list();
-
-      this._load_tasks_from_database();
+      this._setup_task_list_ui();
     }
 
-    _load_tasks_from_database() {
-      const tasks = new Persistence().readFromFile();
 
-      tasks.forEach((task) => {
-        if (task.done) {
-          this._finished_task_list.add_task(task);
-          return;
-        }
-
-        this._pending_task_list.add_task(task);
-      });
-    }
-
-    _save_tasks_to_database() {
-      const tasks = [];
-
-      tasks.push(...this._pending_task_list.get_list().get_all());
-      tasks.push(...this._finished_task_list.get_list().get_all());
-
-      new Persistence().saveToFile(tasks);
-    }
-
-    _setup_pending_task_list() {
-      this._pending_task_list = new TaskList(
-        "💪 Pending",
-        "All you need to accomplish in your workflow",
+    _setup_task_list_ui() {
+      this._task_list = new TaskList(
+        "Your tasks",
+        "Y of them unfinished"
       );
-      this._pending_task_list.connect("items-changed", () => {});
+
+      this._task_list.connect('items-changed', () => {
+        this._save_tasks_to_database()
+        this._task_list.set_title(`${this._task_list.get_count()} tasks`)
+      })
 
       let pending_clamp = new Adw.Clamp();
+
       pending_clamp.set_maximum_size(960);
-      pending_clamp.set_child(this._pending_task_list);
+      pending_clamp.set_child(this._task_list);
 
       this._list_flow_box.append(pending_clamp);
-    }
-
-    _setup_finished_task_list() {
-      this._finished_task_list = new TaskList(
-        "✅ Finished",
-        "You already master all these tasks!",
-      );
-      this._finished_task_list.connect("items-changed", () => {});
-
-      let finished_clamp = new Adw.Clamp();
-      finished_clamp.set_maximum_size(960);
-      finished_clamp.set_child(this._finished_task_list);
-
-      this._list_flow_box.append(finished_clamp);
     }
 
     /**
@@ -115,7 +75,7 @@ export const TasksWindow = GObject.registerClass(
       if (title.trim() == "") return;
 
       console.log("[window] Ask Pending list to add new task");
-      this._pending_task_list.add_task({ title: title.trim() });
+      this._task_list.add_task({ title: title.trim() })
 
       console.log("[window] Cleaning up interface and inputs");
       this._task_new_entry.set_text("");
@@ -124,8 +84,6 @@ export const TasksWindow = GObject.registerClass(
       this.display_toast(
         new Adw.Toast({ title: `Task "${title.trim()}" created` }),
       );
-
-      this._save_tasks_to_database();
     }
 
     display_toast(toast) {
