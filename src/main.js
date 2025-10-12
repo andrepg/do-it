@@ -51,7 +51,8 @@ export const DoitApplication = GObject.registerClass(
                     developers: [
                         'André Paul Grandsire'
                     ],
-                    // Translators: Replace "translator-credits" with your name/username, and optionally an email or URL.
+                    // Translators: Replace "translator-credits" with your 
+                    // name/username, and optionally an email or URL.
                     translator_credits: _("translator-credits"),
                     copyright: '© 2025 André Paul Grandsire'
                 };
@@ -77,6 +78,10 @@ export const DoitApplication = GObject.registerClass(
 
             if (!active_window)
                 active_window = new TasksWindow(this);
+
+            // TODO Check here if we're working in development mode to set properties
+            active_window.add_css_class('devel')
+            active_window.set_title( "".concat(active_window.get_title(), " - DevMode", ))
 
             active_window.present();
         }

@@ -1,0 +1,24 @@
+{
+	"folders": [
+		{
+			"path": "."
+		}
+	],
+	"settings": {
+		"editor.fontFamily": "'0xProto Nerd Font'",
+		"files.watcherExclude": {
+			"**/.git/objects/**": true,
+			"**/.git/subtree-cache/**": true,
+			"**/.hg/store/**": true,
+			".flatpak/**": true,
+			"_build/**": true
+		},
+		"files.exclude": {
+			"**/_build": true,
+			"**/.flatpak": true
+		},
+		"editor.formatOnPaste": true,
+		"editor.autoIndentOnPaste": true,
+		"terminal.integrated.fontLigatures.enabled": true
+	}
+}
