@@ -21,15 +21,6 @@
             <property name="subtitle" translatable="yes">Subtitle here</property>
           </object>
         </child>
-        <child>
-          <object class="GtkButton" id="task_list_delete_all">
-            <property name="css-classes">error</property>
-            <property name="sensitive">False</property>
-            <property name="has-frame">False</property>
-            <property name="icon-name">user-trash-full-symbolic</property>
-            <property name="label">Delete all</property>
-          </object>
-        </child>
       </object>
     </child>
 

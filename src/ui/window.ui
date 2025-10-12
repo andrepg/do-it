@@ -58,9 +58,6 @@
                     <property name="row-spacing">16</property>
                     <property name="selection-mode">none</property>
                     <property name="valign">start</property>
-                    <child>
-                      
-                    </child>                    
                   </object>
                 </child>
               </object>
