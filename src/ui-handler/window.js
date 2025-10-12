@@ -21,7 +21,9 @@
 const { GObject, Adw } = imports.gi;
 
 import { Persistence } from "../utils/persistence.js";
+import { TaskListStore } from "../utils/list-store.js";
 import { TaskList } from "./task-list.js";
+import { Task } from "./task.js";
 
 export const TasksWindow = GObject.registerClass(
   {
@@ -37,8 +39,19 @@ export const TasksWindow = GObject.registerClass(
     */
     _task_list;
 
+
+    /**
+    * Our list store and persistence handler
+    * @type {TaskListStore}
+    * @private
+    */
+    _list_store;
+
     constructor(application) {
       super({ application });
+
+      console.log(`[task-list] Initializing list store`);
+      this._list_store = new TaskListStore({ type: Task });
 
       // Connect our main New Task button event with task creation
       this._task_new_entry.connect("activate", this._createTask.bind(this));
@@ -46,24 +59,27 @@ export const TasksWindow = GObject.registerClass(
       this._setup_task_list_ui();
     }
 
-
     _setup_task_list_ui() {
-      this._task_list = new TaskList(
+      const task = new TaskList(
         "Your tasks",
         "Y of them unfinished"
       );
 
-      this._task_list.connect('items-changed', () => {
-        this._save_tasks_to_database()
-        this._task_list.set_title(`${this._task_list.get_count()} tasks`)
+      task.bind(this._list_store)
+
+      task.connect('items-changed', () => {
+        this._list_store.persist()
+        task.set_title(`${task.get_count()} tasks`)
       })
 
       let pending_clamp = new Adw.Clamp();
 
       pending_clamp.set_maximum_size(960);
-      pending_clamp.set_child(this._task_list);
+      pending_clamp.set_child(task);
 
       this._list_flow_box.append(pending_clamp);
+
+      this._task_list = task;
     }
 
     /**
@@ -75,7 +91,8 @@ export const TasksWindow = GObject.registerClass(
       if (title.trim() == "") return;
 
       console.log("[window] Ask Pending list to add new task");
-      this._task_list.add_task({ title: title.trim() })
+
+      this._list_store.new_task(title.trim())
 
       console.log("[window] Cleaning up interface and inputs");
       this._task_new_entry.set_text("");
@@ -85,6 +102,8 @@ export const TasksWindow = GObject.registerClass(
         new Adw.Toast({ title: `Task "${title.trim()}" created` }),
       );
     }
+
+    _delete_task() { }
 
     display_toast(toast) {
       this._toast_overlay.add_toast(toast);

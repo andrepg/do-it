@@ -37,16 +37,46 @@ export const TaskListStore = GObject.registerClass({
     return this.n_items;
   }
 
+  new_task(title) {
+    const task = new Task(
+      this.get_count() + 1,
+      title,
+      false,
+      false
+    );
+
+    task.connect('task-updated', () => console.log("updated"))
+    task.connect('task-deleted', () => console.log("deleted"))
+
+    this.append(task)
+  }
+
   persist() {
     console.log("[persistence] Saving tasks to database");
 
-    this._persistence.saveToFile(this.get_all())
+    (new Persistence).saveToFile(this.get_all())
   }
 
   load() {
-    console.log("[persistence] Loading tasks from database");
+    console.log("[persistence] Loading tasks from database")
 
-    const items = this._persistence.readFromFile()
-    this.splice(0, this.get_count(), items);
+    const items = (new Persistence).readFromFile()
+
+    console.log(items)
   }
-});
+  /***
+  ");
+
+  const items = (new Persistence).readFromFile().forEach(
+    item => {
+      const task = new Task(item.id, item.title, item.done, item.deleted)
+
+      task.connect('task-updated', this.persist())
+      task.connect('task-deleted', this.persist())
+
+      this.append(task)
+
+
+  */
+
+})
