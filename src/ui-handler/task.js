@@ -1,6 +1,7 @@
 import GObject from "gi://GObject";
-import Gtk from "gi://Gtk";
-import GLib from "gi://GLib";
+import Adw from "gi://Adw";
+import { TASK_DELETE_ICON, TASK_DELETE_TOOLTIP } from "../static.js";
+
 
 const TaskProperties = {
   taskId: GObject.ParamSpec.int(
@@ -38,7 +39,7 @@ export const Task = GObject.registerClass(
     GTypeName: "Task",
     Template: "resource:///io/github/andrepg/Doit/ui/task.ui",
     Properties: TaskProperties,
-    InternalChildren: ["task_done", "task_entry", "task_label", "task_delete"],
+    InternalChildren: ["task_done", "task_delete"],
     Signals: {
       "task-updated": {
         param_types: [GObject.TYPE_OBJECT],
@@ -48,8 +49,8 @@ export const Task = GObject.registerClass(
       },
     },
   },
-  class Task extends Gtk.ListBoxRow {
-    _init(taskId = 0, title = "", done = false, deleted = false) {
+  class Task extends Adw.EntryRow {
+    _init(taskId = 0, title = "", done = false, deleted = "") {
       super._init();
 
       this._id = taskId;
@@ -57,72 +58,77 @@ export const Task = GObject.registerClass(
       this._done = done;
       this._deleted = deleted;
 
-      this._set_task_format();
-      this._attach_ui_events();
-      this._set_ui_format();
+      this._update_interface();
+
+      this.connect("apply", this.set_task_title.bind(this))
+
+      this._task_done.connect("toggled", this.finish_task.bind(this))
+
+      this._task_delete.connect("clicked", this.delete_task.bind(this));
     }
 
-    _set_ui_format() {
-      this.set_opacity(!this._done ? 1 : 0.5);
+    _update_interface() {
+      const disabled = this._done || this._deleted !== '';
 
-      this._task_label.set_visible(this._done);
-      this._task_entry.set_visible(!this._done);
-    }
+      this.set_opacity(disabled ? 0.5 : 1)
 
-    _attach_ui_events() {
-      this._task_entry.connect("changed",
-        (entry) => this.set_title(entry.get_text())
-      )
+      this.set_text(this._title)
+      this.set_editable(!disabled)
 
-      this._task_done.connect("toggled",
-        (checkbox) => this.set_done(checkbox.get_active())
-      )
-
-      this._task_delete.connect("clicked",
-        () => this.set_deleted(Date.now())
+      this.set_tooltip_text(disabled
+        ? "Deleted/Finished items can't be edited."
+        : ""
       );
+
+      this._task_done.set_active(this._done)
+
+      this._task_delete.set_icon_name(
+        TASK_DELETE_ICON.getIcon(this._deleted)
+      )
     }
 
-    _set_task_format() {
-      const markup_text = GLib.markup_escape_text(this._title, -1);
-
-      this._task_label.set_markup(`<s>${markup_text}</s>`);
-      this._task_entry.set_text(this._title);
-      this._task_done.set_active(this._done);
-    }
-
-    get_title() {
+    get_task_title() {
       return this._title;
     }
 
-    get_done() {
+    get_task_done() {
       return this._done;
     }
 
-    set_title(value) {
-      this._title = value
+    set_task_title(entry) {
+      this._title = entry.get_text()
 
-      this._set_ui_format()
+      this._update_interface()
 
-      this.emit('task-updated', this)
-    }
-
-    set_done(value) {
-      console.log(`[task] ${this._title} - set done state to ${value}`);
-
-      this._done = value
-
-      this._set_ui_format()
+      this._notify(`Task ${this._title} updated`)
 
       this.emit('task-updated', this)
     }
 
-    set_deleted(value) {
-      console.log(`[task] ${this._title} - set deleted state to ${value}`);
+    finish_task(checkbox) {
+      this._done = checkbox.get_active()
 
-      this._deleted = value;
+      this._update_interface()
+
+      this._notify(`Task ${this._title} ${this._done ? 'checked' : 'unchecked'}`)
+
+      this.emit('task-updated', this)
+    }
+
+    delete_task() {
+      console.log("[task] Deleting task")
+
+      this._deleted = this._deleted == "" ? Date.now().toString() : "";
+
+      this._update_interface()
+
+      this._notify(`Task ${this._title} deleted`)
 
       this.emit('task-deleted', this)
+    }
+
+    _notify(message) {
+      this.get_root().display_message_toast(message)
     }
 
     to_widget() {

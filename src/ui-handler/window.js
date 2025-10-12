@@ -42,7 +42,7 @@ export const TasksWindow = GObject.registerClass(
       super({ application });
 
       console.log(`[task-list] Initializing list store`);
-      this._list_store = new TaskListStore({ type: Task });
+      this._list_store = new TaskListStore();
 
       this._list_store.load()
 

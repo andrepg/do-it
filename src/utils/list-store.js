@@ -10,9 +10,7 @@ export const TaskListStore = GObject.registerClass({
   InternalChildren: [],
   Signals: {},
 }, class TaskListStoreObject extends Gio.ListStore {
-  _init() {
-    super._init({ item_type: Task });
-  }
+  _sort_done = (item) => item.get_task_done();
 
   get_all() {
     const items = [];
@@ -25,7 +23,7 @@ export const TaskListStore = GObject.registerClass({
   }
 
   get_count() {
-    return this.n_items;
+    return this.get_n_items();
   }
 
   new_task(title) {
@@ -36,7 +34,7 @@ export const TaskListStore = GObject.registerClass({
     this.persist()
   }
 
-  _create_task(title, done = false, deleted = false, taskId = null) {
+  _create_task(title, done = false, deleted = "", taskId = null) {
     const task = new Task(
       taskId ?? this.get_count() + 1,
       title,
@@ -63,7 +61,9 @@ export const TaskListStore = GObject.registerClass({
   persist() {
     console.log("[persistence] Saving tasks to database");
 
-    (new Persistence).saveToFile(this.get_all())
+    (new Persistence).saveToFile(
+      this.get_all().filter(item => !item.deleted)
+    )
   }
 
   load() {
@@ -79,7 +79,7 @@ export const TaskListStore = GObject.registerClass({
         item.taskId
       )
 
-      this.append(widget)
+      this.insert_sorted(widget, this._sort_done)
     })
   }
 })

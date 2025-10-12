@@ -1,4 +1,4 @@
-<?xml version='1.0' encoding='UTF-8'?>
+?xml version='1.0' encoding='UTF-8'?>
 <!-- Created with Cambalache 0.96.1 -->
 <interface>
   <!-- interface-name task.ui -->
@@ -7,11 +7,11 @@
   <requires lib="gtk" version="4.0"/>
   <requires lib="libadwaita" version="1.7"/>
   <template class="Task" parent="AdwEntryRow">
+    <property name="accessible-role">input</property>
     <property name="enable-emoji-completion">True</property>
     <property name="name">task_entry</property>
     <property name="show-apply-button">True</property>
     <property name="title">Description</property>
-    <property name="use-markup">True</property>
     <child type="prefix">
       <object class="GtkCheckButton" id="task_done">
         <property name="halign">center</property>
