@@ -55,7 +55,8 @@ In a Linux Flatpak environment, it should be `~/.var/app/io.github.andrepg.Doit/
 ### Roadmap 
 
 - [🚧] Add shortcut to create new task
-- [🚧] Add timer to autosave tasks
+- [🚧] Export tasks in JSON format
+- [🚧] Bulk delete tasks
 
 ## Sponsored by
 [![Sponsored by GitAds](https://gitads.dev/v1/ad-serve?source=andrepg/do-it@github)](https://gitads.dev/v1/ad-track?source=andrepg/do-it@github)
