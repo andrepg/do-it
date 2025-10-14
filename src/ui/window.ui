@@ -52,12 +52,11 @@
               <object class="GtkScrolledWindow" id="main_window">
                 <property name="min-content-height">200</property>
                 <child>
-                  <object class="GtkFlowBox" id="list_flow_box">
+                  <object class="GtkBox" id="list_flow_box">
                     <property name="margin-top">12</property>
-                    <property name="max-children-per-line">1</property>
-                    <property name="row-spacing">16</property>
-                    <property name="selection-mode">none</property>
-                    <property name="valign">start</property>
+                    <property name="margin-bottom">12</property>
+                    <property name="margin-start">12</property>
+                    <property name="margin-end">12</property>
                   </object>
                 </child>
               </object>

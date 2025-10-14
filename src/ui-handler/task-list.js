@@ -43,6 +43,7 @@ export const CreateTaskList = (listStore) => {
   let _list_clamp = new Adw.Clamp();
 
   _list_clamp.set_maximum_size(960);
+
   _list_clamp.set_child(_task_list);
 
   return _list_clamp;
