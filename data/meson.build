@@ -2,7 +2,7 @@ desktop_file = i18n.merge_file(
         input: 'io.github.andrepg.Doit.desktop.in',
        output: 'io.github.andrepg.Doit.desktop',
          type: 'desktop',
-       po_dir: '../po',
+       po_dir: meson.project_source_root() / 'po',
       install: true,
   install_dir: get_option('datadir') / 'applications'
 )
@@ -15,7 +15,7 @@ endif
 appstream_file = i18n.merge_file(
         input: 'io.github.andrepg.Doit.metainfo.xml.in',
        output: 'io.github.andrepg.Doit.metainfo.xml',
-       po_dir: '../po',
+       po_dir: meson.project_source_root() / 'po',
       install: true,
   install_dir: get_option('datadir') / 'metainfo'
 )
@@ -45,3 +45,4 @@ configure_file(
 
 # Call meson.build on icons subdirectory
 subdir('icons')
+

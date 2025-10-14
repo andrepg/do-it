@@ -1,11 +1,10 @@
 app_conf = configuration_data()
 
 app_conf.set('APPLICATION_ID', application_id)
-app_conf.set('PACKAGE_VERSION', meson.project_version() + version_suffix)
+app_conf.set('PACKAGE_VERSION', meson.project_version())
 app_conf.set('PACKAGE_NAME', meson.project_name())
 app_conf.set('GJS', find_program('gjs').full_path())
 
-app_conf.set('profile', profile)
 app_conf.set('prefix', get_option('prefix'))
 app_conf.set('libdir', get_option('prefix') / get_option('libdir'))
 app_conf.set('datadir', get_option('prefix') / get_option('datadir'))

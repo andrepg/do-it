@@ -6,7 +6,7 @@
         "task management"
     ],
     "runtime" : "org.gnome.Platform",
-    "runtime-version" : "48",
+    "runtime-version" : "49",
     "sdk" : "org.gnome.Sdk",
     "sdk-extensions" : [
         "org.freedesktop.Sdk.Extension.node20",
@@ -18,11 +18,16 @@
         "--share=ipc",
         "--socket=fallback-x11",
         "--device=dri",
-        "--socket=wayland"
+        "--socket=wayland",
+        "--env=LC_ALL=pt_BR.UTF-8"
     ],
     "build-options" : {
         "append-path" : "/usr/lib/sdk/typescript/bin:/usr/lib/sdk/node20/bin",
-        "env" : {        }
+        "env" : {
+            "LANG" : "pt_BR.UTF-8",
+            "LC_ALL" : "pt_BR.UTF-8",
+            "LC_MESSAGES" : "pt_BR.UTF-8"
+        }
     },
     "cleanup" : [
         "/include",
@@ -39,11 +44,11 @@
         {
             "name" : "Doit",
             "buildsystem" : "meson",
-            "builddir": true,
+            "builddir" : true,
             "sources" : [
                 {
                     "type" : "dir",
-                    "path" : "./"                    
+                    "path" : "./"
                 }
             ],
             "config-opts" : [
