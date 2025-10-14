@@ -1,1 +1,10 @@
-# Please keep this file sorted alphabetically.
+## Copyright - 2025 (c) André Paul Grandsire
+##
+## LINGUAS is a file indicating what languages are available to our app.
+## This file should be managed manually and contain one language per line.
+##
+## After adding a new language here, we need to update localisation files
+## with `scripts/update-pot-file.sh`.
+
+en
+pt_BR

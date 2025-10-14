@@ -1,8 +1,16 @@
 # List of source files containing translatable strings.
 # Please keep this file sorted alphabetically.
-data/io.github.andrepg.Doit.desktop.in
-data/io.github.andrepg.Doit.metainfo.xml.in
-data/io.github.andrepg.Doit.gschema.xml
 src/main.js
-src/window.js
-src/window.ui
+
+src/gtk/help-overlay.ui
+
+src/ui/confirm-task-delete.ui
+src/ui/task.ui
+src/ui/task-list.ui
+src/ui/window.ui
+
+src/ui-handler/confirm-task-delete.js
+src/ui-handler/task.js
+src/ui-handler/task-list.js
+src/ui-handler/window.js
+
