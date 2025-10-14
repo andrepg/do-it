@@ -1,5 +1,4 @@
 /* main.js
- *
  * Copyright 2025 André Paul Grandsire
  *
  * This program is free software: you can redistribute it and/or modify
@@ -28,67 +27,67 @@ pkg.initGettext();
 pkg.initFormat();
 
 export const DoitApplication = GObject.registerClass(
-    class DoitApplication extends Adw.Application {
-        constructor() {
-            super({
-                application_id: 'io.github.andrepg.Doit',
-                flags: Gio.ApplicationFlags.DEFAULT_FLAGS,
-                resource_base_path: '/io/github/andrepg/Doit'
-            });
+  class DoitApplication extends Adw.Application {
+    constructor() {
+      super({
+        application_id: 'io.github.andrepg.Doit',
+        flags: Gio.ApplicationFlags.DEFAULT_FLAGS,
+        resource_base_path: '/io/github/andrepg/Doit'
+      });
 
-            this.setupAboutDialogAction();
-            this.setupQuitAction();
-        }
-
-        setupAboutDialogAction() {
-            const show_about_action = new Gio.SimpleAction({ name: 'about' });
-            show_about_action.connect('activate', _ => {
-                const aboutParams = {
-                    application_name: 'Doit',
-                    application_icon: 'io.github.andrepg.Doit',
-                    developer_name: 'André Paul Grandsire',
-                    version: '0.1.0',
-                    developers: [
-                        'André Paul Grandsire'
-                    ],
-                    // Translators: Replace "translator-credits" with your 
-                    // name/username, and optionally an email or URL.
-                    translator_credits: _("translator-credits"),
-                    copyright: '© 2025 André Paul Grandsire'
-                };
-                const aboutDialog = new Adw.AboutDialog(aboutParams);
-                aboutDialog.present(this.active_window);
-            });
-            this.add_action(show_about_action);
-        }
-
-        setupQuitAction() {
-            const quit_action = new Gio.SimpleAction({ name: 'quit' });
-            quit_action.connect('activate', _ => {
-                this.quit();
-            });
-
-            this.add_action(quit_action);
-            this.set_accels_for_action('app.quit', ['<primary>q']);
-        }
-
-
-        vfunc_activate() {
-            let { active_window } = this;
-
-            if (!active_window)
-                active_window = new TasksWindow(this);
-
-            // TODO Check here if we're working in development mode to set properties
-            active_window.add_css_class('devel')
-            active_window.set_title( "".concat(active_window.get_title(), " - DevMode", ))
-
-            active_window.present();
-        }
+      this.setupAboutDialogAction();
+      this.setupQuitAction();
     }
+
+    setupAboutDialogAction() {
+      const show_about_action = new Gio.SimpleAction({ name: 'about' });
+      show_about_action.connect('activate', _ => {
+        const aboutParams = {
+          application_name: _("Do It"),
+          application_icon: 'io.github.andrepg.Doit',
+          developer_name: 'André Paul Grandsire',
+          version: '0.1.0',
+          developers: [
+            'André Paul Grandsire'
+          ],
+          // Translators: Replace "translator-credits" with your
+          // name/username, and optionally an email or URL.
+          translator_credits: "",
+          copyright: '© 2025 André Paul Grandsire'
+        };
+        const aboutDialog = new Adw.AboutDialog(aboutParams);
+        aboutDialog.present(this.active_window);
+      });
+      this.add_action(show_about_action);
+    }
+
+    setupQuitAction() {
+      const quit_action = new Gio.SimpleAction({ name: 'quit' });
+      quit_action.connect('activate', _ => {
+        this.quit();
+      });
+
+      this.add_action(quit_action);
+      this.set_accels_for_action('app.quit', ['<primary>q']);
+    }
+
+
+    vfunc_activate() {
+      let { active_window } = this;
+
+      if (!active_window)
+        active_window = new TasksWindow(this);
+
+      // TODO Check here if we're working in development mode to set properties
+      active_window.add_css_class('devel')
+      active_window.set_title(_("Doit - Your Task Manager"));
+
+      active_window.present();
+    }
+  }
 );
 
 export function main(argv) {
-    const application = new DoitApplication();
-    return application.runAsync(argv);
+  const application = new DoitApplication();
+  return application.runAsync(argv);
 }

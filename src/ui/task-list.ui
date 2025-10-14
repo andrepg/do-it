@@ -1,10 +1,10 @@
-<?xml version='1.0' encoding='UTF-8'?>
+<?xml version="1.0" encoding="UTF-8"?>
 <interface>
   <!-- interface-name task-list.ui -->
-  <requires lib="Adw" version="1.0" />
-  <requires lib="Gio" version="2.0" />
-  <requires lib="Gtk" version="4.0" />
-  <requires lib="libadwaita" version="1.7" />
+  <requires lib="Adw" version="1.0"/>
+  <requires lib="Gio" version="2.0"/>
+  <requires lib="Gtk" version="4.0"/>
+  <requires lib="libadwaita" version="1.7"/>
 
   <template class="TaskList" parent="GtkBox">
     <property name="margin-start">8</property>
@@ -17,8 +17,8 @@
           <object class="AdwWindowTitle" id="task_list_title">
             <property name="can-focus">False</property>
             <property name="hexpand">True</property>
-            <property name="title" translatable="yes">Title</property>
-            <property name="subtitle" translatable="yes">Subtitle here</property>
+            <property name="title" translatable="yes">Yours tasks</property>
+            <property name="subtitle" translatable="yes">Play your day wisely and accomplish all</property>
           </object>
         </child>
       </object>
@@ -33,3 +33,4 @@
     </child>
   </template>
 </interface>
+

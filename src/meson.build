@@ -1,33 +1,37 @@
+app_conf = configuration_data()
+
+app_conf.set('APPLICATION_ID', application_id)
+app_conf.set('PACKAGE_VERSION', meson.project_version() + version_suffix)
+app_conf.set('PACKAGE_NAME', meson.project_name())
+app_conf.set('GJS', find_program('gjs').full_path())
+
+app_conf.set('profile', profile)
+app_conf.set('prefix', get_option('prefix'))
+app_conf.set('libdir', get_option('prefix') / get_option('libdir'))
+app_conf.set('datadir', get_option('prefix') / get_option('datadir'))
+app_conf.set('resource_path', '/io/github/andrepg/Doit')
+
 pkgdatadir = get_option('datadir') / meson.project_name()
 gnome = import('gnome')
 
-src_res = gnome.compile_resources('io.github.andrepg.Doit.src',
-  'io.github.andrepg.Doit.src.gresource.xml',
+src_res = gnome.compile_resources(application_id + '.src',
+  application_id + '.src.gresource.xml',
   gresource_bundle: true,
   install: true,
   install_dir: pkgdatadir,
 )
 
-data_res = gnome.compile_resources('io.github.andrepg.Doit.data',
-  'io.github.andrepg.Doit.data.gresource.xml',
+data_res = gnome.compile_resources(application_id + '.data',
+  application_id + '.data.gresource.xml',
   gresource_bundle: true,
   install: true,
   install_dir: pkgdatadir,
 )
-
-bin_conf = configuration_data()
-bin_conf.set('GJS', find_program('gjs').full_path())
-bin_conf.set('PACKAGE_VERSION', meson.project_version())
-bin_conf.set('PACKAGE_NAME', meson.project_name())
-bin_conf.set('prefix', get_option('prefix'))
-bin_conf.set('libdir', get_option('prefix') / get_option('libdir'))
-bin_conf.set('datadir', get_option('prefix') / get_option('datadir'))
-bin_conf.set('resource_path', '/io/github/andrepg/Doit')
 
 configure_file(
-  input: 'io.github.andrepg.Doit.in',
-  output: 'io.github.andrepg.Doit',
-  configuration: bin_conf,
+  input: application_id +'.in',
+  output: application_id,
+  configuration: app_conf,
   install: true,
   install_dir: get_option('bindir')
 )
