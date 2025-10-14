@@ -3,6 +3,6 @@ add_global_arguments('-DGETTEXT_DOMAIN="@0@"'.format (application_id), language:
 
 i18n.gettext(
   application_id,
-  args: '--directory=' + meson.project_source_root() / 'po',
+#  args: '--directory=' + meson.project_source_root() / 'po',
   preset: 'glib'
 )

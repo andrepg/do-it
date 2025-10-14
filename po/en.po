@@ -7,8 +7,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: io.github.andrepg.Doit\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2025-10-14 09:50-0300\n"
-"PO-Revision-Date: 2025-10-13 22:49-0300\n"
+"POT-Creation-Date: 2025-10-14 14:10-0300\n"
+"PO-Revision-Date: 2025-10-14 14:10-0300\n"
 "Last-Translator: Automatically generated\n"
 "Language-Team: none\n"
 "Language: en\n"
@@ -19,7 +19,7 @@ msgstr ""
 
 #: src/main.js:46
 msgid "Do It"
-msgstr ""
+msgstr "Do It"
 
 #: src/main.js:83
 msgid "Doit - Your Task Manager"
@@ -58,7 +58,7 @@ msgstr "Main Menu"
 
 #: src/ui/window.ui:42
 msgid "What do you need to do?"
-msgstr ""
+msgstr "What do you need to do?"
 
 #: src/ui/window.ui:71
 msgid "Tasks"
@@ -74,7 +74,4 @@ msgstr "_Keyboard Shortcuts"
 
 #: src/ui/window.ui:87
 msgid "_About Do It"
-msgstr ""
-
-#~ msgid "_About Tasks"
-#~ msgstr "_About Tasks"
+msgstr "_About Do It"
