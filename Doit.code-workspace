@@ -19,6 +19,9 @@
 		},
 		"editor.formatOnPaste": true,
 		"editor.autoIndentOnPaste": true,
-		"terminal.integrated.fontLigatures.enabled": true
+		"terminal.integrated.fontLigatures.enabled": true,
+		"cSpell.words": [
+			"andrepg"
+		]
 	}
 }

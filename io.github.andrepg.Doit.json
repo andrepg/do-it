@@ -1,4 +1,5 @@
 {
+    "$schema": "./.vscode/schemas/flatpak-manifest.schema.json",
     "id" : "io.github.andrepg.Doit",
     "tags" : [
         "tasks",
@@ -22,12 +23,7 @@
         "--env=LC_ALL=pt_BR.UTF-8"
     ],
     "build-options" : {
-        "append-path" : "/usr/lib/sdk/typescript/bin:/usr/lib/sdk/node20/bin",
-        "env" : {
-            "LANG" : "pt_BR.UTF-8",
-            "LC_ALL" : "pt_BR.UTF-8",
-            "LC_MESSAGES" : "pt_BR.UTF-8"
-        }
+        "append-path" : "/usr/lib/sdk/typescript/bin:/usr/lib/sdk/node20/bin"
     },
     "cleanup" : [
         "/include",
@@ -44,7 +40,7 @@
         {
             "name" : "Doit",
             "buildsystem" : "meson",
-            "builddir" : true,
+            "builddir" : true,            
             "sources" : [
                 {
                     "type" : "dir",
