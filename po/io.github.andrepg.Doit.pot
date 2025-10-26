@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: io.github.andrepg.Doit\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2025-10-14 14:10-0300\n"
+"POT-Creation-Date: 2025-10-26 10:35-0300\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -17,12 +17,10 @@ msgstr ""
 "Content-Type: text/plain; charset=CHARSET\n"
 "Content-Transfer-Encoding: 8bit\n"
 
-#: src/main.js:46
-msgid "Do It"
-msgstr ""
-
-#: src/main.js:83
-msgid "Doit - Your Task Manager"
+#. Translators: Replace "translator-credits" with your
+#. name/username, and optionally an email or URL.
+#: src/main.js:55
+msgid "translators-credits"
 msgstr ""
 
 #: src/gtk/help-overlay.ui:11
@@ -60,18 +58,47 @@ msgstr ""
 msgid "What do you need to do?"
 msgstr ""
 
-#: src/ui/window.ui:71
+#: src/ui/window.ui:70
 msgid "Tasks"
 msgstr ""
 
-#: src/ui/window.ui:77
+#: src/ui/window.ui:76
 msgid "_Preferences"
 msgstr ""
 
-#: src/ui/window.ui:83
+#: src/ui/window.ui:82
 msgid "_Keyboard Shortcuts"
 msgstr ""
 
-#: src/ui/window.ui:87
+#: src/ui/window.ui:86
 msgid "_About Do It"
+msgstr ""
+
+#: src/ui-handler/task.js:79
+msgid "Items finished or deleted cannot be changed."
+msgstr ""
+
+#: src/ui-handler/task.js:103
+#, javascript-format
+msgid "Task %s updated"
+msgstr ""
+
+#: src/ui-handler/task.js:114
+#, javascript-format
+msgid "Task %s marked as finished"
+msgstr ""
+
+#: src/ui-handler/task.js:115
+#, javascript-format
+msgid "Task %s marked as not finished"
+msgstr ""
+
+#: src/ui-handler/task.js:128
+#, javascript-format
+msgid "Task %s deleted"
+msgstr ""
+
+#: src/ui-handler/window.js:73
+#, javascript-format
+msgid "Task %s created"
 msgstr ""
