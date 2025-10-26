@@ -43,7 +43,7 @@ export const DoitApplication = GObject.registerClass(
       const show_about_action = new Gio.SimpleAction({ name: 'about' });
       show_about_action.connect('activate', _ => {
         const aboutParams = {
-          application_name: _("Do It"),
+          application_name: "Do It",
           application_icon: 'io.github.andrepg.Doit',
           developer_name: 'André Paul Grandsire',
           version: '0.1.0',
@@ -52,7 +52,7 @@ export const DoitApplication = GObject.registerClass(
           ],
           // Translators: Replace "translator-credits" with your
           // name/username, and optionally an email or URL.
-          translator_credits: "",
+          translator_credits: _("translators-credits"),
           copyright: '© 2025 André Paul Grandsire'
         };
         const aboutDialog = new Adw.AboutDialog(aboutParams);
@@ -80,7 +80,7 @@ export const DoitApplication = GObject.registerClass(
 
       // TODO Check here if we're working in development mode to set properties
       active_window.add_css_class('devel')
-      active_window.set_title(_("Doit - Your Task Manager"));
+      active_window.set_title("Do It");
 
       active_window.present();
     }

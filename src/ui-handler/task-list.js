@@ -17,7 +17,7 @@ export const TaskList = GObject.registerClass(
   _init() {
     super._init();
 
-    console.log(`[task-list] Initializing task list`);
+    console.log('[task-list] Initializing task list');
   }
 
   get_list() {

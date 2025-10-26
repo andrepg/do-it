@@ -70,7 +70,7 @@ export const TasksWindow = GObject.registerClass(
 
       console.log("[window] Dispatching user feedback");
       this.display_message_toast(
-        `Task ${title} created`
+        _("Task %s created").format(title.trim())
       );
     }
 

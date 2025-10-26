@@ -1,16 +1,3 @@
-export const RESPONSES = {
-  cancel: {
-    action: 'cancel',
-    label: "_Cancel",
-  },
-  confirm: {
-    action: 'delete',
-    label: "_Delete",
-
-  },
-}
-
-
 export const TASK_DELETE_ICON = {
   default: "user-trash-symbolic",
   deleted: "rotation-allowed-symbolic",

@@ -76,7 +76,7 @@ export const Task = GObject.registerClass(
       this.set_editable(!disabled)
 
       this.set_tooltip_text(disabled
-        ? "Deleted/Finished items can't be edited."
+        ? _("Items finished or deleted cannot be changed.")
         : ""
       );
 
@@ -100,7 +100,7 @@ export const Task = GObject.registerClass(
 
       this._update_interface()
 
-      this._notify(`Task ${this._title} updated`)
+      this._notify(_("Task %s updated").format(this._title))
 
       this.emit('task-updated', this)
     }
@@ -110,7 +110,10 @@ export const Task = GObject.registerClass(
 
       this._update_interface()
 
-      this._notify(`Task ${this._title} ${this._done ? 'checked' : 'unchecked'}`)
+      this._notify(this.done 
+        ? _("Task %s marked as finished").format(this._title)
+        : _("Task %s marked as not finished").format(this._title)
+      )
 
       this.emit('task-updated', this)
     }
@@ -122,7 +125,7 @@ export const Task = GObject.registerClass(
 
       this._update_interface()
 
-      this._notify(`Task ${this._title} deleted`)
+      this._notify(_("Task %s deleted").format(this._title))
 
       this.emit('task-deleted', this)
     }
