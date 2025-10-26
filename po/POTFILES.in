@@ -4,12 +4,10 @@ src/main.js
 
 src/gtk/help-overlay.ui
 
-src/ui/confirm-task-delete.ui
 src/ui/task.ui
 src/ui/task-list.ui
 src/ui/window.ui
 
-src/ui-handler/confirm-task-delete.js
 src/ui-handler/task.js
 src/ui-handler/task-list.js
 src/ui-handler/window.js

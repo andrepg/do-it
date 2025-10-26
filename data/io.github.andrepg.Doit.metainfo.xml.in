@@ -33,15 +33,13 @@
   <url type="bugtracker">https://github.com/andrepg/do-it/issues</url>
   <url type="donation">https://github.com/sponsors/andrepg</url>
 
-  <translation type="gettext">Doit</translation>
-
   <launchable type="desktop-id">io.github.andrepg.Doit.desktop</launchable>
 
   <content_rating type="oars-1.1"/>
 
   <branding>
-    <color type="primary" scheme_preference="light">#ff00ff</color>
-    <color type="primary" scheme_preference="dark">#993d3d</color>
+    <color type="primary" scheme_preference="light">#f6f5f4</color>
+    <color type="primary" scheme_preference="dark">#241f31</color>
   </branding>
 
   <screenshots>
@@ -69,4 +67,3 @@
   </releases>
 
 </component>
-

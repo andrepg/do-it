@@ -10,7 +10,5 @@
     <file>ui-handler/window.js</file>
     <file>ui-handler/task.js</file>
     <file>ui-handler/task-list.js</file>
-    <file>ui-handler/confirm-task-delete.js</file>
   </gresource>
 </gresources>
-
