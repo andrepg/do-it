@@ -9,8 +9,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: io.github.andrepg.Doit\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2025-10-26 10:35-0300\n"
-"PO-Revision-Date: 2025-10-14 19:26-0300\n"
+"POT-Creation-Date: 2025-10-26 11:03-0300\n"
+"PO-Revision-Date: 2025-10-26 12:23-0300\n"
 "Last-Translator: André Paul Grandsire <andre@startap.dev.br>\n"
 "Language-Team: Portuguese\n"
 "Language: pt_BR\n"
@@ -24,7 +24,7 @@ msgstr ""
 #. name/username, and optionally an email or URL.
 #: src/main.js:55
 msgid "translators-credits"
-msgstr ""
+msgstr "André Paul Grandsire/andrepg@users.noreply.github.com"
 
 #: src/gtk/help-overlay.ui:11
 msgctxt "shortcut window"
@@ -79,29 +79,29 @@ msgstr "Sobre Do It"
 
 #: src/ui-handler/task.js:79
 msgid "Items finished or deleted cannot be changed."
-msgstr ""
+msgstr "Itens finalizados ou excluídos são somente-leitura."
 
 #: src/ui-handler/task.js:103
 #, javascript-format
 msgid "Task %s updated"
-msgstr ""
+msgstr "Tarefa %s atualizada"
 
 #: src/ui-handler/task.js:114
 #, javascript-format
 msgid "Task %s marked as finished"
-msgstr ""
+msgstr "Tarefa %s concluída"
 
 #: src/ui-handler/task.js:115
 #, javascript-format
 msgid "Task %s marked as not finished"
-msgstr ""
+msgstr "Tarefa %s marcada pendente"
 
 #: src/ui-handler/task.js:128
 #, javascript-format
 msgid "Task %s deleted"
-msgstr ""
+msgstr "Tarefa %s excluída"
 
 #: src/ui-handler/window.js:73
 #, javascript-format
 msgid "Task %s created"
-msgstr ""
+msgstr "Tarefa %s criada"
