@@ -8,17 +8,21 @@
   <summary>Deadly simple to-do manager</summary>
   <description>
     <p>
-      This is, as in its name, a deadly simple task manager. I've used a lot of
-      to-do apps before, from Microsoft ToDo to GNOME Tasks.
+      A simple task manager with basic functionality to handle
+      one day at a time. Create, update, delete and finish tasks easily.
     </p>
+
+    <p>Totally offline, telemetry-free and privacy-focused. No sync, nor tracking.</p>
+
+    <p>**This app is available only in English and Brazilian Portuguese for now.**</p>
   </description>
 
-  <developer id="io.github.andrepg.Doit">
+  <developer id="io.github.andrepg">
     <name>André Paul Grandsire</name>
   </developer>
 
   <categories>
-    <category>Productivity</category>
+    <category>Utility</category>
   </categories>
 
   <keywords>
@@ -35,7 +39,7 @@
 
   <launchable type="desktop-id">io.github.andrepg.Doit.desktop</launchable>
 
-  <content_rating type="oars-1.1"/>
+  <content_rating type="oars-1.1" />
 
   <branding>
     <color type="primary" scheme_preference="light">#f6f5f4</color>
@@ -54,13 +58,18 @@
   </screenshots>
 
   <releases>
-    <release version="1.0.0" date="">
-      <url type="details">https://example.org/changelog.html#version_1.0.1</url>
+    <release version="1.0.0" timestamp="1761495363990">
+      <url type="details">https://github.com/andrepg/do-it/releases#version_1.0.1</url>
       <description translate="no">
-        <p>Release description</p>
+        <p>
+          This is our first application release. 
+          Just a set of basic functionalities to handle tasks.
+        </p>
+        
         <ul>
-          <li>List of changes</li>
-          <li>List of changes</li>
+          <li>Basic task management (create, update, delete)</li>
+          <li>Deleted/finished task clean up before closing</li>
+          <li>Local storage on JSON file inside Flatpak</li>
         </ul>
       </description>
     </release>
