@@ -18,7 +18,9 @@
         "--share=ipc",
         "--socket=fallback-x11",
         "--device=dri",
-        "--socket=wayland"
+        "--socket=wayland",
+        "--env=LC_ALL=pt_BR.UTF-8",
+        "--env=DEVELOPMENT=true"
     ],
     "build-options" : {
         "append-path" : "/usr/lib/sdk/typescript/bin:/usr/lib/sdk/node20/bin"
