@@ -22,7 +22,6 @@ const { GObject, Adw } = imports.gi;
 
 import { TaskListStore } from "../utils/list-store.js";
 import { CreateTaskList } from "./task-list.js";
-import { Task } from "./task.js";
 
 export const TasksWindow = GObject.registerClass(
   {
