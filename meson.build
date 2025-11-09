@@ -10,6 +10,7 @@ i18n = import('i18n')
 gnome = import('gnome')
 
 subdir('data')
+subdir('ui')
 subdir('src')
 subdir('po')
 
