@@ -10,7 +10,7 @@ export const TaskListStore = GObject.registerClass({
   InternalChildren: [],
   Signals: {},
 }, class TaskListStoreObject extends Gio.ListStore {
-  _sort_done = (item) => item.get_task_done();
+  _sort_done = (item) => item.get_done();
 
   get_all() {
     const items = [];
