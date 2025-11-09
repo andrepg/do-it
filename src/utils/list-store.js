@@ -29,7 +29,8 @@ export const TaskListStore = GObject.registerClass({
   new_task(title) {
     const task = this._create_task(title)
 
-    this.append(task.to_widget())
+    this.append(task)
+    this.sort(this._sort_done)
 
     this.persist()
   }
@@ -45,12 +46,14 @@ export const TaskListStore = GObject.registerClass({
     task.connect('task-updated', () => {
       console.log("[list-store] Received task-updated signal.")
 
+      this.sort(this._sort_done)
       this.persist()
     })
 
     task.connect('task-deleted', () => {
       console.log("[list-store] Received task-deleted signal.")
 
+      this.sort(this._sort_done)
       this.persist()
     })
 
