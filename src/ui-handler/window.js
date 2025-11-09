@@ -77,7 +77,7 @@ export const TasksWindow = GObject.registerClass(
       });
 
       const action_export_database = new Gio.SimpleAction({ name: 'export_database' });
-      action_export_database.connect('activate', export_database);
+      action_export_database.connect('activate', () => export_database(this));
 
       this.add_action(action_export_database);
     }
