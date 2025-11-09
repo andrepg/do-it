@@ -18,7 +18,7 @@
  * SPDX-License-Identifier: GPL-3.0-or-later
  */
 
-const { GObject, Adw } = imports.gi;
+const { GObject, Adw, Gio } = imports.gi;
 
 import { TaskListStore } from "../utils/list-store.js";
 import { CreateTaskList } from "./task-list.js";
@@ -27,7 +27,12 @@ export const TasksWindow = GObject.registerClass(
   {
     GTypeName: "TasksWindow",
     Template: "resource:///io/github/andrepg/Doit/ui/window.ui",
-    InternalChildren: ["task_new_entry", "toast_overlay", "list_flow_box"],
+    InternalChildren: [
+      "task_new_entry",
+      "toast_overlay",
+      "list_flow_box",
+      "button_new_task"
+    ],
   },
   class TasksWindow extends Adw.ApplicationWindow {
     /**
@@ -47,6 +52,18 @@ export const TasksWindow = GObject.registerClass(
 
       // Connect our main New Task button event with task creation
       this._task_new_entry.connect("activate", this.createTask.bind(this));
+      this._button_new_task.connect("clicked", () =>
+        this._task_new_entry.grab_focus()
+      )
+
+      const newTaskAction = new Gio.SimpleAction({ name: 'new_task' });
+      newTaskAction.connect('activate', () => {
+        this._task_new_entry.grab_focus()
+      });
+      this.add_action(newTaskAction);
+
+      // Atalho de teclado
+      application.set_accels_for_action('win.new_task', ['<Control>n']);
 
       this._list_flow_box.append(CreateTaskList(this._list_store));
     }
@@ -76,6 +93,5 @@ export const TasksWindow = GObject.registerClass(
     display_message_toast(message) {
       this._toast_overlay.add_toast(new Adw.Toast({ title: message }))
     }
-
   }
 );
