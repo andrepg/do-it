@@ -1,8 +1,6 @@
-<!-- GitAds-Verify: I6LVITSW7RXSYY2TKEDQAN1FTRG3RSN9 -->
+# ✅ Do It
 
-# ✅ Deadly simple tasks
-
-This is, as in its name, a **deadly simple task** manager. I've used a lot of 
+This is a **deadly simple task** manager. I've used a lot of 
 to-do apps before, from Microsoft ToDo to GNOME Tasks. 
 
 All of them marvelous, but none of them simple as I want. Too many subtasks, 
@@ -11,7 +9,7 @@ links, categories and options.
 All I want was an app to pop up, write down a simple task and *done*. None of 
 them has a small footprint to use it this way, nor fit perfectly my requirements.
 
-✨ **Deadly simple tasks** is my solution.
+✨ **Do It** is my solution.
 
 ## Features
 
@@ -34,29 +32,17 @@ essential, assembling the application core:
 * ✅ Mark as Done
 * 🗑️ Or delete permanently
 * 🤖 Clean all finished tasks
+* 📤️ Export and import your tasks
+* 
 
-### Local database
+## Roadmap 
 
-> [!Note]
-> As noted before, this app is privacy-oriented. 
-
-Your tasks are stored locally, in a JSON file inside the app data itself. 
-In a Linux Flatpak environment, it should be `~/.var/app/io.github.andrepg.Doit/data`. 
-
-🔄 _If you want to make your own backup, that's the folder!_
-
-🎯 _We plan to create another JSON file, to keep a user actions history and allow to undo actions._
-
-### Export tasks
-
-> [!Note]
-> We do plan to create a export function, but not now.
-
-### Roadmap 
-
-- [🚧] Add shortcut to create new task
-- [🚧] Add timer to autosave tasks
+The current roadmap to this application is available in the [GitHub Project](https://github.com/users/andrepg/projects/8).
 
 ## Sponsored by
+
+This repo uses a third-party ads-service.
+
+<!-- GitAds-Verify: I6LVITSW7RXSYY2TKEDQAN1FTRG3RSN9 -->
 [![Sponsored by GitAds](https://gitads.dev/v1/ad-serve?source=andrepg/do-it@github)](https://gitads.dev/v1/ad-track?source=andrepg/do-it@github)
 
