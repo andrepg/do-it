@@ -30,12 +30,23 @@ pkg.initFormat();
 export const DoitApplication = GObject.registerClass(
   class DoitApplication extends Adw.Application {
     constructor() {
+      const isDevelopment = GLib.getenv('DEVELOPMENT')
+
+      const application_id = 'io.github.andrepg.Doit'.concat(
+        isDevelopment ? '.Devel' : ''
+      );
+
+      const resource_path = '/io/github/andrepg/Doit'.concat(
+        isDevelopment ? '.Devel' : ''
+      );
+
       super({
-        application_id: 'io.github.andrepg.Doit',
+        application_id: application_id,
         flags: Gio.ApplicationFlags.DEFAULT_FLAGS,
-        resource_base_path: '/io/github/andrepg/Doit'
+        resource_base_path: resource_path,
       });
 
+      this.isDevelopment = isDevelopment;
       this.setupAboutDialogAction();
       this.setupQuitAction();
     }
@@ -48,7 +59,7 @@ export const DoitApplication = GObject.registerClass(
         developer_name: 'André Paul Grandsire',
         version: '0.1.0',
         developers: [
-         'André Paul Grandsire'
+          'André Paul Grandsire'
         ],
         // Translators: Replace "translator-credits" with your
         // name/username, and optionally an email or URL.
@@ -81,7 +92,7 @@ export const DoitApplication = GObject.registerClass(
       if (!active_window)
         active_window = new TasksWindow(this);
 
-      if (GLib.getenv('DEVELOPMENT')) {
+      if (this.isDevelopment) {
         active_window.add_css_class('devel')
       }
 

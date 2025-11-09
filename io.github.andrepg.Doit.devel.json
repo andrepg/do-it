@@ -1,6 +1,6 @@
 {
     "$schema": "./.vscode/schemas/flatpak-manifest.schema.json",
-    "id" : "io.github.andrepg.Doit",
+    "id" : "io.github.andrepg.Doit.Devel",
     "tags" : [
         "tasks",
         "todo",
