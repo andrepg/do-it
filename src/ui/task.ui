@@ -2,9 +2,10 @@
 <!-- Created with Cambalache 0.96.1 -->
 <interface>
   <!-- interface-name task.ui -->
-  <requires lib="Adw" version="1.0"/>
-  <requires lib="gio" version="2.0"/>
-  <requires lib="gtk" version="4.0"/>
+  <requires lib="Adw" version="1.7"/>
+  <requires lib="Gio" version="2.0"/>
+  <requires lib="Gtk" version="4.21"/>
+  <requires lib="gtk" version="4.18"/>
   <requires lib="libadwaita" version="1.7"/>
   <template class="Task" parent="AdwEntryRow">
     <property name="enable-emoji-completion">True</property>

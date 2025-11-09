@@ -4,34 +4,22 @@ export const TaskList = GObject.registerClass(
   {
     GTypeName: "TaskList",
     Template: "resource:///io/github/andrepg/Doit/ui/task-list.ui",
-    InternalChildren: [
-      'task_list_title',
-      'task_listbox',
-    ],
     Signals: {
       'items-changed': {
         param_types: []
       }
     }
-  }, class TaskList extends Gtk.Box {
+  }, class TaskList extends Gtk.ListBox {
   _init() {
     super._init();
 
     console.log('[task-list] Initializing task list');
   }
 
-  get_list() {
-    return this.list_store;
-  }
-
   bind(store) {
-    this._task_listbox.bind_model(
+    this.bind_model(
       store, item => item.to_widget()
     )
-  }
-  
-  get_count() {
-    return this.list_store.get_count();
   }
 });
 
@@ -40,11 +28,10 @@ export const CreateTaskList = (listStore) => {
 
   _task_list.bind(listStore)
 
-  let _list_clamp = new Adw.Clamp();
+  const builder = Gtk.Builder.new_from_resource('/io/github/andrepg/Doit/ui/empty_tasks.ui')
+  const placeholder = builder.get_object('ListEmptyBox');
 
-  _list_clamp.set_maximum_size(960);
+  _task_list.set_placeholder(placeholder)
 
-  _list_clamp.set_child(_task_list);
-
-  return _list_clamp;
+  return _task_list;
 }

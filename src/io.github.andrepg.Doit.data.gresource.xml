@@ -4,6 +4,7 @@
     <file preprocess="xml-stripblanks">ui/window.ui</file>
     <file preprocess="xml-stripblanks">ui/task.ui</file>
     <file preprocess="xml-stripblanks">ui/task-list.ui</file>
+    <file preprocess="xml-stripblanks">ui/empty_tasks.ui</file>
     <file preprocess="xml-stripblanks">ui/help-overlay.ui</file>
   </gresource>
 </gresources>

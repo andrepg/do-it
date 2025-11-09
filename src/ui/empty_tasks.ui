@@ -3,10 +3,11 @@
 <interface>
   <!-- interface-name empty_tasks.ui -->
   <requires lib="gtk" version="4.18"/>
-  <template class="ListEmptyBox" parent="GtkBox">
+  <object class="GtkBox" id="ListEmptyBox">
     <property name="hexpand">True</property>
     <property name="margin-bottom">12</property>
     <property name="margin-top">12</property>
+    <property name="name">placeholder</property>
     <property name="orientation">vertical</property>
     <property name="spacing">8</property>
     <child>
@@ -21,5 +22,5 @@
         <property name="label">Try to add a new task on bottom bar.</property>
       </object>
     </child>
-  </template>
+  </object>
 </interface>
