@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="UTF-8"?>
+<?xml version='1.0' encoding='UTF-8'?>
 <!-- Created with Cambalache 0.96.1 -->
 <interface>
   <!-- interface-name task-list.ui -->
@@ -8,12 +8,11 @@
   <requires lib="gtk" version="4.18"/>
   <requires lib="libadwaita" version="1.7"/>
   <template class="TaskList" parent="GtkListBox">
+    <property name="css-classes">boxed-list</property>
     <property name="margin-end">8</property>
     <property name="margin-start">8</property>
     <property name="margin-top">8</property>
-    <property name="css-classes">boxed-list</property>
     <property name="selection-mode">none</property>
     <property name="valign">start</property>
   </template>
 </interface>
-
