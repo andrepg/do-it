@@ -44,7 +44,7 @@
                     "type" : "git",
                     "path" : "https://github.com/andrepg/do-it.git",
                     "tag": "v0.1.1",
-                    "commit": "e6d12b0d8916c0d06c55f8daecdb741843e0c0c5",
+                    "commit": "2a70b72695a3d490c40734304a461d075a100549",
                 }
             ],
             "config-opts" : [
