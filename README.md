@@ -1,7 +1,7 @@
 # ✅ Do It
 
 This is a **deadly simple task** manager. I've used a lot of 
-to-do apps before, from Microsoft ToDo to GNOME Tasks. 
+to-do apps before, from Microsoft ToDo (and the old good Wunderlist) to GNOME Tasks. 
 
 All of them marvelous, but none of them simple as I want. Too many subtasks, 
 links, categories and options. 
