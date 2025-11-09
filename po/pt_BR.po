@@ -9,7 +9,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: io.github.andrepg.Doit\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2025-10-26 11:03-0300\n"
+"POT-Creation-Date: 2025-11-09 14:10-0300\n"
 "PO-Revision-Date: 2025-10-26 12:23-0300\n"
 "Last-Translator: André Paul Grandsire <andre@startap.dev.br>\n"
 "Language-Team: Portuguese\n"
@@ -20,60 +20,58 @@ msgstr ""
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 "X-Generator: Gtranslator 49.0\n"
 
-#. Translators: Replace "translator-credits" with your
-#. name/username, and optionally an email or URL.
-#: src/main.js:55
-msgid "translators-credits"
-msgstr "André Paul Grandsire/andrepg@users.noreply.github.com"
-
-#: src/gtk/help-overlay.ui:11
+#: src/ui/help-overlay.ui:11
 msgctxt "shortcut window"
 msgid "General"
 msgstr "Geral"
 
-#: src/gtk/help-overlay.ui:14
+#: src/ui/help-overlay.ui:14
 msgctxt "shortcut window"
 msgid "Show Shortcuts"
 msgstr "Mostrar atalhos"
 
-#: src/gtk/help-overlay.ui:20
+#: src/ui/help-overlay.ui:20
 msgctxt "shortcut window"
 msgid "Quit"
 msgstr "Sair"
 
-#: src/ui/task.ui:13
+#: src/ui/task.ui:14
 msgid "Description"
 msgstr "Tarefa"
 
-#: src/ui/task-list.ui:20
-msgid "Yours tasks"
-msgstr "Suas tarefas"
-
-#: src/ui/task-list.ui:21
-msgid "Play your day wisely and accomplish all"
-msgstr "Planeje bem seu dia para cumprir tudo"
-
-#: src/ui/window.ui:20
+#: src/ui/window.ui:22
 msgid "Main Menu"
 msgstr "Menu Principal"
 
-#: src/ui/window.ui:42
+#: src/ui/window.ui:44
 msgid "What do you need to do?"
 msgstr "O que voce precisa fazer?"
 
+#: src/ui/window.ui:69
+msgid "Play your day wisely and accomplish all"
+msgstr "Planeje bem seu dia para cumprir tudo"
+
 #: src/ui/window.ui:70
+msgid "Yours tasks"
+msgstr "Suas tarefas"
+
+#: src/ui/window.ui:88
+msgid "<small>Deleted items will be discarded when the app closes.</small>"
+msgstr ""
+
+#: src/ui/window.ui:107
 msgid "Tasks"
 msgstr "Tarefas"
 
-#: src/ui/window.ui:76
+#: src/ui/window.ui:113
 msgid "_Preferences"
 msgstr "O_pções"
 
-#: src/ui/window.ui:82
+#: src/ui/window.ui:119
 msgid "_Keyboard Shortcuts"
 msgstr "Atalhos de _Teclado"
 
-#: src/ui/window.ui:86
+#: src/ui/window.ui:123
 msgid "_About Do It"
 msgstr "Sobre Do It"
 
@@ -81,27 +79,30 @@ msgstr "Sobre Do It"
 msgid "Items finished or deleted cannot be changed."
 msgstr "Itens finalizados ou excluídos são somente-leitura."
 
-#: src/ui-handler/task.js:103
+#: src/ui-handler/task.js:99
 #, javascript-format
 msgid "Task %s updated"
 msgstr "Tarefa %s atualizada"
 
-#: src/ui-handler/task.js:114
-#, javascript-format
-msgid "Task %s marked as finished"
+#: src/ui-handler/task.js:108
+#, fuzzy, javascript-format
+msgid "%s marked as finished"
 msgstr "Tarefa %s concluída"
 
-#: src/ui-handler/task.js:115
-#, javascript-format
-msgid "Task %s marked as not finished"
+#: src/ui-handler/task.js:109
+#, fuzzy, javascript-format
+msgid "%s marked as not finished"
 msgstr "Tarefa %s marcada pendente"
 
-#: src/ui-handler/task.js:128
+#: src/ui-handler/task.js:122
 #, javascript-format
 msgid "Task %s deleted"
 msgstr "Tarefa %s excluída"
 
-#: src/ui-handler/window.js:73
+#: src/ui-handler/window.js:114
 #, javascript-format
 msgid "Task %s created"
 msgstr "Tarefa %s criada"
+
+#~ msgid "translators-credits"
+#~ msgstr "André Paul Grandsire/andrepg@users.noreply.github.com"

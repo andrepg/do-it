@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: io.github.andrepg.Doit\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2025-10-26 11:03-0300\n"
+"POT-Creation-Date: 2025-11-09 14:10-0300\n"
 "PO-Revision-Date: 2025-10-26 12:15-0300\n"
 "Last-Translator: Automatically generated\n"
 "Language-Team: none\n"
@@ -17,60 +17,58 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 
-#. Translators: Replace "translator-credits" with your
-#. name/username, and optionally an email or URL.
-#: src/main.js:55
-msgid "translators-credits"
-msgstr ""
-
-#: src/gtk/help-overlay.ui:11
+#: src/ui/help-overlay.ui:11
 msgctxt "shortcut window"
 msgid "General"
 msgstr "General"
 
-#: src/gtk/help-overlay.ui:14
+#: src/ui/help-overlay.ui:14
 msgctxt "shortcut window"
 msgid "Show Shortcuts"
 msgstr "Show Shortcuts"
 
-#: src/gtk/help-overlay.ui:20
+#: src/ui/help-overlay.ui:20
 msgctxt "shortcut window"
 msgid "Quit"
 msgstr "Quit"
 
-#: src/ui/task.ui:13
+#: src/ui/task.ui:14
 msgid "Description"
 msgstr "Description"
 
-#: src/ui/task-list.ui:20
-msgid "Yours tasks"
-msgstr "Yours tasks"
-
-#: src/ui/task-list.ui:21
-msgid "Play your day wisely and accomplish all"
-msgstr "Play your day wisely and accomplish all"
-
-#: src/ui/window.ui:20
+#: src/ui/window.ui:22
 msgid "Main Menu"
 msgstr "Main Menu"
 
-#: src/ui/window.ui:42
+#: src/ui/window.ui:44
 msgid "What do you need to do?"
 msgstr "What do you need to do?"
 
+#: src/ui/window.ui:69
+msgid "Play your day wisely and accomplish all"
+msgstr "Play your day wisely and accomplish all"
+
 #: src/ui/window.ui:70
+msgid "Yours tasks"
+msgstr "Yours tasks"
+
+#: src/ui/window.ui:88
+msgid "<small>Deleted items will be discarded when the app closes.</small>"
+msgstr ""
+
+#: src/ui/window.ui:107
 msgid "Tasks"
 msgstr "Tasks"
 
-#: src/ui/window.ui:76
+#: src/ui/window.ui:113
 msgid "_Preferences"
 msgstr "_Preferences"
 
-#: src/ui/window.ui:82
+#: src/ui/window.ui:119
 msgid "_Keyboard Shortcuts"
 msgstr "_Keyboard Shortcuts"
 
-#: src/ui/window.ui:86
+#: src/ui/window.ui:123
 msgid "_About Do It"
 msgstr "_About Do It"
 
@@ -78,27 +76,27 @@ msgstr "_About Do It"
 msgid "Items finished or deleted cannot be changed."
 msgstr ""
 
-#: src/ui-handler/task.js:103
+#: src/ui-handler/task.js:99
 #, javascript-format
 msgid "Task %s updated"
 msgstr ""
 
-#: src/ui-handler/task.js:114
+#: src/ui-handler/task.js:108
 #, javascript-format
-msgid "Task %s marked as finished"
+msgid "%s marked as finished"
 msgstr ""
 
-#: src/ui-handler/task.js:115
+#: src/ui-handler/task.js:109
 #, javascript-format
-msgid "Task %s marked as not finished"
+msgid "%s marked as not finished"
 msgstr ""
 
-#: src/ui-handler/task.js:128
+#: src/ui-handler/task.js:122
 #, javascript-format
 msgid "Task %s deleted"
 msgstr ""
 
-#: src/ui-handler/window.js:73
+#: src/ui-handler/window.js:114
 #, javascript-format
 msgid "Task %s created"
 msgstr ""

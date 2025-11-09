@@ -1,9 +1,9 @@
 # List of source files containing translatable strings.
 # Please keep this file sorted alphabetically.
 src/main.js
+src/static.js
 
-src/gtk/help-overlay.ui
-
+src/ui/help-overlay.ui
 src/ui/task.ui
 src/ui/task-list.ui
 src/ui/window.ui

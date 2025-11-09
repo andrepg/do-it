@@ -6,4 +6,5 @@
 ## After adding a new language here, we need to update localisation files
 ## with `scripts/update-pot-file.sh`.
 en
+es
 pt_BR
