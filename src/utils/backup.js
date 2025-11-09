@@ -1,14 +1,15 @@
 import { Persistence } from "./persistence.js";
 import Gtk from "gi://Gtk"
+import Gio from "gi://Gio"
 
-export async function export_database() {
+export async function export_database(parent) {
   const db = new Persistence();
   const data = db.readFromFile();
 
   const saveDialog = new Gtk.FileChooserNative({
     title: _("Export database"),
     action: Gtk.FileChooserAction.SAVE,
-    transient_for: this,
+    transient_for: parent,
     modal: true,
   });
 
@@ -32,7 +33,12 @@ export async function export_database() {
           Gio.FileCreateFlags.REPLACE_DESTINATION,
           null
         )
-      } catch { }
+
+        parent.display_message_toast(_("Database exported successfully!"));
+      } catch (e) {
+        parent.display_message_toast(_("Failed to export database!"))
+        console.log(e)
+      }
 
       dialog.destroy();
     }

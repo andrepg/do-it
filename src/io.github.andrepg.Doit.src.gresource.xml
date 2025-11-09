@@ -7,7 +7,7 @@
     <file>utils/persistence.js</file>
     <file>utils/list-store.js</file>
     <file>utils/application.js</file>
-    <file>utils/export.js</file>
+    <file>utils/backup.js</file>
 
     <file>ui-handler/window.js</file>
     <file>ui-handler/task.js</file>
