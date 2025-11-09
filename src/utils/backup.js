@@ -44,3 +44,43 @@ export async function export_database(parent) {
     }
   });
 }
+
+export async function import_database(parent) {
+  const openDialog = new Gtk.FileChooserNative({
+    title: _("Import Task Database"),
+    action: Gtk.FileChooserAction.OPEN,
+    transient_for: parent,
+    modal: true
+  });
+
+  const filter = new Gtk.FileFilter();
+  filter.set_name(_("JSON Files"));
+  filter.add_pattern("*.json");
+  openDialog.set_filter(filter);
+
+  openDialog.show();
+
+  openDialog.connect('response', (dialog, response) => {
+    if (response === Gtk.ResponseType.ACCEPT) {
+      const selectedFile = dialog.get_file();
+      try {
+        const [ok, content] = selectedFile.load_contents(null);
+        if (!ok) throw new Error("Failed to load file.");
+        const decoder = new TextDecoder('utf-8');
+        const text = decoder.decode(content);
+        const importedData = JSON.parse(text);
+
+        const db = new Persistence;
+        db.saveToFile(importedData);
+
+        parent._list_store.load();
+        parent.display_message_toast(_("Database imported successfully"))
+      } catch (e) {
+        parent.display_message_toast(_("Failed to import database!"))
+        console.error(_("Failed to import database!"), e);
+      }
+    }
+
+    dialog.destroy();
+  });
+}

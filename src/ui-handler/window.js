@@ -21,7 +21,7 @@
 const { GObject, Adw, Gio } = imports.gi;
 
 import { get_setting_int, set_setting_int } from "../utils/application.js";
-import { export_database } from "../utils/export.js";
+import { export_database, import_database } from "../utils/backup.js";
 import { TaskListStore } from "../utils/list-store.js";
 import { CreateTaskList } from "./task-list.js";
 
@@ -51,39 +51,35 @@ export const TasksWindow = GObject.registerClass(
       this._list_store = new TaskListStore();
       this._list_store.load()
 
-      // Connect our main New Task button event with task creation
-      this.manageWindowActions()
+      this.setup_window_actions()
 
-      // Atalho de teclado
       application.set_accels_for_action('win.new_task', ['<Control>n']);
 
       this._list_flow_box.append(
         CreateTaskList(this._list_store)
       );
 
-      this.manageWindowSettings()
+      this.setup_window_size()
     }
 
-    manageWindowActions() {
+    setup_window_actions() {
       this._task_new_entry.connect("activate", this.createTask.bind(this));
+      this._button_new_task.connect("clicked", this._task_new_entry.grab_focus)
 
-      this._button_new_task.connect("clicked", () =>
-        this._task_new_entry.grab_focus()
-      )
-
-      const newTaskAction = new Gio.SimpleAction({ name: 'new_task' });
-      newTaskAction.connect('activate', () => {
-        this._task_new_entry.grab_focus()
-      });
-
+      const action_new_task = new Gio.SimpleAction({ name: 'new_task' });
+      const action_import_database = new Gio.SimpleAction({ name: 'import_database' });
       const action_export_database = new Gio.SimpleAction({ name: 'export_database' });
-      action_export_database.connect('activate', () => export_database(this));
 
+      action_new_task.connect('activate', () => this._task_new_entry.grab_focus());
+      action_export_database.connect('activate', () => export_database(this));
+      action_import_database.connect('activate', () => import_database(this));
+
+      this.add_action(action_new_task);
       this.add_action(action_export_database);
+      this.add_action(action_import_database);
     }
 
-    manageWindowSettings() {
-      // Restaurar tamanho
+    setup_window_size() {
       const width = get_setting_int('window-width');
       const height = get_setting_int('window-height');
 
