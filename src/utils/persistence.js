@@ -2,62 +2,67 @@ import GLib from 'gi://GLib';
 import Gio from 'gi://Gio';
 
 export class Persistence {
-    constructor(filename = 'data.json') {
-        this.databaseDir = GLib.get_user_data_dir();
+  filename = 'data.json';
 
-        this.databaseFile = Gio.File.new_for_path(
-            GLib.build_filenamev([this.databaseDir, filename])
-        );
+  constructor() {
+    this.databaseDir = GLib.get_user_data_dir();
 
-        this.databaseFilePath = this.databaseFile.get_path();
-    }
+    const dbPath = GLib.build_filenamev([
+      this.databaseDir,
+      this.filename,
+    ]);
 
-    createFileIfNotExists() {
-        try {
-            Gio.File.new_for_path(this.databaseDir).make_directory_with_parents(null);
-        } catch { }
+    this.databaseFile = Gio.File.new_for_path(dbPath);
 
-        try {
-            Gio.File.new_for_path(this.databaseFilePath).create(Gio.FileCreateFlags.PRIVATE, null);
-        } catch { }
-    }
+    this.databaseFilePath = this.databaseFile.get_path();
+  }
 
-    /**
-     * Reads data from database file, creating it first if does not exists.
-     *
-     * @returns {Array} Returns the data read from the file./var/home/andre/Projetos/Tasks/src/task.js
-     */
-     readFromFile() {
-        this.createFileIfNotExists();
+  createFileIfNotExists() {
+    try {
+      Gio.File.new_for_path(this.databaseDir).make_directory_with_parents(null);
+    } catch { }
 
-        const decoder = new TextDecoder('utf-8');
+    try {
+      Gio.File.new_for_path(this.databaseFilePath).create(Gio.FileCreateFlags.PRIVATE, null);
+    } catch { }
+  }
 
-        let [_, content] = this.databaseFile.load_contents(null);
+  /**
+   * Reads data from database file, creating it first if does not exists.
+   *
+   * @returns {Array} Returns the data read from the file.
+   */
+  readFromFile() {
+    this.createFileIfNotExists();
 
-        const file_content = decoder.decode(content);
+    const decoder = new TextDecoder('utf-8');
 
-        GLib.free(this.databaseFile);
-        
-        return file_content.trim() == ""
-            ? []
-            : JSON.parse(file_content);
-    }
+    let [_, content] = this.databaseFile.load_contents(null);
 
-     saveToFile(data) {
-        this.createFileIfNotExists();
+    const file_content = decoder.decode(content);
 
-        const encoder = new TextEncoder('utf-8');
-        const file = encoder.encode(JSON.stringify(data));
+    GLib.free(this.databaseFile);
 
-        this.databaseFile.replace_contents(
-            file, // ByteArray to save
-            null, // old file etag
-            true, // if we should make a backup
-            Gio.FileCreateFlags.PRIVATE,
-            null,
-        );
+    return file_content.trim() == ""
+      ? []
+      : JSON.parse(file_content);
+  }
 
-        GLib.free(this.databaseFile);
-    }
+  saveToFile(data) {
+    this.createFileIfNotExists();
+
+    const encoder = new TextEncoder('utf-8');
+    const file = encoder.encode(JSON.stringify(data));
+
+    this.databaseFile.replace_contents(
+      file, // ByteArray to save
+      null, // old file etag
+      true, // if we should make a backup
+      Gio.FileCreateFlags.PRIVATE,
+      null,
+    );
+
+    GLib.free(this.databaseFile);
+  }
 }
 
