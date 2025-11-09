@@ -19,10 +19,11 @@
 
 import GObject from 'gi://GObject';
 import Gio from 'gi://Gio';
-import GLib from 'gi://GLib'
 import Adw from 'gi://Adw';
 
 import { TasksWindow } from './ui-handler/window.js';
+import { about_dialog_params } from './static.js';
+import { get_application_id, get_resource_path, is_development_mode } from './utils/application.js';
 
 pkg.initGettext();
 pkg.initFormat();
@@ -30,45 +31,21 @@ pkg.initFormat();
 export const DoitApplication = GObject.registerClass(
   class DoitApplication extends Adw.Application {
     constructor() {
-      const isDevelopment = GLib.getenv('DEVELOPMENT')
-
-      const application_id = 'io.github.andrepg.Doit'.concat(
-        isDevelopment ? '.Devel' : ''
-      );
-
-      const resource_path = '/io/github/andrepg/Doit'.concat(
-        isDevelopment ? '.Devel' : ''
-      );
-
       super({
-        application_id: application_id,
+        application_id: get_application_id(),
         flags: Gio.ApplicationFlags.DEFAULT_FLAGS,
-        resource_base_path: resource_path,
+        resource_base_path: get_resource_path(),
       });
 
-      this.isDevelopment = isDevelopment;
       this.setupAboutDialogAction();
       this.setupQuitAction();
     }
 
     setupAboutDialogAction() {
       const show_about_action = new Gio.SimpleAction({ name: 'about' });
-      const aboutParams = {
-        application_name: "Do It",
-        application_icon: 'io.github.andrepg.Doit',
-        developer_name: 'André Paul Grandsire',
-        version: '0.1.0',
-        developers: [
-          'André Paul Grandsire'
-        ],
-        // Translators: Replace "translator-credits" with your
-        // name/username, and optionally an email or URL.
-        translator_credits: _("translators-credits"),
-        copyright: '© 2025 André Paul Grandsire'
-      };
 
       show_about_action.connect('activate', _ => {
-        const aboutDialog = new Adw.AboutDialog(aboutParams);
+        const aboutDialog = new Adw.AboutDialog(about_dialog_params());
         aboutDialog.present(this.active_window);
       });
 
@@ -77,6 +54,7 @@ export const DoitApplication = GObject.registerClass(
 
     setupQuitAction() {
       const quit_action = new Gio.SimpleAction({ name: 'quit' });
+
       quit_action.connect('activate', _ => {
         this.quit();
       });
@@ -92,7 +70,7 @@ export const DoitApplication = GObject.registerClass(
       if (!active_window)
         active_window = new TasksWindow(this);
 
-      if (this.isDevelopment) {
+      if (is_development_mode()) {
         active_window.add_css_class('devel')
       }
 
@@ -104,6 +82,5 @@ export const DoitApplication = GObject.registerClass(
 );
 
 export function main(argv) {
-  const application = new DoitApplication();
-  return application.runAsync(argv);
+  return (new DoitApplication()).runAsync(argv);
 }

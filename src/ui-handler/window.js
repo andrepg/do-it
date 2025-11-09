@@ -20,6 +20,7 @@
 
 const { GObject, Adw, Gio } = imports.gi;
 
+import { get_setting_int, get_setting_bool, set_setting_int } from "../utils/application.js";
 import { TaskListStore } from "../utils/list-store.js";
 import { CreateTaskList } from "./task-list.js";
 
@@ -47,11 +48,24 @@ export const TasksWindow = GObject.registerClass(
 
       console.log(`[task-list] Initializing list store`);
       this._list_store = new TaskListStore();
-
       this._list_store.load()
 
       // Connect our main New Task button event with task creation
+      this.manageWindowActions()
+
+      // Atalho de teclado
+      application.set_accels_for_action('win.new_task', ['<Control>n']);
+
+      this._list_flow_box.append(
+        CreateTaskList(this._list_store)
+      );
+
+      this.manageWindowSettings()
+    }
+
+    manageWindowActions() {
       this._task_new_entry.connect("activate", this.createTask.bind(this));
+
       this._button_new_task.connect("clicked", () =>
         this._task_new_entry.grab_focus()
       )
@@ -60,12 +74,23 @@ export const TasksWindow = GObject.registerClass(
       newTaskAction.connect('activate', () => {
         this._task_new_entry.grab_focus()
       });
+
       this.add_action(newTaskAction);
+    }
 
-      // Atalho de teclado
-      application.set_accels_for_action('win.new_task', ['<Control>n']);
+    manageWindowSettings() {
+      // Restaurar tamanho
+      const width = get_setting_int('window-width');
+      const height = get_setting_int('window-height');
 
-      this._list_flow_box.append(CreateTaskList(this._list_store));
+      this.set_default_size(width, height)
+
+      this.connect('close-request', () => {
+          const [width, height] = this.get_default_size();
+          set_setting_int('window-width', width);
+          set_setting_int('window-height', height);
+          return false; // permite continuar o fechamento
+      });
     }
 
 
