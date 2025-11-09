@@ -1,29 +1,30 @@
-<?xml version="1.0" encoding="UTF-8"?>
+<?xml version='1.0' encoding='UTF-8'?>
+<!-- Created with Cambalache 0.96.1 -->
 <interface>
   <!-- interface-name task-list.ui -->
   <requires lib="Adw" version="1.0"/>
   <requires lib="Gio" version="2.0"/>
   <requires lib="Gtk" version="4.0"/>
   <requires lib="libadwaita" version="1.7"/>
-
+  <requires lib="gtk" version="4.18"/>
   <template class="TaskList" parent="GtkBox">
-    <property name="margin-start">8</property>
     <property name="margin-end">8</property>
-    <property name="spacing">16</property>
+    <property name="margin-start">8</property>
+    <property name="margin-top">8</property>
     <property name="orientation">vertical</property>
+    <property name="spacing">16</property>
     <child>
       <object class="GtkBox">
         <child>
           <object class="AdwWindowTitle" id="task_list_title">
             <property name="can-focus">False</property>
             <property name="hexpand">True</property>
-            <property name="title" translatable="yes">Yours tasks</property>
             <property name="subtitle" translatable="yes">Play your day wisely and accomplish all</property>
+            <property name="title" translatable="yes">Yours tasks</property>
           </object>
         </child>
       </object>
     </child>
-
     <child>
       <object class="GtkListBox" id="task_listbox">
         <property name="css-classes">boxed-list</property>
@@ -31,6 +32,17 @@
         <property name="valign">start</property>
       </object>
     </child>
+    <child>
+      <object class="GtkLabel">
+        <property name="css-classes">dim-label</property>
+        <property name="justify">center</property>
+        <property name="label" translatable="yes">&lt;small&gt;Deleted items will be discarded when the app closes.&lt;/small&gt;</property>
+        <property name="use-markup">True</property>
+        <accessibility>
+          <property name="sort">other</property>
+          <state name="pressed">false</state>
+        </accessibility>
+      </object>
+    </child>
   </template>
 </interface>
-
