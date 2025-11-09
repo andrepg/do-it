@@ -20,20 +20,20 @@ aiming to improve user's privacy.
 ### Offline-first, privacy-oriented
 
 This app does not have any tracking and/or analytics scripts. This means that 
-the only way to give a feedback is contact author. 
+the only way to give a feedback is contact author by using our 
+[Discussions threads](https://github.com/andrepg/do-it/discussions). 
 
 ### Simple management
 
-There is only one single focus: handle my tasks. The following actions are 
+There is only one single focus: _handle my tasks_. The following actions are 
 essential, assembling the application core:
 
 * ✏️ Write down a task
 * ✍️ Edit if you want
 * ✅ Mark as Done
 * 🗑️ Or delete permanently
-* 🤖 Clean all finished tasks
+* 🤖 Clean all finished tasks (WIP #11)
 * 📤️ Export and import your tasks
-* 
 
 ## Roadmap 
 
