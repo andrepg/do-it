@@ -20,7 +20,8 @@
 
 const { GObject, Adw, Gio } = imports.gi;
 
-import { get_setting_int, get_setting_bool, set_setting_int } from "../utils/application.js";
+import { get_setting_int, set_setting_int } from "../utils/application.js";
+import { export_database } from "../utils/export.js";
 import { TaskListStore } from "../utils/list-store.js";
 import { CreateTaskList } from "./task-list.js";
 
@@ -75,7 +76,10 @@ export const TasksWindow = GObject.registerClass(
         this._task_new_entry.grab_focus()
       });
 
-      this.add_action(newTaskAction);
+      const action_export_database = new Gio.SimpleAction({ name: 'export_database' });
+      action_export_database.connect('activate', export_database);
+
+      this.add_action(action_export_database);
     }
 
     manageWindowSettings() {
@@ -86,10 +90,10 @@ export const TasksWindow = GObject.registerClass(
       this.set_default_size(width, height)
 
       this.connect('close-request', () => {
-          const [width, height] = this.get_default_size();
-          set_setting_int('window-width', width);
-          set_setting_int('window-height', height);
-          return false; // permite continuar o fechamento
+        const [width, height] = this.get_default_size();
+        set_setting_int('window-width', width);
+        set_setting_int('window-height', height);
+        return false; // permite continuar o fechamento
       });
     }
 

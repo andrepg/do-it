@@ -109,7 +109,7 @@
   <menu id="primary_menu">
     <section>
       <item>
-        <attribute name="action">app.export-db</attribute>
+        <attribute name="action">win.export_database</attribute>
         <attribute name="label" translatable="yes">_Export Database</attribute>
       </item>
     </section>
