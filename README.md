@@ -32,7 +32,7 @@ essential, assembling the application core:
 * ✍️ Edit if you want
 * ✅ Mark as Done
 * 🗑️ Or delete permanently
-* 🤖 Clean all finished tasks (WIP #11)
+* 🤖 Clean all finished tasks (WIP [#11](https://github.com/andrepg/do-it/issues/11))
 * 📤️ Export and import your tasks
 
 ## Roadmap 

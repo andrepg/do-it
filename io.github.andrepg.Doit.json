@@ -41,8 +41,10 @@
             "builddir" : true,            
             "sources" : [
                 {
-                    "type" : "dir",
-                    "path" : "./"
+                    "type" : "git",
+                    "path" : "https://github.com/andrepg/do-it.git",
+                    "tag": "v0.1.1",
+                    "commit": "e6d12b0d8916c0d06c55f8daecdb741843e0c0c5",
                 }
             ],
             "config-opts" : [
