@@ -20,8 +20,7 @@
 
 const { GObject, Adw, Gio } = imports.gi;
 
-import { get_setting_int, set_setting_int } from "../utils/application.js";
-import { export_database, import_database } from "../utils/backup.js";
+import { get_setting_int, get_setting_bool, set_setting_int } from "../utils/application.js";
 import { TaskListStore } from "../utils/list-store.js";
 import { CreateTaskList } from "./task-list.js";
 
@@ -51,46 +50,60 @@ export const TasksWindow = GObject.registerClass(
       this._list_store = new TaskListStore();
       this._list_store.load()
 
-      this.setup_window_actions()
+      // Connect our main New Task button event with task creation
+      this.bind_window_actions()
+      this.bind_buttons_actions()
 
+      // Atalho de teclado
       application.set_accels_for_action('win.new_task', ['<Control>n']);
+      application.set_accels_for_action('win.purge_deleted_tasks', ['<Control>d']);
 
       this._list_flow_box.append(
         CreateTaskList(this._list_store)
       );
 
-      this.setup_window_size()
+      this.manage_window_settings()
     }
 
-    setup_window_actions() {
+    bind_buttons_actions() {
       this._task_new_entry.connect("activate", this.createTask.bind(this));
-      this._button_new_task.connect("clicked", this._task_new_entry.grab_focus)
 
-      const action_new_task = new Gio.SimpleAction({ name: 'new_task' });
-      const action_import_database = new Gio.SimpleAction({ name: 'import_database' });
-      const action_export_database = new Gio.SimpleAction({ name: 'export_database' });
-
-      action_new_task.connect('activate', () => this._task_new_entry.grab_focus());
-      action_export_database.connect('activate', () => export_database(this));
-      action_import_database.connect('activate', () => import_database(this));
-
-      this.add_action(action_new_task);
-      this.add_action(action_export_database);
-      this.add_action(action_import_database);
+      this._button_new_task.connect("clicked", () =>
+        this._task_new_entry.grab_focus()
+      )
     }
 
-    setup_window_size() {
+    bind_window_actions() {
+      const new_task_action = new Gio.SimpleAction({ name: 'new_task' });
+      new_task_action.connect('activate', () => {
+        this._task_new_entry.grab_focus()
+      });
+
+      const purge_deleted_tasks = new Gio.SimpleAction({ name: 'purge_deleted_tasks' });
+      purge_deleted_tasks.connect('activate', () => {
+        console.log("Asked for purge old tasks");
+      });
+
+      this.add_action(new_task_action);
+      this.add_action(purge_deleted_tasks);
+    }
+
+    manage_window_settings() {
+      // Restaurar tamanho
       const width = get_setting_int('window-width');
       const height = get_setting_int('window-height');
-
+      const maximized = get_setting_bool('window-maximized');
+      
       this.set_default_size(width, height)
+      
 
       this.connect('close-request', () => {
+        console.log("Saving window position")
         const [width, height] = this.get_default_size();
         set_setting_int('window-width', width);
         set_setting_int('window-height', height);
         return false; // permite continuar o fechamento
-      });
+      });      
     }
 
 
