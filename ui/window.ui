@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="UTF-8"?>
+<?xml version='1.0' encoding='UTF-8'?>
 <!-- Created with Cambalache 0.96.1 -->
 <interface>
   <!-- interface-name window.ui -->
@@ -73,6 +73,7 @@
                     </child>
                     <child>
                       <object class="GtkBox" id="list_flow_box">
+                        <property name="homogeneous">True</property>
                         <property name="margin-bottom">12</property>
                         <property name="margin-end">12</property>
                         <property name="margin-start">12</property>
@@ -109,6 +110,13 @@
   <menu id="primary_menu">
     <section>
       <item>
+        <attribute name="action">win.purge_deleted_tasks</attribute>
+        <attribute name="label">Purge deleted</attribute>
+      </item>
+    </section>
+    <section>
+      <attribute name="label">Backup</attribute>
+      <item>
         <attribute name="action">win.export_database</attribute>
         <attribute name="icon">document-save-symbolic</attribute>
         <attribute name="label" translatable="yes">_Export Database</attribute>
@@ -131,4 +139,3 @@
     </section>
   </menu>
 </interface>
-

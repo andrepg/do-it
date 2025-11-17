@@ -13,6 +13,7 @@
     <property name="margin-start">8</property>
     <property name="margin-top">8</property>
     <property name="selection-mode">none</property>
+    <property name="show-separators">True</property>
     <property name="valign">start</property>
   </template>
 </interface>
