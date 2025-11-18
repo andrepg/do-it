@@ -90,20 +90,16 @@ export const TasksWindow = GObject.registerClass(
     }
 
     manage_window_settings() {
-      // Restaurar tamanho
-      const width = get_setting_int('window-width');
-      const height = get_setting_int('window-height');
-      const maximized = get_setting_bool('window-maximized');
-      
-      this.set_default_size(width, height)
-      
+      this.set_default_size(
+        get_setting_int('window-width'),
+        get_setting_int('window-height')
+      )
 
       this.connect('close-request', () => {
         const [width, height] = this.get_default_size();
         set_setting_int('window-width', width);
         set_setting_int('window-height', height);
-        return false; // permite continuar o fechamento
-      });      
+      });
     }
 
 
