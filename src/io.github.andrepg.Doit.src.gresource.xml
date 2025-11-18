@@ -8,10 +8,10 @@
     <file>utils/list-store.js</file>
     <file>utils/application.js</file>
     <file>utils/backup.js</file>
+    <file>utils/log-manager.js</file>
 
     <file>ui-handler/window.js</file>
     <file>ui-handler/task.js</file>
     <file>ui-handler/task-list.js</file>
   </gresource>
 </gresources>
-
