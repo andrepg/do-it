@@ -1,6 +1,7 @@
 import GObject from "gi://GObject";
 import Adw from "gi://Adw";
 import { getTaskIcon } from "../static.js";
+import { log } from "../utils/log-manager.js";
 
 
 const TaskProperties = {
@@ -104,6 +105,8 @@ export const Task = GObject.registerClass(
     finish_task(checkbox) {
       this._update_interface()
 
+      log("task", "Task finished")
+
       this._notify(checkbox.get_active()
         ? _("%s marked as finished").format(this.get_text())
         : _("%s marked as not finished").format(this.get_text())
@@ -112,12 +115,12 @@ export const Task = GObject.registerClass(
       this.emit('task-updated', this)
     }
 
-    delete_task() {
-      console.log("[task] Deleting task")
-
+    delete_task() {      
       this._deleted = this._deleted == "" ? Date.now().toString() : "";
-
+      
       this._update_interface()
+
+      log("task", "Task deleted")
 
       this._notify(_("Task %s deleted").format(this.get_text()))
 

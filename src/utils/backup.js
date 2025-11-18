@@ -1,6 +1,7 @@
 import { Persistence } from "./persistence.js";
 import Gtk from "gi://Gtk"
 import Gio from "gi://Gio"
+import { log } from "./log-manager.js";
 
 export async function export_database(parent) {
   const db = new Persistence();
@@ -15,12 +16,17 @@ export async function export_database(parent) {
 
   saveDialog.set_current_name("doit-tasks-export.json")
 
-  console.log("Bringing dialog on screen")
+  log("backup-manager", "Building export dialog");
+
   saveDialog.show();
 
   saveDialog.connect('response', (dialog, response) => {
+    log("backup-manager", "Receiving response");
+
     if (response == Gtk.ResponseType.ACCEPT) {
       const filePath = dialog.get_file().get_path();
+
+      log("backup-manager", `Storing database to ${filePath}`);
 
       try {
         const encoder = new TextEncoder("utf-8")
@@ -34,10 +40,12 @@ export async function export_database(parent) {
           null
         )
 
+        log("backup-manager", "File saved successfully")
+
         parent.display_message_toast(_("Database exported successfully!"));
       } catch (e) {
         parent.display_message_toast(_("Failed to export database!"))
-        console.log(e)
+        console.error(e)
       }
 
       dialog.destroy();

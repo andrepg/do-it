@@ -1,3 +1,5 @@
+import { log } from "../utils/log-manager.js";
+
 const { GObject, Gtk, Adw } = imports.gi;
 
 export const TaskList = GObject.registerClass(
@@ -13,7 +15,7 @@ export const TaskList = GObject.registerClass(
   _init() {
     super._init();
 
-    console.log('[task-list] Initializing task list');
+    log("task-list", "Initializing task list");
   }
 
   bind(store) {

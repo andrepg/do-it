@@ -22,6 +22,7 @@ const { GObject, Adw, Gio } = imports.gi;
 
 import { get_setting_int, get_setting_bool, set_setting_int } from "../utils/application.js";
 import { TaskListStore } from "../utils/list-store.js";
+import { log } from "../utils/log-manager.js";
 import { CreateTaskList } from "./task-list.js";
 
 export const TasksWindow = GObject.registerClass(
@@ -46,7 +47,7 @@ export const TasksWindow = GObject.registerClass(
     constructor(application) {
       super({ application });
 
-      console.log(`[task-list] Initializing list store`);
+      log("window", "Initializing application")
       this._list_store = new TaskListStore();
       this._list_store.load()
 
@@ -98,7 +99,6 @@ export const TasksWindow = GObject.registerClass(
       
 
       this.connect('close-request', () => {
-        console.log("Saving window position")
         const [width, height] = this.get_default_size();
         set_setting_int('window-width', width);
         set_setting_int('window-height', height);
@@ -115,14 +115,15 @@ export const TasksWindow = GObject.registerClass(
 
       if (title.trim() == "") return;
 
-      console.log("[window] Ask Pending list to add new task");
+      log("window - new task", "Ask Pending list to add new task");
 
       this._list_store.new_task(title.trim())
 
-      console.log("[window] Cleaning up interface and inputs");
+      log("window - new task", "Cleaning up interface and inputs");
       this._task_new_entry.set_text("");
 
-      console.log("[window] Dispatching user feedback");
+      log("window - new task", "Dispatching user feedback");
+
       this.display_message_toast(
         _("Task %s created").format(title.trim())
       );

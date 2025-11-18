@@ -3,6 +3,7 @@ import Gio from "gi://Gio"
 
 import { Persistence } from "./persistence.js";
 import { Task } from "../ui-handler/task.js";
+import { log } from "./log-manager.js";
 
 export const TaskListStore = GObject.registerClass({
   GTypeName: "TaskListStore",
@@ -44,14 +45,14 @@ export const TaskListStore = GObject.registerClass({
     );
 
     task.connect('task-updated', () => {
-      console.log("[list-store] Received task-updated signal.")
+      log("list-store", "Received task-updated signal.")
 
       this.sort(this._sort_done)
       this.persist()
     })
 
     task.connect('task-deleted', () => {
-      console.log("[list-store] Received task-deleted signal.")
+      log("list-store", "Received task-deleted signal.")
 
       this.sort(this._sort_done)
       this.persist()
@@ -62,7 +63,7 @@ export const TaskListStore = GObject.registerClass({
 
 
   persist() {
-    console.log("[persistence] Saving tasks to database");
+    log("list-store", "Saving tasks to database");
 
     (new Persistence).saveToFile(
       this.get_all().filter(item => !item.deleted)
@@ -70,7 +71,7 @@ export const TaskListStore = GObject.registerClass({
   }
 
   load() {
-    console.log("[persistence] Loading tasks from database")
+    log("list-store", "Loading tasks from database")
 
     const items = (new Persistence).readFromFile()
 
