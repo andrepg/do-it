@@ -11,7 +11,7 @@ export const TaskListStore = GObject.registerClass({
   InternalChildren: [],
   Signals: {},
 }, class TaskListStoreObject extends Gio.ListStore {
-  _sort_done = (item) => item.get_done();
+  _sort_done = (item) => item.get_done() && item.get_deleted !== null;
 
   get_all() {
     const items = [];
@@ -61,6 +61,13 @@ export const TaskListStore = GObject.registerClass({
     return task;
   }
 
+  purge_deleted() {
+    log("list-store", "Purging deleted entries")
+
+    this.persist()
+    this.remove_all()
+    this.load()
+  }
 
   persist() {
     log("list-store", "Saving tasks to database");

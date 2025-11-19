@@ -115,9 +115,9 @@ export const Task = GObject.registerClass(
       this.emit('task-updated', this)
     }
 
-    delete_task() {      
+    delete_task() {
       this._deleted = this._deleted == "" ? Date.now().toString() : "";
-      
+
       this._update_interface()
 
       log("task", "Task deleted")

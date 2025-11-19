@@ -82,7 +82,7 @@ export const TasksWindow = GObject.registerClass(
 
       const purge_deleted_tasks = new Gio.SimpleAction({ name: 'purge_deleted_tasks' });
       purge_deleted_tasks.connect('activate', () => {
-        console.log("Asked for purge old tasks");
+        this._list_store.purge_deleted()
       });
 
       this.add_action(new_task_action);
