@@ -20,8 +20,9 @@
 
 const { GObject, Adw, Gio } = imports.gi;
 
-import { get_setting_int, get_setting_bool, set_setting_int } from "../utils/application.js";
+import { get_setting_int, set_setting_int } from "../utils/application.js";
 import { TaskListStore } from "../utils/list-store.js";
+import { export_database, import_database } from "../utils/backup.js";
 import { log } from "../utils/log-manager.js";
 import { CreateTaskList } from "./task-list.js";
 
@@ -75,18 +76,27 @@ export const TasksWindow = GObject.registerClass(
     }
 
     bind_window_actions() {
-      const new_task_action = new Gio.SimpleAction({ name: 'new_task' });
-      new_task_action.connect('activate', () => {
+      const action_new_task = new Gio.SimpleAction({ name: 'new_task' });
+      action_new_task.connect('activate', () => {
         this._task_new_entry.grab_focus()
       });
 
-      const purge_deleted_tasks = new Gio.SimpleAction({ name: 'purge_deleted_tasks' });
-      purge_deleted_tasks.connect('activate', () => {
+      const action_purge_tasks = new Gio.SimpleAction({ name: 'purge_deleted_tasks' });
+      action_purge_tasks.connect('activate', () => {
         this._list_store.purge_deleted()
       });
 
-      this.add_action(new_task_action);
-      this.add_action(purge_deleted_tasks);
+      const action_import_database = new Gio.SimpleAction({ name: 'import_database' });
+      action_import_database.connect('activate', () => import_database(this));
+
+      const action_export_database = new Gio.SimpleAction({ name: 'export_database' });
+      action_export_database.connect('activate', () => export_database(this));
+
+      this.add_action(action_new_task);
+      this.add_action(action_purge_tasks);
+      this.add_action(action_export_database);
+      this.add_action(action_import_database);
+
     }
 
     manage_window_settings() {

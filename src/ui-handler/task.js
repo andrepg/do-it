@@ -78,7 +78,7 @@ export const Task = GObject.registerClass(
 
       this.set_tooltip_text(disabled
         ? _("Items finished or deleted cannot be changed.")
-        : ""
+        : _("Delete task")
       );
 
       this._task_delete.set_icon_name(
@@ -94,7 +94,7 @@ export const Task = GObject.registerClass(
       return this._deleted;
     }
 
-    set_task_title(entry) {
+    set_task_title() {
       this._update_interface()
 
       this._notify(_("Task %s updated").format(this.get_text()))
@@ -107,10 +107,11 @@ export const Task = GObject.registerClass(
 
       log("task", "Task finished")
 
-      this._notify(checkbox.get_active()
-        ? _("%s marked as finished").format(this.get_text())
-        : _("%s marked as not finished").format(this.get_text())
-      )
+      const message = checkbox.get_active()
+        ? _("%s marked as finished")
+        : _("%s marked as not finished")
+
+      this._notify(message.format(this.get_text()))
 
       this.emit('task-updated', this)
     }
@@ -122,7 +123,11 @@ export const Task = GObject.registerClass(
 
       log("task", "Task deleted")
 
-      this._notify(_("Task %s deleted").format(this.get_text()))
+      const message = this._deleted
+        ? _("Task %s deleted")
+        : _("Task %s restored")
+
+      this._notify(message.format(this.get_text()))
 
       this.emit('task-deleted', this)
     }

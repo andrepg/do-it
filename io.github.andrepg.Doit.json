@@ -42,9 +42,9 @@
             "sources" : [
                 {
                     "type" : "git",
-                    "path" : "https://github.com/andrepg/do-it.git",
+                    "url" : "https://github.com/andrepg/do-it",
                     "tag": "v0.1.1",
-                    "commit": "2a70b72695a3d490c40734304a461d075a100549",
+                    "commit": "2a70b72695a3d490c40734304a461d075a100549"
                 }
             ],
             "config-opts" : [

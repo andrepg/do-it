@@ -14,7 +14,7 @@ export function about_dialog_params() {
     application_name: "Do It",
     application_icon: 'io.github.andrepg.Doit',
     developer_name: 'André Paul Grandsire',
-    version: '0.1.1',
+    version: pkg.version,
     developers: [
       'André Paul Grandsire'
     ],

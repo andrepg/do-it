@@ -33,8 +33,8 @@ export const DoitApplication = GObject.registerClass(
     constructor() {
       super({
         application_id: get_application_id(),
-        flags: Gio.ApplicationFlags.DEFAULT_FLAGS,
         resource_base_path: get_resource_path(),
+        flags: Gio.ApplicationFlags.DEFAULT_FLAGS,
       });
 
       this.setupAboutDialogAction();
@@ -46,6 +46,7 @@ export const DoitApplication = GObject.registerClass(
 
       show_about_action.connect('activate', _ => {
         const aboutDialog = new Adw.AboutDialog(about_dialog_params());
+
         aboutDialog.present(this.active_window);
       });
 
