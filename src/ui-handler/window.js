@@ -68,7 +68,7 @@ export const TasksWindow = GObject.registerClass(
     }
 
     bind_buttons_actions() {
-      this._task_new_entry.connect("activate", this.createTask.bind(this));
+      this._task_new_entry.connect("activate", this.create_task.bind(this));
 
       this._button_new_task.connect("clicked", () =>
         this._task_new_entry.grab_focus()
@@ -77,26 +77,20 @@ export const TasksWindow = GObject.registerClass(
 
     bind_window_actions() {
       const action_new_task = new Gio.SimpleAction({ name: 'new_task' });
-      action_new_task.connect('activate', () => {
-        this._task_new_entry.grab_focus()
-      });
+      action_new_task.connect('activate', () => this._task_new_entry.grab_focus());
+      this.add_action(action_new_task);
 
       const action_purge_tasks = new Gio.SimpleAction({ name: 'purge_deleted_tasks' });
-      action_purge_tasks.connect('activate', () => {
-        this._list_store.purge_deleted()
-      });
+      action_purge_tasks.connect('activate', () => this._list_store.purge_deleted());
+      this.add_action(action_purge_tasks);
 
       const action_import_database = new Gio.SimpleAction({ name: 'import_database' });
       action_import_database.connect('activate', () => import_database(this));
-
-      const action_export_database = new Gio.SimpleAction({ name: 'export_database' });
-      action_export_database.connect('activate', () => export_database(this));
-
-      this.add_action(action_new_task);
-      this.add_action(action_purge_tasks);
-      this.add_action(action_export_database);
       this.add_action(action_import_database);
 
+      const action_export_database = new Gio.SimpleAction({ name: 'export_database' });
+      this.add_action(action_export_database);
+      action_export_database.connect('activate', () => export_database(this));
     }
 
     manage_window_settings() {
@@ -116,7 +110,7 @@ export const TasksWindow = GObject.registerClass(
     /**
      * Add a new task to pending store and persist on disk
      */
-    createTask() {
+    create_task() {
       const title = this._task_new_entry.get_text();
 
       if (title.trim() == "") return;
