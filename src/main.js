@@ -45,7 +45,7 @@ export const DoitApplication = GObject.registerClass(
       const show_about_action = new Gio.SimpleAction({ name: 'about' });
 
       show_about_action.connect('activate', _ => {
-        const aboutDialog = new Adw.AboutDialog(about_dialog_params());
+        const aboutDialog = new Adw.AboutDialog(about_dialog_params);
 
         aboutDialog.present(this.active_window);
       });
