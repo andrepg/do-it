@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: io.github.andrepg.Doit\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2025-11-09 14:10-0300\n"
+"POT-Creation-Date: 2025-12-24 12:28-0300\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -17,86 +17,129 @@ msgstr ""
 "Content-Type: text/plain; charset=CHARSET\n"
 "Content-Transfer-Encoding: 8bit\n"
 
-#: src/ui/help-overlay.ui:11
-msgctxt "shortcut window"
-msgid "General"
+#. Translators: Replace "translator-credits" with your
+#. name/username, and optionally an email or URL.
+#: src/main.js:62
+msgid "translators-credits"
 msgstr ""
 
-#: src/ui/help-overlay.ui:14
-msgctxt "shortcut window"
-msgid "Show Shortcuts"
-msgstr ""
-
-#: src/ui/help-overlay.ui:20
-msgctxt "shortcut window"
-msgid "Quit"
-msgstr ""
-
-#: src/ui/task.ui:14
-msgid "Description"
-msgstr ""
-
-#: src/ui/window.ui:22
-msgid "Main Menu"
-msgstr ""
-
-#: src/ui/window.ui:44
-msgid "What do you need to do?"
-msgstr ""
-
-#: src/ui/window.ui:69
-msgid "Play your day wisely and accomplish all"
-msgstr ""
-
-#: src/ui/window.ui:70
-msgid "Yours tasks"
-msgstr ""
-
-#: src/ui/window.ui:88
-msgid "<small>Deleted items will be discarded when the app closes.</small>"
-msgstr ""
-
-#: src/ui/window.ui:107
-msgid "Tasks"
-msgstr ""
-
-#: src/ui/window.ui:113
-msgid "_Preferences"
-msgstr ""
-
-#: src/ui/window.ui:119
-msgid "_Keyboard Shortcuts"
-msgstr ""
-
-#: src/ui/window.ui:123
-msgid "_About Do It"
-msgstr ""
-
-#: src/ui-handler/task.js:79
+#: src/ui-handler/task.js:80
 msgid "Items finished or deleted cannot be changed."
 msgstr ""
 
-#: src/ui-handler/task.js:99
+#: src/ui-handler/task.js:81
+msgid "Delete task"
+msgstr ""
+
+#: src/ui-handler/task.js:100
 #, javascript-format
 msgid "Task %s updated"
 msgstr ""
 
-#: src/ui-handler/task.js:108
+#: src/ui-handler/task.js:111
 #, javascript-format
 msgid "%s marked as finished"
 msgstr ""
 
-#: src/ui-handler/task.js:109
+#: src/ui-handler/task.js:112
 #, javascript-format
 msgid "%s marked as not finished"
 msgstr ""
 
-#: src/ui-handler/task.js:122
+#: src/ui-handler/task.js:127
 #, javascript-format
 msgid "Task %s deleted"
 msgstr ""
 
-#: src/ui-handler/window.js:114
+#: src/ui-handler/task.js:128
+#, javascript-format
+msgid "Task %s restored"
+msgstr ""
+
+#: src/ui-handler/window.js:128
 #, javascript-format
 msgid "Task %s created"
+msgstr ""
+
+#: src/utils/backup.js:11
+msgid "Export database"
+msgstr ""
+
+#: src/utils/backup.js:45
+msgid "Database exported successfully!"
+msgstr ""
+
+#: src/utils/backup.js:47
+msgid "Failed to export database!"
+msgstr ""
+
+#: src/utils/backup.js:58
+msgid "Import Task Database"
+msgstr ""
+
+#: src/utils/backup.js:65
+msgid "JSON Files"
+msgstr ""
+
+#: src/utils/backup.js:85
+msgid "Database imported successfully"
+msgstr ""
+
+#: src/utils/backup.js:87 src/utils/backup.js:88
+msgid "Failed to import database!"
+msgstr ""
+
+#: ui/help-overlay.ui:11
+msgctxt "shortcut window"
+msgid "General"
+msgstr ""
+
+#: ui/help-overlay.ui:14
+msgctxt "shortcut window"
+msgid "Show Shortcuts"
+msgstr ""
+
+#: ui/help-overlay.ui:20
+msgctxt "shortcut window"
+msgid "Quit"
+msgstr ""
+
+#: ui/task.ui:14
+msgid "Description"
+msgstr ""
+
+#: ui/window.ui:23
+msgid "Main Menu"
+msgstr ""
+
+#: ui/window.ui:45
+msgid "What do you need to do?"
+msgstr ""
+
+#: ui/window.ui:71
+msgid "Play your day wisely and accomplish all"
+msgstr ""
+
+#: ui/window.ui:72
+msgid "Yours tasks"
+msgstr ""
+
+#: ui/window.ui:91
+msgid "<small>Deleted items will be discarded when the app closes.</small>"
+msgstr ""
+
+#: ui/window.ui:110
+msgid "Tasks"
+msgstr ""
+
+#: ui/window.ui:124
+msgid "_Export Database"
+msgstr ""
+
+#: ui/window.ui:135
+msgid "_Keyboard Shortcuts"
+msgstr ""
+
+#: ui/window.ui:139
+msgid "_About Do It"
 msgstr ""

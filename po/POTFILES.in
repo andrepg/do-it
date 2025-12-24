@@ -1,16 +1,22 @@
+#
 # List of source files containing translatable strings.
 # Please keep this file sorted alphabetically.
+#
+
+# Main application files
 src/main.js
 src/static.js
 
-src/ui/help-overlay.ui
-src/ui/task.ui
-src/ui/task-list.ui
-src/ui/window.ui
-
+# Interface handlers
 src/ui-handler/task.js
 src/ui-handler/task-list.js
 src/ui-handler/window.js
 
+# Utils and other common
 src/utils/backup.js
 
+# Interface declarations
+ui/help-overlay.ui
+ui/task.ui
+ui/task-list.ui
+ui/window.ui
