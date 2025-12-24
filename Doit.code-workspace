@@ -6,22 +6,39 @@
 	],
 	"settings": {
 		"editor.fontFamily": "'0xProto Nerd Font'",
+		"editor.fontSize": 12,
+		"terminal.integrated.fontSize": 12,
 		"files.watcherExclude": {
 			"**/.git/objects/**": true,
 			"**/.git/subtree-cache/**": true,
 			"**/.hg/store/**": true,
 			".flatpak/**": true,
+			"_build-**/**": true,
 			"_build/**": true
 		},
 		"files.exclude": {
 			"**/_build": true,
-			"**/.flatpak": true
+			"**/_build-*/**": true,
+			"**/_repo-*/**": true,
+			"**/.build/**": true,
+			"**/.flatpak": true,
+			"**/.flatpak-**/**": true
 		},
 		"editor.formatOnPaste": true,
 		"editor.autoIndentOnPaste": true,
 		"terminal.integrated.fontLigatures.enabled": true,
 		"cSpell.words": [
 			"andrepg"
-		]
+		],
+		"mesonbuild.buildFolder": "_build",
+		"mesonbuild.configureOnOpen": false,
+		"mesonbuild.linting.enabled": true,
+		"mesonbuild.selectRootDir": true,
+		"mesonbuild.downloadLanguageServer": true,
+		"mesonbuild.formatting.enabled": true,
+		"json.schemas": [
+
+		],
+		"mesonbuild.mesonPath": "${workspaceFolder}/.flatpak/meson.sh",
 	}
 }
