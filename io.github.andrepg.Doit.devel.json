@@ -1,5 +1,5 @@
 {
-    "$schema": "./.vscode/schemas/flatpak-manifest.schema.json",
+    "$schema" : "./.vscode/schemas/flatpak-manifest.schema.json",
     "id" : "io.github.andrepg.Doit.Devel",
     "tags" : [
         "tasks",
@@ -40,7 +40,7 @@
         {
             "name" : "Doit",
             "buildsystem" : "meson",
-            "builddir" : true,            
+            "builddir" : true,
             "sources" : [
                 {
                     "type" : "dir",
