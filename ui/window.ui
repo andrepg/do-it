@@ -1,5 +1,5 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<!-- Created with Cambalache 0.96.1 -->
+<?xml version='1.0' encoding='UTF-8'?>
+<!-- Created with Cambalache 0.96.3 -->
 <interface>
   <!-- interface-name window.ui -->
   <requires lib="Adw" version="1.7"/>
@@ -16,6 +16,7 @@
           <object class="AdwHeaderBar">
             <child type="end">
               <object class="GtkMenuButton">
+                <property name="focusable">True</property>
                 <property name="icon-name">open-menu-symbolic</property>
                 <property name="menu-model">primary_menu</property>
                 <property name="primary">True</property>
@@ -52,6 +53,7 @@
           <object class="AdwToastOverlay" id="toast_overlay">
             <child>
               <object class="GtkScrolledWindow" id="main_window">
+                <property name="focusable">False</property>
                 <property name="min-content-height">200</property>
                 <child>
                   <object class="GtkBox">
@@ -139,4 +141,3 @@
     </section>
   </menu>
 </interface>
-
