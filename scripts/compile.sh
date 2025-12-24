@@ -2,7 +2,7 @@
 set -euo pipefail
 
 MANIFEST="${1:?Use: compile.sh <manifest-file.json>}"
-BUILD_DIR=".build"
+BUILD_DIR="_build"
 
 echo "====> Cleaning build directory"
 rm -rf .flatpak-builder/build/*
