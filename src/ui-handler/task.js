@@ -54,19 +54,24 @@ export const Task = GObject.registerClass(
     _init(taskId = 0, title = "", done = false, deleted = "") {
       super._init();
 
-      this._id = taskId;
-      this._deleted = deleted;
-
       this.set_text(title)
-      this._task_done.set_active(done)
 
+      this._id = taskId;
+      this._deleted = deleted;     
+      this._task_done.set_active(done)
+      
+      this._connect_events();
+      this._update_interface();
+    }
+
+    _connect_events() {
       this.connect_after("apply", this.set_task_title.bind(this))
+
+      this.connect_after("entry-activated", () => { log("task", "Task entry activated"); })
 
       this._task_done.connect("toggled", this.finish_task.bind(this))
 
       this._task_delete.connect("clicked", this.delete_task.bind(this));
-
-      this._update_interface();
     }
 
     _update_interface() {
@@ -81,9 +86,9 @@ export const Task = GObject.registerClass(
         : _("Delete task")
       );
 
-      this._task_delete.set_icon_name(
-        getTaskIcon(this._deleted)
-      )
+      this._task_delete.set_icon_name(getTaskIcon(this._deleted))
+      this._task_delete.set_visible(true)
+
     }
 
     get_done() {
@@ -148,5 +153,36 @@ export const Task = GObject.registerClass(
         deleted: this.get_deleted(),
       };
     }
+
+    // _set_state(updates) {
+    //   Object.assign(this._state, updates);
+    //   this._update_delete_visibility();
+    // }
+
+    // _update_state(hovered, focused) {
+    //   this._state.hovered = hovered;
+    //   this._state.focused = focused;
+    //   this._update_delete_visibility();
+    // }
+
+    // _on_focus_in() {
+    //   this._update_state(this._state.hovered, true);
+    // }
+
+    // _on_focus_out() {
+    //   this._update_state(this._state.hovered, false);
+    // }
+
+    // _on_enter() {
+    //   this._update_state(true, this._state.focused);
+    // }
+
+    // _on_leave() {
+    //   this._update_state(false, this._state.focused);
+    // }
+
+    // _update_delete_visibility() {
+    //   this._task_delete.visible = this._state.hovered || this._state.focused;
+    // }
   },
 );

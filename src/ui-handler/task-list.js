@@ -1,6 +1,6 @@
 import { log } from "../utils/log-manager.js";
 
-const { GObject, Gtk, Adw } = imports.gi;
+const { GObject, Gtk } = imports.gi;
 
 export const TaskList = GObject.registerClass(
   {
@@ -31,9 +31,10 @@ export const CreateTaskList = (listStore) => {
   _task_list.bind(listStore)
 
   const builder = Gtk.Builder.new_from_resource('/io/github/andrepg/Doit/ui/empty_tasks.ui')
-  const placeholder = builder.get_object('ListEmptyBox');
 
-  _task_list.set_placeholder(placeholder)
+  _task_list.set_placeholder(
+    builder.get_object('ListEmptyBox')
+  )
 
   return _task_list;
 }
