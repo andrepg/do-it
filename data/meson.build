@@ -1,48 +1,48 @@
+## Declare programs used beyond import
+appstreamcli = find_program('appstreamcli', required: true, disabler: true)
+compile_schemas = find_program('glib-compile-schemas', required: true, disabler: true)
+desktop_utils = find_program('desktop-file-validate', required: true, disabler: true)
+configuration_data = configuration_data()
+
+# Some variables used to compile and install files
+desktop_file_name = application_id + '.desktop'
+service_file_name = application_id + '.service'
+metainfo_file_name = application_id + '.metainfo.xml'
+gschema_file_name = application_id + '.gschema.xml'
+
 desktop_file = i18n.merge_file(
-        input: 'io.github.andrepg.Doit.desktop.in',
-       output: 'io.github.andrepg.Doit.desktop',
+        input: desktop_file_name + '.in',
+       output: desktop_file_name,
          type: 'desktop',
        po_dir: meson.project_source_root() / 'po',
       install: true,
-  install_dir: get_option('datadir') / 'applications'
+  install_dir: application_datadir / 'applications'
 )
-
-desktop_utils = find_program('desktop-file-validate', required: false)
-if desktop_utils.found()
-  test('Validate desktop file', desktop_utils, args: [desktop_file])
-endif
 
 appstream_file = i18n.merge_file(
-        input: 'io.github.andrepg.Doit.metainfo.xml.in',
-       output: 'io.github.andrepg.Doit.metainfo.xml',
+        input: metainfo_file_name + '.in',
+       output: metainfo_file_name,
        po_dir: meson.project_source_root() / 'po',
       install: true,
-  install_dir: get_option('datadir') / 'metainfo'
+  install_dir: application_datadir / 'metainfo'
 )
 
-appstreamcli = find_program('appstreamcli', required: false, disabler: true)
-test('Validate appstream file', appstreamcli,
-     args: ['validate', '--no-net', '--explain', appstream_file])
+# Install data schema
+install_data(gschema_file_name, install_dir: application_datadir / 'glib-2.0' / 'schemas')
 
-install_data('io.github.andrepg.Doit.gschema.xml',
-  install_dir: get_option('datadir') / 'glib-2.0' / 'schemas'
-)
+## Test mandatory schemas to publish on Flatpak/Flathub
+test('Validate desktop file', desktop_utils, args: [desktop_file])
+test('Validate appstream file', appstreamcli, args: ['validate', '--no-net', '--explain', appstream_file])
+test('Validate schema file', compile_schemas, args: ['--strict', '--dry-run', meson.current_source_dir()])
 
-compile_schemas = find_program('glib-compile-schemas', required: false, disabler: true)
-test('Validate schema file',
-     compile_schemas,
-     args: ['--strict', '--dry-run', meson.current_source_dir()])
-
-
-service_conf = configuration_data()
-service_conf.set('bindir', get_option('prefix') / get_option('bindir'))
+## Configure app services using service file
+configuration_data.set('bindir', get_option('prefix') / get_option('bindir'))
 configure_file(
-  input: 'io.github.andrepg.Doit.service.in',
-  output: 'io.github.andrepg.Doit.service',
-  configuration: service_conf,
-  install_dir: get_option('datadir') / 'dbus-1' / 'services'
+  input: service_file_name + '.in',
+  output: service_file_name,
+  configuration: configuration_data,
+  install_dir: application_datadir / 'dbus-1' / 'services'
 )
 
 # Call meson.build on icons subdirectory
 subdir('icons')
-
