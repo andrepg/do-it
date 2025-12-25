@@ -57,9 +57,9 @@ export const Task = GObject.registerClass(
       this.set_text(title)
 
       this._id = taskId;
-      this._deleted = deleted;     
+      this._deleted = deleted;
       this._task_done.set_active(done)
-      
+
       this._connect_events();
       this._update_interface();
     }
@@ -78,17 +78,18 @@ export const Task = GObject.registerClass(
       const disabled = this.get_done() || this.get_deleted() !== '';
 
       this.set_opacity(disabled ? 0.5 : 1)
-
       this.set_editable(!disabled)
+      this.set_tooltip_text(disabled? _("Finished/deleted tasks can not be changed") : "");
 
-      this.set_tooltip_text(disabled
-        ? _("Items finished or deleted cannot be changed.")
-        : _("Delete task")
-      );
+      this._task_done.set_tooltip_text(
+        this.get_done() ? _("Mark task as unfinished") : _("Mark task as finished")
+      )
+
+      this._task_delete.set_tooltip_text(
+        this.get_deleted() ? _("Restore task") : _("Delete task")
+      )
 
       this._task_delete.set_icon_name(getTaskIcon(this._deleted))
-      this._task_delete.set_visible(true)
-
     }
 
     get_done() {

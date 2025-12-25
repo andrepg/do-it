@@ -27,7 +27,6 @@
         <property name="icon-name">user-trash-symbolic</property>
         <property name="margin-bottom">8</property>
         <property name="margin-top">8</property>
-        <property name="visible">False</property>
       </object>
     </child>
   </template>
