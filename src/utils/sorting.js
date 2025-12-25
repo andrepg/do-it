@@ -1,4 +1,4 @@
-import { log } from "./log-manager"
+import { log } from "./log-manager.js"
 
 /**
  * These are the available sorting modes for the task list. 
@@ -33,7 +33,7 @@ export const SortingStrategy = Object.freeze({
  * 
  * @param {string} mode Which type of strategy to use {from SortingStrategy enum}
  */
-export default function sortByCreationDate(mode = SortingStrategy.ASCENDING) {
+export function sortByCreationDate(mode = SortingStrategy.ASCENDING) {
     log("sorting", `Sorting by creation date in ${mode} order.`)
 }
 
@@ -42,7 +42,7 @@ export default function sortByCreationDate(mode = SortingStrategy.ASCENDING) {
  * 
  * @param {string} mode Which type of strategy to use {from SortingStrategy enum}
  */
-export default function sortByDoneStatus(mode = SortingStrategy.ASCENDING) {
+export function sortByDoneStatus(mode = SortingStrategy.ASCENDING) {
     const notDoneFirst = mode == SortingStrategy.ASCENDING;
 
     log("sorting", `Sorting by status (not done first: ${notDoneFirst}).`)
@@ -53,6 +53,6 @@ export default function sortByDoneStatus(mode = SortingStrategy.ASCENDING) {
  * 
  * @param {string} mode Which type of strategy to use {from SortingStrategy enum}
  */
-export default function sortByTitle(mode = SortingStrategy.ASCENDING) {
+export function sortByTitle(mode = SortingStrategy.ASCENDING) {
     log("sorting", `Sorting by title in ${mode} order.`)
 }

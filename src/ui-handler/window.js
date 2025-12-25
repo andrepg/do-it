@@ -25,6 +25,7 @@ import { TaskListStore } from "../utils/list-store.js";
 import { export_database, import_database } from "../utils/backup.js";
 import { log } from "../utils/log-manager.js";
 import { CreateTaskList } from "./task-list.js";
+import { SortingModes } from "../utils/sorting.js";
 
 export const TasksWindow = GObject.registerClass(
   {
@@ -51,9 +52,9 @@ export const TasksWindow = GObject.registerClass(
       { name: 'export_database', event: 'activate', callback: () => import_database(this) },
       { name: 'import_database', event: 'activate', callback: () => export_database(this) },
 
-      { name: 'sort_by_title', event: 'activate', callback: () => console.log("Sorting by title") },
-      { name: 'sort_by_status', event: 'activate', callback: () => console.log("Sorting by status") },
-      { name: 'sort_by_creation_date', event: 'activate', callback: () => console.log("Sorting by creation date") },
+      { name: 'sort_by_title', event: 'activate', callback: () => this._list_store.sort_list(SortingModes.BY_TITLE) },
+      { name: 'sort_by_status', event: 'activate', callback: () => this._list_store.sort_list(SortingModes.BY_STATUS) },
+      { name: 'sort_by_creation_date', event: 'activate', callback: () => this._list_store.sort_list(SortingModes.BY_DATE) },
     ]
 
     constructor(application) {
@@ -84,7 +85,8 @@ export const TasksWindow = GObject.registerClass(
     bind_window_actions() {
       for (const action of this.window_actions) {
         const gio_action = new Gio.SimpleAction({ name: action.name });
-        action.connect(target, callback);
+        gio_action.connect(action.event, action.callback)
+
         this.add_action(gio_action);
       }
     }
