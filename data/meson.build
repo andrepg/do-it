@@ -5,10 +5,10 @@ desktop_utils = find_program('desktop-file-validate', required: true, disabler: 
 configuration_data = configuration_data()
 
 # Some variables used to compile and install files
-desktop_file_name = application_id + '.desktop'
-service_file_name = application_id + '.service'
-metainfo_file_name = application_id + '.metainfo.xml'
-gschema_file_name = application_id + '.gschema.xml'
+desktop_file_name = application_name + '.desktop'
+service_file_name = application_name + '.service'
+metainfo_file_name = application_name + '.metainfo.xml'
+gschema_file_name = application_name + '.gschema.xml'
 
 desktop_file = i18n.merge_file(
         input: desktop_file_name + '.in',

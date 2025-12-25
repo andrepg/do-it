@@ -15,7 +15,7 @@ i18n = import('i18n')
 gnome = import('gnome')
 
 ## Then we set any global variables
-application_id = meson.project_name()
+application_name = meson.project_name()
 application_version = meson.project_version()
 application_suffix = get_option('development') == true ? '.Devel' : ''
 application_datadir = get_option('datadir')

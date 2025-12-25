@@ -35,8 +35,8 @@ src_res = gnome.compile_resources(application_id + '.src',
 )
 
 configure_file(
-  input: application_id +'.in',
-  output: application_id,
+  input: application_name +'.in',
+  output: application_name,
   configuration: application_configuration,
   install: true,
   install_dir: get_option('bindir')
