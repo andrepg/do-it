@@ -16,6 +16,7 @@ src/ui-handler/window.js
 src/utils/backup.js
 
 # Interface declarations
+ui/empty-list.ui
 ui/help-overlay.ui
 ui/task.ui
 ui/task-list.ui

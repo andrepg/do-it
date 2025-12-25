@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: io.github.andrepg.Doit\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2025-12-24 12:28-0300\n"
+"POT-Creation-Date: 2025-12-25 10:28-0300\n"
 "PO-Revision-Date: 2025-12-04 22:42-0300\n"
 "Last-Translator: André Paul Grandsire <andrepg@users.noreply.github.com>\n"
 "Language-Team: Portuguese\n"
@@ -25,35 +25,35 @@ msgstr ""
 msgid "translators-credits"
 msgstr ""
 
-#: src/ui-handler/task.js:80
+#: src/ui-handler/task.js:85
 msgid "Items finished or deleted cannot be changed."
 msgstr "Items finished or deleted cannot be changed."
 
-#: src/ui-handler/task.js:81
+#: src/ui-handler/task.js:86
 msgid "Delete task"
 msgstr ""
 
-#: src/ui-handler/task.js:100
+#: src/ui-handler/task.js:105
 #, javascript-format
 msgid "Task %s updated"
 msgstr "Task %s updated"
 
-#: src/ui-handler/task.js:111
+#: src/ui-handler/task.js:116
 #, javascript-format
 msgid "%s marked as finished"
 msgstr "%s marked as finished"
 
-#: src/ui-handler/task.js:112
+#: src/ui-handler/task.js:117
 #, javascript-format
 msgid "%s marked as not finished"
 msgstr "%s marked as not finished"
 
-#: src/ui-handler/task.js:127
+#: src/ui-handler/task.js:132
 #, javascript-format
 msgid "Task %s deleted"
 msgstr "Task %s deleted"
 
-#: src/ui-handler/task.js:128
+#: src/ui-handler/task.js:133
 #, fuzzy, javascript-format
 msgid "Task %s restored"
 msgstr "Tarefa %s atualizada"
@@ -91,6 +91,14 @@ msgstr ""
 msgid "Failed to import database!"
 msgstr ""
 
+#: ui/empty-list.ui:18
+msgid "📝 No tasks (yet) !"
+msgstr ""
+
+#: ui/empty-list.ui:24
+msgid "Try to add a new task on bottom bar."
+msgstr ""
+
 #: ui/help-overlay.ui:11
 msgctxt "shortcut window"
 msgid "General"
@@ -106,7 +114,7 @@ msgctxt "shortcut window"
 msgid "Quit"
 msgstr "Quit"
 
-#: ui/task.ui:14
+#: ui/task.ui:15
 msgid "Description"
 msgstr "Description"
 
