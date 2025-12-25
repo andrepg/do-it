@@ -4,6 +4,8 @@ import Gio from "gi://Gio"
 import { Persistence } from "./persistence.js";
 import { Task } from "../ui-handler/task.js";
 import { log } from "./log-manager.js";
+import { get_setting_string, set_setting_string } from "./application.js";
+import { get_sorting_algorithm, SortingModes, SortingStrategy } from "./sorting.js";
 
 export const TaskListStore = GObject.registerClass({
   GTypeName: "TaskListStore",
@@ -11,68 +13,59 @@ export const TaskListStore = GObject.registerClass({
   InternalChildren: [],
   Signals: {},
 }, class TaskListStoreObject extends Gio.ListStore {
-  _sort_done = (item) => item.get_done() && item.get_deleted !== null;
-
   get_all() {
-    const items = [];
+    const tasks = [];
 
     for (let index = 0; index < this.get_count(); index++) {
-      items.push(this.get_item(index).to_object());
+      tasks.push(this.get_item(index).to_object());
     }
 
-    return items;
+    return tasks;
   }
 
   get_count() {
     return this.get_n_items();
   }
 
-  new_task(title) {
-    const task = this._create_task(title)
-
-    this.append(task)
-    this.sort(this._sort_done)
-
-    this.persist()
-  }
-
-  _create_task(title, done = false, deleted = "", taskId = null) {
+  append_task({ title, done = false, deleted = "", taskId = null, created_at = null }) {
     const task = new Task(
       taskId ?? this.get_count() + 1,
       title,
       done,
-      deleted
+      deleted,
+      created_at,
     );
 
-    task.connect('task-updated', () => {
-      log("list-store", "Received task-updated signal.")
+    const _update_interface = (signal) => {
+      log("list-store", `Received ${signal} signal.`)
 
-      this.sort(this._sort_done)
-      this.persist()
-    })
+      this.sort(get_sorting_algorithm(SortingModes.BY_STATUS))
+      this.persist_store()
+    }
 
-    task.connect('task-deleted', () => {
-      log("list-store", "Received task-deleted signal.")
+    task.connect('task-updated', _update_interface.bind(this, 'task-updated'));
+    task.connect('task-deleted', _update_interface.bind(this, 'task-deleted'));
 
-      this.sort(this._sort_done)
-      this.persist()
-    })
+    // TODO : When finished our portability, this should reflect current sorting mode
+    this.insert_sorted(task, get_sorting_algorithm(SortingModes.BY_STATUS));
+  }
 
-    return task;
+  sort_list(sort_mode) {
+    log("list-store", `Sorting list by mode: ${sort_mode}`);
   }
 
   purge_deleted() {
     log("list-store", "Purging deleted entries")
 
-    this.persist()
+    this.persist_store()
     this.remove_all()
     this.load()
   }
 
-  persist() {
+  persist_store() {
     log("list-store", "Saving tasks to database");
 
-    (new Persistence).saveToFile(
+    (new Persistence).write_database(
       this.get_all().filter(item => !item.deleted)
     )
   }
@@ -80,17 +73,18 @@ export const TaskListStore = GObject.registerClass({
   load() {
     log("list-store", "Loading tasks from database")
 
-    const items = (new Persistence).readFromFile()
+    const tasks = (new Persistence).read_database()
 
-    items.forEach(item => {
-      const widget = this._create_task(
-        item.title,
-        item.done,
-        item.deleted,
-        item.taskId
-      )
+    tasks.forEach(item => {
+      const widget = this.append_task({
+        taskId: item.taskId,
+        title: item.title,
+        done: item.done,
+        created_at: item.created_at,
+        deleted_at: item.deleted_at,
+      })
 
-      this.insert_sorted(widget, this._sort_done)
+      log("list-store", `Loaded task ${item.title} (done: ${item.done}, deleted: ${item.deleted_at}, created_at: ${item.created_at})`)
     })
   }
 })

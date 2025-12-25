@@ -17,7 +17,7 @@ export class Persistence {
     this.databaseFilePath = this.databaseFile.get_path();
   }
 
-  createFileIfNotExists() {
+  create_database() {
     try {
       Gio.File.new_for_path(this.databaseDir).make_directory_with_parents(null);
     } catch { }
@@ -32,8 +32,8 @@ export class Persistence {
    *
    * @returns {Array} Returns the data read from the file.
    */
-  readFromFile() {
-    this.createFileIfNotExists();
+  read_database() {
+    this.create_database();
 
     const decoder = new TextDecoder('utf-8');
 
@@ -48,8 +48,8 @@ export class Persistence {
       : JSON.parse(file_content);
   }
 
-  saveToFile(data) {
-    this.createFileIfNotExists();
+  write_database(data) {
+    this.create_database();
 
     const encoder = new TextEncoder('utf-8');
     const file = encoder.encode(JSON.stringify(data));
