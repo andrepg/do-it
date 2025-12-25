@@ -2,7 +2,7 @@ gnome = import('gnome')
 
 application_configuration = configuration_data()
 
-application_configuration.set('APPLICATION_ID', application_id)
+application_configuration.set('APPLICATION_ID', application_name)
 application_configuration.set('PACKAGE_VERSION', meson.project_version())
 application_configuration.set('PACKAGE_NAME', meson.project_name())
 application_configuration.set('GJS', find_program('gjs').full_path())
@@ -27,8 +27,8 @@ application_configuration.set('resource_path', '/io/github/andrepg/Doit')
 pkgdatadir = get_option('datadir') / meson.project_name()
 gnome = import('gnome')
 
-src_res = gnome.compile_resources(application_id + '.src',
-  application_id + '.src.gresource.xml',
+src_res = gnome.compile_resources(application_name + '.src',
+  application_name + '.src.gresource.xml',
   gresource_bundle: true,
   install: true,
   install_dir: pkgdatadir,

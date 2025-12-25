@@ -33,12 +33,8 @@
 		"mesonbuild.buildFolder": "_build",
 		"mesonbuild.configureOnOpen": false,
 		"mesonbuild.linting.enabled": true,
-		"mesonbuild.selectRootDir": true,
 		"mesonbuild.downloadLanguageServer": true,
-		"mesonbuild.formatting.enabled": true,
-		"json.schemas": [
-
-		],
+		"mesonbuild.formatting.enabled": true,		
 		"mesonbuild.mesonPath": "${workspaceFolder}/.flatpak/meson.sh",
-	}
+	},
 }
