@@ -34,7 +34,81 @@
 		"mesonbuild.configureOnOpen": false,
 		"mesonbuild.linting.enabled": true,
 		"mesonbuild.downloadLanguageServer": true,
-		"mesonbuild.formatting.enabled": true,		
+		"mesonbuild.formatting.enabled": true,
 		"mesonbuild.mesonPath": "${workspaceFolder}/.flatpak/meson.sh",
 	},
+	"tasks": {
+		"version": "2.0.0",
+		"tasks": [
+			{
+				"command": "sh ${workspaceFolder}/scripts/update-pot-file.sh",
+				"label": "Update .pot file",
+				"detail": "Updates the translation template (.pot) file",
+				"group": "build",
+				"type": "shell",
+				"presentation": {
+					"clear": true,
+					"showReuseMessage": false
+				},
+				"runOptions": {
+					"instanceLimit": 1,
+					"instancePolicy": "terminateNewest"
+				},
+				"icon": {
+					"id": "symbol-text"
+				},	
+			},
+			{
+				"command": "sh ${workspaceFolder}/scripts/compile.sh ${input:manifest}",
+				"label": "Compile app",
+				"detail": "Compiles the application using given manifest",
+				"type": "shell",
+				"group": "build",
+				"presentation": {
+					"clear": true,
+					"showReuseMessage": false
+				},
+				"runOptions": {
+					"instanceLimit": 1,
+					"instancePolicy": "terminateNewest"
+				},
+				"icon": {
+					"id": "archive"
+				},
+			},
+			{
+				"command": "sh ${workspaceFolder}/scripts/run.sh ${input:manifest}",
+				"label": "Compile and run app",
+				"detail": "Runs the application using given manifest",
+				"type": "shell",
+				"dependsOn": [
+					"Compile app"
+				],
+				"group": "build",
+				"presentation": {
+					"clear": true,
+					"showReuseMessage": false
+				},
+				"runOptions": {
+					"instanceLimit": 1,
+					"instancePolicy": "terminateNewest"
+				},
+				"icon": {
+					"id": "play"
+				},
+			}
+		],
+		"inputs": [
+			{
+				"id": "manifest",
+				"type": "pickString",
+				"description": "Which manifest should be used to run the application?",
+				"default": "io.github.andrepg.Doit.devel.json",
+				"options": [
+					"io.github.andrepg.Doit.json",
+					"io.github.andrepg.Doit.devel.json",
+				],
+			}
+		],
+	}
 }
