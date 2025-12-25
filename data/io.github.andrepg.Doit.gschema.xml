@@ -3,20 +3,22 @@
 	<schema id="io.github.andrepg.Doit" path="/io/github/andrepg/Doit/">
 	  <key name="window-width" type="i">
       <default>800</default>
-      <summary>Largura da janela</summary>
+      <summary>Last known window width</summary>
     </key>
+
     <key name="window-height" type="i">
       <default>600</default>
-      <summary>Altura da janela</summary>
-    </key>
-    <key name="window-maximized" type="b">
-      <default>false</default>
-      <summary>Se a janela estava maximizada</summary>
+      <summary>Last known window height</summary>
     </key>
 
     <key name="last-sorting-mode" type="s">
       <default>by-date</default>
-      <summary>Modo de ordenação das tarefas</summary>
+      <summary>Last known sorting mode used</summary>
+    </key>
+
+    <key name="last-sorting-strategy" type="s">
+      <default>asc</default>
+      <summary>Last known sorting strategy used</summary>
     </key>
 	</schema>
 </schemalist>
