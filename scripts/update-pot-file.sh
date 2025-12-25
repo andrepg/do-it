@@ -5,16 +5,11 @@ set -euo pipefail
 # @see https://rmnvgr.gitlab.io/gtk4-gjs-book/application/translation/
 # @see https://docs.elementary.io/develop/writing-apps/our-first-app/translations
 
-cd $(pwd)
+echo "====> Generating POT template file"
+meson setup --reconfigure _build
+meson compile -C _build io.github.andrepg.Doit-pot
 
-echo "Building source code first"
-flatpak run --filesystem=host --command=meson org.gnome.Sdk/x86_64/49 setup --reconfigure _build
+echo "====> Generating PO language files"
+meson compile -C _build io.github.andrepg.Doit-update-po
 
-echo "Building POT template file"
-flatpak run --filesystem=host --command=meson org.gnome.Sdk/x86_64/49 compile -C _build io.github.andrepg.Doit-pot
-
-echo "Updating PO files to translation"
-flatpak run --filesystem=host --command=meson org.gnome.Sdk/x86_64/49 compile -C _build io.github.andrepg.Doit-update-po
-
-echo "Done."
-
+echo "====> Translation files generated."
