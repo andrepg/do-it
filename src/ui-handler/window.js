@@ -115,7 +115,8 @@ export const TasksWindow = GObject.registerClass(
 
       log("window - new task", "Ask Pending list to add new task");
 
-      this._list_store.new_task(title.trim())
+      this._list_store.append_task({ title: title.trim() });
+      this._list_store.persist_store();
 
       log("window - new task", "Cleaning up interface and inputs");
       this._task_new_entry.set_text("");

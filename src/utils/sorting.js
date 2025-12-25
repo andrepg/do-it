@@ -35,6 +35,8 @@ export const SortingStrategy = Object.freeze({
  */
 export function sortByCreationDate(mode = SortingStrategy.ASCENDING) {
     log("sorting", `Sorting by creation date in ${mode} order.`)
+
+    return (item) => item._created_at;
 }
 
 /**
@@ -44,8 +46,10 @@ export function sortByCreationDate(mode = SortingStrategy.ASCENDING) {
  */
 export function sortByDoneStatus(mode = SortingStrategy.ASCENDING) {
     const notDoneFirst = mode == SortingStrategy.ASCENDING;
-
+    
     log("sorting", `Sorting by status (not done first: ${notDoneFirst}).`)
+    
+    return (item) => item.get_done() && item.get_deleted !== null
 }
 
 /**
@@ -55,4 +59,20 @@ export function sortByDoneStatus(mode = SortingStrategy.ASCENDING) {
  */
 export function sortByTitle(mode = SortingStrategy.ASCENDING) {
     log("sorting", `Sorting by title in ${mode} order.`)
+
+    return (item) => item.get_title();
+}
+
+export function get_sorting_algorithm(mode = SortingModes.BY_DATE, strategy = SortingStrategy.ASCENDING) {       
+    switch (mode) {
+        case SortingModes.BY_DATE:
+            return sortByCreationDate(strategy);
+        case SortingModes.BY_STATUS:
+            return sortByDoneStatus(strategy);
+        case SortingModes.BY_TITLE:
+            return sortByTitle(strategy);
+        default:
+            log("sorting", `Unknown sorting mode: ${mode}. Defaulting to BY_DATE.`);
+            return sortByCreationDate(strategy);
+    }
 }
