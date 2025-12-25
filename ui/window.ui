@@ -26,7 +26,7 @@
             <child type="start">
               <object class="GtkButton" id="button_new_task">
                 <property name="icon-name">value-increase-symbolic</property>
-                <property name="tooltip-text">Add new task (Ctrl + N)</property>
+                <property name="tooltip-text" translatable="yes">Add new task (Ctrl + N)</property>
               </object>
             </child>
             <child type="start">
@@ -35,14 +35,14 @@
                 <property name="has-frame">False</property>
                 <property name="icon-name">mail-send-receive-symbolic</property>
                 <property name="menu-model">menu_sort_task</property>
-                <property name="tooltip-text">Sort tasks</property>
+                <property name="tooltip-text" translatable="yes">Sort tasks</property>
                 <child>
                   <menu id="menu_sort_task">
                     <item>
-                      <attribute name="label">Sort by title</attribute>
+                      <attribute name="label" translatable="yes">Sort by title</attribute>
                     </item>
                     <item>
-                      <attribute name="label">Sort by Creation</attribute>
+                      <attribute name="label" translatable="yes">Sort by Creation</attribute>
                     </item>
                   </menu>
                 </child>
@@ -133,11 +133,11 @@
       <item>
         <attribute name="action">win.purge_deleted_tasks</attribute>
         <attribute name="icon">user-trash-full-symbolic</attribute>
-        <attribute name="label">Purge deleted</attribute>
+        <attribute name="label" translatable="yes">Purge deleted</attribute>
       </item>
     </section>
     <section>
-      <attribute name="label">Backup</attribute>
+      <attribute name="label" translatable="yes">Backup</attribute>
       <item>
         <attribute name="action">win.export_database</attribute>
         <attribute name="icon">document-save-symbolic</attribute>
@@ -146,7 +146,7 @@
       <item>
         <attribute name="action">win.import_database</attribute>
         <attribute name="icon">document-send-symbolic</attribute>
-        <attribute name="label">_Import Database</attribute>
+        <attribute name="label" translatable="yes">_Import Database</attribute>
       </item>
     </section>
     <section>
