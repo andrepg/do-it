@@ -4,11 +4,12 @@
     <file>main.js</file>
     <file>static.js</file>
 
-    <file>utils/persistence.js</file>
-    <file>utils/list-store.js</file>
     <file>utils/application.js</file>
     <file>utils/backup.js</file>
+    <file>utils/list-store.js</file>
     <file>utils/log-manager.js</file>
+    <file>utils/persistence.js</file>
+    <file>utils/sorting.js</file>
 
     <file>ui-handler/window.js</file>
     <file>ui-handler/task.js</file>
