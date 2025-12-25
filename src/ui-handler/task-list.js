@@ -30,7 +30,8 @@ export const CreateTaskList = (listStore) => {
 
   _task_list.bind(listStore)
 
-  const builder = Gtk.Builder.new_from_resource('/io/github/andrepg/Doit/ui/empty_tasks.ui')
+  // TODO : Change to Application resource after migration to Meson custom ( ? )
+  const builder = Gtk.Builder.new_from_resource('/io/github/andrepg/Doit/ui/empty-list.ui')
 
   _task_list.set_placeholder(
     builder.get_object('ListEmptyBox')
