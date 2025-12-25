@@ -36,19 +36,6 @@
                 <property name="icon-name">mail-send-receive-symbolic</property>
                 <property name="menu-model">menu_sort_task</property>
                 <property name="tooltip-text">Sort tasks</property>
-                <child>
-                  <menu id="menu_sort_task">
-                    <item>
-                      <attribute name="label">Sort by Title</attribute>
-                    </item>
-                    <item>
-                      <attribute name="label">Sort by Creation</attribute>
-                    </item>
-                    <item>
-                      <attribute name="label">Sort by Status</attribute>
-                    </item>
-                  </menu>
-                </child>
               </object>
             </child>
           </object>
@@ -131,6 +118,20 @@
     <property name="default-width">440</property>
     <property name="title" translatable="yes">Tasks</property>
   </template>
+  <menu id="menu_sort_task">
+    <item>
+      <attribute name="action">win.sort_by_title</attribute>
+      <attribute name="label">Sort by Title</attribute>
+    </item>
+    <item>
+      <attribute name="action">win.sort_by_creation_date</attribute>
+      <attribute name="label">Sort by Creation</attribute>
+    </item>
+    <item>
+      <attribute name="action">win.sort_by_status</attribute>
+      <attribute name="label">Sort by Status</attribute>
+    </item>
+  </menu>
   <menu id="primary_menu">
     <section>
       <item>
