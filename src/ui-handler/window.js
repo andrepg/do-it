@@ -45,6 +45,17 @@ export const TasksWindow = GObject.registerClass(
     */
     _list_store;
 
+    window_actions = [
+      { name: 'new_task', event: 'activate', callback: () => this._task_new_entry.grab_focus() },
+      { name: 'purge_deleted_tasks', event: 'activate', callback: () => this._list_store.purge_deleted() },
+      { name: 'export_database', event: 'activate', callback: () => import_database(this) },
+      { name: 'import_database', event: 'activate', callback: () => export_database(this) },
+
+      { name: 'sort_by_title', event: 'activate', callback: () => console.log("Sorting by title") },
+      { name: 'sort_by_status', event: 'activate', callback: () => console.log("Sorting by status") },
+      { name: 'sort_by_creation_date', event: 'activate', callback: () => console.log("Sorting by creation date") },
+    ]
+
     constructor(application) {
       super({ application });
 
@@ -56,41 +67,26 @@ export const TasksWindow = GObject.registerClass(
       this.bind_window_actions()
       this.bind_buttons_actions()
 
-      // Atalho de teclado
+      // Shortcuts to purge and create a new task
       application.set_accels_for_action('win.new_task', ['<Control>n']);
       application.set_accels_for_action('win.purge_deleted_tasks', ['<Control>d']);
 
-      this._list_flow_box.append(
-        CreateTaskList(this._list_store)
-      );
+      this._list_flow_box.append(CreateTaskList(this._list_store));
 
       this.manage_window_settings()
     }
 
     bind_buttons_actions() {
       this._task_new_entry.connect("activate", this.create_task.bind(this));
-
-      this._button_new_task.connect("clicked", () =>
-        this._task_new_entry.grab_focus()
-      )
+      this._button_new_task.connect("clicked", () => this._task_new_entry.grab_focus())
     }
 
     bind_window_actions() {
-      const action_new_task = new Gio.SimpleAction({ name: 'new_task' });
-      action_new_task.connect('activate', () => this._task_new_entry.grab_focus());
-      this.add_action(action_new_task);
-
-      const action_purge_tasks = new Gio.SimpleAction({ name: 'purge_deleted_tasks' });
-      action_purge_tasks.connect('activate', () => this._list_store.purge_deleted());
-      this.add_action(action_purge_tasks);
-
-      const action_import_database = new Gio.SimpleAction({ name: 'import_database' });
-      action_import_database.connect('activate', () => import_database(this));
-      this.add_action(action_import_database);
-
-      const action_export_database = new Gio.SimpleAction({ name: 'export_database' });
-      this.add_action(action_export_database);
-      action_export_database.connect('activate', () => export_database(this));
+      for (const action of this.window_actions) {
+        const gio_action = new Gio.SimpleAction({ name: action.name });
+        action.connect(target, callback);
+        this.add_action(gio_action);
+      }
     }
 
     manage_window_settings() {
