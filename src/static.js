@@ -1,21 +1,28 @@
-const TASK_DELETE_ICON = {
+export const EntryRowSettings = {
+  enabled: {
+    opacity: 1,
+    editable: true,
+    markup: '%s',
+  },
+  disabled: {
+    opacity: 0.5,
+    editable: false,
+    markup: '<s>%s</s>'
+  }
+}
+
+export const TASK_DELETE_ICON = {
   default: "user-trash-symbolic",
   deleted: "rotation-allowed-symbolic"
 }
-
-export const TASK_DELETE_TOOLTIP = {}
-
-export const getTaskIcon = (deleted) => deleted !== ''
-  ? TASK_DELETE_ICON.deleted
-  : TASK_DELETE_ICON.default;
 
 /**
  * The SortingModeSchema holds our Schema Settings key to store
  * last preferred sort mode and strategy used
  */
 export const SortingModeSchema = Object.freeze({
-    strategy: 'last-sorting-strategy',
-    mode: 'last-sorting-mode',
+    STRATEGY: 'last-sorting-strategy',
+    MODE: 'last-sorting-mode',
 });
 
 /**

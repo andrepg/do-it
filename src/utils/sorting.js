@@ -57,8 +57,8 @@ function sortByTitle(strategy = SortingStrategy.ASCENDING) {
 }
 
 export function get_sorting_algorithm() {
-    const sort_mode = get_setting_string(SortingModeSchema.mode);
-    const sort_strategy = get_setting_string(SortingModeSchema.strategy);
+    const sort_mode = get_setting_string(SortingModeSchema.MODE);
+    const sort_strategy = get_setting_string(SortingModeSchema.STRATEGY);
 
     switch (sort_mode) {
         case SortingModes.BY_DATE:
@@ -75,12 +75,12 @@ export function get_sorting_algorithm() {
 
 export function set_sorting_algorithm(sorting_mode) {
     // First we get last known values to further logic
-    const last_sorting_mode = get_setting_string(SortingModeSchema.mode);
-    const last_sorting_strategy = get_setting_string(SortingModeSchema.strategy);
+    const last_sorting_mode = get_setting_string(SortingModeSchema.MODE);
+    const last_sorting_strategy = get_setting_string(SortingModeSchema.STRATEGY);
 
     // Then we set our mode to current and strategy to ASCENDING by default
-    set_setting_string(SortingModeSchema.mode, sorting_mode);
-    set_setting_string(SortingModeSchema.strategy, SortingStrategy.ASCENDING);
+    set_setting_string(SortingModeSchema.MODE, sorting_mode);
+    set_setting_string(SortingModeSchema.STRATEGY, SortingStrategy.ASCENDING);
 
     // If the user is just changing current strategy, we must act accordingly
     if (sorting_mode == last_sorting_mode) {
@@ -88,6 +88,6 @@ export function set_sorting_algorithm(sorting_mode) {
 
         const new_sorting_strategy = isAscending ? SortingStrategy.DESCENDING : SortingStrategy.ASCENDING;
 
-        set_setting_string(SortingModeSchema.strategy, new_sorting_strategy);
+        set_setting_string(SortingModeSchema.STRATEGY, new_sorting_strategy);
     }
 }

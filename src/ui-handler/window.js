@@ -85,8 +85,8 @@ export const TasksWindow = GObject.registerClass(
     }
 
     _update_sorting_label() {
-      const current_sort_strategy = get_setting_string(SortingModeSchema.strategy)
-      let current_sort_mode = get_setting_string(SortingModeSchema.mode);
+      const current_sort_strategy = get_setting_string(SortingModeSchema.STRATEGY)
+      let current_sort_mode = get_setting_string(SortingModeSchema.MODE);
 
       switch (current_sort_mode) {
         case SortingModes.BY_DATE:
