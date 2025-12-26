@@ -20,12 +20,12 @@
 
 const { GObject, Adw, Gio } = imports.gi;
 
-import { get_setting_int, set_setting_int } from "../utils/application.js";
+import { get_setting_int, get_setting_string, set_setting_int } from "../utils/application.js";
 import { TaskListStore } from "../utils/list-store.js";
 import { export_database, import_database } from "../utils/backup.js";
 import { log } from "../utils/log-manager.js";
 import { CreateTaskList } from "./task-list.js";
-import { SortingModes } from "../utils/sorting.js";
+import { SortingModes, SortingModeSchema } from "../static.js";
 
 export const TasksWindow = GObject.registerClass(
   {
@@ -35,7 +35,8 @@ export const TasksWindow = GObject.registerClass(
       "task_new_entry",
       "toast_overlay",
       "list_flow_box",
-      "button_new_task"
+      "button_new_task",
+      "task_sort_status_label"
     ],
   },
   class TasksWindow extends Adw.ApplicationWindow {
@@ -52,9 +53,9 @@ export const TasksWindow = GObject.registerClass(
       { name: 'export_database', event: 'activate', callback: () => import_database(this) },
       { name: 'import_database', event: 'activate', callback: () => export_database(this) },
 
-      { name: 'sort_by_title', event: 'activate', callback: () => this._list_store.sort_list(SortingModes.BY_TITLE) },
-      { name: 'sort_by_status', event: 'activate', callback: () => this._list_store.sort_list(SortingModes.BY_STATUS) },
-      { name: 'sort_by_creation_date', event: 'activate', callback: () => this._list_store.sort_list(SortingModes.BY_DATE) },
+      { name: 'sort_by_title', event: 'activate', callback: () => this.sort_list_store(SortingModes.BY_TITLE) },
+      { name: 'sort_by_status', event: 'activate', callback: () => this.sort_list_store(SortingModes.BY_STATUS) },
+      { name: 'sort_by_creation_date', event: 'activate', callback: () => this.sort_list_store(SortingModes.BY_DATE) },
     ]
 
     constructor(application) {
@@ -65,8 +66,7 @@ export const TasksWindow = GObject.registerClass(
       this._list_store.load()
 
       // Connect our main New Task button event with task creation
-      this.bind_window_actions()
-      this.bind_buttons_actions()
+      this._bind_buttons_actions()
 
       // Shortcuts to purge and create a new task
       application.set_accels_for_action('win.new_task', ['<Control>n']);
@@ -74,15 +74,43 @@ export const TasksWindow = GObject.registerClass(
 
       this._list_flow_box.append(CreateTaskList(this._list_store));
 
-      this.manage_window_settings()
+      this._handle_window_settings();
+      this._update_sorting_label();
     }
 
-    bind_buttons_actions() {
-      this._task_new_entry.connect("activate", this.create_task.bind(this));
+    sort_list_store(sorting_mode) {
+      this._list_store.sort_list(sorting_mode);
+
+      this._update_sorting_label();
+    }
+
+    _update_sorting_label() {
+      const current_sort_strategy = get_setting_string(SortingModeSchema.strategy)
+      let current_sort_mode = get_setting_string(SortingModeSchema.mode);
+
+      switch (current_sort_mode) {
+        case SortingModes.BY_DATE:
+          current_sort_mode = 'by date'
+          break;
+        case SortingModes.BY_STATUS:
+          current_sort_mode = 'by finished status'
+          break;
+        case SortingModes.BY_TITLE:
+          current_sort_mode = 'by title'
+          break;
+        default:
+          break;
+      }
+
+      this._task_sort_status_label.set_text(
+        `Using sort mode ${current_sort_mode} with order ${current_sort_strategy}`
+      );
+    }
+
+    _bind_buttons_actions() {
+      this._task_new_entry.connect("activate", this._create_task.bind(this));
       this._button_new_task.connect("clicked", () => this._task_new_entry.grab_focus())
-    }
 
-    bind_window_actions() {
       for (const action of this.window_actions) {
         const gio_action = new Gio.SimpleAction({ name: action.name });
         gio_action.connect(action.event, action.callback)
@@ -91,7 +119,7 @@ export const TasksWindow = GObject.registerClass(
       }
     }
 
-    manage_window_settings() {
+    _handle_window_settings() {
       this.set_default_size(
         get_setting_int('window-width'),
         get_setting_int('window-height')
@@ -108,7 +136,7 @@ export const TasksWindow = GObject.registerClass(
     /**
      * Add a new task to pending store and persist on disk
      */
-    create_task() {
+    _create_task() {
       const title = this._task_new_entry.get_text();
 
       if (title.trim() == "") return;
