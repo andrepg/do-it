@@ -1,33 +1,6 @@
-import { get_setting_string } from "./application.js";
+import { SortingStrategy, SortingModeSchema, SortingModes } from "../static.js";
+import { get_setting_string, set_setting_string } from "./application.js";
 import { log } from "./log-manager.js"
-
-/**
- * These are the available sorting modes for the task list. 
- * Each mode defined here should correspond to an entry menu in the UI
- * 
- * The sorting modes are displayed in the [Sort] popup menu.
- * 
- * BY_DATE: Sort tasks by their creation date.
- * BY_STATUS: Sort tasks by their completion status (done or not done).
- * BY_TITLE: Sort tasks alphabetically by their title.
- */
-export const SortingModes = Object.freeze({
-    BY_DATE: "by-date",
-    BY_STATUS: "by-status",
-    BY_TITLE: "by-title",
-});
-
-
-/**
- * The SortingStrategy defines how we can sort each of our data types.
- * 
- * ASCENDING: Sort in ascending order (A-Z, oldest to newest, not done first).
- * DESCENDING: Sort in descending order (Z-A, newest to oldest, done first).
- */
-export const SortingStrategy = Object.freeze({
-    ASCENDING: "asc",
-    DESCENDING: "desc",
-});
 
 function makeComparator(extractors, strategy) {
     const asc = strategy === SortingStrategy.ASCENDING;
@@ -84,8 +57,8 @@ function sortByTitle(strategy = SortingStrategy.ASCENDING) {
 }
 
 export function get_sorting_algorithm() {
-    const sort_mode = get_setting_string('last-sorting-mode');
-    const sort_strategy = get_setting_string('last-sorting-strategy');
+    const sort_mode = get_setting_string(SortingModeSchema.mode);
+    const sort_strategy = get_setting_string(SortingModeSchema.strategy);
 
     switch (sort_mode) {
         case SortingModes.BY_DATE:
@@ -97,5 +70,24 @@ export function get_sorting_algorithm() {
         default:
             log("sorting", `Unknown sorting mode: ${sort_mode}. Defaulting to BY_DATE.`);
             return sortByCreationDate(sort_strategy);
+    }
+}
+
+export function set_sorting_algorithm(sorting_mode) {
+    // First we get last known values to further logic
+    const last_sorting_mode = get_setting_string(SortingModeSchema.mode);
+    const last_sorting_strategy = get_setting_string(SortingModeSchema.strategy);
+
+    // Then we set our mode to current and strategy to ASCENDING by default
+    set_setting_string(SortingModeSchema.mode, sorting_mode);
+    set_setting_string(SortingModeSchema.strategy, SortingStrategy.ASCENDING);
+
+    // If the user is just changing current strategy, we must act accordingly
+    if (sorting_mode == last_sorting_mode) {
+        const isAscending = last_sorting_strategy == SortingStrategy.ASCENDING;
+
+        const new_sorting_strategy = isAscending ? SortingStrategy.DESCENDING : SortingStrategy.ASCENDING;
+
+        set_setting_string(SortingModeSchema.strategy, new_sorting_strategy);
     }
 }

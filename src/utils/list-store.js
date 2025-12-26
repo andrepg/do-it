@@ -4,8 +4,7 @@ import Gio from "gi://Gio"
 import { Persistence } from "./persistence.js";
 import { Task } from "../ui-handler/task.js";
 import { log } from "./log-manager.js";
-import { get_setting_string, set_setting_string } from "./application.js";
-import { get_sorting_algorithm, SortingModes, SortingStrategy } from "./sorting.js";
+import { get_sorting_algorithm, set_sorting_algorithm } from "./sorting.js";
 
 export const TaskListStore = GObject.registerClass({
   GTypeName: "TaskListStore",
@@ -50,16 +49,9 @@ export const TaskListStore = GObject.registerClass({
   }
 
   sort_list(sort_mode) {
-    const last_known_sorting_strategy = get_setting_string("last-sorting-strategy") || SortingStrategy.ASCENDING;
-
-    const new_sorting_strategy = last_known_sorting_strategy == SortingStrategy.ASCENDING
-      ? SortingStrategy.DESCENDING
-      : SortingStrategy.ASCENDING;
-
-    set_setting_string('last-sorting-strategy', new_sorting_strategy);
-    set_setting_string("last-sorting-mode", sort_mode);
-
     log("list-store", `Sorting list by mode: ${sort_mode}`);
+
+    set_sorting_algorithm(sort_mode);
     this.sort(get_sorting_algorithm());
   }
 
