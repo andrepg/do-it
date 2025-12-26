@@ -1,3 +1,4 @@
+import { get_setting_string } from "./application.js";
 import { log } from "./log-manager.js"
 
 /**
@@ -26,53 +27,75 @@ export const SortingModes = Object.freeze({
 export const SortingStrategy = Object.freeze({
     ASCENDING: "asc",
     DESCENDING: "desc",
-})
+});
+
+function makeComparator(extractors, strategy) {
+    const asc = strategy === SortingStrategy.ASCENDING;
+
+    return (a, b, _data) => {
+        for (const extractor of extractors) {
+            const av = extractor(a);
+            const bv = extractor(b);
+
+            if (av === bv) continue;
+            return av > bv ? (asc ? 1 : -1) : (asc ? -1 : 1);
+        }
+        return 0;
+    };
+}
 
 /**
  * Sort tasks by their creation date.
  * 
- * @param {string} mode Which type of strategy to use {from SortingStrategy enum}
+ * @param {string} strategy Which type of strategy to use {from SortingStrategy enum}
  */
-export function sortByCreationDate(mode = SortingStrategy.ASCENDING) {
-    log("sorting", `Sorting by creation date in ${mode} order.`)
+function sortByCreationDate(strategy = SortingStrategy.ASCENDING) {
+    log("sorting", `Sorting by creation date in ${strategy} order.`)
 
-    return (item) => item._created_at;
+    return makeComparator([item => item._created_at], strategy);
 }
 
 /**
  * Sort tasks by their Finished/Done status
  * 
- * @param {string} mode Which type of strategy to use {from SortingStrategy enum}
+ * @param {string} strategy Which type of strategy to use {from SortingStrategy enum}
  */
-export function sortByDoneStatus(mode = SortingStrategy.ASCENDING) {
-    const notDoneFirst = mode == SortingStrategy.ASCENDING;
-    
+function sortByDoneStatus(strategy = SortingStrategy.ASCENDING) {
+    const notDoneFirst = strategy == SortingStrategy.ASCENDING;
+
     log("sorting", `Sorting by status (not done first: ${notDoneFirst}).`)
-    
-    return (item) => item.get_done() && item.get_deleted !== null
+
+    return makeComparator([
+        item => item._deleted_at ? 2 : item.get_done() ? 1 : 0,
+    ], strategy);
 }
 
 /**
  * Sort tasks by their title, alphabetically.
  * 
- * @param {string} mode Which type of strategy to use {from SortingStrategy enum}
+ * @param {string} strategy Which type of strategy to use {from SortingStrategy enum}
  */
-export function sortByTitle(mode = SortingStrategy.ASCENDING) {
-    log("sorting", `Sorting by title in ${mode} order.`)
+function sortByTitle(strategy = SortingStrategy.ASCENDING) {
+    log("sorting", `Sorting by title in ${strategy} order.`)
 
-    return (item) => item.get_title();
+    return makeComparator([
+        item => String(item.get_text()).toLowerCase(),
+    ], strategy);
 }
 
-export function get_sorting_algorithm(mode = SortingModes.BY_DATE, strategy = SortingStrategy.ASCENDING) {       
-    switch (mode) {
+export function get_sorting_algorithm() {
+    const sort_mode = get_setting_string('last-sorting-mode');
+    const sort_strategy = get_setting_string('last-sorting-strategy');
+
+    switch (sort_mode) {
         case SortingModes.BY_DATE:
-            return sortByCreationDate(strategy);
+            return sortByCreationDate(sort_strategy);
         case SortingModes.BY_STATUS:
-            return sortByDoneStatus(strategy);
+            return sortByDoneStatus(sort_strategy);
         case SortingModes.BY_TITLE:
-            return sortByTitle(strategy);
+            return sortByTitle(sort_strategy);
         default:
-            log("sorting", `Unknown sorting mode: ${mode}. Defaulting to BY_DATE.`);
-            return sortByCreationDate(strategy);
+            log("sorting", `Unknown sorting mode: ${sort_mode}. Defaulting to BY_DATE.`);
+            return sortByCreationDate(sort_strategy);
     }
 }

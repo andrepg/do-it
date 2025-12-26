@@ -39,19 +39,28 @@ export const TaskListStore = GObject.registerClass({
     const _update_interface = (signal) => {
       log("list-store", `Received ${signal} signal.`)
 
-      this.sort(get_sorting_algorithm(SortingModes.BY_STATUS))
+      this.sort(get_sorting_algorithm())
       this.persist_store()
     }
 
     task.connect('task-updated', _update_interface.bind(this, 'task-updated'));
     task.connect('task-deleted', _update_interface.bind(this, 'task-deleted'));
 
-    // TODO : When finished our portability, this should reflect current sorting mode
-    this.insert_sorted(task, get_sorting_algorithm(SortingModes.BY_STATUS));
+    this.insert_sorted(task, get_sorting_algorithm());
   }
 
   sort_list(sort_mode) {
+    const last_known_sorting_strategy = get_setting_string("last-sorting-strategy") || SortingStrategy.ASCENDING;
+
+    const new_sorting_strategy = last_known_sorting_strategy == SortingStrategy.ASCENDING
+      ? SortingStrategy.DESCENDING
+      : SortingStrategy.ASCENDING;
+
+    set_setting_string('last-sorting-strategy', new_sorting_strategy);
+    set_setting_string("last-sorting-mode", sort_mode);
+
     log("list-store", `Sorting list by mode: ${sort_mode}`);
+    this.sort(get_sorting_algorithm());
   }
 
   purge_deleted() {
