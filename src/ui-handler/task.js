@@ -93,7 +93,7 @@ export const Task = GObject.registerClass(
     _get_title() {
       const date = new Date(this._created_at);
 
-      return "🗓️ " + date.toLocaleString();
+      return date.toLocaleString();
     }
 
     _update_interface() {
