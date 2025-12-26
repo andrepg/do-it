@@ -12,7 +12,6 @@
     <property name="enable-emoji-completion">True</property>
     <property name="name">task_entry</property>
     <property name="show-apply-button">True</property>
-    <property name="title">Task Metadata</property>
     <property name="use-markup">True</property>
     <child type="prefix">
       <object class="GtkCheckButton" id="task_done">
