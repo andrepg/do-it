@@ -109,7 +109,7 @@ undershoot-bottom</property>
                           <object class="GtkLabel" id="task_sort_status_label">
                             <property name="css-classes">dimmed</property>
                             <property name="justify">center</property>
-                            <property name="label" translatable="yes">&lt;small&gt;Tasks ordered by {sort_mode} {sort_strategy}.&lt;/small&gt;</property>
+                            <property name="label">[task_sort_status_label]</property>
                             <property name="margin-bottom">4</property>
                             <property name="margin-end">8</property>
                             <property name="margin-start">8</property>
