@@ -2,6 +2,68 @@ import { SortingStrategy, SortingModeSchema, SortingModes } from "../static.js";
 import { get_setting_string, set_setting_string } from "./application.js";
 import { log } from "./log-manager.js"
 
+const label_by_mode = {
+    [SortingModes.BY_DATE]: (strategy) => _('Sorting by date [order %s]').format(strategy),
+
+    [SortingModes.BY_TITLE]: (strategy) => _('Sorting by title [order %s]').format(strategy),
+
+    [SortingModes.BY_STATUS]: (strategy) => strategy == SortingStrategy.ASCENDING
+        ? _("Sorting by status [finished on bottom]")
+        : _("Sorting by status [finished on top]")
+}
+
+/**
+ * Creates a comparator function compatible with `Array.prototype.sort`,
+ * supporting multi-level sorting (multiple keys) and configurable
+ * ascending or descending order.
+ *
+ * Comparison is performed sequentially using the provided extractors.
+ * The first extractor that produces different values determines
+ * the final ordering.
+ *
+ * IMPORTANT:
+ * - Extractor functions MUST NOT return `null` or `undefined`.
+ * - Returned values must be directly comparable using `>` and `<`.
+ *
+ * @template T
+ *
+ * @param {Array<function(T): (string|number|boolean|Date)>} extractors
+ * An ordered list of extractor functions. Each extractor receives a
+ * non-null, non-undefined item and must return a comparable value.
+ * The order of extractors defines the priority of sorting criteria.
+ *
+ * @param {string} strategy
+ * Sorting strategy to apply. Must be a value from the `SortingStrategy`
+ * enum (e.g. `ASCENDING` or `DESCENDING`).
+ *
+ * @returns {function(T, T, any=): number}
+ * Returns a comparator function that:
+ * - returns `-1` if the first item should come before the second
+ * - returns `1` if the first item should come after the second
+ * - returns `0` if both items are considered equivalent
+ *
+ * The returned function is intended to be passed directly to
+ * `Array.prototype.sort`.
+ *
+ * @example
+ * tasks.sort(
+ *   makeComparator(
+ *     [item => item._created_at],
+ *     SortingStrategy.ASCENDING
+ *   )
+ * );
+ *
+ * @example
+ * tasks.sort(
+ *   makeComparator(
+ *     [
+ *       item => item.get_done() ? 1 : 0,
+ *       item => item.get_text().toLowerCase()
+ *     ],
+ *     SortingStrategy.DESCENDING
+ *   )
+ * );
+ */
 function makeComparator(extractors, strategy) {
     const asc = strategy === SortingStrategy.ASCENDING;
 
@@ -90,4 +152,8 @@ export function set_sorting_algorithm(sorting_mode) {
 
         set_setting_string(SortingModeSchema.STRATEGY, new_sorting_strategy);
     }
+}
+
+export function get_sorting_label_text(current_sort_mode, current_sort_strategy) {
+    return label_by_mode[current_sort_mode]?.(current_sort_strategy) ?? ""
 }
