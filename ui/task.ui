@@ -5,13 +5,12 @@
   <requires lib="Adw" version="1.7"/>
   <requires lib="Gio" version="2.0"/>
   <requires lib="Gtk" version="4.21"/>
-  <requires lib="gtk" version="4.18"/>
   <requires lib="libadwaita" version="1.7"/>
+  <requires lib="gtk" version="4.18"/>
   <template class="Task" parent="AdwEntryRow">
     <property name="accessible-role">list-item</property>
     <property name="enable-emoji-completion">True</property>
     <property name="name">task_entry</property>
-    <property name="title">task_title</property>
     <property name="show-apply-button">True</property>
     <property name="use-markup">True</property>
     <child type="prefix">
@@ -20,7 +19,7 @@
         <property name="valign">center</property>
       </object>
     </child>
-    <child>
+    <child type="suffix">
       <object class="GtkButton" id="task_delete">
         <property name="css-classes">error</property>
         <property name="has-frame">False</property>

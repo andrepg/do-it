@@ -6,8 +6,8 @@
   <requires lib="Gio" version="2.0"/>
   <requires lib="Gtk" version="4.21"/>
   <requires lib="gio" version="2.0"/>
-  <requires lib="gtk" version="4.18"/>
   <requires lib="libadwaita" version="1.7"/>
+  <requires lib="gtk" version="4.18"/>
   <template class="TasksWindow" parent="AdwApplicationWindow">
     <property name="content">
       <object class="AdwToolbarView">
@@ -98,6 +98,7 @@ undershoot-bottom</property>
                         <child>
                           <object class="AdwWindowTitle" id="task_list_title">
                             <property name="can-focus">False</property>
+                            <property name="can-target">False</property>
                             <property name="hexpand">True</property>
                             <property name="margin-bottom">24</property>
                             <property name="margin-top">24</property>
@@ -107,14 +108,15 @@ undershoot-bottom</property>
                         </child>
                         <child>
                           <object class="GtkLabel" id="task_sort_status_label">
+                            <property name="can-focus">False</property>
+                            <property name="can-target">False</property>
                             <property name="css-classes">dimmed</property>
+                            <property name="focus-on-click">False</property>
                             <property name="justify">center</property>
                             <property name="label">[task_sort_status_label]</property>
                             <property name="margin-bottom">4</property>
-                            <property name="margin-end">8</property>
-                            <property name="margin-start">8</property>
                             <property name="margin-top">4</property>
-                            <property name="opacity">0.7</property>
+                            <property name="sensitive">False</property>
                             <property name="use-markup">True</property>
                             <property name="valign">start</property>
                             <accessibility>

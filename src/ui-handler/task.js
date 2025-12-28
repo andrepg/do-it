@@ -53,12 +53,12 @@ const GObjectProperties = {
 export const Task = GObject.registerClass(GObjectProperties,
   class Task extends Adw.EntryRow {
     _init(taskId = 0, title = "", done = false, created = null) {
-      super._init();
-
       // Store private properties to our object
       this._id = taskId;
       this._created_at = created ?? Date.now();
       this._is_deleted = false;
+
+      super._init({ title: new Date(this._created_at).toLocaleDateString() });
 
       // Initialize main entry value
       this.set_text(title)
@@ -78,30 +78,27 @@ export const Task = GObject.registerClass(GObjectProperties,
     }
 
     _update_interface() {
-      const disabled = this.get_done() || this._is_deleted;
+      const is_deleted = this._is_deleted;
+      const is_done = this.get_done();
+      const task_title = new Date(this._created_at).toLocaleDateString();
+      const task_opacity_level = is_deleted || is_done ? 0.5 : 1;
 
-      this.set_opacity(disabled ? 0.5 : 1);
-      this.set_editable(!disabled);
-      
-      // FIXME : It seems that we're calling but it is not changing our UI
-      this.set_title(new Date(this._created_at).toLocaleDateString());
-      
-      this.set_tooltip_text(
-        disabled ? _("Finished/deleted tasks can not be changed") : ""
-      );
-      
-      this._task_done.set_sensitive(! this._is_deleted)
-      this._task_done.set_tooltip_text(
-        this.get_done() ? _("Mark task as unfinished") : _("Mark task as finished")
-      )
+      let task_tooltip = (is_done || is_deleted) ? _("Finished or deleted tasks can't be changed") : "";
+      let checkbox_done_tooltip = is_done ? _("Reopen task") : _("Finish task");
+      let delete_button_tooltip = is_deleted ?_("Restore task") : _("Delete task");
+      let delete_button_icon = is_deleted ? TASK_DELETE_ICON.deleted : TASK_DELETE_ICON.default;
 
-      this._task_delete.set_tooltip_text(
-        this._is_deleted ? _("Restore task") : _("Delete task")
-      )
+      this.set_title(task_title);
+      this.set_tooltip_text(task_tooltip);
 
-      this._task_delete.set_icon_name(
-        this._is_deleted ? TASK_DELETE_ICON.deleted : TASK_DELETE_ICON.default
-      )
+      this.set_opacity(task_opacity_level);
+      this.set_editable(!(is_done || is_deleted))
+      
+      this._task_done.set_tooltip_text(checkbox_done_tooltip);
+      this._task_done.set_sensitive(!is_deleted)
+
+      this._task_delete.set_tooltip_text(delete_button_tooltip);
+      this._task_delete.set_icon_name(delete_button_icon);
     }
 
     get_done() {
@@ -147,7 +144,7 @@ export const Task = GObject.registerClass(GObjectProperties,
     to_object() {
       return {
         taskId: this._id,
-        title: this.get_text(),
+        title: this.get_text().trim(),
         done: this.get_done(),
         created_at: this._created_at,
         is_deleted: this._is_deleted,
