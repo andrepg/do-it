@@ -34,7 +34,7 @@ const TaskProperties = {
     "",
   ),
   title: GObject.ParamSpec.string(
-    "created_at",
+    "created",
     "Created At",
     "Task creation timestamp",
     GObject.ParamFlags.READWRITE,
@@ -69,9 +69,7 @@ export const Task = GObject.registerClass(GObjectProperties,
       // Store private properties to our object
       this._id = taskId;
       this._deleted_at = deleted_at;
-      // this._created_at = created_at ?? Date.now();
-
-      // log("task", `Initializing task title ${title}, created at ${this.created_at}`)
+      this._created_at = created_at ?? Date.now();
 
       this._connect_events();
       this._update_interface();
@@ -90,7 +88,7 @@ export const Task = GObject.registerClass(GObjectProperties,
 
       this.set_opacity(disabled ? 0.5 : 1);
       this.set_editable(!disabled);
-      // this.set_title(this._created_at.toLocaleDateString());
+      this.set_title(new Date(this._created_at).toLocaleDateString());
       
       this.set_tooltip_text(
         disabled ? _("Finished/deleted tasks can not be changed") : ""
@@ -134,9 +132,9 @@ export const Task = GObject.registerClass(GObjectProperties,
     notify_task_deleted() {
       this.emit('task-deleted', this)
 
-      this._deleted_at = this._deleted_at !== null ? null : Date.now().toString();
-
       const message = this._deleted_at ? _("Task %s deleted") : _("Task %s restored");
+
+      this._deleted_at = this._deleted_at !== null ? null : Date.now().toString();
 
       this.get_root().display_message_toast(message.format(this.get_text()))
       this._update_interface()
@@ -153,7 +151,7 @@ export const Task = GObject.registerClass(GObjectProperties,
         taskId: this._id,
         title: this.get_text(),
         done: this.get_done(),
-        created_at: this._deleted_at,
+        deleted_at: this._deleted_at,
         created_at: this._created_at,
       };
     }
