@@ -115,7 +115,7 @@ export const Task = GObject.registerClass(GObjectProperties,
     notify_task_finished(checkbox) {
       this.emit('task-updated', this)
 
-      const message = checkbox.get_active() ? _("Finished task %s") : _("%s marked as not finished")
+      const message = checkbox.get_active() ? _("Task %s finished") : _("Task %s reopened")
 
       this.get_root().display_message_toast(message.format(this.get_text()))
       this._update_interface()

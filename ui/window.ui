@@ -2,9 +2,6 @@
 <!-- Created with Cambalache 0.96.3 -->
 <interface>
   <!-- interface-name window.ui -->
-  <requires lib="Adw" version="1.7"/>
-  <requires lib="Gio" version="2.0"/>
-  <requires lib="Gtk" version="4.21"/>
   <requires lib="gio" version="2.0"/>
   <requires lib="libadwaita" version="1.7"/>
   <requires lib="gtk" version="4.18"/>
@@ -161,21 +158,21 @@ warning</property>
       </object>
     </property>
     <property name="default-height">600</property>
-    <property name="default-width">440</property>
-    <property name="title" translatable="yes">Tasks</property>
+    <property name="default-width">540</property>
+    <property name="title">Tasks</property>
   </template>
   <menu id="menu_sort_task">
     <item>
       <attribute name="action">win.sort_by_creation_date</attribute>
-      <attribute name="label">Sort by Creation</attribute>
+      <attribute name="label" translatable="yes">Sort by Creation</attribute>
     </item>
     <item>
       <attribute name="action">win.sort_by_title</attribute>
-      <attribute name="label">Sort by Title</attribute>
+      <attribute name="label" translatable="yes">Sort by Title</attribute>
     </item>
     <item>
       <attribute name="action">win.sort_by_status</attribute>
-      <attribute name="label">Sort by Status</attribute>
+      <attribute name="label" translatable="yes">Sort by Status</attribute>
     </item>
   </menu>
   <menu id="primary_menu">
@@ -183,7 +180,7 @@ warning</property>
       <item>
         <attribute name="action">win.purge_deleted_tasks</attribute>
         <attribute name="icon">user-trash-full-symbolic</attribute>
-        <attribute name="label">Purge deleted</attribute>
+        <attribute name="label" translatable="yes">Purge deleted tasks</attribute>
       </item>
     </section>
     <section>
@@ -196,7 +193,7 @@ warning</property>
       <item>
         <attribute name="action">win.import_database</attribute>
         <attribute name="icon">document-send-symbolic</attribute>
-        <attribute name="label">_Import Database</attribute>
+        <attribute name="label" translatable="yes">_Import Database</attribute>
       </item>
     </section>
     <section>

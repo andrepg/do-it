@@ -3,8 +3,7 @@
 ## LINGUAS is a file indicating what languages are available to our app.
 ## This file should be managed manually and contain one language per line.
 ##
-## After adding a new language here, we need to update localisation files
+## After adding a new language here, we need to update localization files
 ## with `scripts/update-pot-file.sh`.
-en
 es
 pt_BR
