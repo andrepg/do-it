@@ -9,8 +9,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: io.github.andrepg.Doit\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2025-12-25 10:28-0300\n"
-"PO-Revision-Date: 2025-12-04 22:40-0300\n"
+"POT-Creation-Date: 2025-12-28 11:19-0300\n"
+"PO-Revision-Date: 2025-12-28 12:08-0300\n"
 "Last-Translator: André Paul Grandsire <andrepg@users.noreply.github.com>\n"
 "Language-Team: Portuguese\n"
 "Language: pt\n"
@@ -26,79 +26,101 @@ msgstr ""
 msgid "translators-credits"
 msgstr "André Paul Grandsire/andrepg@users.noreply.github.com"
 
-#: src/ui-handler/task.js:85
-msgid "Items finished or deleted cannot be changed."
+#: src/ui-handler/task.js:94
+msgid "Finished/deleted tasks can not be changed"
 msgstr "Itens finalizados ou excluídos são somente-leitura."
 
-#: src/ui-handler/task.js:86
-msgid "Delete task"
-msgstr ""
+#: src/ui-handler/task.js:98
+msgid "Mark task as unfinished"
+msgstr "Reabrir tarefa"
 
-#: src/ui-handler/task.js:105
+#: src/ui-handler/task.js:98
+msgid "Mark task as finished"
+msgstr "Finalizar tarefa"
+
+#: src/ui-handler/task.js:102
+msgid "Restore task"
+msgstr "Restaurar tarefa"
+
+#: src/ui-handler/task.js:102
+msgid "Delete task"
+msgstr "Excluir tarefa"
+
+#: src/ui-handler/task.js:117
 #, javascript-format
 msgid "Task %s updated"
 msgstr "Tarefa %s atualizada"
 
-#: src/ui-handler/task.js:116
+#: src/ui-handler/task.js:124
 #, javascript-format
-msgid "%s marked as finished"
-msgstr "Tarefa %s concluída"
+msgid "Finished task %s"
+msgstr "Tarefa %s finalizada"
 
-#: src/ui-handler/task.js:117
+#: src/ui-handler/task.js:124
 #, javascript-format
 msgid "%s marked as not finished"
-msgstr "Tarefa %s marcada pendente"
+msgstr "Tarefa %s pendente"
 
-#: src/ui-handler/task.js:132
+#: src/ui-handler/task.js:135
 #, javascript-format
 msgid "Task %s deleted"
 msgstr "Tarefa %s excluída"
 
-#: src/ui-handler/task.js:133
-#, fuzzy, javascript-format
+#: src/ui-handler/task.js:135
+#, javascript-format
 msgid "Task %s restored"
-msgstr "Tarefa %s criada"
+msgstr "Tarefa %s reaberta"
 
-#: src/ui-handler/window.js:128
+#: src/ui-handler/window.js:142
 #, javascript-format
 msgid "Task %s created"
 msgstr "Tarefa %s criada"
 
 #: src/utils/backup.js:11
 msgid "Export database"
-msgstr ""
+msgstr "Exportar dados"
 
 #: src/utils/backup.js:45
 msgid "Database exported successfully!"
-msgstr ""
+msgstr "Exportação concluída com sucesso.\t"
 
 #: src/utils/backup.js:47
 msgid "Failed to export database!"
-msgstr ""
+msgstr "Falha ao exportar banco de dados!"
 
 #: src/utils/backup.js:58
 msgid "Import Task Database"
-msgstr ""
+msgstr "Importar banco de dados"
 
 #: src/utils/backup.js:65
 msgid "JSON Files"
-msgstr ""
+msgstr "Arquivos JSON"
 
 #: src/utils/backup.js:85
 msgid "Database imported successfully"
-msgstr ""
+msgstr "Banco de dados importado com sucesso"
 
 #: src/utils/backup.js:87 src/utils/backup.js:88
 msgid "Failed to import database!"
-msgstr ""
+msgstr "Falha ao importar banco de dados!"
 
-#: ui/empty-list.ui:18
-msgid "📝 No tasks (yet) !"
-msgstr ""
+#: src/utils/sorting.js:6
+#, javascript-format
+msgid "Sorting by date [order %s]"
+msgstr "Ordenado por data [ordem %s]"
 
-#: ui/empty-list.ui:24
-msgid "Try to add a new task on bottom bar."
-msgstr ""
+#: src/utils/sorting.js:8
+#, javascript-format
+msgid "Sorting by title [order %s]"
+msgstr "Ordenado por título [order %s]"
+
+#: src/utils/sorting.js:11
+msgid "Sorting by status [finished on bottom]"
+msgstr "Ordenado por status [finalizado ao final]"
+
+#: src/utils/sorting.js:12
+msgid "Sorting by status [finished on top]"
+msgstr "Ordenado por status [finalizado no topo]"
 
 #: ui/help-overlay.ui:11
 msgctxt "shortcut window"
@@ -115,46 +137,52 @@ msgctxt "shortcut window"
 msgid "Quit"
 msgstr "Sair"
 
-#: ui/task.ui:15
-msgid "Description"
-msgstr "Tarefa"
-
 #: ui/window.ui:23
 msgid "Main Menu"
 msgstr "Menu Principal"
 
-#: ui/window.ui:45
+#: ui/window.ui:70
 msgid "What do you need to do?"
 msgstr "O que voce precisa fazer?"
 
-#: ui/window.ui:71
+#: ui/window.ui:104
 msgid "Play your day wisely and accomplish all"
 msgstr "Planeje bem seu dia para cumprir tudo"
 
-#: ui/window.ui:72
+#: ui/window.ui:105
 msgid "Yours tasks"
 msgstr "Suas tarefas"
 
-#: ui/window.ui:91
-msgid "<small>Deleted items will be discarded when the app closes.</small>"
+#: ui/window.ui:112
+msgid "<small>Tasks ordered by {sort_mode} {sort_strategy}.</small>"
 msgstr ""
-"<small>Itens excluídos serão descartados ao fechar o aplicativo</small>"
 
-#: ui/window.ui:110
+#: ui/window.ui:140
+msgid "<small>⚠️ Deleted items will be discarded when the app closes.</small>"
+msgstr ""
+"<small>⚠️ Itens excluídos serão descartados ao fechar o aplicativo</small>"
+
+#: ui/window.ui:163
 msgid "Tasks"
 msgstr "Tarefas"
 
-#: ui/window.ui:124
+#: ui/window.ui:192
 msgid "_Export Database"
-msgstr ""
+msgstr "_Exportar tarefas"
 
-#: ui/window.ui:135
+#: ui/window.ui:204
 msgid "_Keyboard Shortcuts"
 msgstr "Atalhos de _Teclado"
 
-#: ui/window.ui:139
+#: ui/window.ui:208
 msgid "_About Do It"
 msgstr "Sobre Do It"
+
+#~ msgid "Try to add a new task on bottom bar."
+#~ msgstr "Tente adicionar uma nova tarefa na barra inferior."
+
+#~ msgid "Description"
+#~ msgstr "Tarefa"
 
 #~ msgid "_Preferences"
 #~ msgstr "O_pções"
