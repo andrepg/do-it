@@ -65,15 +65,19 @@ const label_by_mode = {
  * );
  */
 function makeComparator(extractors, strategy) {
-    const asc = strategy === SortingStrategy.ASCENDING;
+    const requested_ascending_order = strategy === SortingStrategy.ASCENDING;
 
     return (a, b, _data) => {
         for (const extractor of extractors) {
-            const av = extractor(a);
-            const bv = extractor(b);
+            const value_of_a = extractor(a);
+            const value_of_b = extractor(b);
 
-            if (av === bv) continue;
-            return av > bv ? (asc ? 1 : -1) : (asc ? -1 : 1);
+            if (value_of_a === value_of_b) continue;
+
+            const direction = requested_ascending_order ? 1 : -1;
+            const ordering = value_of_a > value_of_b ? 1 : -1;
+
+            return ordering * direction; // When is not ascending, we just invert our result to negative
         }
         return 0;
     };
@@ -98,10 +102,10 @@ function sortByCreationDate(strategy = SortingStrategy.ASCENDING) {
 function sortByDoneStatus(strategy = SortingStrategy.ASCENDING) {
     const notDoneFirst = strategy == SortingStrategy.ASCENDING;
 
-    log("sorting", `Sorting by status (not done first: ${notDoneFirst}).`)
+    log("sorting", `Sorting by status (not done first: ${notDoneFirst}).`)    
 
     return makeComparator([
-        item => item._deleted_at ? 2 : item.get_done() ? 1 : 0,
+        item => item.get_done() ? 1 : 0,
     ], strategy);
 }
 

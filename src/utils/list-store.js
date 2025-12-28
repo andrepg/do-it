@@ -26,12 +26,11 @@ export const TaskListStore = GObject.registerClass({
     return this.get_n_items();
   }
 
-  append_task({ title, done = false, deleted_at = "", taskId = null, created_at = null }) {
+  append_task({ title, done = false, taskId = null, created_at = null }) {
     const task = new Task(
       taskId ?? this.get_count() + 1,
       title,
       done,
-      deleted_at,
       created_at,
     );
 
@@ -67,7 +66,7 @@ export const TaskListStore = GObject.registerClass({
     log("list-store", "Saving tasks to database");
 
     (new Persistence).write_database(
-      this.get_all().filter(item => !item.deleted)
+      this.get_all().filter(item => !item.is_deleted)
     )
   }
 
@@ -82,7 +81,6 @@ export const TaskListStore = GObject.registerClass({
         title: item.title,
         done: item.done,
         created_at: item.created_at,
-        deleted_at: item.deleted_at,
       })
 
       log("list-store", `Loaded task ${item.title} (done: ${item.done}, deleted: ${item.deleted_at}, created_at: ${item.created_at})`)

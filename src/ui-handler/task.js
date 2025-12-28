@@ -26,13 +26,6 @@ const TaskProperties = {
     GObject.ParamFlags.READWRITE,
     "",
   ),
-  deleted: GObject.ParamSpec.boolean(
-    "deleted",
-    "Deleted",
-    "Deletion task status",
-    GObject.ParamFlags.READWRITE,
-    "",
-  ),
   created: GObject.ParamSpec.string(
     "created",
     "Created At",
@@ -59,18 +52,19 @@ const GObjectProperties = {
 
 export const Task = GObject.registerClass(GObjectProperties,
   class Task extends Adw.EntryRow {
-    _init(taskId = 0, title = "", done = false, deleted = null, created = null) {
+    _init(taskId = 0, title = "", done = false, created = null) {
       super._init();
+
+      // Store private properties to our object
+      this._id = taskId;
+      this._created_at = created ?? Date.now();
+      this._is_deleted = false;
 
       // Initialize main entry value
       this.set_text(title)
       this._task_done.set_active(done)
 
-      // Store private properties to our object
-      this._id = taskId;
-      this._deleted_at = deleted;
-      this._created_at = created ?? Date.now();
-
+      // Call init events and drawers
       this._connect_events();
       this._update_interface();
     }
@@ -84,26 +78,29 @@ export const Task = GObject.registerClass(GObjectProperties,
     }
 
     _update_interface() {
-      const disabled = this.get_done() || this._deleted_at;
+      const disabled = this.get_done() || this._is_deleted;
 
       this.set_opacity(disabled ? 0.5 : 1);
       this.set_editable(!disabled);
+      
+      // FIXME : It seems that we're calling but it is not changing our UI
       this.set_title(new Date(this._created_at).toLocaleDateString());
       
       this.set_tooltip_text(
         disabled ? _("Finished/deleted tasks can not be changed") : ""
       );
-
+      
+      this._task_done.set_sensitive(! this._is_deleted)
       this._task_done.set_tooltip_text(
         this.get_done() ? _("Mark task as unfinished") : _("Mark task as finished")
       )
 
       this._task_delete.set_tooltip_text(
-        this._deleted_at ? _("Restore task") : _("Delete task")
+        this._is_deleted ? _("Restore task") : _("Delete task")
       )
 
       this._task_delete.set_icon_name(
-        this._deleted_at ? TASK_DELETE_ICON.deleted : TASK_DELETE_ICON.default
+        this._is_deleted ? TASK_DELETE_ICON.deleted : TASK_DELETE_ICON.default
       )
     }
 
@@ -132,12 +129,13 @@ export const Task = GObject.registerClass(GObjectProperties,
     notify_task_deleted() {
       this.emit('task-deleted', this)
 
-      const message = this._deleted_at ? _("Task %s deleted") : _("Task %s restored");
+      const message = this._is_deleted ? _("Task %s restored") : _("Task %s deleted");
 
-      this._deleted_at = this._deleted_at !== null ? null : Date.now().toString();
+      this._is_deleted = !this._is_deleted;
+
+      this._update_interface()
 
       this.get_root().display_message_toast(message.format(this.get_text()))
-      this._update_interface()
 
       log("task", "Task deleted")
     }
@@ -151,8 +149,8 @@ export const Task = GObject.registerClass(GObjectProperties,
         taskId: this._id,
         title: this.get_text(),
         done: this.get_done(),
-        deleted_at: this._deleted_at,
         created_at: this._created_at,
+        is_deleted: this._is_deleted,
       };
     }
   },
