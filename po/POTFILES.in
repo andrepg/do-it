@@ -14,6 +14,7 @@ src/ui-handler/window.js
 
 # Utils and other common
 src/utils/backup.js
+src/utils/sorting.js
 
 # Interface declarations
 ui/empty-list.ui

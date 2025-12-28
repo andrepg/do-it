@@ -1,18 +1,35 @@
 <?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE schemalist SYSTEM "https://gitlab.gnome.org/GNOME/glib/-/raw/HEAD/gio/gschema.dtd">
+
 <schemalist gettext-domain="Doit">
-	<schema id="io.github.andrepg.Doit" path="/io/github/andrepg/Doit/">
-	  <key name="window-width" type="i">
-      <default>800</default>
-      <summary>Largura da janela</summary>
+  <schema id="io.github.andrepg.Doit" path="/io/github/andrepg/Doit/">
+    <key name="window-width" type="i">
+      <default>800</default>      
+      <summary>Last known window width</summary>
     </key>
+
     <key name="window-height" type="i">
       <default>600</default>
-      <summary>Altura da janela</summary>
+      <summary>Last known window height</summary>
     </key>
-    <key name="window-maximized" type="b">
-      <default>false</default>
-      <summary>Se a janela estava maximizada</summary>
-    </key>
-	</schema>
-</schemalist>
 
+    <key name="last-sorting-mode" type="s">
+      <default>"by-date"</default>      
+      <choices>
+        <choice value="by-date" />
+        <choice value="by-status" />
+        <choice value="by-title" />
+      </choices>
+      <summary>Last known sorting mode used</summary>
+    </key>
+
+    <key name="last-sorting-strategy" type="s">
+      <default>"asc"</default>
+      <choices>
+        <choice value="asc" />
+        <choice value="desc" />
+      </choices>
+      <summary>Last known sorting strategy used</summary>
+    </key>
+  </schema>
+</schemalist>

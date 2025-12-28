@@ -20,11 +20,13 @@
 
 const { GObject, Adw, Gio } = imports.gi;
 
-import { get_setting_int, set_setting_int } from "../utils/application.js";
+import { get_setting_int, get_setting_string, set_setting_int } from "../utils/application.js";
 import { TaskListStore } from "../utils/list-store.js";
 import { export_database, import_database } from "../utils/backup.js";
 import { log } from "../utils/log-manager.js";
 import { CreateTaskList } from "./task-list.js";
+import { SortingModes, SortingModeSchema } from "../static.js";
+import { get_sorting_label_text } from "../utils/sorting.js";
 
 export const TasksWindow = GObject.registerClass(
   {
@@ -34,7 +36,8 @@ export const TasksWindow = GObject.registerClass(
       "task_new_entry",
       "toast_overlay",
       "list_flow_box",
-      "button_new_task"
+      "button_new_task",
+      "task_sort_status_label"
     ],
   },
   class TasksWindow extends Adw.ApplicationWindow {
@@ -45,6 +48,17 @@ export const TasksWindow = GObject.registerClass(
     */
     _list_store;
 
+    window_actions = [
+      { name: 'new_task', event: 'activate', callback: () => this._task_new_entry.grab_focus() },
+      { name: 'purge_deleted_tasks', event: 'activate', callback: () => this._list_store.purge_deleted() },
+      { name: 'export_database', event: 'activate', callback: () => import_database(this) },
+      { name: 'import_database', event: 'activate', callback: () => export_database(this) },
+
+      { name: 'sort_by_title', event: 'activate', callback: () => this.sort_list_store(SortingModes.BY_TITLE) },
+      { name: 'sort_by_status', event: 'activate', callback: () => this.sort_list_store(SortingModes.BY_STATUS) },
+      { name: 'sort_by_creation_date', event: 'activate', callback: () => this.sort_list_store(SortingModes.BY_DATE) },
+    ]
+
     constructor(application) {
       super({ application });
 
@@ -53,47 +67,46 @@ export const TasksWindow = GObject.registerClass(
       this._list_store.load()
 
       // Connect our main New Task button event with task creation
-      this.bind_window_actions()
-      this.bind_buttons_actions()
+      this._bind_buttons_actions()
 
-      // Atalho de teclado
+      // Shortcuts to purge and create a new task
       application.set_accels_for_action('win.new_task', ['<Control>n']);
       application.set_accels_for_action('win.purge_deleted_tasks', ['<Control>d']);
 
-      this._list_flow_box.append(
-        CreateTaskList(this._list_store)
-      );
+      this._list_flow_box.append(CreateTaskList(this._list_store));
 
-      this.manage_window_settings()
+      this._handle_window_settings();
+      this._update_sorting_label();
     }
 
-    bind_buttons_actions() {
-      this._task_new_entry.connect("activate", this.create_task.bind(this));
+    sort_list_store(sorting_mode) {
+      this._list_store.sort_list(sorting_mode);
 
-      this._button_new_task.connect("clicked", () =>
-        this._task_new_entry.grab_focus()
-      )
+      this._update_sorting_label();
     }
 
-    bind_window_actions() {
-      const action_new_task = new Gio.SimpleAction({ name: 'new_task' });
-      action_new_task.connect('activate', () => this._task_new_entry.grab_focus());
-      this.add_action(action_new_task);
+    _update_sorting_label() {
+      const current_sort_strategy = get_setting_string(SortingModeSchema.STRATEGY);
+      const current_sort_mode = get_setting_string(SortingModeSchema.MODE);
+      
+      const current_label_sort_text = get_sorting_label_text(current_sort_mode, current_sort_strategy);
 
-      const action_purge_tasks = new Gio.SimpleAction({ name: 'purge_deleted_tasks' });
-      action_purge_tasks.connect('activate', () => this._list_store.purge_deleted());
-      this.add_action(action_purge_tasks);
-
-      const action_import_database = new Gio.SimpleAction({ name: 'import_database' });
-      action_import_database.connect('activate', () => import_database(this));
-      this.add_action(action_import_database);
-
-      const action_export_database = new Gio.SimpleAction({ name: 'export_database' });
-      this.add_action(action_export_database);
-      action_export_database.connect('activate', () => export_database(this));
+      this._task_sort_status_label.set_markup(`<small>${current_label_sort_text}</small>`);
     }
 
-    manage_window_settings() {
+    _bind_buttons_actions() {
+      this._task_new_entry.connect("activate", this._create_task.bind(this));
+      this._button_new_task.connect("clicked", () => this._task_new_entry.grab_focus())
+
+      for (const action of this.window_actions) {
+        const gio_action = new Gio.SimpleAction({ name: action.name });
+        gio_action.connect(action.event, action.callback)
+
+        this.add_action(gio_action);
+      }
+    }
+
+    _handle_window_settings() {
       this.set_default_size(
         get_setting_int('window-width'),
         get_setting_int('window-height')
@@ -110,14 +123,15 @@ export const TasksWindow = GObject.registerClass(
     /**
      * Add a new task to pending store and persist on disk
      */
-    create_task() {
+    _create_task() {
       const title = this._task_new_entry.get_text();
 
       if (title.trim() == "") return;
 
       log("window - new task", "Ask Pending list to add new task");
 
-      this._list_store.new_task(title.trim())
+      this._list_store.append_task({ title: title.trim() });
+      this._list_store.persist_store();
 
       log("window - new task", "Cleaning up interface and inputs");
       this._task_new_entry.set_text("");

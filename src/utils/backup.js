@@ -5,7 +5,7 @@ import { log } from "./log-manager.js";
 
 export async function export_database(parent) {
   const db = new Persistence();
-  const data = db.readFromFile();
+  const data = db.read_database();
 
   const saveDialog = new Gtk.FileChooserNative({
     title: _("Export database"),
@@ -79,7 +79,7 @@ export async function import_database(parent) {
         const importedData = JSON.parse(text);
 
         const db = new Persistence;
-        db.saveToFile(importedData);
+        db.write_database(importedData);
 
         parent._list_store.load();
         parent.display_message_toast(_("Database imported successfully"))

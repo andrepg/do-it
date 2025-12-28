@@ -33,23 +33,32 @@ function get_setting_int(name) {
   return _container.get_int(name)
 }
 
-function get_setting_bool(name) {
-  const _container = get_settings_container();
-
-  return _container.get_boolean(name)
-}
-
 function set_setting_int(name, value) {
   const _container = get_settings_container();
 
   _container.set_int(name, value)
 }
 
+function get_setting_string(name) {
+  const _container = get_settings_container();
+
+  return _container.get_string(name)
+}
+
+function set_setting_string(name, value) {
+  const _container = get_settings_container();
+
+  _container.set_string(name, value)
+}
+
 export {
-  set_setting_int,
-  get_setting_int,
-  get_setting_bool,
   get_resource_path,
   get_application_id,
   is_development_mode,
+
+  set_setting_int,
+  get_setting_int,
+
+  get_setting_string,
+  set_setting_string,
 }

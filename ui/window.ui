@@ -2,12 +2,9 @@
 <!-- Created with Cambalache 0.96.3 -->
 <interface>
   <!-- interface-name window.ui -->
-  <requires lib="Adw" version="1.7"/>
-  <requires lib="Gio" version="2.0"/>
-  <requires lib="Gtk" version="4.21"/>
   <requires lib="gio" version="2.0"/>
-  <requires lib="gtk" version="4.18"/>
   <requires lib="libadwaita" version="1.7"/>
+  <requires lib="gtk" version="4.18"/>
   <template class="TasksWindow" parent="AdwApplicationWindow">
     <property name="content">
       <object class="AdwToolbarView">
@@ -27,6 +24,31 @@
               <object class="GtkButton" id="button_new_task">
                 <property name="icon-name">value-increase-symbolic</property>
                 <property name="tooltip-text">Add new task (Ctrl + N)</property>
+              </object>
+            </child>
+            <child type="end">
+              <object class="GtkMenuButton">
+                <property name="always-show-arrow">True</property>
+                <property name="child">
+                  <object class="GtkBox">
+                    <property name="spacing">5</property>
+                    <child>
+                      <object class="GtkImage">
+                        <property name="icon-name">view-sort-descending-symbolic-rtl</property>
+                      </object>
+                    </child>
+                    <child>
+                      <object class="GtkLabel">
+                        <property name="label">Sort by</property>
+                      </object>
+                    </child>
+                  </object>
+                </property>
+                <property name="popover">
+                  <object class="GtkPopoverMenu">
+                    <property name="menu-model">menu_sort_task</property>
+                  </object>
+                </property>
               </object>
             </child>
           </object>
@@ -53,42 +75,72 @@
           <object class="AdwToastOverlay" id="toast_overlay">
             <child>
               <object class="GtkScrolledWindow" id="main_window">
+                <property name="css-classes">undershoot-top
+undershoot-bottom</property>
                 <property name="focusable">False</property>
                 <property name="min-content-height">200</property>
                 <child>
                   <object class="GtkBox">
                     <property name="margin-bottom">8</property>
-                    <property name="margin-end">8</property>
-                    <property name="margin-start">8</property>
                     <property name="margin-top">8</property>
                     <property name="orientation">vertical</property>
-                    <property name="spacing">8</property>
-                    <property name="valign">start</property>
                     <child>
-                      <object class="AdwWindowTitle" id="task_list_title">
-                        <property name="can-focus">False</property>
-                        <property name="hexpand">True</property>
-                        <property name="subtitle" translatable="yes">Play your day wisely and accomplish all</property>
-                        <property name="title" translatable="yes">Yours tasks</property>
-                        <property name="valign">start</property>
-                      </object>
-                    </child>
-                    <child>
-                      <object class="GtkBox" id="list_flow_box">
-                        <property name="homogeneous">True</property>
-                        <property name="margin-bottom">12</property>
+                      <object class="GtkBox">
+                        <property name="margin-bottom">8</property>
                         <property name="margin-end">12</property>
                         <property name="margin-start">12</property>
-                        <property name="margin-top">12</property>
+                        <property name="margin-top">8</property>
                         <property name="orientation">vertical</property>
                         <property name="valign">start</property>
+                        <child>
+                          <object class="AdwWindowTitle" id="task_list_title">
+                            <property name="can-focus">False</property>
+                            <property name="can-target">False</property>
+                            <property name="hexpand">True</property>
+                            <property name="margin-bottom">24</property>
+                            <property name="margin-top">24</property>
+                            <property name="subtitle" translatable="yes">Play your day wisely and accomplish all</property>
+                            <property name="title" translatable="yes">Yours tasks</property>
+                          </object>
+                        </child>
+                        <child>
+                          <object class="GtkLabel" id="task_sort_status_label">
+                            <property name="can-focus">False</property>
+                            <property name="can-target">False</property>
+                            <property name="css-classes">dimmed</property>
+                            <property name="focus-on-click">False</property>
+                            <property name="justify">center</property>
+                            <property name="label">[task_sort_status_label]</property>
+                            <property name="margin-bottom">4</property>
+                            <property name="margin-top">4</property>
+                            <property name="sensitive">False</property>
+                            <property name="use-markup">True</property>
+                            <property name="valign">start</property>
+                            <accessibility>
+                              <property name="sort">other</property>
+                              <state name="pressed">false</state>
+                            </accessibility>
+                          </object>
+                        </child>
+                        <child>
+                          <object class="GtkBox" id="list_flow_box">
+                            <property name="homogeneous">True</property>
+                            <property name="orientation">vertical</property>
+                            <property name="valign">start</property>
+                          </object>
+                        </child>
                       </object>
                     </child>
                     <child>
                       <object class="GtkLabel">
-                        <property name="css-classes">dim-label</property>
+                        <property name="css-classes">dimmed
+warning</property>
                         <property name="justify">center</property>
-                        <property name="label" translatable="yes">&lt;small&gt;Deleted items will be discarded when the app closes.&lt;/small&gt;</property>
+                        <property name="label" translatable="yes">&lt;small&gt;⚠️ Deleted items will be discarded when the app closes.&lt;/small&gt;</property>
+                        <property name="margin-bottom">8</property>
+                        <property name="margin-end">8</property>
+                        <property name="margin-start">8</property>
+                        <property name="margin-top">8</property>
                         <property name="use-markup">True</property>
                         <property name="valign">start</property>
                         <accessibility>
@@ -106,14 +158,29 @@
       </object>
     </property>
     <property name="default-height">600</property>
-    <property name="default-width">440</property>
-    <property name="title" translatable="yes">Tasks</property>
+    <property name="default-width">540</property>
+    <property name="title">Tasks</property>
   </template>
+  <menu id="menu_sort_task">
+    <item>
+      <attribute name="action">win.sort_by_creation_date</attribute>
+      <attribute name="label" translatable="yes">Sort by Creation</attribute>
+    </item>
+    <item>
+      <attribute name="action">win.sort_by_title</attribute>
+      <attribute name="label" translatable="yes">Sort by Title</attribute>
+    </item>
+    <item>
+      <attribute name="action">win.sort_by_status</attribute>
+      <attribute name="label" translatable="yes">Sort by Status</attribute>
+    </item>
+  </menu>
   <menu id="primary_menu">
     <section>
       <item>
         <attribute name="action">win.purge_deleted_tasks</attribute>
-        <attribute name="label">Purge deleted</attribute>
+        <attribute name="icon">user-trash-full-symbolic</attribute>
+        <attribute name="label" translatable="yes">Purge deleted tasks</attribute>
       </item>
     </section>
     <section>
@@ -126,12 +193,13 @@
       <item>
         <attribute name="action">win.import_database</attribute>
         <attribute name="icon">document-send-symbolic</attribute>
-        <attribute name="label">_Import Database</attribute>
+        <attribute name="label" translatable="yes">_Import Database</attribute>
       </item>
     </section>
     <section>
       <item>
         <attribute name="action">win.show-help-overlay</attribute>
+        <attribute name="icon">keyboard-symbolic</attribute>
         <attribute name="label" translatable="yes">_Keyboard Shortcuts</attribute>
       </item>
       <item>
