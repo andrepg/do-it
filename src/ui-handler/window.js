@@ -25,7 +25,7 @@ import { TaskListStore } from "../utils/list-store.js";
 import { export_database, import_database } from "../utils/backup.js";
 import { log } from "../utils/log-manager.js";
 import { CreateTaskList } from "./task-list.js";
-import { SortingModes, SortingModeSchema, SortingStrategy } from "../static.js";
+import { SortingModes, SortingModeSchema } from "../static.js";
 import { get_sorting_label_text } from "../utils/sorting.js";
 
 export const TasksWindow = GObject.registerClass(

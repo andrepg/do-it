@@ -33,7 +33,7 @@ const TaskProperties = {
     GObject.ParamFlags.READWRITE,
     "",
   ),
-  title: GObject.ParamSpec.string(
+  created: GObject.ParamSpec.string(
     "created",
     "Created At",
     "Task creation timestamp",
@@ -59,7 +59,7 @@ const GObjectProperties = {
 
 export const Task = GObject.registerClass(GObjectProperties,
   class Task extends Adw.EntryRow {
-    _init(taskId = 0, title = "", done = false, deleted_at = null, created_at = null) {
+    _init(taskId = 0, title = "", done = false, deleted = null, created = null) {
       super._init();
 
       // Initialize main entry value
@@ -68,8 +68,8 @@ export const Task = GObject.registerClass(GObjectProperties,
 
       // Store private properties to our object
       this._id = taskId;
-      this._deleted_at = deleted_at;
-      this._created_at = created_at ?? Date.now();
+      this._deleted_at = deleted;
+      this._created_at = created ?? Date.now();
 
       this._connect_events();
       this._update_interface();
