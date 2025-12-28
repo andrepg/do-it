@@ -25,7 +25,8 @@ import { TaskListStore } from "../utils/list-store.js";
 import { export_database, import_database } from "../utils/backup.js";
 import { log } from "../utils/log-manager.js";
 import { CreateTaskList } from "./task-list.js";
-import { SortingModes, SortingModeSchema } from "../static.js";
+import { SortingModes, SortingModeSchema, SortingStrategy } from "../static.js";
+import { get_sorting_label_text } from "../utils/sorting.js";
 
 export const TasksWindow = GObject.registerClass(
   {
@@ -85,26 +86,12 @@ export const TasksWindow = GObject.registerClass(
     }
 
     _update_sorting_label() {
-      const current_sort_strategy = get_setting_string(SortingModeSchema.STRATEGY)
-      let current_sort_mode = get_setting_string(SortingModeSchema.MODE);
+      const current_sort_strategy = get_setting_string(SortingModeSchema.STRATEGY);
+      const current_sort_mode = get_setting_string(SortingModeSchema.MODE);
+      
+      const current_label_sort_text = get_sorting_label_text(current_sort_mode, current_sort_strategy);
 
-      switch (current_sort_mode) {
-        case SortingModes.BY_DATE:
-          current_sort_mode = 'by date'
-          break;
-        case SortingModes.BY_STATUS:
-          current_sort_mode = 'by finished status'
-          break;
-        case SortingModes.BY_TITLE:
-          current_sort_mode = 'by title'
-          break;
-        default:
-          break;
-      }
-
-      this._task_sort_status_label.set_text(
-        `Using sort mode ${current_sort_mode} with order ${current_sort_strategy}`
-      );
+      this._task_sort_status_label.set_markup(`<small>${current_label_sort_text}</small>`);
     }
 
     _bind_buttons_actions() {
