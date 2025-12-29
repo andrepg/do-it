@@ -19,10 +19,7 @@
         "--socket=wayland"
     ],
     "build-options" : {
-        "append-path" : "/usr/lib/sdk/typescript/bin:/usr/lib/sdk/node24/bin",
-        "build-args": [
-            "-Ddevelopment=false"
-        ]
+        "append-path" : "/usr/lib/sdk/typescript/bin:/usr/lib/sdk/node24/bin"
     },
     "cleanup" : [
         "/include",
@@ -45,6 +42,7 @@
                     "type": "archive",
                     "url": "https://github.com/andrepg/do-it/archive/refs/tags/v0.1.1.zip",
                     "sha256": "0f866154e73544b44606b60ce4e1d84a7beb1ec55939e39fb02127759e8ed939",
+                    "strip-components": 1,
 
                     "x-checker-data": {
                         "type": "github",
@@ -57,7 +55,12 @@
             "config-opts" : [
                 "--libdir=lib",
                 "-Ddevelopment=false"
-            ]
+            ],
+            "build-options": {
+                "config-opts": [
+                    "-Ddevelopment=true"
+                ]
+            }
         }
     ]
 }
