@@ -12,7 +12,18 @@
       one day at a time. Create, update, delete and finish tasks easily.
     </p>
 
-    <p>Totally offline, telemetry-free and privacy-focused. No sync, nor tracking.</p>
+    <p>
+      Totally offline, telemetry-free and privacy-focused. No sync, nor tracking.
+      Simple enough to just keep track of what need to be done.
+    </p>
+
+    <ul>
+      <li>Create and delete as many tasks as you want</li>
+      <li>Mark as finished or reopen any task, any time</li>
+      <li>Delete tasks and do not worry - they will be purged when app closes</li>
+      <li>Purge deleted tasks if you do not want to see that many tasks</li>
+      <li>Sort your tasks by Title, Status or Creation Date, ascending or descending</li>
+    </ul>
 
     <p>**This app is available only in English and Brazilian Portuguese for now.**</p>
   </description>
@@ -48,32 +59,29 @@
 
   <screenshots>
     <screenshot type="default">
-      <image>https://github.com/andrepg/do-it/blob/main/images/dark-pt-br.png?raw=true</image>
-      <caption>In dark mode</caption>
+      <image>https://github.com/andrepg/do-it/blob/0.1.4/images/dark-pt-br.png?raw=true</image>
+      <caption>Dark mode</caption>
     </screenshot>
     <screenshot>
-      <image>https://github.com/andrepg/do-it/blob/main/images/light-pt-br.png?raw=true</image>
-      <caption>In light mode</caption>
+      <image>https://github.com/andrepg/do-it/blob/0.1.4/images/light-pt-br.png?raw=true</image>
+      <caption>Light mode</caption>
     </screenshot>
   </screenshots>
 
   <releases>
-    <release version="1.0.0" timestamp="1761495363990">
-      <url type="details">https://github.com/andrepg/do-it/releases#version_1.0.1</url>
+    <release version="0.1.4" timestamp="1761495363990">
+      <url type="details">https://github.com/andrepg/do-it/releases/tag/0.1.4</url>
       <description translate="no">
-        <p>
-          This is our first application release. 
-          Just a set of basic functionalities to handle tasks.
-        </p>
+        <p>Sorting your tasks is now available. We've introduced a few things only.</p>
         
         <ul>
-          <li>Basic task management (create, update, delete)</li>
-          <li>Deleted/finished task clean up before closing</li>
-          <li>Local storage on JSON file inside Flatpak</li>
+          <li>Tasks can be sorted by date, status or title</li>
+          <li>This ordering setup is persisted, so you should not worry about loosing</li>
+          <li>We've made touches on the empty list placeholder, making more Adwaita style</li>
+          <li>Since we have order by dates, the task title now displays when your task was created</li>
         </ul>
       </description>
     </release>
   </releases>
 
 </component>
-
