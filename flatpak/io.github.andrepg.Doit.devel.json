@@ -46,7 +46,8 @@
                 }
             ],
             "config-opts" : [
-                "--libdir=lib"
+                "--libdir=lib",
+                "-Ddevelopment=true"
             ]
         }
     ]
