@@ -1,6 +1,8 @@
 name: "[build] flatpak bundle"
 
 on:
+  push:
+    tags: ["*"]
   release:
     types: [released]
 
@@ -10,9 +12,9 @@ jobs:
 
   flatpak-bundle:
     runs-on: ubuntu-latest
-    needs: flatpak-validation
+    needs: flatpak-validation    
 
-    container:
+    container:      
       image: ghcr.io/flathub-infra/flatpak-github-actions:gnome-49
       options: --privileged
 
@@ -30,3 +32,11 @@ jobs:
           manifest-path: flatpak/io.github.andrepg.Doit.ci.json
           bundle: io.github.andrepg.Doit-${{ github.ref_name }}.flatpak
           cache-key: flatpak-release-${{ github.ref_name }}
+
+      - name: Upload bundle to release
+        uses: softprops/action-gh-release@v2
+        if: github.ref_type == 'tag'
+        with:
+          draft: false
+          tag_name: ${{ github.ref_name }}
+          files: io.github.andrepg.Doit-${{ github.ref_name }}.flatpak
