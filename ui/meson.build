@@ -1,5 +1,4 @@
-pkgdatadir = get_option('datadir') / meson.project_name()
-gnome = import('gnome')
+pkgdatadir = get_option('datadir') / application_name
 
 data_res = gnome.compile_resources(
   application_name + '.data',

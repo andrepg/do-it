@@ -3,7 +3,7 @@ symbolic_dir = 'hicolor' / 'symbolic' / 'apps'
 
 # TODO : Replace `application_name` with the plus suffix when development
 install_data(
-  scalable_dir / ('@0@.svg').format(application_name),
+  scalable_dir / ('@0@.svg').format(application_name + application_suffix),
   install_dir: get_option('datadir') / 'icons' / scalable_dir
 )
 

@@ -1,6 +1,6 @@
 {
-    "$schema": "./.vscode/schemas/flatpak-manifest.schema.json",
-    "id" : "io.github.andrepg.Doit",
+    "$schema" : "../.vscode/schemas/flatpak-manifest.schema.json",
+    "id" : "io.github.andrepg.Doit.Devel",
     "tags" : [
         "tasks",
         "todo",
@@ -10,18 +10,18 @@
     "runtime-version" : "49",
     "sdk" : "org.gnome.Sdk",
     "sdk-extensions" : [
-        "org.freedesktop.Sdk.Extension.node20",
+        "org.freedesktop.Sdk.Extension.node24",
         "org.freedesktop.Sdk.Extension.typescript"
     ],
     "command" : "io.github.andrepg.Doit",
     "finish-args" : [
-        "--share=ipc",
-        "--socket=fallback-x11",
         "--device=dri",
-        "--socket=wayland"
+        "--socket=wayland",
+        "--env=DEVELOPMENT=true",
+        "--env=LC_ALL=pt_BR.UTF-8"
     ],
     "build-options" : {
-        "append-path" : "/usr/lib/sdk/typescript/bin:/usr/lib/sdk/node20/bin"
+        "append-path" : "/usr/lib/sdk/typescript/bin:/usr/lib/sdk/node24/bin"
     },
     "cleanup" : [
         "/include",
@@ -38,12 +38,11 @@
         {
             "name" : "Doit",
             "buildsystem" : "meson",
-            "builddir" : true,            
+            "builddir" : true,
             "sources" : [
                 {
-                    "type" : "git",
-                    "url" : "https://github.com/andrepg/do-it",
-                    "branch": "main"
+                    "type" : "dir",
+                    "path" : "../"
                 }
             ],
             "config-opts" : [
