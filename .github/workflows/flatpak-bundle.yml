@@ -2,21 +2,11 @@ name: "[build] flatpak bundle"
 
 on:
   release:
-    types:
-      - created
+    types: [created]
 
 jobs:
   flatpak-validation: 
-    runs-on: ubuntu-latest
-
-    steps:
-      - name: Checkout
-        uses: actions/checkout@v4
-        with:
-          fetch-depth: 1
-          
-      - name: "Validate build"
-        uses: ./.github/workflows/flatpak-ci.yml
+    uses: ./.github/workflows/flatpak-ci.yml
 
   flatpak-bundle:
     runs-on: ubuntu-latest
