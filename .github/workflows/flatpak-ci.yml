@@ -4,14 +4,15 @@ on:
   workflow_call:
   workflow_dispatch:
   pull_request:
-    types: 
+    types:
       - ready_for_review
   push:
-    branches: 
+    branches:
       - main
 
 jobs:
-  flatpak:
+  bundle-prod:
+    name: "Validate prod bundle"
     runs-on: ubuntu-latest
 
     container:
@@ -21,17 +22,33 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v4
-
-      - name: Check development build
-        uses: flatpak/flatpak-github-actions/flatpak-builder@v6
         with:
-          build-bundle: false
-          manifest-path: flatpak/io.github.andrepg.Doit.devel.json
-          cache-key: flatpak-${{ github.ref }}
+          fetch-depth: 1
 
       - name: Check production build
         uses: flatpak/flatpak-github-actions/flatpak-builder@v6
         with:
           build-bundle: false
           manifest-path: flatpak/io.github.andrepg.Doit.json
+          cache-key: flatpak-${{ github.ref }}
+
+  bundle-dev:
+    name: "Validate dev bundle"
+    runs-on: ubuntu-latest
+
+    container:
+      image: ghcr.io/flathub-infra/flatpak-github-actions:gnome-49
+      options: --privileged
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 1
+
+      - name: Check production build
+        uses: flatpak/flatpak-github-actions/flatpak-builder@v6
+        with:
+          build-bundle: false
+          manifest-path: flatpak/io.github.andrepg.Doit.devel.json
           cache-key: flatpak-${{ github.ref }}
