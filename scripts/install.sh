@@ -23,7 +23,7 @@ APP_COMMAND="io.github.andrepg.Doit"
 SCRIPTS_PATH="$(cd "$(dirname "$0")" && pwd)"
 
 if $COMPILE; then
-    echo "==> Invoking compilation script"
+    echo "==> Invoking Compilation script"
     "$SCRIPTS_PATH/compile.sh" "$MANIFEST" "$BUILD_DIR"
 fi
 

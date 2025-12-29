@@ -30,11 +30,11 @@
 		"cSpell.words": [
 			"andrepg"
 		],
-		"mesonbuild.buildFolder": "_build",
-		"mesonbuild.configureOnOpen": false,
 		"mesonbuild.linting.enabled": true,
 		"mesonbuild.downloadLanguageServer": true,
 		"mesonbuild.formatting.enabled": true,
+		"mesonbuild.configureOnOpen": false,
+		"mesonbuild.buildFolder": "_build",
 		"mesonbuild.mesonPath": "${workspaceFolder}/.flatpak/meson.sh",
 	},
 	"tasks": {
