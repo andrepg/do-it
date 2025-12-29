@@ -1,0 +1,39 @@
+name: "[test] validate build process"
+
+on:
+  workflow_call:
+  workflow_dispatch:
+  pull_request:
+    types: 
+      - ready_for_review
+  push:
+    branches: 
+      - main
+
+jobs:
+  flatpak:
+    runs-on: ubuntu-latest
+
+    container:
+      image: ghcr.io/flathub-infra/flatpak-github-actions:gnome-49
+      options: --privileged
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Check development build
+        uses: flatpak/flatpak-github-actions/flatpak-builder@v6
+        with:
+          manifest-path: flatpak/io.github.andrepg.Doit.devel.json
+          build-dir: build-dev
+          cache-key: flatpak-${{ github.ref }}
+          build-bundle: false
+
+      - name: Check production build
+        uses: flatpak/flatpak-github-actions/flatpak-builder@v6
+        with:
+          manifest-path: flatpak/io.github.andrepg.Doit.json
+          build-dir: build-prod
+          cache-key: flatpak-${{ github.ref }}
+          build-bundle: false
