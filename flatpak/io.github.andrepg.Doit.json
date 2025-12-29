@@ -20,7 +20,7 @@
     ],
     "build-options" : {
         "append-path" : "/usr/lib/sdk/typescript/bin:/usr/lib/sdk/node24/bin"
-    },
+    },    
     "cleanup" : [
         "/include",
         "/lib/pkgconfig",
@@ -58,7 +58,7 @@
             ],
             "build-options": {
                 "config-opts": [
-                    "-Ddevelopment=true"
+                    "-Ddevelopment=false"
                 ]
             }
         }
