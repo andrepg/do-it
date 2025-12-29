@@ -40,7 +40,7 @@
             "sources" : [
                 {
                     "type": "archive",
-                    "url": "https://github.com/andrepg/do-it/archive/refs/tags/v0.1.3.zip",
+                    "url": "https://github.com/andrepg/do-it/archive/refs/tags/0.1.3.zip",
                     "sha256": "f49fda64048b469d53224c181b1f1ef3b1caad96ad99833b44f3c73817ebf15f",
                     "strip-components": 1,
 
@@ -48,7 +48,7 @@
                         "type": "github",
                         "owner": "andrepg",
                         "repo": "do-it",
-                        "tag-pattern": "^v([\\d.]+)$"
+                        "tag-pattern": "^([\\d.]+)$"
                     }
                 }
             ],
