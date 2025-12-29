@@ -1,0 +1,57 @@
+{
+    "$schema" : "../.vscode/schemas/flatpak-manifest.schema.json",
+    "id" : "io.github.andrepg.Doit",
+    "tags" : [
+        "tasks",
+        "todo",
+        "task management"
+    ],
+    "runtime" : "org.gnome.Platform",
+    "runtime-version" : "49",
+    "sdk" : "org.gnome.Sdk",
+    "sdk-extensions" : [
+        "org.freedesktop.Sdk.Extension.node24",
+        "org.freedesktop.Sdk.Extension.typescript"
+    ],
+    "command" : "io.github.andrepg.Doit",
+    "finish-args" : [
+        "--device=dri",
+        "--socket=wayland"
+    ],
+    "build-options" : {
+        "append-path" : "/usr/lib/sdk/typescript/bin:/usr/lib/sdk/node24/bin"
+    },
+    "cleanup" : [
+        "/include",
+        "/lib/pkgconfig",
+        "/man",
+        "/share/doc",
+        "/share/gtk-doc",
+        "/share/man",
+        "/share/pkgconfig",
+        "*.la",
+        "*.a"
+    ],
+    "modules" : [
+        {
+            "name" : "Doit",
+            "buildsystem" : "meson",
+            "builddir" : true,
+            "sources" : [
+                {
+                    "type" : "dir",
+                    "path" : "../"
+                }
+            ],
+            "config-opts" : [
+                "--libdir=lib",
+                "-Ddevelopment=false"
+            ],
+            "build-options": {
+                "config-opts": [
+                "-Ddevelopment=false"
+                ]
+            }
+        }
+    ]
+}
