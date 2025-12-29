@@ -21,7 +21,10 @@
         "--env=LC_ALL=pt_BR.UTF-8"
     ],
     "build-options" : {
-        "append-path" : "/usr/lib/sdk/typescript/bin:/usr/lib/sdk/node24/bin"
+        "append-path" : "/usr/lib/sdk/typescript/bin:/usr/lib/sdk/node24/bin",
+        "build-args": [
+            "-Ddevelopment=false"
+        ]
     },
     "cleanup" : [
         "/include",
