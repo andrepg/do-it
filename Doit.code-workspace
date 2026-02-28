@@ -31,6 +31,9 @@
     "mesonbuild.downloadLanguageServer": true,
     "mesonbuild.formatting.enabled": true,
     "mesonbuild.mesonlsp.others.removeDefaultTypesInInlayHints": true,
+    "mesonbuild.configureOnOpen": false,
+    "mesonbuild.buildFolder": "_build",
+    "mesonbuild.mesonPath": "${workspaceFolder}/.flatpak/meson.sh",
   },
   "tasks": {
     "version": "2.0.0",
