@@ -14,13 +14,37 @@ project('io.github.andrepg.Doit',
 i18n = import('i18n')
 gnome = import('gnome')
 
+## Define Profile and Application ID
+profile = get_option('development') ? 'devel' : 'default'
+application_id = 'io.github.andrepg.Doit'
+
+if profile == 'devel'
+  application_id += '.Devel'
+endif
+
 ## Then we set any global variables
 application_name = meson.project_name()
 application_version = meson.project_version()
-application_suffix = get_option('development') == true ? '.Devel' : ''
 application_datadir = get_option('datadir')
 
 application_resource_path = '/io/github/andrepg/Doit'
+if profile == 'devel'
+  application_resource_path += '/Devel'
+endif
+
+# Central configuration data
+application_configuration = configuration_data()
+application_configuration.set('APPLICATION_ID', application_id)
+application_configuration.set('PACKAGE_VERSION', application_version)
+application_configuration.set('PACKAGE_NAME', application_name)
+application_configuration.set('resource_path', application_resource_path)
+application_configuration.set('is_devel', get_option('development') ? 'true' : 'false')
+application_configuration.set('prefix', get_option('prefix'))
+application_configuration.set('bindir', get_option('prefix') / get_option('bindir'))
+application_configuration.set('datadir', get_option('prefix') / get_option('datadir'))
+application_configuration.set('libdir', get_option('prefix') / get_option('libdir'))
+application_configuration.set('GJS', find_program('gjs').full_path())
+application_configuration.set('GTK', '4.21')
 
 # ## Process Source Code and Javascript buildable
 subdir('data')

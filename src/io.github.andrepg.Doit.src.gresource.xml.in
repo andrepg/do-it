@@ -1,10 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <gresources>
-  <gresource prefix="/io/github/andrepg/Doit/js">
+  <gresource prefix="@resource_path@/js">
     <file>main.js</file>
+    <file>app.js</file>
     <file>static.js</file>
 
-    <file>utils/application.js</file>
+    <file alias="utils/application.js">application.js</file>
     <file>utils/backup.js</file>
     <file>utils/list-store.js</file>
     <file>utils/log-manager.js</file>

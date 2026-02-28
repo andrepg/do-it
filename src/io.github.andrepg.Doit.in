@@ -2,6 +2,11 @@
 
 import { exit, programArgs, programInvocationName } from "system";
 
+// Fix: "Requiring Gtk but it has 2 versions available"
+// We must specify the version before any library is loaded
+imports.gi.versions.Gtk = '4.0';
+imports.gi.versions.Adw = '1';
+
 imports.package.init({
   name: "@PACKAGE_NAME@",
   version: "@PACKAGE_VERSION@",
