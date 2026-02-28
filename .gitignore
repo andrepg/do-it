@@ -6,3 +6,5 @@
 **/_repo-*/**
 **/*.json~
 **/.flatpak-builder/**
+
+node_modules/
