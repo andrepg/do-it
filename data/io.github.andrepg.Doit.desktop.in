@@ -1,7 +1,7 @@
 [Desktop Entry]
 Name=Doit
-Exec=io.github.andrepg.Doit
-Icon=io.github.andrepg.Doit
+Exec=@APPLICATION_ID@
+Icon=@APPLICATION_ID@
 Terminal=false
 Type=Application
 Categories=Utility;

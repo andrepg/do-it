@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <gresources>
-  <gresource prefix="/io/github/andrepg/Doit/ui">
+  <gresource prefix="@resource_path@/ui">
     <file preprocess="xml-stripblanks">window.ui</file>
     <file preprocess="xml-stripblanks">task.ui</file>
     <file preprocess="xml-stripblanks">task-list.ui</file>

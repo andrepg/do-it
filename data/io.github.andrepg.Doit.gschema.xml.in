@@ -2,7 +2,7 @@
 <!DOCTYPE schemalist SYSTEM "https://gitlab.gnome.org/GNOME/glib/-/raw/HEAD/gio/gschema.dtd">
 
 <schemalist gettext-domain="Doit">
-  <schema id="io.github.andrepg.Doit" path="/io/github/andrepg/Doit/">
+  <schema id="@APPLICATION_ID@" path="@resource_path@/">
     <key name="window-width" type="i">
       <default>800</default>      
       <summary>Last known window width</summary>

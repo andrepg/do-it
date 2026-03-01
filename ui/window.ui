@@ -22,7 +22,7 @@
             </child>
             <child type="start">
               <object class="GtkButton" id="button_new_task">
-                <property name="icon-name">value-increase-symbolic</property>
+                <property name="icon-name">list-add-symbolic</property>
                 <property name="tooltip-text">Add new task (Ctrl + N)</property>
               </object>
             </child>

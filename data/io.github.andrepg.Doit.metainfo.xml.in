@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <component type="desktop-application">
-  <id>io.github.andrepg.Doit</id>
+  <id>@APPLICATION_ID@</id>
   <metadata_license>CC0-1.0</metadata_license>
   <project_license>GPL-3.0-or-later</project_license>
 
@@ -48,7 +48,7 @@
   <url type="bugtracker">https://github.com/andrepg/do-it/issues</url>
   <url type="donation">https://github.com/sponsors/andrepg</url>
 
-  <launchable type="desktop-id">io.github.andrepg.Doit.desktop</launchable>
+  <launchable type="desktop-id">@APPLICATION_ID@.desktop</launchable>
 
   <content_rating type="oars-1.1"/>
 
