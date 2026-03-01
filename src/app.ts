@@ -5,7 +5,6 @@ import Adw from 'gi://Adw';
 
 import { TasksWindow } from './ui-handler/window.js';
 
-// @ts-ignore
 import { get_application_id, get_resource_path, is_development_mode } from './utils/application.js';
 
 // Declare global identifiers used locally
@@ -36,7 +35,7 @@ export class DoitApplication extends Adw.Application {
         show_about_action.connect('activate', () => {
             const aboutDialog = new Adw.AboutDialog({
                 application_name: "Do It",
-                application_icon: 'io.github.andrepg.Doit',
+                application_icon: get_application_id(),
                 developer_name: 'André Paul Grandsire',
                 version: pkg.version,
                 website: "https://github.com/andrepg/do-it",

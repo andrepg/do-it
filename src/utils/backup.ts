@@ -3,7 +3,10 @@ import Gtk from "gi://Gtk"
 import Gio from "gi://Gio"
 import { log } from "./log-manager.js";
 
-export async function export_database(parent) {
+// Declare _ global for translation
+declare function _(id: string): string;
+
+export async function export_database(parent: any) {
   const db = new Persistence();
   const data = db.read_database();
 
@@ -24,15 +27,18 @@ export async function export_database(parent) {
     log("backup-manager", "Receiving response");
 
     if (response == Gtk.ResponseType.ACCEPT) {
-      const filePath = dialog.get_file().get_path();
+      const file = (dialog as Gtk.FileChooser).get_file();
+      if (!file) return;
+      const filePath = file.get_path();
+      if (!filePath) return;
 
       log("backup-manager", `Storing database to ${filePath}`);
 
       try {
-        const encoder = new TextEncoder("utf-8")
+        const encoder = new TextEncoder()
         const blob = encoder.encode(JSON.stringify(data, null, 2))
-        const file = Gio.File.new_for_path(filePath)
-        file.replace_contents(
+        const fileObj = Gio.File.new_for_path(filePath)
+        fileObj.replace_contents(
           blob,
           null,
           false,
@@ -53,7 +59,7 @@ export async function export_database(parent) {
   });
 }
 
-export async function import_database(parent) {
+export async function import_database(parent: any) {
   const openDialog = new Gtk.FileChooserNative({
     title: _("Import Task Database"),
     action: Gtk.FileChooserAction.OPEN,
@@ -70,15 +76,16 @@ export async function import_database(parent) {
 
   openDialog.connect('response', (dialog, response) => {
     if (response === Gtk.ResponseType.ACCEPT) {
-      const selectedFile = dialog.get_file();
+      const selectedFile = (dialog as Gtk.FileChooser).get_file();
+      if (!selectedFile) return;
       try {
         const [ok, content] = selectedFile.load_contents(null);
         if (!ok) throw new Error("Failed to load file.");
-        const decoder = new TextDecoder('utf-8');
+        const decoder = new TextDecoder();
         const text = decoder.decode(content);
         const importedData = JSON.parse(text);
 
-        const db = new Persistence;
+        const db = new Persistence();
         db.write_database(importedData);
 
         parent._list_store.load();

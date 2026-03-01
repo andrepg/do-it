@@ -13,7 +13,7 @@ export const EntryRowSettings = {
 
 export const TASK_DELETE_ICON = {
   default: "user-trash-symbolic",
-  deleted: "rotation-allowed-symbolic"
+  deleted: "edit-undo-symbolic"
 }
 
 /**

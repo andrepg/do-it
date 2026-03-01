@@ -24,7 +24,7 @@ tsc_target = custom_target(
 pkgdatadir = get_option('datadir') / meson.project_name()
 
 configure_file(
-  input: 'utils/application.js.in',
+  input: 'utils/application.js',
   output: 'application.js',
   configuration: application_configuration
 )

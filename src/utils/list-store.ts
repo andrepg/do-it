@@ -6,27 +6,34 @@ import { Task } from "../ui-handler/task.js";
 import { log } from "./log-manager.js";
 import { get_sorting_algorithm, set_sorting_algorithm } from "./sorting.js";
 
-export const TaskListStore = GObject.registerClass({
-  GTypeName: "TaskListStore",
-  Properties: {},
-  InternalChildren: [],
-  Signals: {},
-}, class TaskListStoreObject extends Gio.ListStore {
-  get_all() {
-    const tasks = [];
+export class TaskListStore extends Gio.ListStore<Task> {
+  static {
+    GObject.registerClass({
+      GTypeName: "TaskListStore",
+      Properties: {},
+      InternalChildren: [],
+      Signals: {},
+    }, this);
+  }
+
+  get_all(): any[] {
+    const tasks: any[] = [];
 
     for (let index = 0; index < this.get_count(); index++) {
-      tasks.push(this.get_item(index).to_object());
+      const item = this.get_item(index);
+      if (item instanceof Task) {
+        tasks.push(item.to_object());
+      }
     }
 
     return tasks;
   }
 
-  get_count() {
+  get_count(): number {
     return this.get_n_items();
   }
 
-  append_task({ title, done = false, taskId = null, created_at = null }) {
+  append_task({ title, done = false, taskId = null, created_at = null }: { title: string, done?: boolean, taskId?: number | null, created_at?: number | null }) {
     const task = new Task(
       taskId ?? this.get_count() + 1,
       title,
@@ -34,7 +41,7 @@ export const TaskListStore = GObject.registerClass({
       created_at,
     );
 
-    const _update_interface = (signal) => {
+    const _update_interface = (signal: string) => {
       log("list-store", `Received ${signal} signal.`)
 
       this.sort(get_sorting_algorithm())
@@ -47,7 +54,7 @@ export const TaskListStore = GObject.registerClass({
     this.insert_sorted(task, get_sorting_algorithm());
   }
 
-  sort_list(sort_mode) {
+  sort_list(sort_mode: string) {
     log("list-store", `Sorting list by mode: ${sort_mode}`);
 
     set_sorting_algorithm(sort_mode);
@@ -65,7 +72,8 @@ export const TaskListStore = GObject.registerClass({
   persist_store() {
     log("list-store", "Saving tasks to database");
 
-    (new Persistence).write_database(
+    const persistence = new Persistence();
+    persistence.write_database(
       this.get_all().filter(item => !item.is_deleted)
     )
   }
@@ -73,9 +81,10 @@ export const TaskListStore = GObject.registerClass({
   load() {
     log("list-store", "Loading tasks from database")
 
-    const tasks = (new Persistence).read_database()
+    const persistence = new Persistence();
+    const tasks = persistence.read_database();
 
-    tasks.forEach(item => {
+    tasks.forEach((item: any) => {
       this.append_task({
         taskId: item.taskId,
         title: item.title,
@@ -86,4 +95,4 @@ export const TaskListStore = GObject.registerClass({
       log("list-store", `Loaded task ${item.title} (done: ${item.done}, deleted: ${item.deleted_at}, created_at: ${item.created_at})`)
     })
   }
-})
+}
