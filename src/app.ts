@@ -1,88 +1,47 @@
 import GObject from 'gi://GObject';
-import Gtk from 'gi://Gtk';
 import Gio from 'gi://Gio';
 import Adw from 'gi://Adw';
-import GLib from 'gi://GLib';
 
-import { TasksWindow } from './ui-handler/window.js';
-import { DoItMainWindow } from './doit.js';
-
-// import { get_application_id, get_resource_path, is_development_mode } from './utils/application.js';
-
-// Declare global identifiers used locally
-declare const pkg: { version: string };
-declare function _(id: string): string;
+import { DoItMainWindow } from './ui-handler/doit.js';
+import { is_development_mode } from './utils/application.js';
+import { log } from './utils/log-manager.js';
+import * as Actions from './actions/index.js';
 
 const options = { GTypeName: "DoitApplication" };
 
 export class DoitApplication extends Adw.Application {
+    static readonly LogClass = 'app';
+
     static {
         GObject.registerClass(options, this);
     }
 
     constructor() {
-        super({
-            // application_id: get_application_id(),
-            // resource_base_path: this.get_resource_base_path(),
-            flags: Gio.ApplicationFlags.DEFAULT_FLAGS,
-        });
+        super({ flags: Gio.ApplicationFlags.DEFAULT_FLAGS });
 
-        this.setupAboutDialogAction();
-        this.setupQuitAction();
-    }
-
-    private setupAboutDialogAction(): void {
-        const show_about_action = new Gio.SimpleAction({ name: 'about' });
-
-        show_about_action.connect('activate', () => {
-            const aboutDialog = new Adw.AboutDialog({
-                application_name: GLib.get_application_name() as string,
-                application_icon: 'io.github.andrepg.Doit.Devel',
-                developer_name: 'André Paul Grandsire',
-                version: pkg.version,
-                website: "https://github.com/andrepg/do-it",
-                issue_url: "https://github.com/andrepg/do-it/issues",
-                support_url: "https://github.com/andrepg/do-it/discussions",
-                license_type: Gtk.License.GPL_3_0,
-                developers: [
-                    'André Paul Grandsire'
-                ],
-                // Translators: Replace "translator-credits" with your
-                // name/username, and optionally an email or URL.
-                translator_credits: _("translators-credits"),
-                copyright: '© 2025 André Paul Grandsire'
-            });
-
-            aboutDialog.present(this.active_window);
-        });
-
-        this.add_action(show_about_action);
-    }
-
-    private setupQuitAction(): void {
-        const quit_action = new Gio.SimpleAction({ name: 'quit' });
-
-        quit_action.connect('activate', () => {
-            this.quit();
-        });
-
-        this.add_action(quit_action);
-        this.set_accels_for_action('app.quit', ['<primary>q']);
+        log(DoitApplication.LogClass, "Initializing application actions");
+        Actions.about().setup(this);
+        Actions.quit().setup(this);
     }
 
     public override vfunc_activate(): void {
         let { active_window } = this;
 
         if (!active_window) {
+            log(DoitApplication.LogClass, "Creating main window");
             active_window = new DoItMainWindow(this);
         }
 
-        // if (is_development_mode()) {
-        active_window.add_css_class('devel');
-        // }
-
-        active_window.set_title("Do It");
+        if (is_development_mode()) {
+            log(DoitApplication.LogClass, "Development mode enabled");
+            active_window.add_css_class('devel');
+        }
 
         active_window.present();
+    }
+
+    public override vfunc_shutdown(): void {
+        log(DoitApplication.LogClass, "Shutting down application");
+        super.vfunc_shutdown();
     }
 }

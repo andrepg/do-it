@@ -2,9 +2,9 @@
 <!-- Created with Cambalache 0.96.3 -->
 <interface>
   <!-- interface-name application.ui -->
+  <requires lib="gio" version="2.0"/>
   <requires lib="gtk" version="4.18"/>
   <requires lib="libadwaita" version="1.7"/>
-  <requires lib="gio" version="2.0"/>
   <template class="DoItMainWindow" parent="AdwApplicationWindow">
     <property name="content">
       <object class="AdwNavigationSplitView">
@@ -14,7 +14,7 @@
               <object class="AdwToolbarView">
                 <property name="bottom-bar-style">raised</property>
                 <property name="content">
-                  <object class="AdwToastOverlay">
+                  <object class="AdwToastOverlay" id="toast_overlay">
                     <child>
                       <object class="GtkScrolledWindow">
                         <child>
@@ -30,24 +30,16 @@
                                     <property name="header-suffix">
                                       <object class="AdwAvatar"/>
                                     </property>
+                                    <property name="margin-end">12</property>
+                                    <property name="margin-start">12</property>
+                                    <property name="margin-top">8</property>
                                     <property name="title">Nome do projeto</property>
                                     <property name="valign">start</property>
-                                    
-                                  </object>
-                                </child>
-                              </object>
-                            </child>
-                            <child>
-                              <object class="AdwClamp">
-                                <property name="valign">start</property>
-                                <child>
-                                  <object class="AdwPreferencesGroup">
-                                    <property name="header-suffix">
-                                      <object class="AdwAvatar"/>
-                                    </property>
-                                    <property name="title">Nome do projeto</property>
-                                    <property name="valign">start</property>
-                                    
+                                    <child>
+                                      <object class="GtkBox" id="task_list">
+                                        <property name="orientation">vertical</property>
+                                      </object>
+                                    </child>
                                   </object>
                                 </child>
                               </object>
@@ -62,6 +54,14 @@
                 <child type="top">
                   <object class="AdwHeaderBar">
                     <property name="valign">start</property>
+                    <child type="start">
+                      <object class="GtkMenuButton" id="button-sidebar-toggle">
+                        <property name="active">True</property>
+                        <property name="focusable">True</property>
+                        <property name="icon-name">sidebar-show-symbolic</property>
+                        <property name="tooltip-text" translatable="yes">Toggle sidebar</property>
+                      </object>
+                    </child>
                     <child type="end">
                       <object class="GtkMenuButton">
                         <property name="focusable">True</property>
@@ -129,9 +129,16 @@
           </object>
         </property>
         <property name="sidebar">
-          <object class="AdwNavigationPage"/>
+          <object class="AdwNavigationPage">
+            <property name="child">
+              <object class="GtkListView"/>
+            </property>
+            <property name="title">Projects</property>
+          </object>
         </property>
       </object>
     </property>
+    <property name="default-height">400</property>
+    <property name="default-width">600</property>
   </template>
 </interface>

@@ -1,6 +1,12 @@
 #!@GJS@ -m
 
+import Gio from "gi://Gio";
+import GLib from "gi://GLib";
+
+import { bindtextdomain, textdomain } from "gettext"
 import { exit, programArgs, programInvocationName } from "system";
+
+const APPLICATION_RES = "@APPLICATION_RES@";
 
 // Fix: "Requiring Gtk but it has 2 versions available"
 // We must specify the version before any library is loaded
@@ -15,7 +21,10 @@ imports.package.init({
   datadir: "@datadir@",
 });
 
-const { main } = await import("resource://@resource_path@/js/entrypoint.js");
+const { main } = await import(`resource://${APPLICATION_RES}/js/entrypoint.js`);
 const exit_code = await main([programInvocationName, ...programArgs]);
 
 exit(exit_code);
+
+// We should base our binary in the gnome-ts-template
+// https://github.com/nyx-lyb3ra/gnome-ts-template/blob/826b2822fa979d95d708c755d435e3c85144f96d/bin/gnome-ts-template.in#L13

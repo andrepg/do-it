@@ -10,9 +10,10 @@ tsc_target = custom_target(
   'tsc-compile',
   command: [
     'sh', '-c', 
-    'tsc --outDir "$1" --project "$2" && touch "$3"', 
+    'tsc --outDir "$1" --rootDir "$2" --project "$3" && touch "$4"', 
     '_',
     meson.current_build_dir(),
+    meson.current_source_dir(),
     meson.project_source_root() / 'tsconfig.json',
     '@OUTPUT@'
   ],
@@ -38,7 +39,7 @@ src_res = gnome.compile_resources(application_name + '.src',
   gresource_bundle: true,
   install: true,
   install_dir: pkgdatadir,
-  source_dir: [meson.current_source_dir(), meson.current_build_dir(), meson.current_build_dir() / 'src'],
+  source_dir: [meson.current_source_dir(), meson.current_build_dir()],
   dependencies: [tsc_target]
 )
 

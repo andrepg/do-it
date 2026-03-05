@@ -19,12 +19,6 @@
 
 import { DoitApplication } from "./app.js";
 
-// Declare global identifiers used locally by GJS application setup
-declare const pkg: {
-    initGettext: () => void;
-    initFormat: () => void;
-};
-
 pkg.initGettext();
 pkg.initFormat();
 

@@ -12,8 +12,7 @@ import { SortingModes, SortingModeSchema } from "../static.js";
 import { get_sorting_label_text } from "../utils/sorting.js";
 import { get_setting_int, get_setting_string, set_setting_int } from '../utils/settings.js';
 
-// Declare _ global for translation
-declare function _(id: string): string;
+// Redundant local declaration removed (now in env.d.ts)
 
 // import Template from "../../ui/window.ui";
 
@@ -50,8 +49,8 @@ export class TasksWindow extends Adw.ApplicationWindow {
   private window_actions = [
     { name: 'new_task', event: 'activate', callback: () => this.task_new_entry.grab_focus() },
     { name: 'purge_deleted_tasks', event: 'activate', callback: () => this._list_store.purge_deleted() },
-    { name: 'export_database', event: 'activate', callback: () => export_database(this) },
-    { name: 'import_database', event: 'activate', callback: () => import_database(this) },
+    // { name: 'export_database', event: 'activate', callback: () => export_database(this) },
+    // { name: 'import_database', event: 'activate', callback: () => import_database(this) },
 
     { name: 'sort_by_title', event: 'activate', callback: () => this.sort_list_store(SortingModes.BY_TITLE) },
     { name: 'sort_by_status', event: 'activate', callback: () => this.sort_list_store(SortingModes.BY_STATUS) },
@@ -82,7 +81,7 @@ export class TasksWindow extends Adw.ApplicationWindow {
 
     this.list_flow_box.append(CreateTaskList(this._list_store));
 
-    this._handle_window_settings();
+    // this._handle_window_settings();
     this._update_sorting_label();
   }
 
@@ -113,19 +112,19 @@ export class TasksWindow extends Adw.ApplicationWindow {
     }
   }
 
-  private _handle_window_settings(): void {
-    this.set_default_size(
-      get_setting_int('window-width'),
-      get_setting_int('window-height')
-    )
+  // private _handle_window_settings(): void {
+  //   this.set_default_size(
+  //     get_setting_int('window-width'),
+  //     get_setting_int('window-height')
+  //   )
 
-    this.connect('close-request', () => {
-      const [width, height] = this.get_default_size();
-      set_setting_int('window-width', width);
-      set_setting_int('window-height', height);
-      return false; // propagate
-    });
-  }
+  //   this.connect('close-request', () => {
+  //     const [width, height] = this.get_default_size();
+  //     set_setting_int('window-width', width);
+  //     set_setting_int('window-height', height);
+  //     return false; // propagate
+  //   });
+  // }
 
   /**
    * Add a new task to pending store and persist on disk
