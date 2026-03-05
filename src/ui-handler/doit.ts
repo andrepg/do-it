@@ -27,10 +27,6 @@ export class DoItMainWindow extends Adw.ApplicationWindow {
 
     static readonly GType = DoItMainWindow as unknown as GObject.GType;
 
-    mainTaskStore: TaskListStore;
-    groupList: Adw.PreferencesGroup;
-    splitView: Adw.OverlaySplitView;
-
     static {
         GObject.registerClass(options, this);
     }
@@ -45,16 +41,8 @@ export class DoItMainWindow extends Adw.ApplicationWindow {
 
         log(DoItMainWindow.LogClass, "Initializing main window");
 
-        this.groupList = this.get_template_child(DoItMainWindow.GType, 'group_list') as Adw.PreferencesGroup;
-        this.splitView = this.get_template_child(DoItMainWindow.GType, 'split_view') as Adw.OverlaySplitView;
-
         Actions.backup().setup(this);
         Actions.sidebar().setup(this);
-
-        this.mainTaskStore = new TaskListStore();
-        this.mainTaskStore.load();
-
-        this.groupList.add(CreateTaskList(this.mainTaskStore));
     }
 
     public override vfunc_close_request(): boolean {
