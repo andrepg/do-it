@@ -3,20 +3,23 @@ import Adw from 'gi://Adw';
 import Gio from 'gi://Gio';
 import Gtk from 'gi://Gtk';
 
-import { get_setting_int, get_setting_string, set_setting_int, get_resource_path } from "../utils/application.js";
+import { get_resource_path } from "../utils/application.js";
 import { TaskListStore } from "../utils/list-store.js";
 import { export_database, import_database } from "../utils/backup.js";
 import { log } from "../utils/log-manager.js";
 import { CreateTaskList } from "./task-list.js";
 import { SortingModes, SortingModeSchema } from "../static.js";
 import { get_sorting_label_text } from "../utils/sorting.js";
+import { get_setting_int, get_setting_string, set_setting_int } from '../utils/settings.js';
 
 // Declare _ global for translation
 declare function _(id: string): string;
 
+// import Template from "../../ui/window.ui";
+
 const GObjectProperties = {
   GTypeName: "TasksWindow",
-  Template: `resource://${get_resource_path()}/ui/window.ui`,
+  Template: `resource:///io/github/andrepg/Doit/Devel/ui/window.ui`,
   InternalChildren: [
     "task_new_entry",
     "toast_overlay",
@@ -151,4 +154,3 @@ export class TasksWindow extends Adw.ApplicationWindow {
     this.toast_overlay.add_toast(new Adw.Toast({ title: message }))
   }
 }
-

@@ -1,6 +1,8 @@
 import Adw from "gi://Adw";
 import Gtk from "gi://Gtk";
+import Gio from "gi://Gio";
 import GObject from "gi://GObject";
+
 import type { TasksWindow } from "./window.js";
 import { TASK_DELETE_ICON } from "../static.js";
 import { log } from "../utils/log-manager.js";
@@ -44,7 +46,7 @@ const TaskProperties = {
 
 const GObjectProperties = {
   GTypeName: "Task",
-  Template: `resource://${get_resource_path()}/ui/task.ui`,
+  Template: `resource:///io/github/andrepg/Doit/Devel/ui/task.ui`,
   Properties: TaskProperties,
   InternalChildren: ["task_done", "task_delete"],
   Signals: {

@@ -1,6 +1,7 @@
 import { SortingStrategy, SortingModeSchema, SortingModes } from "../static.js";
-import { get_setting_string, set_setting_string } from "./application.js";
+// import { get_setting_string, set_setting_string } from "./application.js";
 import { log } from "./log-manager.js"
+import { get_setting_string, set_setting_string } from "./settings.js";
 
 // Declare _ global for translation
 declare function _(id: string): string;
