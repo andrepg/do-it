@@ -7,7 +7,7 @@
   <requires lib="libadwaita" version="1.7"/>
   <template class="DoItMainWindow" parent="AdwApplicationWindow">
     <property name="content">
-      <object class="AdwNavigationSplitView">
+      <object class="AdwNavigationSplitView" id="split_view">
         <property name="content">
           <object class="AdwNavigationPage">
             <property name="child">
@@ -26,7 +26,7 @@
                               <object class="AdwClamp">
                                 <property name="valign">start</property>
                                 <child>
-                                  <object class="AdwPreferencesGroup">
+                                  <object class="AdwPreferencesGroup" id="group_list">
                                     <property name="header-suffix">
                                       <object class="AdwAvatar"/>
                                     </property>
@@ -53,15 +53,8 @@
                 <property name="top-bar-style">raised</property>
                 <child type="top">
                   <object class="AdwHeaderBar">
+                    <property name="show-back-button">False</property>
                     <property name="valign">start</property>
-                    <child type="start">
-                      <object class="GtkMenuButton" id="button-sidebar-toggle">
-                        <property name="active">True</property>
-                        <property name="focusable">True</property>
-                        <property name="icon-name">sidebar-show-symbolic</property>
-                        <property name="tooltip-text" translatable="yes">Toggle sidebar</property>
-                      </object>
-                    </child>
                     <child type="end">
                       <object class="GtkMenuButton">
                         <property name="focusable">True</property>
@@ -105,6 +98,12 @@
                         <property name="tooltip-text" translatable="yes">Main Menu</property>
                       </object>
                     </child>
+                    <child type="start">
+                      <object class="GtkButton">
+                        <property name="action-name">win.toggle-sidebar</property>
+                        <property name="icon-name">sidebar-show-symbolic</property>
+                      </object>
+                    </child>
                   </object>
                 </child>
                 <child type="bottom">
@@ -128,6 +127,7 @@
             <property name="title">Do It</property>
           </object>
         </property>
+        <property name="show-content">True</property>
         <property name="sidebar">
           <object class="AdwNavigationPage">
             <property name="child">

@@ -16,7 +16,8 @@ const options = {
     Template: get_template_path('ui/application.ui'),
     InternalChildren: [
         "toast_overlay",
-        "task_list",
+        "group_list",
+        "split_view"
     ]
 };
 
@@ -25,8 +26,9 @@ export class DoItMainWindow extends Adw.ApplicationWindow {
 
     static readonly GType = DoItMainWindow as unknown as GObject.GType;
 
-    private mainTaskStore: TaskListStore;
-    private taskList: Gtk.ListBox;
+    mainTaskStore: TaskListStore;
+    groupList: Adw.PreferencesGroup;
+    splitView: Adw.NavigationSplitView;
 
     static { GObject.registerClass(options, this); }
 
@@ -39,14 +41,16 @@ export class DoItMainWindow extends Adw.ApplicationWindow {
 
         log(DoItMainWindow.LogClass, "Initializing main window");
 
-        Actions.backup().setup(this);
+        this.groupList = this.get_template_child(DoItMainWindow.GType, 'group_list') as Adw.PreferencesGroup;
+        this.splitView = this.get_template_child(DoItMainWindow.GType, 'split_view') as Adw.NavigationSplitView;
 
-        this.taskList = this.get_template_child(DoItMainWindow.GType, 'task_list') as Gtk.ListBox;
+        Actions.backup().setup(this);
+        Actions.sidebar().setup(this, this.splitView);
 
         this.mainTaskStore = new TaskListStore();
         this.mainTaskStore.load();
 
-        this.taskList.append(CreateTaskList(this.mainTaskStore));
+        this.groupList.add(CreateTaskList(this.mainTaskStore));
     }
 
     public override vfunc_close_request(): boolean {

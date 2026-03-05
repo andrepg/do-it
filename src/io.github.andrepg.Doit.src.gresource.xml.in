@@ -24,6 +24,7 @@
     <file>actions/about.js</file>
     <file>actions/quit.js</file>
     <file>actions/backup.js</file>
+    <file>actions/sidebar.js</file>
     <file>actions/index.js</file>
   </gresource>
 </gresources>

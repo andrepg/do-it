@@ -7,8 +7,8 @@ const backup = () => {
         const export_action = new Gio.SimpleAction({ name: 'export_database' });
         const import_action = new Gio.SimpleAction({ name: 'import_database' });
 
-        export_action.connect('activate', exportJson.bind(parent));
-        import_action.connect('activate', importJson.bind(parent));
+        export_action.connect('activate', () => exportJson(parent));
+        import_action.connect('activate', () => importJson(parent));
 
         parent.add_action(export_action);
         parent.add_action(import_action);
