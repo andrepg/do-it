@@ -6,8 +6,6 @@ import GLib from "gi://GLib";
 import { bindtextdomain, textdomain } from "gettext"
 import { exit, programArgs, programInvocationName } from "system";
 
-const APPLICATION_RES = "@APPLICATION_RES@";
-
 // Fix: "Requiring Gtk but it has 2 versions available"
 // We must specify the version before any library is loaded
 imports.gi.versions.Gtk = '4.0';
@@ -21,7 +19,7 @@ imports.package.init({
   datadir: "@datadir@",
 });
 
-const { main } = await import(`resource://${APPLICATION_RES}/js/entrypoint.js`);
+const { main } = await import("resource://@APPLICATION_RES@/js/entrypoint.js");
 const exit_code = await main([programInvocationName, ...programArgs]);
 
 exit(exit_code);

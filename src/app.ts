@@ -2,10 +2,11 @@ import GObject from 'gi://GObject';
 import Gio from 'gi://Gio';
 import Adw from 'gi://Adw';
 
-import { DoItMainWindow } from './ui-handler/doit.js';
-import { is_development_mode } from './utils/application.js';
+import { is_development_mode, APPLICATION_ID, APPLICATION_RES } from './utils/application.js';
 import { log } from './utils/log-manager.js';
 import * as Actions from './actions/index.js';
+
+import { DoItMainWindow } from './ui-handler/doit.js';
 
 const options = { GTypeName: "DoitApplication" };
 
@@ -17,9 +18,14 @@ export class DoitApplication extends Adw.Application {
     }
 
     constructor() {
-        super({ flags: Gio.ApplicationFlags.DEFAULT_FLAGS });
+        super({
+            applicationId: APPLICATION_ID,
+            resourceBasePath: APPLICATION_RES,
+            flags: Gio.ApplicationFlags.DEFAULT_FLAGS,
+        });
 
         log(DoitApplication.LogClass, "Initializing application actions");
+
         Actions.about().setup(this);
         Actions.quit().setup(this);
     }
