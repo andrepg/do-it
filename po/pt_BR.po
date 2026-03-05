@@ -181,7 +181,7 @@ msgstr "_Exportar tarefas"
 
 #: ui/window.ui:196
 msgid "_Import Database"
-msgstr "_Exportar tarefas"
+msgstr "_Importar tarefas"
 
 #: ui/window.ui:203
 msgid "_Keyboard Shortcuts"
