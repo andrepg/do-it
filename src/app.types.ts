@@ -1,4 +1,4 @@
-import { SortingMode, SortingStrategy } from "./enums.js";
+import { SortingMode, SortingStrategy } from "./app.enums.js";
 
 export interface SortingSettings {
     mode: SortingMode;

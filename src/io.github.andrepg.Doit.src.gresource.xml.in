@@ -2,11 +2,12 @@
 <gresources>
   <gresource prefix="@APPLICATION_RES@/js">
     <file>entrypoint.js</file>
+
     <file>app.js</file>
     <file>static.js</file>
 
-    <file>enums.js</file>
-    <file>types.js</file>
+    <file>app.enums.js</file>
+    <file>app.types.js</file>
 
     <file>utils/backup.js</file>
     <file>utils/list-store.js</file>

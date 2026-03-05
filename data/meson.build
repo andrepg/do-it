@@ -8,7 +8,6 @@ configuration_data = configuration_data()
 desktop_file_name = application_id + '.desktop'
 service_file_name = application_id + '.service'
 metainfo_file_name = application_id + '.metainfo.xml'
-gschema_file_name = application_name + '.gschema.xml'
 
 desktop_file = i18n.merge_file(
         input: configure_file(
@@ -38,7 +37,7 @@ appstream_file = i18n.merge_file(
 # Install data schema
 configure_file(
   input: application_name + '.gschema.xml.in',
-  output: gschema_file_name,
+  output: application_id + '.gschema.xml.in',
   configuration: application_configuration,
   install: true,
   install_dir: application_datadir / 'glib-2.0' / 'schemas'

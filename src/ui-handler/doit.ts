@@ -1,7 +1,7 @@
 import Adw from 'gi://Adw'
 import GObject from 'gi://GObject'
 
-import { DoItSettings } from '../enums.js';
+import { DoItSettings } from '../app.enums.js';
 
 import { APPLICATION_ID, get_template_path } from '../utils/application.js';
 import { get_setting_int, set_setting_int } from '../utils/settings.js';

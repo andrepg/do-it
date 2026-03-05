@@ -22,7 +22,7 @@ tsc_target = custom_target(
   build_always_stale: true, # TSC handles incremental caching, we force Meson to always call it
 )
 
-pkgdatadir = get_option('datadir') / meson.project_name()
+pkgdatadir = get_option('datadir') / application_id
 
 configure_file(
   input: 'utils/application.js',
@@ -30,10 +30,10 @@ configure_file(
   configuration: application_configuration
 )
 
-src_res = gnome.compile_resources(application_name + '.src',
+src_res = gnome.compile_resources(application_id + '.src',
   configure_file(
     input: application_name + '.src.gresource.xml.in',
-    output: application_name + '.src.gresource.xml',
+    output: application_id + '.src.gresource.xml',
     configuration: application_configuration
   ),
   gresource_bundle: true,
