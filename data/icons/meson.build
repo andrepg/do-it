@@ -1,21 +1,16 @@
-scalable_dir = 'hicolor/scalable/apps'
-symbolic_dir = 'hicolor/symbolic/apps'
+scalable_dir = 'hicolor' / 'scalable' / 'apps'
+symbolic_dir = 'hicolor' / 'symbolic' / 'apps'
 
-# Identify the source icon name: prefer .Devel in devel profile if it exists
-icon_name = application_name
-if profile == 'devel'
-  icon_name = application_id
-endif
-
-# Use application_id for icon installation
+## Install main application icon
 install_data(
-  scalable_dir / icon_name + '.svg',
+  scalable_dir / application_id + '.svg',
   rename: application_id + '.svg',
   install_dir: get_option('datadir') / 'icons' / scalable_dir
 )
 
+## Install symbolic icon
 install_data(
-  symbolic_dir / application_name + '-symbolic.svg',
+  symbolic_dir / application_id + '-symbolic.svg',
   rename: application_id + '-symbolic.svg',
   install_dir: get_option('datadir') / 'icons' / symbolic_dir
 )
