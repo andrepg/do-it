@@ -2,13 +2,12 @@ import Gio from 'gi://Gio';
 import GObject from 'gi://GObject';
 import Gtk from 'gi://Gtk';
 import { log } from "../utils/log-manager.js";
-// import { get_resource_path } from "../utils/application.js";
 import type { Task } from "./task.js";
-import { get_resource_path } from "../utils/application.js";
+import { APPLICATION_RES, get_template_path } from "../utils/application.js";
 
 const GObjectProperties = {
   GTypeName: "TaskList",
-  Template: `resource:///io/github/andrepg/Doit/Devel/ui/task-list.ui`,
+  Template: get_template_path('ui/task-list.ui'),
   Signals: {
     'items-changed': {
       param_types: []
@@ -39,7 +38,7 @@ export const CreateTaskList = (listStore: Gio.ListStore) => {
 
   _task_list.bind(listStore)
 
-  const builder = Gtk.Builder.new_from_resource(`/io/github/andrepg/Doit/Devel/ui/empty-list.ui`)
+  const builder = Gtk.Builder.new_from_resource(`${APPLICATION_RES}/ui/empty-list.ui`)
 
   _task_list.set_placeholder(
     builder.get_object('ListEmptyBox') as Gtk.Widget

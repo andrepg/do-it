@@ -3,7 +3,7 @@ import Adw from 'gi://Adw';
 import Gio from 'gi://Gio';
 import Gtk from 'gi://Gtk';
 
-import { get_resource_path } from "../utils/application.js";
+import { get_template_path } from "../utils/application.js";
 import { TaskListStore } from "../utils/list-store.js";
 import { export_database, import_database } from "../utils/backup.js";
 import { log } from "../utils/log-manager.js";
@@ -18,7 +18,7 @@ import { get_setting_int, get_setting_string, set_setting_int } from '../utils/s
 
 const GObjectProperties = {
   GTypeName: "TasksWindow",
-  Template: `resource:///io/github/andrepg/Doit/Devel/ui/window.ui`,
+  Template: get_template_path('ui/window.ui'),
   InternalChildren: [
     "task_new_entry",
     "toast_overlay",

@@ -6,7 +6,7 @@ import GObject from "gi://GObject";
 import type { TasksWindow } from "./window.js";
 import { TASK_DELETE_ICON } from "../static.js";
 import { log } from "../utils/log-manager.js";
-import { get_resource_path } from "../utils/application.js";
+import { get_resource_path, get_template_path } from "../utils/application.js";
 
 // Declare _ global for translation
 declare function _(id: string): string;
@@ -46,7 +46,7 @@ const TaskProperties = {
 
 const GObjectProperties = {
   GTypeName: "Task",
-  Template: `resource:///io/github/andrepg/Doit/Devel/ui/task.ui`,
+  Template: get_template_path('ui/task.ui'),
   Properties: TaskProperties,
   InternalChildren: ["task_done", "task_delete"],
   Signals: {

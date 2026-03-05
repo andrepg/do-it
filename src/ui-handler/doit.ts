@@ -1,14 +1,15 @@
-import { get_template_path } from '../utils/application.js';
-
 import Adw from 'gi://Adw'
 import GObject from 'gi://GObject'
 
-import * as Actions from '../actions/index.js';
-import { log } from '../utils/log-manager.js';
-import { get_setting_int, set_setting_int } from '../utils/settings.js';
 import { DoItSettings } from '../enums.js';
+
+import { APPLICATION_ID, get_template_path } from '../utils/application.js';
+import { get_setting_int, set_setting_int } from '../utils/settings.js';
+
+import * as Actions from '../actions/index.js';
+
+import { log } from '../utils/log-manager.js';
 import { TaskListStore } from '../utils/list-store.js';
-import Gtk from '@girs/gtk-4.0';
 import { CreateTaskList } from './task-list.js';
 
 const options = {
@@ -30,13 +31,16 @@ export class DoItMainWindow extends Adw.ApplicationWindow {
     groupList: Adw.PreferencesGroup;
     splitView: Adw.OverlaySplitView;
 
-    static { GObject.registerClass(options, this); }
+    static {
+        GObject.registerClass(options, this);
+    }
 
     constructor(application: Adw.Application) {
         super({
             application,
-            default_width: get_setting_int(DoItSettings.windowWidth),
-            default_height: get_setting_int(DoItSettings.windowHeight),
+            title: "Do It",
+            defaultWidth: get_setting_int(DoItSettings.windowWidth),
+            defaultHeight: get_setting_int(DoItSettings.windowHeight),
         });
 
         log(DoItMainWindow.LogClass, "Initializing main window");
