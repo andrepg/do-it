@@ -1,5 +1,5 @@
-scalable_dir = 'hicolor' / 'scalable' / 'apps'
-symbolic_dir = 'hicolor' / 'symbolic' / 'apps'
+scalable_dir = 'hicolor/scalable/apps'
+symbolic_dir = 'hicolor/symbolic/apps'
 
 # Identify the source icon name: prefer .Devel in devel profile if it exists
 icon_name = application_name

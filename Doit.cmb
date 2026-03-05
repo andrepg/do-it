@@ -3,7 +3,10 @@
 <!-- Created with Cambalache 0.96.3 -->
 <cambalache-project version="0.96.0" target_tk="gtk-4.0">
   <ui filename="ui/empty-list.ui" sha256="36f589608b543799dd83c4e815a9716740caa742f411086fc7c7d5a40d5f78d3"/>
-  <ui template-class="Task" filename="ui/task.ui" sha256="89d5f597a326fde40c3a40459785d193d2586fd062c82c2c2de5df049dccccd3"/>
-  <ui template-class="TasksWindow" filename="ui/window.ui" sha256="077805196f7adc60cac599a06e15e438ff9df39280854f91c154e18c252d4d42"/>
-  <ui template-class="TaskList" filename="ui/task-list.ui" sha256="85bb6f9553fb1e51218cc14997bbaabbb6fcd0f03f0205a23bc911bb8096aaf5"/>
+  <ui template-class="Task" filename="ui/task.ui" sha256="80f19b6136711fbb20868fa0ac2a089b4fa1ae3b537c41860b64755c9ece1e89"/>
+  <ui template-class="TasksWindow" filename="ui/window.ui" sha256="5b0931e80a0d7dd15543124454c597982fff0d1b283d3a6d830e729975683a59"/>
+  <ui template-class="TaskList" filename="ui/task-list.ui" sha256="53b5fa14ecce4cc36c6df60d64c75e40c7b0914dd2e0eaf56fb6b5695c6f1597"/>
+  <ui filename="ui/application.ui" sha256="143da1db90aa6ff41f54db7075144620ee634d1b31407ddc5a291b28150ba2ac">
+    <requires>Task</requires>
+  </ui>
 </cambalache-project>

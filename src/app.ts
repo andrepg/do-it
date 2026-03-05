@@ -2,10 +2,12 @@ import GObject from 'gi://GObject';
 import Gtk from 'gi://Gtk';
 import Gio from 'gi://Gio';
 import Adw from 'gi://Adw';
+import GLib from 'gi://GLib';
 
 import { TasksWindow } from './ui-handler/window.js';
+import { DoItMainWindow } from './doit.js';
 
-import { get_application_id, get_resource_path, is_development_mode } from './utils/application.js';
+// import { get_application_id, get_resource_path, is_development_mode } from './utils/application.js';
 
 // Declare global identifiers used locally
 declare const pkg: { version: string };
@@ -20,8 +22,8 @@ export class DoitApplication extends Adw.Application {
 
     constructor() {
         super({
-            application_id: get_application_id(),
-            resource_base_path: get_resource_path(),
+            // application_id: get_application_id(),
+            // resource_base_path: this.get_resource_base_path(),
             flags: Gio.ApplicationFlags.DEFAULT_FLAGS,
         });
 
@@ -34,8 +36,8 @@ export class DoitApplication extends Adw.Application {
 
         show_about_action.connect('activate', () => {
             const aboutDialog = new Adw.AboutDialog({
-                application_name: "Do It",
-                application_icon: get_application_id(),
+                application_name: GLib.get_application_name() as string,
+                application_icon: 'io.github.andrepg.Doit.Devel',
                 developer_name: 'André Paul Grandsire',
                 version: pkg.version,
                 website: "https://github.com/andrepg/do-it",
@@ -72,12 +74,12 @@ export class DoitApplication extends Adw.Application {
         let { active_window } = this;
 
         if (!active_window) {
-            active_window = new TasksWindow(this);
+            active_window = new DoItMainWindow(this);
         }
 
-        if (is_development_mode()) {
-            active_window.add_css_class('devel');
-        }
+        // if (is_development_mode()) {
+        active_window.add_css_class('devel');
+        // }
 
         active_window.set_title("Do It");
 

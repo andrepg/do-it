@@ -15,6 +15,7 @@ imports.package.init({
   datadir: "@datadir@",
 });
 
-const { main } = await import("resource://@resource_path@/js/main.js");
+const { main } = await import("resource://@resource_path@/js/entrypoint.js");
 const exit_code = await main([programInvocationName, ...programArgs]);
+
 exit(exit_code);

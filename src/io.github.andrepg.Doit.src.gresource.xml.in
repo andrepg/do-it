@@ -1,16 +1,18 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <gresources>
   <gresource prefix="@resource_path@/js">
-    <file>main.js</file>
+    <file>entrypoint.js</file>
     <file>app.js</file>
+    <file>doit.js</file>
     <file>static.js</file>
 
-    <file alias="utils/application.js">application.js</file>
     <file>utils/backup.js</file>
     <file>utils/list-store.js</file>
     <file>utils/log-manager.js</file>
     <file>utils/persistence.js</file>
     <file>utils/sorting.js</file>
+    <file>utils/settings.js</file>
+    <file>utils/application.js</file>
 
     <file>ui-handler/window.js</file>
     <file>ui-handler/task.js</file>
