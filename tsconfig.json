@@ -20,6 +20,14 @@
       "@girs/glib-2.0/ambient"
     ]
   },
-  "include": ["src/**/*"],
-  "exclude": ["node_modules", ".flatpak", "_build", "**/node_modules/*"]
+  "include": [
+    "src/**/*"
+  ],
+  "exclude": [
+    "node_modules",
+    ".flatpak",
+    "_build",
+    "**/node_modules/*",
+    "src/utils/application.js"
+  ]
 }

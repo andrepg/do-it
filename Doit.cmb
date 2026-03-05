@@ -6,7 +6,5 @@
   <ui template-class="Task" filename="ui/task.ui" sha256="80f19b6136711fbb20868fa0ac2a089b4fa1ae3b537c41860b64755c9ece1e89"/>
   <ui template-class="TasksWindow" filename="ui/window.ui" sha256="5b0931e80a0d7dd15543124454c597982fff0d1b283d3a6d830e729975683a59"/>
   <ui template-class="TaskList" filename="ui/task-list.ui" sha256="53b5fa14ecce4cc36c6df60d64c75e40c7b0914dd2e0eaf56fb6b5695c6f1597"/>
-  <ui filename="ui/application.ui" sha256="143da1db90aa6ff41f54db7075144620ee634d1b31407ddc5a291b28150ba2ac">
-    <requires>Task</requires>
-  </ui>
+  <ui template-class="DoItMainWindow" filename="ui/application.ui" sha256="c0d7a82e282fb4ddd33edcce68df849e829ce8ed27b54dd0e773f3986d7c0309"/>
 </cambalache-project>
