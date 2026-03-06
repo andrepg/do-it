@@ -37,7 +37,7 @@ appstream_file = i18n.merge_file(
 # Install data schema
 configure_file(
   input: application_name + '.gschema.xml.in',
-  output: application_id + '.gschema.xml.in',
+  output: application_id + '.gschema.xml',
   configuration: application_configuration,
   install: true,
   install_dir: application_datadir / 'glib-2.0' / 'schemas'

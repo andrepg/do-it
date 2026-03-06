@@ -12,7 +12,7 @@ imports.gi.versions.Gtk = '4.0';
 imports.gi.versions.Adw = '1';
 
 imports.package.init({
-  name: "@PACKAGE_NAME@",
+  name: "@APPLICATION_ID@",
   version: "@PACKAGE_VERSION@",
   prefix: "@prefix@",
   libdir: "@libdir@",

@@ -2,6 +2,7 @@
 Name=Doit
 Exec=@APPLICATION_ID@
 Icon=@APPLICATION_ID@
+StartupWMClass=@APPLICATION_ID@
 Terminal=false
 Type=Application
 Categories=Utility;

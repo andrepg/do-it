@@ -39,7 +39,10 @@ src_res = gnome.compile_resources(application_id + '.src',
   gresource_bundle: true,
   install: true,
   install_dir: pkgdatadir,
-  source_dir: [meson.current_source_dir(), meson.current_build_dir()],
+  source_dir: [
+    meson.current_source_dir(),
+    meson.current_build_dir()
+  ],
   dependencies: [tsc_target]
 )
 
