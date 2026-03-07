@@ -1,5 +1,5 @@
 [Desktop Entry]
-Name=Doit
+Name=@APPLICATION_NAME@
 Exec=@APPLICATION_ID@
 Icon=@APPLICATION_ID@
 StartupWMClass=@APPLICATION_ID@
