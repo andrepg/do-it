@@ -18,7 +18,8 @@ const options = {
     InternalChildren: [
         "toast_overlay",
         "group_list",
-        "split_view"
+        "split_view",
+        "button_open_sidebar"
     ]
 };
 
