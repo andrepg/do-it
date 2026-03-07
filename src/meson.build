@@ -58,7 +58,7 @@ res_file = configure_file(
 )
 
 gnome.compile_resources(
-    app_id,
+    app_id + '.src', # Changed to match package.js expectation
     res_file,
     gresource_bundle: true,
     install: true,

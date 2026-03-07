@@ -6,26 +6,40 @@ import GLib from "gi://GLib";
 import { bindtextdomain, textdomain } from "gettext"
 import { exit, programArgs, programInvocationName } from "system";
 
-bindtextdomain("@PACKAGE_NAME@", "@prefix@/share/locale");
-textdomain("@PACKAGE_NAME@");
 
 const APP_ID = "@APPLICATION_ID@";
 const APP_NAME = "@APPLICATION_NAME@";
 const APP_RES = "@APPLICATION_RES@";
 
+imports.gi.versions.Gtk = "4.0";
+imports.gi.versions.Adw = "1";
+
 imports.package.init({
-  name: "@PACKAGE_NAME@",
+  name: APP_ID,
   version: "@PACKAGE_VERSION@",
   prefix: "@prefix@",
   libdir: "@libdir@",
   datadir: "@datadir@",
 });
 
+// Load the UI data resource
+try {
+  const data_res = Gio.Resource.load(
+    GLib.build_filenamev([
+      pkg.datadir,
+      pkg.name,
+      pkg.name + '.data.gresource'
+    ])
+  );
+  data_res._register();
+} catch (e) {
+  console.warn(`Failed to load data resource: ${e.message}`);
+}
+
 bindtextdomain(APP_ID, "@prefix@/share/locale");
 textdomain(APP_ID);
 
-const { main } = await import("resource://@APPLICATION_RES@/src/entrypoint.js");
+const { main } = await import("resource://@APPLICATION_RES@/js/entrypoint.js");
 
-console.log(main);
-
+const exitCode = await main(programArgs);
 exit(exitCode);

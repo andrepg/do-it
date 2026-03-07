@@ -35,7 +35,6 @@ endif
 
 app_config = configuration_data()
 app_config.set('GJS', find_program('gjs').full_path())
-app_config.set('GTK', '4.21')
 app_config.set('PACKAGE_NAME', app_name)
 app_config.set('PACKAGE_VERSION', app_version)
 app_config.set('APPLICATION_ID', app_id)

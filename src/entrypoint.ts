@@ -16,9 +16,9 @@
  *
  * SPDX-License-Identifier: GPL-3.0-or-later
  */
-imports.gi.versions.Gtk = '4.21';
-imports.gi.versions.Gdk = '4.21';
-imports.gi.versions.Adw = '1.7';
+imports.gi.versions.Gtk = '4.0';
+imports.gi.versions.Gdk = '4.0';
+imports.gi.versions.Adw = '1';
 
 import { DoitApplication } from "./app.js";
 
