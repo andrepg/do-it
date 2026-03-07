@@ -6,23 +6,26 @@ import GLib from "gi://GLib";
 import { bindtextdomain, textdomain } from "gettext"
 import { exit, programArgs, programInvocationName } from "system";
 
-// Fix: "Requiring Gtk but it has 2 versions available"
-// We must specify the version before any library is loaded
-imports.gi.versions.Gtk = '4.0';
-imports.gi.versions.Adw = '1';
+bindtextdomain("@PACKAGE_NAME@", "@prefix@/share/locale");
+textdomain("@PACKAGE_NAME@");
+
+const APP_ID = "@APPLICATION_ID@";
+const APP_NAME = "@APPLICATION_NAME@";
+const APP_RES = "@APPLICATION_RES@";
 
 imports.package.init({
-  name: "@APPLICATION_ID@",
+  name: "@PACKAGE_NAME@",
   version: "@PACKAGE_VERSION@",
   prefix: "@prefix@",
   libdir: "@libdir@",
   datadir: "@datadir@",
 });
 
-const { main } = await import("resource://@APPLICATION_RES@/js/entrypoint.js");
-const exit_code = await main([programInvocationName, ...programArgs]);
+bindtextdomain(APP_ID, "@prefix@/share/locale");
+textdomain(APP_ID);
 
-exit(exit_code);
+const { main } = await import("resource://@APPLICATION_RES@/src/entrypoint.js");
 
-// We should base our binary in the gnome-ts-template
-// https://github.com/nyx-lyb3ra/gnome-ts-template/blob/826b2822fa979d95d708c755d435e3c85144f96d/bin/gnome-ts-template.in#L13
+console.log(main);
+
+exit(exitCode);

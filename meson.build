@@ -1,53 +1,55 @@
-#
-#
-# Meson build file for Doit application 
-# Copyright 2025 - André Paul Grandsire
-#
-#
-project('io.github.andrepg.Doit',
-          version: '0.1.4',
-    meson_version: '>= 1.0.0',
-  default_options: [ 'warning_level=2', 'werror=false', ],
+project(
+    'io.github.andrepg.Doit',
+    version: '2.0.0',
+    meson_version: '>= 1.4.0',
+    default_options: [
+        'warning_level=2',
+        'c_std=c11',
+        'cpp_std=c++17',
+        'b_ndebug=false',
+        'b_sanitize=address',
+        'b_lto=true',
+        'b_pie=true',
+        'b_staticpic=true',
+        'buildtype=debugoptimized',
+    ],
 )
 
-## Import everything we need to build
 i18n = import('i18n')
 gnome = import('gnome')
 
-## Define Profile and Application ID
-profile = get_option('development') ? 'devel' : 'default'
-application_id = 'io.github.andrepg.Doit'
+app_is_dev = get_option('development')
 
-if profile == 'devel'
-  application_id += '.Devel'
+app_codename = 'Do It'
+app_id = meson.project_name()
+app_name = meson.project_name()
+app_version = meson.project_version()
+app_res_path = '/io/github/andrepg/Doit'
+
+app_datadir = get_option('prefix') / get_option('datadir')
+
+if app_is_dev
+    app_id += '.Devel'
+    app_res_path += '/Devel'
 endif
 
-## Then we set any global variables
-application_name = meson.project_name()
-application_version = meson.project_version()
-application_datadir = get_option('datadir')
+app_config = configuration_data()
+app_config.set('GJS', find_program('gjs').full_path())
+app_config.set('GTK', '4.21')
+app_config.set('PACKAGE_NAME', app_name)
+app_config.set('PACKAGE_VERSION', app_version)
+app_config.set('APPLICATION_ID', app_id)
+app_config.set('APPLICATION_RES', app_res_path)
+app_config.set('APPLICATION_NAME', app_name)
+app_config.set('is_devel', app_is_dev ? 'true' : 'false')
+app_config.set('prefix', get_option('prefix'))
+app_config.set('bindir', get_option('prefix') / get_option('bindir'))
+app_config.set('datadir', app_datadir)
+app_config.set('libdir', get_option('prefix') / get_option('libdir'))
 
-application_resource_path = '/io/github/andrepg/Doit'
-if profile == 'devel'
-  application_resource_path += '/Devel'
-endif
-
-# Central configuration data
-application_configuration = configuration_data()
-application_configuration.set('GJS', find_program('gjs').full_path())
-application_configuration.set('GTK', '4.21')
-
-application_configuration.set('PACKAGE_NAME', application_name)
-application_configuration.set('PACKAGE_VERSION', application_version)
-
-application_configuration.set('APPLICATION_ID', application_id)
-application_configuration.set('APPLICATION_RES', application_resource_path)
-application_configuration.set('is_devel', get_option('development') ? 'true' : 'false')
-
-application_configuration.set('prefix', get_option('prefix'))
-application_configuration.set('bindir', get_option('prefix') / get_option('bindir'))
-application_configuration.set('datadir', get_option('prefix') / get_option('datadir'))
-application_configuration.set('libdir', get_option('prefix') / get_option('libdir'))
+message('## Application ID: ' + app_id)
+message('## Application Resource Path: ' + app_res_path)
+message('## Application Data Dir: ' + app_datadir)
 
 # ## Process Source Code and Javascript buildable
 subdir('data')

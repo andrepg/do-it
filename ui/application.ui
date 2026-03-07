@@ -71,8 +71,9 @@
                     <property name="spacing">4</property>
                     <child>
                       <object class="GtkButton">
-                        <property name="action-name">win.toggle-sidebar</property>
                         <property name="icon-name">sidebar-show-symbolic</property>
+                        <property name="action-name">win.toggle-sidebar</property>
+                        <property name="tooltip-text">Toggle sidebar (Ctrl + K)</property>
                       </object>
                     </child>
                       <child>
