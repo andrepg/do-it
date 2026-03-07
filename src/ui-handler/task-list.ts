@@ -1,9 +1,9 @@
-import Gio from 'gi://Gio';
 import GObject from 'gi://GObject';
 import Gtk from 'gi://Gtk';
-import { log } from "../utils/log-manager.js";
-import type { Task } from "./task.js";
 import { APPLICATION_RES, get_template_path } from "../utils/application.js";
+import { TaskListStore } from '../utils/list-store.js';
+
+import type { Task } from "./task.js";
 
 const GObjectProperties = {
   GTypeName: "TaskList",
@@ -20,30 +20,23 @@ export class TaskList extends Gtk.ListBox {
     GObject.registerClass(GObjectProperties, this);
   }
 
-  _init() {
-    super._init();
+  taskListStore: TaskListStore;
 
-    log("task-list", "Initializing task list");
-  }
+  constructor() {
+    super();
 
-  public bind(store: Gio.ListStore): void {
-    this.bind_model(
-      store, (item: GObject.Object) => (item as Task).to_widget()
+    this.taskListStore = new TaskListStore();
+    this.taskListStore.load();
+
+    this.bind_model(this.taskListStore,
+      (item: GObject.Object) => (item as Task).to_widget()
+    )
+
+    const builder = Gtk.Builder.new_from_resource(`${APPLICATION_RES}/ui/empty-list.ui`)
+
+    this.set_placeholder(
+      builder.get_object('ListEmptyBox') as Gtk.Widget
     )
   }
-}
-
-export const CreateTaskList = (listStore: Gio.ListStore) => {
-  const _task_list = new TaskList();
-
-  _task_list.bind(listStore)
-
-  const builder = Gtk.Builder.new_from_resource(`${APPLICATION_RES}/ui/empty-list.ui`)
-
-  _task_list.set_placeholder(
-    builder.get_object('ListEmptyBox') as Gtk.Widget
-  )
-
-  return _task_list;
 }
 

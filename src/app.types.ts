@@ -6,10 +6,12 @@ export interface SortingSettings {
 }
 
 export interface Task {
-    id: string;
+    id: number;
     title: string;
     project: string;
     created_at: Date;
     completed_at: Date | null;
     tags: string[];
+    deleted?: boolean;
+    done?: boolean;
 }

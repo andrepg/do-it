@@ -5,9 +5,9 @@ import Gtk from 'gi://Gtk';
 
 import { get_template_path } from "../utils/application.js";
 import { TaskListStore } from "../utils/list-store.js";
-import { export_database, import_database } from "../utils/backup.js";
+// import { export_database, import_database } from "../utils/backup.js";
 import { log } from "../utils/log-manager.js";
-import { CreateTaskList } from "./task-list.js";
+// import { CreateTaskList } from "./task-list.js";
 import { SortingModes, SortingModeSchema } from "../static.js";
 import { get_sorting_label_text } from "../utils/sorting.js";
 import { get_setting_int, get_setting_string, set_setting_int } from '../utils/settings.js';
@@ -79,7 +79,7 @@ export class TasksWindow extends Adw.ApplicationWindow {
     application.set_accels_for_action('win.purge_deleted_tasks', ['<Control>d']);
     application.set_accels_for_action('win.help_overlay', ['<Control>h']);
 
-    this.list_flow_box.append(CreateTaskList(this._list_store));
+    // this.list_flow_box.append(CreateTaskList(this._list_store));
 
     // this._handle_window_settings();
     this._update_sorting_label();

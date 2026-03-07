@@ -3,6 +3,7 @@ import Gio from "gi://Gio"
 
 import { Persistence } from "./persistence.js";
 import { Task } from "../ui-handler/task.js";
+import { Task as TaskType } from "../app.types.js";
 import { log } from "./log-manager.js";
 import { get_sorting_algorithm, set_sorting_algorithm } from "./sorting.js";
 
@@ -82,17 +83,17 @@ export class TaskListStore extends Gio.ListStore<Task> {
     log("list-store", "Loading tasks from database")
 
     const persistence = new Persistence();
-    const tasks = persistence.read_database();
+    const tasks = persistence.read_database() as TaskType[];
 
-    tasks.forEach((item: any) => {
+    tasks.forEach((item) => {
       this.append_task({
-        taskId: item.taskId,
+        taskId: item.id,
         title: item.title,
         done: item.done,
-        created_at: item.created_at,
+        created_at: item.created_at as unknown as number,
       })
 
-      log("list-store", `Loaded task ${item.title} (done: ${item.done}, deleted: ${item.deleted_at}, created_at: ${item.created_at})`)
+      log("list-store", `Loaded task ${item.title} (done: ${item.done} - created at ${item.created_at})`)
     })
   }
 }

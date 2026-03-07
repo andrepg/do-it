@@ -20,7 +20,7 @@ imports.gi.versions.Gtk = '4.0';
 imports.gi.versions.Gdk = '4.0';
 imports.gi.versions.Adw = '1';
 
-import { DoitApplication } from "./app.js";
+import { DoitApplication } from "./app.wrapper.js";
 
 pkg.initGettext();
 pkg.initFormat();

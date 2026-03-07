@@ -1,9 +1,12 @@
 import Gio from "gi://Gio";
+
 import { APPLICATION_ID } from "./application.js";
 
 
-export function get_settings_container() {
-    return new Gio.Settings({ schema_id: APPLICATION_ID });
+function get_settings_container(): Gio.Settings {
+    return new Gio.Settings({
+        schema_id: APPLICATION_ID
+    })
 }
 
 export function get_setting_int(name: string) {

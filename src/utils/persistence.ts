@@ -1,5 +1,6 @@
 import GLib from 'gi://GLib';
 import Gio from 'gi://Gio';
+import { Task } from '../app.types.js';
 
 export class Persistence {
   private filename: string = 'data.json';
@@ -34,9 +35,9 @@ export class Persistence {
   /**
    * Reads data from database file, creating it first if does not exists.
    *
-   * @returns {any[]} Returns the data read from the file.
+   * @returns {Task[]} Returns the data read from the file.
    */
-  read_database(): any[] {
+  read_database(): unknown[] {
     this.create_database();
 
     const decoder = new TextDecoder();
@@ -45,15 +46,12 @@ export class Persistence {
 
     const file_content = decoder.decode(content);
 
-    // Note: In modern GJS, GLib.free might not be necessary for JS objects
-    // but we keep it if it was in the original code.
-
-    return file_content.trim() == ""
+    return file_content.trim() === ""
       ? []
       : JSON.parse(file_content);
   }
 
-  write_database(data: any[]) {
+  write_database(data: unknown[]) {
     this.create_database();
 
     const encoder = new TextEncoder();

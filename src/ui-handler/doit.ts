@@ -3,23 +3,24 @@ import GObject from 'gi://GObject'
 
 import { DoItSettings } from '../app.enums.js';
 
-import { APPLICATION_ID, get_template_path } from '../utils/application.js';
+import { get_template_path } from '../utils/application.js';
+import { log } from '../utils/log-manager.js';
 import { get_setting_int, set_setting_int } from '../utils/settings.js';
 
 import * as Actions from '../actions/index.js';
 
-import { log } from '../utils/log-manager.js';
-import { TaskListStore } from '../utils/list-store.js';
-import { CreateTaskList } from './task-list.js';
+import { TaskList } from './task-list.js';
 
 const options = {
     GTypeName: "DoItMainWindow",
-    Template: get_template_path('ui/application.ui'),
+    Template: get_template_path('ui/window-v2.ui'),
     InternalChildren: [
         "toast_overlay",
-        "group_list",
+        "clamp_list",
         "split_view",
-        "button_open_sidebar"
+        "button_open_sidebar",
+        "button_new_task",
+        "task_new_entry",
     ]
 };
 
@@ -27,6 +28,8 @@ export class DoItMainWindow extends Adw.ApplicationWindow {
     static readonly LogClass = 'window';
 
     static readonly GType = DoItMainWindow as unknown as GObject.GType;
+
+    clamp_list!: Adw.Clamp;
 
     static {
         GObject.registerClass(options, this);
@@ -44,6 +47,14 @@ export class DoItMainWindow extends Adw.ApplicationWindow {
 
         Actions.backup().setup(this);
         Actions.sidebar().setup(this);
+        Actions.toast().setup(this);
+        Actions.newTask().setup(this);
+
+        this.clamp_list = this.get_template_child(
+            DoItMainWindow.GType,
+            'clamp_list'
+        );
+        this.clamp_list.set_child(new TaskList())
     }
 
     public override vfunc_close_request(): boolean {
