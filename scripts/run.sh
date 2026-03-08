@@ -19,7 +19,7 @@ shift $((OPTIND-1))
 MANIFEST="${1:?Usage: $0 [-c|--compile] <manifest.json>}"
 BUILD_DIR="_build"
 
-APP_COMMAND="io.github.andrepg.Doit"
+APP_COMMAND="${MANIFEST%.json}"
 SCRIPTS_PATH="$(cd "$(dirname "$0")" && pwd)"
 
 if $COMPILE; then
