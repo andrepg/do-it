@@ -104,16 +104,10 @@
                     <property name="css-name">navigation-sidebar</property>
                     <property name="selection-mode">none</property>
                     <child>
-                      <object class="GtkButton">
-                        <property name="hexpand">True</property>
-                        <property name="label" translatable="yes">All projects</property>
-                      </object>
-                    </child>
-                    <child>
                       <object class="AdwButtonRow">
-                        <property name="action-name">win.filter-project</property>
+                        <!-- <property name="action-name">win.filter-project</property> -->
                         <property name="start-icon-name">folder-open-symbolic</property>
-                        <property name="title">All projects</property>
+                        <property name="title" translatable="yes">Display all</property>
                       </object>
                     </child>
                   </object>
