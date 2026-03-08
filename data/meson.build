@@ -58,14 +58,13 @@ appstream_file = i18n.merge_file(
     install_dir: app_datadir / 'metainfo'
 )
 
-# ## Configure app services using service file
-# configuration_data.set('bindir', get_option('prefix') / get_option('bindir'))
-# configure_file(
-#   input: service_file_name + '.in',
-#   output: service_file_name,
-#   configuration: configuration_data,
-#   install_dir: application_datadir / 'dbus-1' / 'services'
-# )
+ ## Configure app services using service file
+configure_file(
+  input: app_name + '.service.in',
+  output: app_id + '.service',
+  configuration: app_config,
+  install_dir: app_datadir / 'dbus-1' / 'services'
+)
 
 ##
 ## Validate generated files
