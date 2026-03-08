@@ -31,6 +31,13 @@
     "mesonbuild.downloadLanguageServer": true,
     "mesonbuild.formatting.enabled": true,
     "mesonbuild.mesonlsp.others.removeDefaultTypesInInlayHints": true,
+    "typescript.referencesCodeLens.showOnAllFunctions": true,
+    "typescript.referencesCodeLens.enabled": true,
+    "typescript.implementationsCodeLens.showOnInterfaceMethods": true,
+    "typescript.implementationsCodeLens.showOnAllClassMethods": true,
+    "typescript.implementationsCodeLens.enabled": true,
+    "javascript.referencesCodeLens.showOnAllFunctions": true,
+    "javascript.referencesCodeLens.enabled": true,
     "mesonbuild.configureOnOpen": false,
     "mesonbuild.buildFolder": "_build",
     "mesonbuild.mesonPath": "${workspaceFolder}/.flatpak/meson.sh",
@@ -79,7 +86,9 @@
         "label": "Compile and run app",
         "detail": "Runs the application using given manifest",
         "type": "shell",
-        "dependsOn": ["Compile app"],
+        "dependsOn": [
+          "Compile app"
+        ],
         "group": "build",
         "presentation": {
           "clear": true,
