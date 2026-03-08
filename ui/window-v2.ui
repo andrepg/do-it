@@ -4,7 +4,7 @@
   <!-- interface-name window-v2.ui -->
   <requires lib="gio" version="2.0"/>
   <requires lib="gtk" version="4.0"/>
-  <requires lib="libadwaita" version="1.0"/>
+  <requires lib="libadwaita" version="1.7"/>
   <template class="DoItMainWindow" parent="AdwApplicationWindow">
     <property name="content">
       <object class="AdwOverlaySplitView" id="split_view">
@@ -131,7 +131,7 @@
                 <child type="end">
                   <object class="GtkButton">
                     <property name="action-name">win.collapse-sidebar</property>
-                    <property name="icon-name">sidebar-show-right-symbolic-rtl</property>
+                    <property name="icon-name">sidebar-show-right-symbolic</property>
                     <property name="tooltip-text" translatable="yes">Close sidebar</property>
                   </object>
                 </child>
