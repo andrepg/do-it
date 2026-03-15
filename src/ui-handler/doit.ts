@@ -10,7 +10,6 @@ import { get_setting_int, set_setting_int } from '../utils/settings.js';
 
 import * as Actions from '../actions/index.js';
 
-import { useProjectGroups } from '../hooks/useProjectGroups.js';
 import { TaskListStore } from '../utils/list-store.js';
 
 const options = {
@@ -23,6 +22,8 @@ const options = {
         "button_open_sidebar",
         "button_new_task",
         "task_new_entry",
+        "sidebar_project_list",
+        "sidebar_btn_all",
     ]
 };
 
@@ -32,9 +33,6 @@ export class DoItMainWindow extends Adw.ApplicationWindow {
     static readonly GType = DoItMainWindow as unknown as GObject.GType;
 
     taskListStore!: TaskListStore;
-
-    private list_container!: Gtk.Box;
-    private _projectGroupsHook!: { destroy: () => void };
 
     static {
         GObject.registerClass(options, this);
@@ -57,13 +55,7 @@ export class DoItMainWindow extends Adw.ApplicationWindow {
         Actions.sidebar().setup(this);
         Actions.toast().setup(this);
         Actions.newTask().setup(this);
-
-        this.list_container = this.get_template_child(
-            DoItMainWindow.GType,
-            'list_container'
-        ) as Gtk.Box;
-
-        this._projectGroupsHook = useProjectGroups(this.list_container, this.taskListStore);
+        Actions.projects().setup(this);
     }
 
     public override vfunc_close_request(): boolean {

@@ -3,6 +3,7 @@ import quit from "./quit.js";
 import backup from './backup.js';
 import sidebar from './sidebar.js';
 import toast from './toast.js';
+import projects from './projects.js';
 
 export { newTask } from './new-task.js';
 export { showToast } from './toast.js';
@@ -13,4 +14,5 @@ export {
     backup,
     sidebar,
     toast,
+    projects,
 }

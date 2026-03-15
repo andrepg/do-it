@@ -30,7 +30,8 @@ export const newTask = () => {
             const projectMatch = text.match(/@(\S+)/);
             
             if (projectMatch) {
-                project = projectMatch[1];
+                const rawProject = projectMatch[1];
+                project = rawProject.charAt(0).toUpperCase() + rawProject.slice(1).toLowerCase();
                 parsedText = text.replace(projectMatch[0], '').trim();
             }
             

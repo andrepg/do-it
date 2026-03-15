@@ -3,7 +3,7 @@ import Gio from 'gi://Gio'
 import Gtk from 'gi://Gtk';
 import { log } from '../utils/log-manager.js';
 import { Persistence } from '../utils/persistence.js';
-import { Task } from '../app.types.js';
+import { ITask } from '../app.types.js';
 
 const backup = () => {
     const setup = (parent: Adw.ApplicationWindow) => {
@@ -60,7 +60,7 @@ const backup = () => {
                 const decoder = new TextDecoder();
                 const [ok, content] = file?.load_contents(null) || [false, null];
                 if (!ok || !content) return;
-                const tasks = JSON.parse(decoder.decode(content)) as Task[];
+                const tasks = JSON.parse(decoder.decode(content)) as ITask[];
                 (new Persistence).write_database(tasks);
             } catch (error) {
                 console.error(error);

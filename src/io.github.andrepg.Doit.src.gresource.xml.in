@@ -9,7 +9,7 @@
     <file>app.enums.js</file>
     <file>app.types.js</file>
 
-    <file>hooks/useProjectGroups.js</file>
+    <file>utils/project-manager.js</file>
 
     <file>utils/list-store.js</file>
     <file>utils/log-manager.js</file>
@@ -32,6 +32,7 @@
     <file>actions/backup.js</file>
     <file>actions/sidebar.js</file>
     <file>actions/toast.js</file>
+    <file>actions/projects.js</file>
     <file>actions/index.js</file>
   </gresource>
 </gresources>

@@ -1,6 +1,6 @@
 import GLib from 'gi://GLib';
 import Gio from 'gi://Gio';
-import { Task } from '../app.types.js';
+import { ITask } from '../app.types.js';
 
 export class Persistence {
   private filename: string = 'data.json';
@@ -35,7 +35,7 @@ export class Persistence {
   /**
    * Reads data from database file, creating it first if does not exists.
    *
-   * @returns {Task[]} Returns the data read from the file.
+   * @returns {ITask[]} Returns the data read from the file.
    */
   read_database(): unknown[] {
     this.create_database();

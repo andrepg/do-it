@@ -7,6 +7,7 @@ import type { TasksWindow } from "./window.js";
 import { TASK_DELETE_ICON } from "../static.js";
 import { log } from "../utils/log-manager.js";
 import { get_resource_path, get_template_path } from "../utils/application.js";
+import { ITask } from "../app.types.js";
 
 // Declare _ global for translation
 declare function _(id: string): string;
@@ -66,7 +67,7 @@ const GObjectProperties = {
   },
 }
 
-export class Task extends Adw.EntryRow {
+export class Task extends Adw.ActionRow {
   static {
     GObject.registerClass(GObjectProperties, this);
   }
@@ -82,7 +83,8 @@ export class Task extends Adw.EntryRow {
   constructor(taskId = 0, title = "", done = false, created: number | null = null, project: string = "") {
     const created_at = created ?? Date.now();
     super({
-      title: new Date(created_at).toLocaleDateString()
+      title: title,
+      subtitle: new Date(created_at).toLocaleDateString()
     });
 
     // Store private properties to our object
@@ -95,7 +97,6 @@ export class Task extends Adw.EntryRow {
     this.task_delete = this.get_template_child(Task as unknown as GObject.GType, 'task_delete') as Gtk.Button;
 
     // Initialize main entry value
-    this.set_text(title)
     this.task_done.set_active(done)
 
     // Call init events and drawers
@@ -104,7 +105,7 @@ export class Task extends Adw.EntryRow {
   }
 
   private _connect_events(): void {
-    this.connect_after("apply", this.notify_task_changed.bind(this))
+    this.connect("activated", this.notify_task_activated.bind(this));
 
     this.task_done.connect("toggled", this.notify_task_finished.bind(this))
 
@@ -114,7 +115,7 @@ export class Task extends Adw.EntryRow {
   private _update_interface(): void {
     const is_deleted = this._is_deleted;
     const is_done = this.get_done();
-    const task_title = new Date(this._created_at).toLocaleDateString();
+    const task_subtitle = new Date(this._created_at).toLocaleDateString();
     const task_opacity_level = is_deleted || is_done ? 0.5 : 1;
 
     let task_tooltip = (is_done || is_deleted) ? _("Finished or deleted tasks can't be changed") : "";
@@ -122,14 +123,14 @@ export class Task extends Adw.EntryRow {
     let delete_button_tooltip = is_deleted ? _("Restore task") : _("Delete task");
     let delete_button_icon = is_deleted ? TASK_DELETE_ICON.deleted : TASK_DELETE_ICON.default;
 
-    this.set_title(task_title);
+    this.set_subtitle(task_subtitle);
     this.set_tooltip_text(task_tooltip);
 
     this.set_opacity(task_opacity_level);
-    this.set_editable(!(is_done || is_deleted))
+    // this.set_activatable(!(is_done || is_deleted))
 
     this.task_done.set_tooltip_text(checkbox_done_tooltip);
-    this.task_done.set_sensitive(!is_deleted)
+    // this.task_done.set_sensitive(!is_deleted)
 
     this.task_delete.set_tooltip_text(delete_button_tooltip);
     this.task_delete.set_icon_name(delete_button_icon);
@@ -146,56 +147,54 @@ export class Task extends Adw.EntryRow {
   public notify_task_changed(): void {
     this.emit('task-updated', this)
 
-    const root = this.get_root() as TasksWindow;
-    if (root && root.display_message_toast) {
-      root.display_message_toast(_("Task %s updated").format(this.get_text()))
-    }
+    this._fire_toast(_("Task updated"))
     this._update_interface()
+  }
+
+  public notify_task_activated(): void {
+    this._fire_toast(_("Editar no futuro: ") + this.get_title());
   }
 
   public notify_task_finished(checkbox: any): void {
-    this.emit('task-updated', this)
+    const message = checkbox.get_active() ? _("Task finished") : _("Task reopened")
 
-    const message = checkbox.get_active() ? _("Task %s finished") : _("Task %s reopened")
-
-    const root = this.get_root() as TasksWindow;
-    if (root && root.display_message_toast) {
-      root.display_message_toast(message.format(this.get_text()))
-    }
+    this._fire_toast(message)
     this._update_interface()
-
-    log("task", "Task finished")
+    
+    this.emit('task-updated', this)
+    log("task", message)
   }
 
   public notify_task_deleted(): void {
-    this.emit('task-deleted', this)
-
-    const message = this._is_deleted ? _("Task %s restored") : _("Task %s deleted");
-
     this._is_deleted = !this._is_deleted;
-
+    const message = this._is_deleted ? _("Task restored") : _("Task deleted");
+    
+    this._fire_toast(message)
     this._update_interface()
-
-    const root = this.get_root() as TasksWindow;
-    if (root && root.display_message_toast) {
-      root.display_message_toast(message.format(this.get_text()))
-    }
-
-    log("task", "Task deleted")
+    
+    this.emit('task-deleted', this)
+    log("task", message)
   }
 
-  public to_widget(): any {
+  private _fire_toast(message: string): void {
+    const root = this.get_root() as TasksWindow;
+    if (root && root.display_message_toast) {
+      root.display_message_toast(message)
+    }
+  } 
+
+  public to_widget(): Task {
     return this;
   }
 
-  public to_object(): any {
+  public to_object(): ITask {
     return {
-      taskId: this._id,
-      title: this.get_text().trim(),
-      done: this.get_done(),
-      created_at: this._created_at,
-      is_deleted: this._is_deleted,
+      id: this._id,
+      title: this.get_title(),
+      created_at: new Date(this._created_at),
       project: this._project,
+      deleted: this._is_deleted,
+      done: this.get_done(),
     };
   }
 }

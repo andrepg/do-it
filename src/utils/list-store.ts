@@ -3,7 +3,7 @@ import Gio from "gi://Gio"
 
 import { Persistence } from "./persistence.js";
 import { Task } from "../ui-handler/task.js";
-import { Task as TaskType } from "../app.types.js";
+import { ITask as TaskType } from "../app.types.js";
 import { log } from "./log-manager.js";
 import { get_sorting_algorithm, set_sorting_algorithm } from "./sorting.js";
 

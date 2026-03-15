@@ -5,13 +5,13 @@ export interface SortingSettings {
     strategy: SortingStrategy;
 }
 
-export interface Task {
+export interface ITask {
     id: number;
     title: string;
-    project: string;
     created_at: Date;
-    completed_at: Date | null;
-    tags: string[];
+    project?: string;
+    completed_at?: Date | null;
+    tags?: string[];
     deleted?: boolean;
     done?: boolean;
 }
