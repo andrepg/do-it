@@ -11,6 +11,8 @@ import { get_setting_int, set_setting_int } from '../utils/settings.js';
 import * as Actions from '../actions/index.js';
 
 import { TaskListStore } from '../utils/list-store.js';
+import { ProjectManager } from '../utils/project-manager.js';
+import { TaskGroup } from './task-group.js';
 
 const options = {
     GTypeName: "DoItMainWindow",
@@ -52,10 +54,9 @@ export class DoItMainWindow extends Adw.ApplicationWindow {
         Actions.backup().setup(this);
         Actions.toast().setup(this);
         Actions.newTask().setup(this);
-        /*
         Actions.sidebar().setup(this);
-        Actions.projects().setup(this);
-        */
+
+        Actions.projects(this.taskListStore).setup(this);
     }
 
     public override vfunc_close_request(): boolean {

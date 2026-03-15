@@ -28,16 +28,16 @@ export const newTask = () => {
             let project = "";
             let parsedText = text;
             const projectMatch = text.match(/@(\S+)/);
-            
+
             if (projectMatch) {
                 const rawProject = projectMatch[1];
                 project = rawProject.charAt(0).toUpperCase() + rawProject.slice(1).toLowerCase();
                 parsedText = text.replace(projectMatch[0], '').trim();
             }
-            
-            window.taskListStore.append_task({ 
-                title: parsedText, 
-                created_at: new Date(),
+
+            window.taskListStore.append_task({
+                title: parsedText,
+                created_at: new Date().getTime(),
                 project,
             });
             fieldNewTask.set_text('');

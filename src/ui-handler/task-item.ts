@@ -3,17 +3,48 @@ import GObject from "gi://GObject"
 import { ITask } from "../app.types.js";
 import { get_template_path } from "../utils/application.js";
 import Gtk from "gi://Gtk";
+import { showToast } from "../actions/toast.js";
 
 const TaskItemProperties = {
   GTypeName: 'TaskItem',
   Template: get_template_path('ui/task.ui'),
   Properties: {
-    task: GObject.ParamSpec.object(
-      "task",
-      "Task",
-      "Task",
+    taskId: GObject.ParamSpec.int(
+      "taskId",
+      "Task Id",
+      "Task unique id",
+      GObject.ParamFlags.READABLE,
+      0,
+      2147483647,
+      0
+    ),
+    title: GObject.ParamSpec.string(
+      "title",
+      "Title",
+      "Title task",
       GObject.ParamFlags.READWRITE,
-      GObject.TYPE_OBJECT
+      ""
+    ),
+    done: GObject.ParamSpec.boolean(
+      "done",
+      "Done",
+      "Task status",
+      GObject.ParamFlags.READWRITE,
+      false
+    ),
+    created: GObject.ParamSpec.string(
+      "created",
+      "Created At",
+      "Task creation timestamp",
+      GObject.ParamFlags.READWRITE,
+      ""
+    ),
+    project: GObject.ParamSpec.string(
+      "project",
+      "Project",
+      "Task project",
+      GObject.ParamFlags.READWRITE,
+      ""
     ),
   },
   InternalChildren: ["task_done", "task_delete"],
@@ -37,62 +68,91 @@ const TaskItemProperties = {
  * for marking the task as done and a button for deleting it.
  */
 export class TaskItem extends Adw.ActionRow {
-    static {
-        GObject.registerClass(TaskItemProperties, this);
-    }
+  static {
+    GObject.registerClass(TaskItemProperties, this);
+  }
 
-    /**
-     * @private Main task data
-     * @type {ITask}
-     */
-    private task: ITask;
+  /**
+   * Internal Properties
+   */
+  private _taskId = 0;
 
-    /**
-     * @private Checkbox to mark task as done
-     * @type {Gtk.CheckButton}
-     */
-    private task_done: Gtk.CheckButton;
+  private _created_at: Date;
 
-    /**
-     * @private Button to delete task
-     * @type {Gtk.Button}
-     */
-    private task_delete: Gtk.Button;
+  private _project = '';
 
-    /**
-     * @constructor
-     * @param {ITask} task - Task data
-     */
-    constructor(task: ITask) {
-        super({
-            title: task.title,
-            subtitle: new Date(task.created_at).toLocaleDateString(),
-            activatable: true,
-        });
-        
-        this.task = task;
+  private _deleted = false;
 
-        this.task_done = this.get_template_child(TaskItem as unknown as GObject.GType, 'task_done') as Gtk.CheckButton;
-        this.task_delete = this.get_template_child(TaskItem as unknown as GObject.GType, 'task_delete') as Gtk.Button;
+  private _tags: string[] = [];
 
-        this.task_done.connect('toggled', () => {
-            console.log("activated task done")
-        });
+  /**
+   * Internal Children
+   */
+  private task_done!: Gtk.CheckButton;
+  private task_delete!: Gtk.Button;
 
-        this.task_delete.connect('clicked', () => {
-            console.log("activated task deleted")
-        });
-    }
+  constructor(
+    taskId = 0,
+    title = "",
+    done = false,
+    created: number | null = null,
+    project = "",
+  ) {
+    super({
+      title,
+      subtitle: new Date(created ?? Date.now()).toLocaleDateString(),
+    });
 
-    public get_project(): string {
-        return this.task.project ?? '';
-    }
+    this._taskId = taskId;
+    this._project = project;
+    this._created_at = new Date(created ?? Date.now());
+    this._deleted = false;
+    this._tags = [];
 
-    public to_widget(): TaskItem {
-        return this;
-    }
+    this.task_delete = this.get_template_child(TaskItem as unknown as GObject.GType, 'task_delete') as Gtk.Button;
+    this.task_delete.connect('clicked', this._delete_task.bind(this));
 
-    public to_object(): ITask {
-        return this.task;
-    }
+    this.task_done = this.get_template_child(TaskItem as unknown as GObject.GType, 'task_done') as Gtk.CheckButton;
+
+    this.task_done.set_active(done);
+    this.task_done.connect_after('toggled', this._finish_task.bind(this));
+  }
+
+  private _delete_task() {
+    this._deleted = !this._deleted;
+
+    const message = this._deleted ? _("Task deleted") : _("Task restored");
+
+    showToast(message)
+
+    this.emit('task-deleted', this);
+  }
+
+  private _finish_task() {
+    const message = this.task_done.get_active() ? _("Task finished") : _("Task restored");
+
+    showToast(message)
+
+    this.emit('task-updated', this);
+  }
+
+  public get_project(): string {
+    return this._project;
+  }
+
+  public to_widget(): TaskItem {
+    return this;
+  }
+
+  public to_object(): ITask {
+    return {
+      id: this._taskId,
+      title: this.title,
+      done: this.task_done.get_active(),
+      created_at: this._created_at.getTime(),
+      project: this._project,
+      deleted: this._deleted,
+      tags: this._tags,
+    };
+  }
 }

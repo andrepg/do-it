@@ -160,7 +160,7 @@ export class Task extends Adw.ActionRow {
 
     this._fire_toast(message)
     this._update_interface()
-    
+
     this.emit('task-updated', this)
     log("task", message)
   }
@@ -168,10 +168,10 @@ export class Task extends Adw.ActionRow {
   public notify_task_deleted(): void {
     this._is_deleted = !this._is_deleted;
     const message = this._is_deleted ? _("Task restored") : _("Task deleted");
-    
+
     this._fire_toast(message)
     this._update_interface()
-    
+
     this.emit('task-deleted', this)
     log("task", message)
   }
@@ -181,7 +181,7 @@ export class Task extends Adw.ActionRow {
     if (root && root.display_message_toast) {
       root.display_message_toast(message)
     }
-  } 
+  }
 
   public to_widget(): Task {
     return this;
@@ -191,7 +191,7 @@ export class Task extends Adw.ActionRow {
     return {
       id: this._id,
       title: this.get_title(),
-      created_at: new Date(this._created_at),
+      created_at: this._created_at,
       project: this._project,
       deleted: this._is_deleted,
       done: this.get_done(),

@@ -8,7 +8,7 @@ export interface SortingSettings {
 export interface ITask {
     id?: number;
     title: string;
-    created_at: Date;
+    created_at: number;
     project?: string;
     completed_at?: Date | null;
     tags?: string[];

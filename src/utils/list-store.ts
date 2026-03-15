@@ -2,8 +2,7 @@ import GObject from "gi://GObject";
 import Gio from "gi://Gio"
 
 import { Persistence } from "./persistence.js";
-import { Task } from "../ui-handler/task.js";
-import { ITask, ITask as TaskType } from "../app.types.js";
+import { ITask } from "../app.types.js";
 import { log } from "./log-manager.js";
 import { get_sorting_algorithm, set_sorting_algorithm } from "./sorting.js";
 import { TaskItem } from "../ui-handler/task-item.js";
@@ -18,8 +17,8 @@ export class TaskListStore extends Gio.ListStore<TaskItem> {
     }, this);
   }
 
-  get_all(): any[] {
-    const tasks: any[] = [];
+  get_all(): ITask[] {
+    const tasks: ITask[] = [];
 
     for (let index = 0; index < this.get_count(); index++) {
       const item = this.get_item(index);
@@ -36,13 +35,15 @@ export class TaskListStore extends Gio.ListStore<TaskItem> {
   }
 
   append_task(data: ITask) {
-    const task = new TaskItem({
-      id: data.id ?? this.get_count() + 1,
-      title: data.title,
-      done: data.done,
-      created_at: data.created_at,
-      project: data.project,
-    })
+    const taskId = data.id ?? 0;
+
+    const task = new TaskItem(
+      (taskId > 0) ? taskId : this.get_count() + 1,
+      data.title,
+      data.done,
+      data.created_at,
+      data.project,
+    )
 
     const _update_interface = (signal: string) => {
       log("list-store", `Received ${signal} signal.`)
@@ -74,22 +75,21 @@ export class TaskListStore extends Gio.ListStore<TaskItem> {
 
   persist_store() {
     log("list-store", "Saving tasks to database");
+    const tasks = this.get_all().filter(item => !item.deleted);
 
     const persistence = new Persistence();
-    persistence.write_database(
-      this.get_all().filter(item => !item.is_deleted)
-    )
+    persistence.write_database(tasks);
   }
 
   load() {
     log("list-store", "Loading tasks from database")
 
     const persistence = new Persistence();
-    const tasks = persistence.read_database() as TaskType[];
+    const tasks = persistence.read_database() as ITask[];
 
     tasks.forEach((item) => {
+      log("list-store", `Loading task ${item.title}`)
       this.append_task(item)
-      log("list-store", `Loaded task ${item.title} (done: ${item.done} - created at ${item.created_at})`)
     })
   }
 }
