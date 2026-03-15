@@ -1,5 +1,7 @@
 {
   "name": "doit",
+  "type": "module",
+  "author": "",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },
@@ -8,9 +10,7 @@
     "url": "git+https://github.com/andrepg/do-it.git"
   },
   "keywords": [],
-  "author": "",
   "license": "ISC",
-  "type": "module",
   "bugs": {
     "url": "https://github.com/andrepg/do-it/issues"
   },
