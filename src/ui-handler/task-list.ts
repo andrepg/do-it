@@ -1,7 +1,7 @@
 import GObject from 'gi://GObject';
 import Gtk from 'gi://Gtk';
 import { APPLICATION_RES, get_template_path } from "../utils/application.js";
-import { TaskListStore } from '../utils/list-store.js';
+import Gio from 'gi://Gio';
 
 import type { Task } from "./task.js";
 
@@ -20,15 +20,10 @@ export class TaskList extends Gtk.ListBox {
     GObject.registerClass(GObjectProperties, this);
   }
 
-  taskListStore: TaskListStore;
-
-  constructor() {
+  constructor(model: Gio.ListModel) {
     super();
 
-    this.taskListStore = new TaskListStore();
-    this.taskListStore.load();
-
-    this.bind_model(this.taskListStore,
+    this.bind_model(model,
       (item: GObject.Object) => (item as Task).to_widget()
     )
 

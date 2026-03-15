@@ -1,7 +1,5 @@
-import Adw1 from "gi://Adw"
 import Gtk40 from "gi://Gtk"
 import { DoItMainWindow } from "../ui-handler/doit.js"
-import GObject20 from "gi://GObject"
 import { showToast } from "./toast.js"
 
 export const newTask = () => {
@@ -9,14 +7,14 @@ export const newTask = () => {
     const fieldNewTaskId = 'task_new_entry';
 
     const getNewTaskButton = (
-        window: Adw1.ApplicationWindow
-    ): Gtk40.Button => window.get_template_child(DoItMainWindow.GType, buttonNewTaskId)
+        window: DoItMainWindow
+    ): Gtk40.Button => window.get_template_child(DoItMainWindow.GType, buttonNewTaskId) as unknown as Gtk40.Button
 
     const getNewTaskField = (
-        window: Adw1.ApplicationWindow
-    ): Gtk40.Entry => window.get_template_child(DoItMainWindow.GType, fieldNewTaskId)
+        window: DoItMainWindow
+    ): Gtk40.Entry => window.get_template_child(DoItMainWindow.GType, fieldNewTaskId) as unknown as Gtk40.Entry
 
-    const setup = (window: Adw1.ApplicationWindow) => {
+    const setup = (window: DoItMainWindow) => {
         const buttonNewTask = getNewTaskButton(window);
 
         const fieldNewTask = getNewTaskField(window);
@@ -24,6 +22,20 @@ export const newTask = () => {
         buttonNewTask.connect('clicked', () => fieldNewTask.grab_focus())
 
         fieldNewTask.connect('activate', () => {
+            const text = fieldNewTask.get_text().trim();
+            if (text.length == 0) return;
+
+            let project = "";
+            let parsedText = text;
+            const projectMatch = text.match(/@(\S+)/);
+            
+            if (projectMatch) {
+                project = projectMatch[1];
+                parsedText = text.replace(projectMatch[0], '').trim();
+            }
+            
+            window.taskListStore.append_task({ title: parsedText, project });
+            fieldNewTask.set_text('');
             showToast(_('Task created'));
         })
     }

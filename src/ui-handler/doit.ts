@@ -1,5 +1,6 @@
-import Adw from 'gi://Adw'
-import GObject from 'gi://GObject'
+import Adw from 'gi://Adw';
+import GObject from 'gi://GObject';
+import Gtk from 'gi://Gtk';
 
 import { DoItSettings } from '../app.enums.js';
 
@@ -9,14 +10,15 @@ import { get_setting_int, set_setting_int } from '../utils/settings.js';
 
 import * as Actions from '../actions/index.js';
 
-import { TaskList } from './task-list.js';
+import { useProjectGroups } from '../hooks/useProjectGroups.js';
+import { TaskListStore } from '../utils/list-store.js';
 
 const options = {
     GTypeName: "DoItMainWindow",
     Template: get_template_path('ui/window-v2.ui'),
     InternalChildren: [
         "toast_overlay",
-        "clamp_list",
+        "list_container",
         "split_view",
         "button_open_sidebar",
         "button_new_task",
@@ -29,7 +31,10 @@ export class DoItMainWindow extends Adw.ApplicationWindow {
 
     static readonly GType = DoItMainWindow as unknown as GObject.GType;
 
-    clamp_list!: Adw.Clamp;
+    taskListStore!: TaskListStore;
+
+    private list_container!: Gtk.Box;
+    private _projectGroupsHook!: { destroy: () => void };
 
     static {
         GObject.registerClass(options, this);
@@ -45,16 +50,20 @@ export class DoItMainWindow extends Adw.ApplicationWindow {
 
         log(DoItMainWindow.LogClass, "Initializing main window");
 
+        this.taskListStore = new TaskListStore();
+        this.taskListStore.load();
+
         Actions.backup().setup(this);
         Actions.sidebar().setup(this);
         Actions.toast().setup(this);
         Actions.newTask().setup(this);
 
-        this.clamp_list = this.get_template_child(
+        this.list_container = this.get_template_child(
             DoItMainWindow.GType,
-            'clamp_list'
-        );
-        this.clamp_list.set_child(new TaskList())
+            'list_container'
+        ) as Gtk.Box;
+
+        this._projectGroupsHook = useProjectGroups(this.list_container, this.taskListStore);
     }
 
     public override vfunc_close_request(): boolean {

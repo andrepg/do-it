@@ -42,6 +42,13 @@ const TaskProperties = {
     GObject.ParamFlags.READWRITE,
     ""
   ),
+  project: GObject.ParamSpec.string(
+    "project",
+    "Project",
+    "Task project",
+    GObject.ParamFlags.READWRITE,
+    ""
+  ),
 };
 
 const GObjectProperties = {
@@ -67,11 +74,12 @@ export class Task extends Adw.EntryRow {
   private _id: number = 0;
   private _created_at: number = 0;
   private _is_deleted: boolean = false;
+  private _project: string = "";
 
   private task_done!: Gtk.CheckButton;
   private task_delete!: Gtk.Button;
 
-  constructor(taskId = 0, title = "", done = false, created: number | null = null) {
+  constructor(taskId = 0, title = "", done = false, created: number | null = null, project: string = "") {
     const created_at = created ?? Date.now();
     super({
       title: new Date(created_at).toLocaleDateString()
@@ -81,6 +89,7 @@ export class Task extends Adw.EntryRow {
     this._id = taskId;
     this._created_at = created_at;
     this._is_deleted = false;
+    this._project = project;
 
     this.task_done = this.get_template_child(Task as unknown as GObject.GType, 'task_done') as Gtk.CheckButton;
     this.task_delete = this.get_template_child(Task as unknown as GObject.GType, 'task_delete') as Gtk.Button;
@@ -128,6 +137,10 @@ export class Task extends Adw.EntryRow {
 
   public get_done(): boolean {
     return this.task_done.get_active();
+  }
+
+  public get_project(): string {
+    return this._project;
   }
 
   public notify_task_changed(): void {
@@ -182,6 +195,7 @@ export class Task extends Adw.EntryRow {
       done: this.get_done(),
       created_at: this._created_at,
       is_deleted: this._is_deleted,
+      project: this._project,
     };
   }
 }

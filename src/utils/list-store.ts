@@ -34,12 +34,13 @@ export class TaskListStore extends Gio.ListStore<Task> {
     return this.get_n_items();
   }
 
-  append_task({ title, done = false, taskId = null, created_at = null }: { title: string, done?: boolean, taskId?: number | null, created_at?: number | null }) {
+  append_task({ title, done = false, taskId = null, created_at = null, project = "" }: { title: string, done?: boolean, taskId?: number | null, created_at?: number | null, project?: string }) {
     const task = new Task(
       taskId ?? this.get_count() + 1,
       title,
       done,
       created_at,
+      project,
     );
 
     const _update_interface = (signal: string) => {
@@ -91,6 +92,7 @@ export class TaskListStore extends Gio.ListStore<Task> {
         title: item.title,
         done: item.done,
         created_at: item.created_at as unknown as number,
+        project: item.project ?? "",
       })
 
       log("list-store", `Loaded task ${item.title} (done: ${item.done} - created at ${item.created_at})`)
