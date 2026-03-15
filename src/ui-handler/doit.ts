@@ -21,9 +21,7 @@ const options = {
         "split_view",
         "button_open_sidebar",
         "button_new_task",
-        "task_new_entry",
-        "sidebar_project_list",
-        "sidebar_btn_all",
+        "task_new_entry"
     ]
 };
 
@@ -52,10 +50,12 @@ export class DoItMainWindow extends Adw.ApplicationWindow {
         this.taskListStore.load();
 
         Actions.backup().setup(this);
-        Actions.sidebar().setup(this);
         Actions.toast().setup(this);
         Actions.newTask().setup(this);
+        /*
+        Actions.sidebar().setup(this);
         Actions.projects().setup(this);
+        */
     }
 
     public override vfunc_close_request(): boolean {
