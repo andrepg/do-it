@@ -1,0 +1,7 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<interface>
+  <requires lib="Adw" version="1.7"/>
+  <requires lib="Gtk" version="4.21"/>
+  <template class="TaskGroup" parent="AdwPreferencesGroup">
+  </template>
+</interface>

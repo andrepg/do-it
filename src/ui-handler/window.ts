@@ -136,7 +136,7 @@ export class TasksWindow extends Adw.ApplicationWindow {
 
     log("window - new task", "Ask Pending list to add new task");
 
-    this._list_store.append_task({ title: title.trim() });
+    // this._list_store.append_task({ title: title.trim() });
     this._list_store.persist_store();
 
     log("window - new task", "Cleaning up interface and inputs");

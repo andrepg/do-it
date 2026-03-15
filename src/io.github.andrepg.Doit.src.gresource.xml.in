@@ -8,7 +8,7 @@
     <file>app.wrapper.js</file>
     <file>app.enums.js</file>
     <file>app.types.js</file>
-
+    
     <file>utils/project-manager.js</file>
 
     <file>utils/list-store.js</file>
@@ -23,6 +23,8 @@
     <file>ui-handler/task.js</file>
     <file>ui-handler/task-list.js</file>
     <file>ui-handler/task-group.js</file>
+    <file>ui-handler/sidebar-button.js</file>
+    <file>ui-handler/task-item.js</file>
 
     <file>tasks/tasks.filter.js</file>
   

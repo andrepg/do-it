@@ -35,7 +35,11 @@ export const newTask = () => {
                 parsedText = text.replace(projectMatch[0], '').trim();
             }
             
-            window.taskListStore.append_task({ title: parsedText, project });
+            window.taskListStore.append_task({ 
+                title: parsedText, 
+                created_at: new Date(),
+                project,
+            });
             fieldNewTask.set_text('');
             showToast(_('Task created'));
         })

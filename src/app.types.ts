@@ -6,7 +6,7 @@ export interface SortingSettings {
 }
 
 export interface ITask {
-    id: number;
+    id?: number;
     title: string;
     created_at: Date;
     project?: string;

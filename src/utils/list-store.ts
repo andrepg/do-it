@@ -3,11 +3,12 @@ import Gio from "gi://Gio"
 
 import { Persistence } from "./persistence.js";
 import { Task } from "../ui-handler/task.js";
-import { ITask as TaskType } from "../app.types.js";
+import { ITask, ITask as TaskType } from "../app.types.js";
 import { log } from "./log-manager.js";
 import { get_sorting_algorithm, set_sorting_algorithm } from "./sorting.js";
+import { TaskItem } from "../ui-handler/task-item.js";
 
-export class TaskListStore extends Gio.ListStore<Task> {
+export class TaskListStore extends Gio.ListStore<TaskItem> {
   static {
     GObject.registerClass({
       GTypeName: "TaskListStore",
@@ -22,7 +23,7 @@ export class TaskListStore extends Gio.ListStore<Task> {
 
     for (let index = 0; index < this.get_count(); index++) {
       const item = this.get_item(index);
-      if (item instanceof Task) {
+      if (item instanceof TaskItem) {
         tasks.push(item.to_object());
       }
     }
@@ -34,14 +35,14 @@ export class TaskListStore extends Gio.ListStore<Task> {
     return this.get_n_items();
   }
 
-  append_task({ title, done = false, taskId = null, created_at = null, project = "" }: { title: string, done?: boolean, taskId?: number | null, created_at?: number | null, project?: string }) {
-    const task = new Task(
-      taskId ?? this.get_count() + 1,
-      title,
-      done,
-      created_at,
-      project,
-    );
+  append_task(data: ITask) {
+    const task = new TaskItem({
+      id: data.id ?? this.get_count() + 1,
+      title: data.title,
+      done: data.done,
+      created_at: data.created_at,
+      project: data.project,
+    })
 
     const _update_interface = (signal: string) => {
       log("list-store", `Received ${signal} signal.`)
@@ -87,14 +88,7 @@ export class TaskListStore extends Gio.ListStore<Task> {
     const tasks = persistence.read_database() as TaskType[];
 
     tasks.forEach((item) => {
-      this.append_task({
-        taskId: item.id,
-        title: item.title,
-        done: item.done,
-        created_at: item.created_at as unknown as number,
-        project: item.project ?? "",
-      })
-
+      this.append_task(item)
       log("list-store", `Loaded task ${item.title} (done: ${item.done} - created at ${item.created_at})`)
     })
   }
