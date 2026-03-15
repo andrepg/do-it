@@ -28,8 +28,15 @@
                         <property name="spacing">24</property>
                         <property name="valign">start</property>
                         <child>
-                          <object class="AdwClamp" id="clamp_list">
+                          <object class="AdwClamp">
                             <property name="valign">start</property>
+                            <child>
+                              <object class="GtkBox" id="list_container">
+                                <property name="orientation">vertical</property>
+                                <property name="spacing">24</property>
+                                <property name="valign">start</property>
+                              </object>
+                            </child>
                           </object>
                         </child>
                       </object>
