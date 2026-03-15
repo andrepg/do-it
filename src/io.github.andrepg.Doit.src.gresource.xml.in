@@ -23,7 +23,6 @@
     <file>ui-handler/task.js</file>
     <file>ui-handler/task-list.js</file>
     <file>ui-handler/task-group.js</file>
-    <file>ui-handler/sidebar-button.js</file>
     <file>ui-handler/task-item.js</file>
 
     <file>tasks/tasks.filter.js</file>

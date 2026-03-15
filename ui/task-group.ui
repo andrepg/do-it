@@ -4,7 +4,7 @@
   <!-- interface-name task-group.ui -->
   <requires lib="Adw" version="1.7"/>
   <requires lib="Gtk" version="4.21"/>
-  <requires lib="libadwaita" version="1.6"/>
+  <requires lib="libadwaita" version="1.7"/>
   <template class="TaskGroup" parent="AdwPreferencesGroup">
     <property name="title">Task group</property>
   </template>
