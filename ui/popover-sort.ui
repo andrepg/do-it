@@ -29,6 +29,7 @@
         </child>
         <child>
           <object class="AdwToggleGroup" id="toggle-group-sort-field">
+            <property name="css-classes">flat</property>
             <property name="orientation">vertical</property>
             <property name="valign">start</property>
           </object>
@@ -50,6 +51,7 @@
         </child>
         <child>
           <object class="AdwToggleGroup" id="toggle-group-sort-strategy">
+            <property name="css-classes">flat</property>
             <property name="orientation">horizontal</property>
             <property name="homogeneous">True</property>
           </object>

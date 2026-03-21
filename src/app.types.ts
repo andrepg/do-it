@@ -18,6 +18,7 @@ export interface ITask {
 
 export interface ISortingFieldOption {
     label: string;
+    icon?: string;
     mode: SortingField;
 }
 

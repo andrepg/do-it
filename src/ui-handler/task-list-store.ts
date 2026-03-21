@@ -66,9 +66,7 @@ export class TaskListStore extends Gio.ListStore<TaskItem> {
     this.persist_store();
   }
 
-  sort_list(sort_mode: string) {
-    log("list-store", `Sorting list by mode: ${sort_mode}`);
-
+  sort_list() {
     const { mode, strategy } = this.task_sort.retrieve_sort_preferences();
 
     this.sort(this.task_sort.sort_by(mode, strategy));

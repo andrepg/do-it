@@ -87,7 +87,7 @@ export class TasksWindow extends Adw.ApplicationWindow {
   }
 
   public sort_list_store(sorting_mode: string): void {
-    this._list_store.sort_list(sorting_mode);
+    // this._list_store.sort_list(sorting_mode);
 
     this._update_sorting_label();
   }

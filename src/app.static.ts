@@ -24,18 +24,22 @@ export const TaskDeleteButtonIcon = {
 export const SortingFieldOptions: ISortingFieldOption[] = [
   {
     label: _("Date"),
+    icon: "appointment-new-symbolic",
     mode: SortingField.byDate,
   },
   {
     label: _("Project"),
+    icon: "folder-symbolic",
     mode: SortingField.byProject,
   },
   {
     label: _("Status"),
+    icon: "task-due-symbolic",
     mode: SortingField.byStatus,
   },
   {
     label: _("Title"),
+    icon: "document-decrypt-symbolic",
     mode: SortingField.byTitle,
   },
 ]
