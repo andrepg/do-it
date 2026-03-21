@@ -1,11 +1,11 @@
 import GObject from "gi://GObject";
 import Gio from "gi://Gio"
 
-import { Persistence } from "./persistence.js";
+import { Persistence } from "../utils/persistence.js";
 import { ITask } from "../app.types.js";
-import { log } from "./log-manager.js";
-import { useTaskSort } from "../tasks/tasks.sort.js";
-import { TaskItem } from "../ui-handler/task-item.js";
+import { log } from "../utils/log-manager.js";
+import { useTaskSort } from "../hooks/tasks.sort.js";
+import { TaskItem } from "./task-item.js";
 
 export class TaskListStore extends Gio.ListStore<TaskItem> {
   static {
@@ -51,7 +51,6 @@ export class TaskListStore extends Gio.ListStore<TaskItem> {
 
     const _update_interface = (signal: string) => {
       log("list-store", `Received ${signal} signal.`)
-
 
       this.sort(this.task_sort.sort_by(mode, strategy))
 

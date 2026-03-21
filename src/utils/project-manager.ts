@@ -1,5 +1,5 @@
 import GObject from 'gi://GObject';
-import { TaskListStore } from './list-store.js';
+import { TaskListStore } from '../ui-handler/task-list-store.js';
 import { TaskItem } from '../ui-handler/task-item.js';
 
 /**

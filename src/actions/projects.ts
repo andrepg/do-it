@@ -6,7 +6,7 @@ import Gtk from 'gi://Gtk';
 import { log } from '../utils/log-manager.js';
 import { ProjectManager } from '../utils/project-manager.js';
 import { TaskGroup } from '../ui-handler/task-group.js';
-import { TaskListStore } from '../utils/list-store.js';
+import { TaskListStore } from '../ui-handler/task-list-store.js';
 
 export default function projects(store: TaskListStore, projectManager: ProjectManager) {
 

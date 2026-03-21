@@ -1,7 +1,7 @@
 import Gtk40 from "gi://Gtk"
 import { DoItMainWindow } from "../ui-handler/doit.js"
 import { showToast } from "./toast.js"
-import { TaskListStore } from "../utils/list-store.js"
+import { TaskListStore } from "../ui-handler/task-list-store.js"
 
 export const newTask = (store: TaskListStore) => {
     const buttonNewTaskId = 'button_new_task';

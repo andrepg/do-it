@@ -1,6 +1,6 @@
 import Adw from "gi://Adw";
 import type { DoItMainWindow } from "../ui-handler/doit.js";
-import { TaskListStore } from "../utils/list-store.js";
+import { TaskListStore } from "../ui-handler/task-list-store.js";
 import { ProjectManager } from "../utils/project-manager.js";
 import Gtk40 from "gi://Gtk";
 import { SidebarButton } from "../ui-handler/sidebar-button.js";

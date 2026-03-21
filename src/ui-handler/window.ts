@@ -4,7 +4,7 @@ import Gio from 'gi://Gio';
 import Gtk from 'gi://Gtk';
 
 import { get_template_path } from "../utils/application.js";
-import { TaskListStore } from "../utils/list-store.js";
+import { TaskListStore } from "./task-list-store.js";
 // import { export_database, import_database } from "../utils/backup.js";
 import { log } from "../utils/log-manager.js";
 // import { CreateTaskList } from "./task-list.js";

@@ -10,7 +10,7 @@ import { get_setting_int, set_setting_int } from '../utils/settings.js';
 
 import * as Actions from '../actions/index.js';
 
-import { TaskListStore } from '../utils/list-store.js';
+import { TaskListStore } from './task-list-store.js';
 import { ProjectManager } from '../utils/project-manager.js';
 import { PopoverSort } from './popover-sort.js';
 

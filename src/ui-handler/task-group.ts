@@ -3,7 +3,7 @@ import GObject from 'gi://GObject';
 import Gtk from 'gi://Gtk';
 
 import { TaskList } from './task-list.js';
-import type { TaskListStore } from '../utils/list-store.js';
+import type { TaskListStore } from './task-list-store.js';
 import { TaskItem } from './task-item.js';
 
 import { get_template_path } from '../utils/application.js';
