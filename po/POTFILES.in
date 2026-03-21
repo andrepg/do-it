@@ -4,21 +4,19 @@
 #
 
 # Main application files
-src/main.js
-src/static.js
+src/app.static.js
+
 
 # Interface handlers
+src/ui-handler/sidebar-button.js
+src/ui-handler/task-group.js
+src/ui-handler/task-item.js
 src/ui-handler/task.js
-src/ui-handler/task-list.js
 src/ui-handler/window.js
 
-# Utils and other common
-src/utils/backup.js
-src/utils/sorting.js
-
 # Interface declarations
-ui/empty-list.ui
+ui/application.ui
 ui/help-overlay.ui
-ui/task.ui
-ui/task-list.ui
+ui/popover-sort.ui
+ui/window-v2.ui
 ui/window.ui

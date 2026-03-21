@@ -4,6 +4,7 @@ import { APPLICATION_ID } from "./application.js";
 
 
 function get_settings_container(): Gio.Settings {
+    console.log(`[settings] Opening settings with schema id: ${APPLICATION_ID}`);
     return new Gio.Settings({
         schema_id: APPLICATION_ID
     })

@@ -28,29 +28,9 @@
           </object>
         </child>
         <child>
-          <object class="AdwToggleGroup">
+          <object class="AdwToggleGroup" id="toggle-group-sort-field">
             <property name="orientation">vertical</property>
             <property name="valign">start</property>
-            <child>
-              <object class="AdwToggle">
-                <property name="label">Titulo</property>
-              </object>
-            </child>
-            <child>
-              <object class="AdwToggle">
-                <property name="label">Data</property>
-              </object>
-            </child>
-            <child>
-              <object class="AdwToggle">
-                <property name="label">Projeto</property>
-              </object>
-            </child>
-            <child>
-              <object class="AdwToggle">
-                <property name="label">Status</property>
-              </object>
-            </child>
           </object>
         </child>
         <child>
@@ -69,27 +49,9 @@
           </object>
         </child>
         <child>
-          <object class="AdwToggleGroup">
+          <object class="AdwToggleGroup" id="toggle-group-sort-strategy">
             <property name="orientation">horizontal</property>
             <property name="homogeneous">True</property>
-            <child>
-              <object class="AdwToggle">
-                <property name="child">
-                  <object class="GtkImage">
-                    <property name="icon-name">view-sort-ascending-symbolic</property>
-                  </object>
-                </property>
-              </object>
-            </child>
-            <child>
-              <object class="AdwToggle">
-                <property name="child">
-                  <object class="GtkImage">
-                    <property name="icon-name">view-sort-descending-symbolic</property>
-                  </object>
-                </property>
-              </object>
-            </child>
           </object>
         </child>
       </object>

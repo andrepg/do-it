@@ -15,3 +15,13 @@ export interface ITask {
     deleted?: boolean;
     done?: boolean;
 }
+
+export interface ISortingFieldOption {
+    label: string;
+    mode: SortingField;
+}
+
+export interface ISortingStrategyOption {
+    icon: string;
+    strategy: SortingStrategy;
+}

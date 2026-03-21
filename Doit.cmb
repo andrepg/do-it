@@ -1,11 +1,16 @@
 <?xml version='1.0' encoding='UTF-8' standalone='no'?>
 <!DOCTYPE cambalache-project SYSTEM "cambalache-project.dtd">
-<!-- Created with Cambalache 0.96.3 -->
-<cambalache-project version="0.96.0" target_tk="gtk-4.0">
+<!-- Created with Cambalache 1.0 -->
+<cambalache-project version="1.0.0" target_tk="gtk-4.0" depends="libadwaita-1,webkitgtk-6.0">
   <ui filename="ui/empty-list.ui" sha256="36f589608b543799dd83c4e815a9716740caa742f411086fc7c7d5a40d5f78d3"/>
   <ui template-class="TaskItem" filename="ui/task.ui" sha256="209b6313ba88891c398be7b7ccb7f54a0a896396379c3241558e378d6fb3c332"/>
   <ui template-class="TasksWindow" filename="ui/window.ui" sha256="5b0931e80a0d7dd15543124454c597982fff0d1b283d3a6d830e729975683a59"/>
   <ui template-class="TaskList" filename="ui/task-list.ui" sha256="15336331278ac45c4986065689f2d97212c5bbaad1437672fb1a34a503d630db"/>
-  <ui template-class="DoItMainWindow" filename="ui/application.ui" sha256="e6017088960c9fc9fee368cf47eb110cb3b5043b7761a0a0f2736a0abe51d6a1"/>
-  <ui template-class="TaskGroup" filename="ui/task-group.ui" sha256="24107a83d61b79a1a8dc3f6c090d5ed632cf85308bdc0754a566709e907d2bc5"/>
+  <ui template-class="DoItMainWindow" filename="ui/application.ui" sha256="279db526134b4f118a48730ddf77702ada96564d6f215cb4c60ab4d183f0875e"/>
+  <ui template-class="TaskGroup" filename="ui/task-group.ui" sha256="698f2a69350915322c842e7f8914c939319bb6a29aaacff4d737622639515d73"/>
+  <ui template-class="SidebarButton" filename="ui/sidebar-button.ui" sha256="2989fa8ef1efc339bd593d65a3eac9ac451cda95c38704175d2b41c87c192463"/>
+  <ui template-class="DoItMainWindow" filename="ui/window-v2.ui" sha256="d84b209674782f9583c5e2b053d4466a3ab1a4d128e73cc5bdd5a12157c9328e">
+    <requires>SidebarSorting</requires>
+  </ui>
+  <ui template-class="SidebarSorting" filename="ui/sidebar-sorting.ui" sha256="aac707b3d7ec1a7ee72ca62dff4b778b3017ae800e458df56a607b41a34ce45a"/>
 </cambalache-project>
