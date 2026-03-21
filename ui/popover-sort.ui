@@ -8,10 +8,10 @@
     <property name="child">
       <object class="GtkBox">
         <property name="width-request">200</property>
-        <property name="margin-bottom">8</property>
-        <property name="margin-end">8</property>
-        <property name="margin-start">8</property>
-        <property name="margin-top">8</property>
+        <property name="margin-bottom">4</property>
+        <property name="margin-end">4</property>
+        <property name="margin-start">4</property>
+        <property name="margin-top">4</property>
         <property name="orientation">vertical</property>
         <property name="spacing">8</property>
         <property name="valign">start</property>
@@ -19,6 +19,9 @@
           <object class="GtkLabel">
             <property name="label" translatable="yes">Order by</property>
             <property name="xalign">0</property>
+            <attributes>
+              <attribute name="weight" value="bold"/>
+            </attributes>
             <style>
               <class name="caption"/>
             </style>
@@ -57,6 +60,9 @@
           <object class="GtkLabel">
             <property name="label" translatable="yes">Order strategy</property>
             <property name="xalign">0</property>
+            <attributes>
+              <attribute name="weight" value="bold"/>
+            </attributes>
             <style>
               <class name="caption"/>
             </style>

@@ -48,18 +48,23 @@
                 <property name="show-back-button">False</property>
                 <property name="valign">start</property>
                 <child type="end">
-                  <object class="GtkMenuButton">
-                    <property name="focusable">True</property>
-                    <property name="icon-name">open-menu-symbolic</property>
-                    <property name="menu-model">primary_menu</property>
-                    <property name="primary">True</property>
-                    <property name="tooltip-text" translatable="yes">Main Menu</property>
-                  </object>
-                </child>
-                <child type="end">
-                  <object class="GtkMenuButton" id="button_sorting">
-                    <property name="icon-name">view-sort-descending-symbolic</property>
-                    <property name="tooltip-text" translatable="yes">Sorting options</property>
+                  <object class="GtkBox">
+                    <property name="spacing">4</property>
+                    <child>
+                      <object class="GtkMenuButton" id="button_sorting">
+                        <property name="icon-name">view-sort-descending-symbolic</property>
+                        <property name="tooltip-text" translatable="yes">Sorting options</property>
+                      </object>
+                    </child>
+                    <child>
+                      <object class="GtkMenuButton">
+                        <property name="focusable">True</property>
+                        <property name="icon-name">open-menu-symbolic</property>
+                        <property name="menu-model">primary_menu</property>
+                        <property name="primary">True</property>
+                        <property name="tooltip-text" translatable="yes">Main Menu</property>
+                      </object>
+                    </child>
                   </object>
                 </child>
                 <child type="start">

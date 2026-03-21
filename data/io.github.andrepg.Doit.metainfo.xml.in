@@ -69,11 +69,25 @@
   </screenshots>
 
   <releases>
+    <release version="2.0.0" timestamp="">
+      <url type="details">https://github.com/andrepg/do-it/releases/tag/2.0.0</url>
+      <description translate="no">
+        <h2>A complete redesign of our app.</h2>
+
+        <p>We've introduced a few thing meaningfull things. These changes aim to make task management better.</p>
+
+        <ul>
+          <li>New layout, with vertical sidebar and project groups</li>
+          <li>Project management and automatic recognition with @ symbol</li>
+          <li>New sorting popover and settings</li>
+        </ul>
+      </description>
+    </release>
     <release version="0.1.4" timestamp="1761495363990">
       <url type="details">https://github.com/andrepg/do-it/releases/tag/0.1.4</url>
       <description translate="no">
         <p>Sorting your tasks is now available. We've introduced a few things only.</p>
-        
+
         <ul>
           <li>Tasks can be sorted by date, status or title</li>
           <li>This ordering setup is persisted, so you should not worry about loosing</li>
