@@ -4,7 +4,7 @@ import Gio from "gi://Gio";
 import GObject from "gi://GObject";
 
 import type { TasksWindow } from "./window.js";
-import { TASK_DELETE_ICON } from "../static.js";
+import { TaskDeleteButtonIcon } from "../app.static.js";
 import { log } from "../utils/log-manager.js";
 import { get_resource_path, get_template_path } from "../utils/application.js";
 import { ITask } from "../app.types.js";
@@ -121,7 +121,7 @@ export class Task extends Adw.ActionRow {
     let task_tooltip = (is_done || is_deleted) ? _("Finished or deleted tasks can't be changed") : "";
     let checkbox_done_tooltip = is_done ? _("Reopen task") : _("Finish task");
     let delete_button_tooltip = is_deleted ? _("Restore task") : _("Delete task");
-    let delete_button_icon = is_deleted ? TASK_DELETE_ICON.deleted : TASK_DELETE_ICON.default;
+    let delete_button_icon = is_deleted ? TaskDeleteButtonIcon.deleted : TaskDeleteButtonIcon.default;
 
     this.set_subtitle(task_subtitle);
     this.set_tooltip_text(task_tooltip);

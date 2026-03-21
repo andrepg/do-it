@@ -9,8 +9,8 @@ export enum SortingField {
 }
 
 export enum SortingStrategy {
-    ascending,
-    descending,
+    ascending = 0,
+    descending = 1,
 }
 
 export const SortingModeSchema = {

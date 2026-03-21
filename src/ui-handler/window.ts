@@ -8,7 +8,7 @@ import { TaskListStore } from "./task-list-store.js";
 // import { export_database, import_database } from "../utils/backup.js";
 import { log } from "../utils/log-manager.js";
 // import { CreateTaskList } from "./task-list.js";
-import { SortingModes, SortingModeSchema } from "../static.js";
+// import { SortingModes,  /* SortingModeSchema */ } from "../static.js";
 import { get_setting_int, get_setting_string, set_setting_int } from '../utils/settings.js';
 
 // Redundant local declaration removed (now in env.d.ts)
@@ -51,9 +51,11 @@ export class TasksWindow extends Adw.ApplicationWindow {
     // { name: 'export_database', event: 'activate', callback: () => export_database(this) },
     // { name: 'import_database', event: 'activate', callback: () => import_database(this) },
 
+    /* 
     { name: 'sort_by_title', event: 'activate', callback: () => this.sort_list_store(SortingModes.BY_TITLE) },
     { name: 'sort_by_status', event: 'activate', callback: () => this.sort_list_store(SortingModes.BY_STATUS) },
     { name: 'sort_by_creation_date', event: 'activate', callback: () => this.sort_list_store(SortingModes.BY_DATE) },
+     */
   ]
 
   constructor(application: Adw.Application) {
@@ -91,8 +93,8 @@ export class TasksWindow extends Adw.ApplicationWindow {
   }
 
   private _update_sorting_label(): void {
-    const current_sort_strategy = get_setting_string(SortingModeSchema.STRATEGY);
-    const current_sort_mode = get_setting_string(SortingModeSchema.MODE);
+    // const current_sort_strategy = get_setting_string(SortingModeSchema.STRATEGY);
+    // const current_sort_mode = get_setting_string(SortingModeSchema.MODE);
 
     // const current_label_sort_text = get_sorting_label_text(current_sort_mode, current_sort_strategy);
 

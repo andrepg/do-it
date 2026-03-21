@@ -1,6 +1,6 @@
 import { SortingField, SortingModeSchema, SortingStrategy } from "../app.enums.js";
 import { TaskItem } from "../ui-handler/task-item.js";
-import { get_setting_string, set_setting_string } from "../utils/settings.js";
+import { get_setting_int, get_setting_string, set_setting_int, set_setting_string } from "../utils/settings.js";
 
 interface IExtractorFunction {
     <T>(item: T): unknown;
@@ -73,14 +73,12 @@ export const useTaskSort = () => {
 
     const persist_sort_preferences = () => {
         set_setting_string(SortingModeSchema.MODE, current_sort_mode);
-        set_setting_string(SortingModeSchema.STRATEGY, current_sort_strategy.toString());
+        set_setting_int(SortingModeSchema.STRATEGY, current_sort_strategy);
     }
 
     const retrieve_sort_preferences = () => {
         current_sort_mode = get_setting_string(SortingModeSchema.MODE) as SortingField;
-        current_sort_strategy = get_setting_string(SortingModeSchema.STRATEGY) == SortingStrategy.ascending.toString()
-            ? SortingStrategy.ascending
-            : SortingStrategy.descending;
+        current_sort_strategy = get_setting_int(SortingModeSchema.STRATEGY) as SortingStrategy;
 
         return {
             mode: current_sort_mode,

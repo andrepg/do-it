@@ -3,10 +3,10 @@
   <gresource prefix="@APPLICATION_RES@/js">
     <file>entrypoint.js</file>
 
-    <file>static.js</file>
 
     <file>app.wrapper.js</file>
     <file>app.enums.js</file>
+    <file>app.static.js</file>
     <file>app.types.js</file>
 
     <file>utils/log-manager.js</file>

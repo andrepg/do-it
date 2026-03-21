@@ -4,6 +4,7 @@ import { ITask } from "../app.types.js";
 import { get_template_path } from "../utils/application.js";
 import Gtk from "gi://Gtk";
 import { showToast } from "../actions/toast.js";
+import { TaskDeleteButtonIcon, TaskEntryStyle } from "../app.static.js";
 
 const TaskItemProperties = {
   GTypeName: 'TaskItem',
@@ -116,6 +117,33 @@ export class TaskItem extends Adw.ActionRow {
 
     this.task_done.set_active(done);
     this.task_done.connect_after('toggled', this._finish_task.bind(this));
+
+    this._update_interface();
+  }
+
+  private _update_interface(): void {
+    this._update_widget_style();
+    this._update_widget_interface();
+  }
+
+  private _update_widget_style(): void {
+    const is_disabled = this._deleted || this.task_done.get_active();
+
+    const opacity = is_disabled ? TaskEntryStyle.disabled.opacity : TaskEntryStyle.enabled.opacity;
+    const markup = is_disabled ? TaskEntryStyle.disabled.markup : TaskEntryStyle.enabled.markup;
+
+    this.set_use_markup(true);
+    this.set_opacity(opacity);
+    this.set_title(markup.format(this.title));
+  }
+
+  private _update_widget_interface(): void {
+    const delete_icon = this._deleted
+      ? TaskDeleteButtonIcon.deleted
+      : TaskDeleteButtonIcon.default;
+
+    this.task_delete.set_icon_name(delete_icon);
+    this.task_done.set_sensitive(!this._deleted);
   }
 
   private _delete_task() {
@@ -126,6 +154,8 @@ export class TaskItem extends Adw.ActionRow {
     showToast(message)
 
     this.emit('task-deleted', this);
+
+    this._update_interface();
   }
 
   private _finish_task() {
@@ -134,6 +164,8 @@ export class TaskItem extends Adw.ActionRow {
     showToast(message)
 
     this.emit('task-updated', this);
+
+    this._update_interface();
   }
 
   public get_project(): string {
@@ -148,9 +180,9 @@ export class TaskItem extends Adw.ActionRow {
     return {
       id: this._taskId,
       title: this.title,
+      project: this._project,
       done: this.task_done.get_active(),
       created_at: this._created_at.getTime(),
-      project: this._project,
       deleted: this._deleted,
       tags: this._tags,
     };
