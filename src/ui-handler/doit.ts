@@ -26,8 +26,7 @@ const options = {
 
         // Content (sidebar and main)
         "list_container",
-        "sidebar_project_list",
-        'sidebar_btn_all'
+        "sidebar_project_list"
     ]
 };
 
@@ -51,12 +50,21 @@ export class DoItMainWindow extends Adw.ApplicationWindow {
             defaultHeight: get_setting_int(DoItSettings.windowHeight),
         });
 
-        log(DoItMainWindow.LogClass, "Initializing main window");
-
+        log(DoItMainWindow.LogClass, "Initializing task store");
         this.taskListStore = new TaskListStore();
         this.taskListStore.load();
 
+        log(DoItMainWindow.LogClass, "Initializing project manager");
         this.projectManager = new ProjectManager(this.taskListStore);
+
+        this.initialize_actions();
+
+        log(DoItMainWindow.LogClass, "Populating project manager");
+        this.projectManager.initialize();
+    }
+
+    private initialize_actions() {
+        log(DoItMainWindow.LogClass, "Initializing window actions");
 
         Actions.backup().setup(this);
         Actions.toast().setup(this);
@@ -65,17 +73,26 @@ export class DoItMainWindow extends Adw.ApplicationWindow {
 
         Actions.projects(this.taskListStore, this.projectManager).setup(this);
         Actions.projectSidebar(this.taskListStore, this.projectManager).setup(this);
-
-        this.projectManager.initialize();
     }
 
     public override vfunc_close_request(): boolean {
-        log(DoItMainWindow.LogClass, "Saving window size before closing");
+        this.save_window_size();
+        this.persist_tasks();
 
+        log(DoItMainWindow.LogClass, "Disposing main window");
+        return super.vfunc_close_request();
+    }
+
+    private save_window_size() {
+        log(DoItMainWindow.LogClass, "Saving window size before closing");
         const [width, height] = this.get_default_size();
         set_setting_int(DoItSettings.windowWidth, width);
         set_setting_int(DoItSettings.windowHeight, height);
-
-        return super.vfunc_close_request();
     }
+
+    private persist_tasks() {
+        log(DoItMainWindow.LogClass, "Persisting tasks");
+        this.taskListStore.persist_store();
+    }
+
 }

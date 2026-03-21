@@ -57,29 +57,29 @@ export class ProjectManager extends GObject.Object {
     const n_items = this._store.get_n_items();
 
     for (let i = 0; i < n_items; i++) {
-        const task = this._store.get_item(i) as TaskItem;
-        currentProjects.add(task.get_project() || "");
+      const task = this._store.get_item(i) as TaskItem;
+      currentProjects.add(task.get_project() || "");
     }
 
     // Ensure the default "Tarefas" project always exists when completely empty
     if (n_items === 0) {
-        currentProjects.add("");
+      currentProjects.add("");
     }
 
     // 1. Find projects to remove (exist in cache but not in current)
     for (const project of this._projects) {
-        if (!currentProjects.has(project)) {
-            this._projects.delete(project);
-            this.emit('project-removed', project);
-        }
+      if (!currentProjects.has(project)) {
+        this._projects.delete(project);
+        this.emit('project-removed', project);
+      }
     }
 
     // 2. Find projects to add (exist in current but not in cache)
     for (const project of currentProjects) {
-        if (!this._projects.has(project)) {
-            this._projects.add(project);
-            this.emit('project-added', project);
-        }
+      if (!this._projects.has(project)) {
+        this._projects.add(project);
+        this.emit('project-added', project);
+      }
     }
   }
 

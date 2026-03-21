@@ -4,7 +4,7 @@
   <!-- interface-name application.ui -->
   <requires lib="gio" version="2.0"/>
   <requires lib="gtk" version="4.0"/>
-  <requires lib="libadwaita" version="1.0"/>
+  <requires lib="libadwaita" version="1"/>
   <template class="DoItMainWindow" parent="AdwApplicationWindow">
     <property name="content">
       <object class="AdwOverlaySplitView" id="split_view">
