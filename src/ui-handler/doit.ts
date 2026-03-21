@@ -1,5 +1,6 @@
 import Adw from 'gi://Adw';
 import GObject from 'gi://GObject';
+import Gtk from 'gi://Gtk';
 
 import { DoItSettings } from '../app.enums.js';
 
@@ -11,6 +12,7 @@ import * as Actions from '../actions/index.js';
 
 import { TaskListStore } from '../utils/list-store.js';
 import { ProjectManager } from '../utils/project-manager.js';
+import { PopoverSort } from './popover-sort.js';
 
 const options = {
     GTypeName: "DoItMainWindow",
@@ -26,7 +28,8 @@ const options = {
 
         // Content (sidebar and main)
         "list_container",
-        "sidebar_project_list"
+        "sidebar_project_list",
+        "button_sorting"
     ]
 };
 
@@ -37,6 +40,8 @@ export class DoItMainWindow extends Adw.ApplicationWindow {
 
     taskListStore!: TaskListStore;
     projectManager!: ProjectManager;
+
+    private button_sorting!: Gtk.MenuButton;
 
     static {
         GObject.registerClass(options, this);
@@ -61,6 +66,9 @@ export class DoItMainWindow extends Adw.ApplicationWindow {
 
         log(DoItMainWindow.LogClass, "Populating project manager");
         this.projectManager.initialize();
+
+        this.button_sorting = this.get_template_child(DoItMainWindow.GType, 'button_sorting') as Gtk.MenuButton;
+        this.button_sorting.set_popover(new PopoverSort());
     }
 
     private initialize_actions() {

@@ -9,7 +9,6 @@ import { TaskListStore } from "../utils/list-store.js";
 import { log } from "../utils/log-manager.js";
 // import { CreateTaskList } from "./task-list.js";
 import { SortingModes, SortingModeSchema } from "../static.js";
-import { get_sorting_label_text } from "../utils/sorting.js";
 import { get_setting_int, get_setting_string, set_setting_int } from '../utils/settings.js';
 
 // Redundant local declaration removed (now in env.d.ts)
@@ -95,9 +94,9 @@ export class TasksWindow extends Adw.ApplicationWindow {
     const current_sort_strategy = get_setting_string(SortingModeSchema.STRATEGY);
     const current_sort_mode = get_setting_string(SortingModeSchema.MODE);
 
-    const current_label_sort_text = get_sorting_label_text(current_sort_mode, current_sort_strategy);
+    // const current_label_sort_text = get_sorting_label_text(current_sort_mode, current_sort_strategy);
 
-    this.task_sort_status_label.set_markup(`<small>${current_label_sort_text}</small>`);
+    // this.task_sort_status_label.set_markup(`<small>${current_label_sort_text}</small>`);
   }
 
   private _bind_buttons_actions(): void {

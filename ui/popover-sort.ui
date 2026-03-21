@@ -1,0 +1,92 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<!-- Created with Cambalache 1.0 -->
+<interface>
+  <!-- interface-name popover-sort.ui -->
+  <requires lib="gtk" version="4.0"/>
+  <requires lib="libadwaita" version="1.8"/>
+  <template class="PopoverSort" parent="GtkPopover">
+    <property name="child">
+      <object class="GtkBox">
+        <property name="width-request">200</property>
+        <property name="margin-bottom">8</property>
+        <property name="margin-end">8</property>
+        <property name="margin-start">8</property>
+        <property name="margin-top">8</property>
+        <property name="orientation">vertical</property>
+        <property name="spacing">8</property>
+        <property name="valign">start</property>
+        <child>
+          <object class="GtkLabel">
+            <property name="label" translatable="yes">Order by</property>
+            <property name="xalign">0</property>
+            <style>
+              <class name="caption"/>
+            </style>
+          </object>
+        </child>
+        <child>
+          <object class="AdwToggleGroup">
+            <property name="orientation">vertical</property>
+            <property name="valign">start</property>
+            <child>
+              <object class="AdwToggle">
+                <property name="label">Titulo</property>
+              </object>
+            </child>
+            <child>
+              <object class="AdwToggle">
+                <property name="label">Data</property>
+              </object>
+            </child>
+            <child>
+              <object class="AdwToggle">
+                <property name="label">Projeto</property>
+              </object>
+            </child>
+            <child>
+              <object class="AdwToggle">
+                <property name="label">Status</property>
+              </object>
+            </child>
+          </object>
+        </child>
+        <child>
+          <object class="GtkSeparator"/>
+        </child>
+        <child>
+          <object class="GtkLabel">
+            <property name="label" translatable="yes">Order strategy</property>
+            <property name="xalign">0</property>
+            <style>
+              <class name="caption"/>
+            </style>
+          </object>
+        </child>
+        <child>
+          <object class="AdwToggleGroup">
+            <property name="orientation">horizontal</property>
+            <property name="homogeneous">True</property>
+            <child>
+              <object class="AdwToggle">
+                <property name="child">
+                  <object class="GtkImage">
+                    <property name="icon-name">view-sort-ascending-symbolic</property>
+                  </object>
+                </property>
+              </object>
+            </child>
+            <child>
+              <object class="AdwToggle">
+                <property name="child">
+                  <object class="GtkImage">
+                    <property name="icon-name">view-sort-descending-symbolic</property>
+                  </object>
+                </property>
+              </object>
+            </child>
+          </object>
+        </child>
+      </object>
+    </property>
+  </template>
+</interface>

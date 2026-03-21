@@ -56,6 +56,12 @@
                     <property name="tooltip-text" translatable="yes">Main Menu</property>
                   </object>
                 </child>
+                <child type="end">
+                  <object class="GtkMenuButton" id="button_sorting">
+                    <property name="icon-name">view-sort-descending-symbolic</property>
+                    <property name="tooltip-text" translatable="yes">Sorting options</property>
+                  </object>
+                </child>
                 <child type="start">
                   <object class="GtkBox">
                     <property name="spacing">4</property>
@@ -115,68 +121,6 @@
                         <property name="orientation">vertical</property>
                         <property name="spacing">4</property>
                         <property name="valign">start</property>
-                      </object>
-                    </child>
-                    <child>
-                      <object class="GtkBox">
-                        <property name="margin-end">8</property>
-                        <property name="margin-start">8</property>
-                        <property name="spacing">4</property>
-                        <child>
-                          <object class="GtkImage">
-                            <property name="icon-name">view-sort-descending-symbolic</property>
-                          </object>
-                        </child>
-                        <child>
-                          <object class="GtkLabel">
-                            <property name="label">Sorting options</property>
-                          </object>
-                        </child>
-                      </object>
-                    </child>
-                    <child>
-                      <object class="AdwToggleGroup">
-                        <property name="margin-end">8</property>
-                        <property name="margin-start">8</property>
-                        <property name="orientation">vertical</property>
-                        <property name="valign">start</property>
-                        <child>
-                          <object class="AdwToggle">
-                            <property name="label">Titulo</property>
-                          </object>
-                        </child>
-                        <child>
-                          <object class="AdwToggle">
-                            <property name="label">Data</property>
-                          </object>
-                        </child>
-                        <child>
-                          <object class="AdwToggle">
-                            <property name="label">Projeto</property>
-                          </object>
-                        </child>
-                        <child>
-                          <object class="AdwToggle">
-                            <property name="label">Status</property>
-                          </object>
-                        </child>
-                      </object>
-                    </child>
-                    <child>
-                      <object class="AdwToggleGroup">
-                        <property name="margin-end">8</property>
-                        <property name="margin-start">8</property>
-                        <property name="valign">start</property>
-                        <child>
-                          <object class="AdwToggle">
-                            <property name="label">Asc</property>
-                          </object>
-                        </child>
-                        <child>
-                          <object class="AdwToggle">
-                            <property name="label">Desc</property>
-                          </object>
-                        </child>
                       </object>
                     </child>
                   </object>
