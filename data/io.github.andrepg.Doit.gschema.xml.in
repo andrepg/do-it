@@ -13,21 +13,22 @@
       <summary>Last known window height</summary>
     </key>
 
-    <key name="last-sorting-mode" type="s">
-      <default>"by-date"</default>      
+    <key name="sorting-mode" type="s">
+      <default>"by_date"</default>      
       <choices>
-        <choice value="by-date" />
-        <choice value="by-status" />
-        <choice value="by-title" />
+        <choice value="by_date" />
+        <choice value="by_status" />
+        <choice value="by_title" />
+        <choice value="by_project" />
       </choices>
       <summary>Last known sorting mode used</summary>
     </key>
 
-    <key name="last-sorting-strategy" type="s">
-      <default>"asc"</default>
+    <key name="sorting-strategy" type="s">
+      <default>"0"</default>
       <choices>
-        <choice value="asc" />
-        <choice value="desc" />
+        <choice value="0" />
+        <choice value="1" />
       </choices>
       <summary>Last known sorting strategy used</summary>
     </key>

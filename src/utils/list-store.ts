@@ -4,7 +4,7 @@ import Gio from "gi://Gio"
 import { Persistence } from "./persistence.js";
 import { ITask } from "../app.types.js";
 import { log } from "./log-manager.js";
-import { get_sorting_algorithm, set_sorting_algorithm } from "./sorting.js";
+import { useTaskSort } from "../tasks/tasks.sort.js";
 import { TaskItem } from "../ui-handler/task-item.js";
 
 export class TaskListStore extends Gio.ListStore<TaskItem> {
@@ -16,6 +16,8 @@ export class TaskListStore extends Gio.ListStore<TaskItem> {
       Signals: {},
     }, this);
   }
+
+  private task_sort = useTaskSort();
 
   get_all(): ITask[] {
     const tasks: ITask[] = [];
@@ -45,16 +47,22 @@ export class TaskListStore extends Gio.ListStore<TaskItem> {
       data.project,
     )
 
+    const { mode, strategy } = this.task_sort.retrieve_sort_preferences();
+
     const _update_interface = (signal: string) => {
       log("list-store", `Received ${signal} signal.`)
 
-      this.sort(get_sorting_algorithm())
+
+      this.sort(this.task_sort.sort_by(mode, strategy))
+
       this.persist_store()
+      this.task_sort.persist_sort_preferences();
     }
 
     task.connect('task-updated', _update_interface.bind(this, 'task-updated'));
     task.connect('task-deleted', _update_interface.bind(this, 'task-deleted'));
-    this.insert_sorted(task, get_sorting_algorithm());
+
+    this.insert_sorted(task, this.task_sort.sort_by(mode, strategy));
 
     this.persist_store();
   }
@@ -62,8 +70,9 @@ export class TaskListStore extends Gio.ListStore<TaskItem> {
   sort_list(sort_mode: string) {
     log("list-store", `Sorting list by mode: ${sort_mode}`);
 
-    set_sorting_algorithm(sort_mode);
-    this.sort(get_sorting_algorithm());
+    const { mode, strategy } = this.task_sort.retrieve_sort_preferences();
+
+    this.sort(this.task_sort.sort_by(mode, strategy));
   }
 
   purge_deleted() {

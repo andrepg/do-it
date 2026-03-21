@@ -14,7 +14,6 @@
     <file>utils/list-store.js</file>
     <file>utils/log-manager.js</file>
     <file>utils/persistence.js</file>
-    <file>utils/sorting.js</file>
     <file>utils/settings.js</file>
     <file alias="utils/application.js">application.js</file>
 
@@ -25,8 +24,10 @@
     <file>ui-handler/task-group.js</file>
     <file>ui-handler/task-item.js</file>
     <file>ui-handler/sidebar-button.js</file>
+    <file>ui-handler/popover-sort.js</file>
 
     <file>tasks/tasks.filter.js</file>
+    <file>tasks/tasks.sort.js</file>
 
     <file>actions/about.js</file>
     <file>actions/new-task.js</file>

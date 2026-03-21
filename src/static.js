@@ -21,8 +21,8 @@ export const TASK_DELETE_ICON = {
  * last preferred sort mode and strategy used
  */
 export const SortingModeSchema = Object.freeze({
-    STRATEGY: 'last-sorting-strategy',
-    MODE: 'last-sorting-mode',
+    STRATEGY: 'sorting-strategy',
+    MODE: 'sorting-mode',
 });
 
 /**
@@ -36,9 +36,10 @@ export const SortingModeSchema = Object.freeze({
  * BY_TITLE: Sort tasks alphabetically by their title.
  */
 export const SortingModes = Object.freeze({
-    BY_DATE: "by-date",
-    BY_STATUS: "by-status",
-    BY_TITLE: "by-title",
+    BY_DATE: "by_date",
+    BY_STATUS: "by_status",
+    BY_TITLE: "by_title",
+    BY_PROJECT: "by_project",
 });
 
 /**
@@ -48,7 +49,7 @@ export const SortingModes = Object.freeze({
  * DESCENDING: Sort in descending order (Z-A, newest to oldest, done first).
  */
 export const SortingStrategy = Object.freeze({
-    ASCENDING: "asc",
-    DESCENDING: "desc",
+    ASCENDING: "0",
+    DESCENDING: "1",
 });
 
