@@ -1,6 +1,6 @@
 import GObject from 'gi://GObject';
 import { TaskListStore } from './list-store.js';
-import { Task } from '../ui-handler/task.js';
+import { TaskItem } from '../ui-handler/task-item.js';
 
 /**
  * Manages the dynamic discovery of task groups based on projects in the store.
@@ -17,6 +17,9 @@ export class ProjectManager extends GObject.Object {
         },
         'project-removed': {
           param_types: [GObject.TYPE_STRING]
+        },
+        'filter-changed': {
+          param_types: [GObject.TYPE_STRING]
         }
       }
     }, this);
@@ -25,12 +28,24 @@ export class ProjectManager extends GObject.Object {
   private _store: TaskListStore;
   private _projects: Set<string> = new Set();
   private _handler_id: number;
+  private _current_filter: string | null = null;
 
   constructor(store: TaskListStore) {
     super();
     this._store = store;
 
     this._handler_id = this._store.connect('items-changed', this._update_projects.bind(this));
+  }
+
+  public set_filter(project: string | null) {
+    if (this._current_filter === project) return;
+
+    this._current_filter = project;
+    this.emit('filter-changed', project);
+  }
+
+  public get_filter(): string | null {
+    return this._current_filter;
   }
 
   public initialize() {
@@ -42,7 +57,7 @@ export class ProjectManager extends GObject.Object {
     const n_items = this._store.get_n_items();
 
     for (let i = 0; i < n_items; i++) {
-        const task = this._store.get_item(i) as unknown as Task;
+        const task = this._store.get_item(i) as TaskItem;
         currentProjects.add(task.get_project() || "");
     }
 

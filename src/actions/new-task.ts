@@ -1,8 +1,9 @@
 import Gtk40 from "gi://Gtk"
 import { DoItMainWindow } from "../ui-handler/doit.js"
 import { showToast } from "./toast.js"
+import { TaskListStore } from "../utils/list-store.js"
 
-export const newTask = () => {
+export const newTask = (store: TaskListStore) => {
     const buttonNewTaskId = 'button_new_task';
     const fieldNewTaskId = 'task_new_entry';
 
@@ -35,7 +36,7 @@ export const newTask = () => {
                 parsedText = text.replace(projectMatch[0], '').trim();
             }
 
-            window.taskListStore.append_task({
+            store.append_task({
                 title: parsedText,
                 created_at: new Date().getTime(),
                 project,

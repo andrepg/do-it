@@ -54,8 +54,9 @@ export class TaskListStore extends Gio.ListStore<TaskItem> {
 
     task.connect('task-updated', _update_interface.bind(this, 'task-updated'));
     task.connect('task-deleted', _update_interface.bind(this, 'task-deleted'));
-
     this.insert_sorted(task, get_sorting_algorithm());
+
+    this.persist_store();
   }
 
   sort_list(sort_mode: string) {

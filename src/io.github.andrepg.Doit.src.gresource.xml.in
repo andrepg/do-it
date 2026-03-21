@@ -8,7 +8,7 @@
     <file>app.wrapper.js</file>
     <file>app.enums.js</file>
     <file>app.types.js</file>
-    
+
     <file>utils/project-manager.js</file>
 
     <file>utils/list-store.js</file>
@@ -24,9 +24,10 @@
     <file>ui-handler/task-list.js</file>
     <file>ui-handler/task-group.js</file>
     <file>ui-handler/task-item.js</file>
+    <file>ui-handler/sidebar-button.js</file>
 
     <file>tasks/tasks.filter.js</file>
-  
+
     <file>actions/about.js</file>
     <file>actions/new-task.js</file>
     <file>actions/quit.js</file>
@@ -34,6 +35,7 @@
     <file>actions/sidebar.js</file>
     <file>actions/toast.js</file>
     <file>actions/projects.js</file>
+    <file>actions/projects-sidebar.js</file>
     <file>actions/index.js</file>
   </gresource>
 </gresources>

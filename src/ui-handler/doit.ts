@@ -1,6 +1,5 @@
 import Adw from 'gi://Adw';
 import GObject from 'gi://GObject';
-import Gtk from 'gi://Gtk';
 
 import { DoItSettings } from '../app.enums.js';
 
@@ -12,18 +11,23 @@ import * as Actions from '../actions/index.js';
 
 import { TaskListStore } from '../utils/list-store.js';
 import { ProjectManager } from '../utils/project-manager.js';
-import { TaskGroup } from './task-group.js';
 
 const options = {
     GTypeName: "DoItMainWindow",
     Template: get_template_path('ui/window-v2.ui'),
     InternalChildren: [
         "toast_overlay",
-        "list_container",
         "split_view",
+        "task_new_entry",
+
+        // Top menu
         "button_open_sidebar",
         "button_new_task",
-        "task_new_entry"
+
+        // Content (sidebar and main)
+        "list_container",
+        "sidebar_project_list",
+        'sidebar_btn_all'
     ]
 };
 
@@ -33,6 +37,7 @@ export class DoItMainWindow extends Adw.ApplicationWindow {
     static readonly GType = DoItMainWindow as unknown as GObject.GType;
 
     taskListStore!: TaskListStore;
+    projectManager!: ProjectManager;
 
     static {
         GObject.registerClass(options, this);
@@ -51,12 +56,17 @@ export class DoItMainWindow extends Adw.ApplicationWindow {
         this.taskListStore = new TaskListStore();
         this.taskListStore.load();
 
+        this.projectManager = new ProjectManager(this.taskListStore);
+
         Actions.backup().setup(this);
         Actions.toast().setup(this);
-        Actions.newTask().setup(this);
+        Actions.newTask(this.taskListStore).setup(this);
         Actions.sidebar().setup(this);
 
-        Actions.projects(this.taskListStore).setup(this);
+        Actions.projects(this.taskListStore, this.projectManager).setup(this);
+        Actions.projectSidebar(this.taskListStore, this.projectManager).setup(this);
+
+        this.projectManager.initialize();
     }
 
     public override vfunc_close_request(): boolean {
