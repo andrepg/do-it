@@ -69,6 +69,8 @@ export class PopoverSort extends Gtk40.Popover {
 
     this.initialise();
 
+    this.update_label();
+
     this.toggle_group_sort_field.connect(AppSignals.NotifyActive, () => this.notify_active());
     this.toggle_group_sort_strategy.connect(AppSignals.NotifyActive, () => this.notify_active());
   }
@@ -122,22 +124,32 @@ export class PopoverSort extends Gtk40.Popover {
    * Initialises the popover by populating the toggle groups with sorting options.
    */
   private initialise() {
-    SortingFieldOptions.forEach((option: ISortingFieldOption) => {
+    const prefs = this._task_sort.retrieve_sort_preferences();
+
+    SortingFieldOptions.forEach((option: ISortingFieldOption, index: number) => {
       const toggle = new Adw1.Toggle({
         label: option.label,
         name: option.mode.toString()
       });
 
       this.toggle_group_sort_field.add(toggle);
+
+      if (option.mode === prefs.mode) {
+        this.toggle_group_sort_field.set_active(index);
+      }
     });
 
-    SortingModeOptions.forEach((option: ISortingStrategyOption) => {
+    SortingModeOptions.forEach((option: ISortingStrategyOption, index: number) => {
       const toggle = new Adw1.Toggle({
         iconName: option.icon,
         name: option.strategy.toString()
       });
 
       this.toggle_group_sort_strategy.add(toggle);
+
+      if (option.strategy === prefs.strategy) {
+        this.toggle_group_sort_strategy.set_active(index);
+      }
     });
   }
 }
