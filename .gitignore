@@ -8,3 +8,5 @@
 **/.flatpak-builder/**
 
 node_modules/
+
+yarn.lock
