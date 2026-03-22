@@ -20,7 +20,7 @@ import Adw from 'gi://Adw';
 import GObject from 'gi://GObject';
 import Gtk from 'gi://Gtk';
 
-import { DoItSettings } from '../app.enums.js';
+import { AppSignals, DoItSettings, WidgetIds } from '../app.enums.js';
 
 import { get_template_path } from '../utils/application.js';
 import { log } from '../utils/log-manager.js';
@@ -38,22 +38,22 @@ const options = {
   GTypeName: "DoItMainWindow",
   Template: get_template_path('ui/window-v2.ui'),
   InternalChildren: [
-    "toast_overlay",
-    "split_view",
-    "task_new_entry",
+    WidgetIds.WindowToastOverlay,
+    WidgetIds.WindowSplitView,
+    WidgetIds.WindowTaskNewEntry,
 
     // Top menu
-    "button_open_sidebar",
-    "button_new_task",
+    WidgetIds.WindowButtonOpenSidebar,
+    WidgetIds.WindowButtonNewTask,
 
     // Content (sidebar and main)
-    "list_container",
-    "sidebar_project_list",
-    "button_sorting"
+    WidgetIds.WindowListContainer,
+    WidgetIds.WindowSidebarProjectList,
+    WidgetIds.WindowButtonSorting
   ],
 
   Signals: {
-    "sorting-changed": {}
+    [AppSignals.SortingChanged]: {}
   }
 };
 
@@ -92,10 +92,10 @@ export class DoItMainWindow extends Adw.ApplicationWindow {
     this.initialize_actions();
     this.initialize_project_manager()
 
-    this.button_sorting = this.get_template_child(DoItMainWindow.GType, 'button_sorting') as Gtk.MenuButton;
+    this.button_sorting = this.get_template_child(DoItMainWindow.GType, WidgetIds.WindowButtonSorting) as Gtk.MenuButton;
     this.button_sorting.set_popover(new PopoverSort(this));
 
-    this.connect('sorting-changed', () => this.taskListStore.sort_list());
+    this.connect(AppSignals.SortingChanged, () => this.taskListStore.sort_list());
   }
 
   private initialize_project_manager(): void {

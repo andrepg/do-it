@@ -22,6 +22,7 @@ import Gtk from 'gi://Gtk';
 import { log } from '../utils/log-manager.js';
 import { Persistence } from '../utils/persistence.js';
 import { ITask } from '../app.types.js';
+import { ActionNames, AppSignals } from '../app.enums.js';
 
 /**
  * Provides actions for exporting and importing the task database.
@@ -33,11 +34,11 @@ const backup = () => {
      * @param parent The main application window.
      */
     const setup = (parent: Adw.ApplicationWindow) => {
-        const export_action = new Gio.SimpleAction({ name: 'export_database' });
-        const import_action = new Gio.SimpleAction({ name: 'import_database' });
+        const export_action = new Gio.SimpleAction({ name: ActionNames.ExportDatabase });
+        const import_action = new Gio.SimpleAction({ name: ActionNames.ImportDatabase });
 
-        export_action.connect('activate', () => exportJson(parent));
-        import_action.connect('activate', () => importJson(parent));
+        export_action.connect(AppSignals.Activate, () => exportJson(parent));
+        import_action.connect(AppSignals.Activate, () => importJson(parent));
 
         parent.add_action(export_action);
         parent.add_action(import_action);

@@ -19,6 +19,7 @@
 import GObject from 'gi://GObject';
 import { TaskListStore } from '../ui-handler/task-list-store.js';
 import { TaskItem } from '../ui-handler/task-item.js';
+import { AppSignals } from '../app.enums.js';
 
 /**
  * Manages the dynamic discovery of task groups based on projects in the store.
@@ -30,13 +31,13 @@ export class ProjectManager extends GObject.Object {
     GObject.registerClass({
       GTypeName: 'ProjectManager',
       Signals: {
-        'project-added': {
+        [AppSignals.ProjectAdded]: {
           param_types: [GObject.TYPE_STRING]
         },
-        'project-removed': {
+        [AppSignals.ProjectRemoved]: {
           param_types: [GObject.TYPE_STRING]
         },
-        'filter-changed': {
+        [AppSignals.FilterChanged]: {
           param_types: [GObject.TYPE_STRING]
         }
       }
@@ -53,7 +54,7 @@ export class ProjectManager extends GObject.Object {
     super();
     this._store = store;
 
-    this._handler_id = this._store.connect('items-changed', this._update_projects.bind(this));
+    this._handler_id = this._store.connect(AppSignals.ItemsChanged, this._update_projects.bind(this));
   }
 
   /**
@@ -72,7 +73,7 @@ export class ProjectManager extends GObject.Object {
     if (this._current_filter === project) return;
 
     this._current_filter = project;
-    this.emit('filter-changed', project);
+    this.emit(AppSignals.FilterChanged, project);
   }
 
   /**
@@ -113,7 +114,7 @@ export class ProjectManager extends GObject.Object {
     for (const project of this._projects_set) {
       if (!currentProjectsSet.has(project)) {
         this._projects_set.delete(project);
-        this.emit('project-removed', project);
+        this.emit(AppSignals.ProjectRemoved, project);
       }
     }
 
@@ -121,7 +122,7 @@ export class ProjectManager extends GObject.Object {
     for (const project of currentProjectsOrdered) {
       if (!this._projects_set.has(project)) {
         this._projects_set.add(project);
-        this.emit('project-added', project);
+        this.emit(AppSignals.ProjectAdded, project);
       }
     }
 

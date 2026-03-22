@@ -20,6 +20,7 @@ import Gtk40 from 'gi://Gtk';
 import GObject from 'gi://GObject';
 
 import { get_template_path } from '../utils/application.js';
+import { CssClasses, WidgetIds } from '../app.enums.js';
 import Adw1 from 'gi://Adw';
 
 const GObjectProperties = {
@@ -35,8 +36,8 @@ const GObjectProperties = {
     )
   },
   InternalChildren: [
-    'button_content',
-    'button_icon',
+    WidgetIds.SidebarButtonContent,
+    WidgetIds.SidebarButtonIcon,
   ]
 };
 
@@ -67,8 +68,8 @@ export class SidebarButton extends Gtk40.Button {
     super();
 
     this.project_name = project;
-    this.button_content = this.get_template_child(SidebarButton as unknown as GObject.GType, 'button_content') as Gtk40.Label;
-    this.button_icon = this.get_template_child(SidebarButton as unknown as GObject.GType, 'button_icon') as Gtk40.Image;
+    this.button_content = this.get_template_child(SidebarButton as unknown as GObject.GType, WidgetIds.SidebarButtonContent) as Gtk40.Label;
+    this.button_icon = this.get_template_child(SidebarButton as unknown as GObject.GType, WidgetIds.SidebarButtonIcon) as Gtk40.Image;
 
     this.button_icon.set_from_icon_name(btnIcon);
     this.button_content.set_text(btnTitle);
@@ -90,9 +91,9 @@ export class SidebarButton extends Gtk40.Button {
     const active_icon = this.project_name === "" ? ICONS.due_tasks : ICONS.folder_open;
 
     if (active) {
-      this.add_css_class('suggested-action');
+      this.add_css_class(CssClasses.SuggestedAction);
     } else {
-      this.remove_css_class('suggested-action');
+      this.remove_css_class(CssClasses.SuggestedAction);
     }
 
     this.button_icon.set_from_icon_name(active ? active_icon : default_icon);

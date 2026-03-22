@@ -20,6 +20,7 @@ import Gtk40 from "gi://Gtk"
 import { DoItMainWindow } from "../ui-handler/doit.js"
 import { showToast } from "./toast.js"
 import { TaskListStore } from "../ui-handler/task-list-store.js"
+import { AppSignals, WidgetIds } from "../app.enums.js";
 
 /**
  * Handles the creation of new tasks from the main entry field.
@@ -27,8 +28,8 @@ import { TaskListStore } from "../ui-handler/task-list-store.js"
  * @param store The global TaskListStore.
  */
 export const newTask = (store: TaskListStore) => {
-    const buttonNewTaskId = 'button_new_task';
-    const fieldNewTaskId = 'task_new_entry';
+    const buttonNewTaskId = WidgetIds.WindowButtonNewTask;
+    const fieldNewTaskId = WidgetIds.WindowTaskNewEntry;
 
     let fieldNewTask: Gtk40.Entry;
 
@@ -79,10 +80,10 @@ export const newTask = (store: TaskListStore) => {
      */
     const setup = (window: DoItMainWindow) => {
         const buttonNewTask = get_widget<Gtk40.Button>(window, buttonNewTaskId);
-        buttonNewTask.connect('clicked', () => fieldNewTask.grab_focus())
+        buttonNewTask.connect(AppSignals.Clicked, () => fieldNewTask.grab_focus())
 
         fieldNewTask = get_widget<Gtk40.Entry>(window, fieldNewTaskId);
-        fieldNewTask.connect('activate', handle_user_input)
+        fieldNewTask.connect(AppSignals.Activate, handle_user_input)
     }
 
     const handle_user_input = () => {

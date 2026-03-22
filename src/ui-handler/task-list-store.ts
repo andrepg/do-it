@@ -20,6 +20,7 @@ import GObject from "gi://GObject";
 import Gio from "gi://Gio"
 
 import { Persistence } from "../utils/persistence.js";
+import { AppSignals } from "../app.enums.js";
 import { ITask } from "../app.types.js";
 import { log } from "../utils/log-manager.js";
 import { useTaskSort } from "../hooks/tasks.sort.js";
@@ -92,8 +93,8 @@ export class TaskListStore extends Gio.ListStore<TaskItem> {
       this.persist_store();
     }
 
-    task.connect('task-updated', _update_interface.bind(this, 'task-updated'));
-    task.connect('task-deleted', _update_interface.bind(this, 'task-deleted'));
+    task.connect(AppSignals.TaskUpdated, _update_interface.bind(this, AppSignals.TaskUpdated));
+    task.connect(AppSignals.TaskDeleted, _update_interface.bind(this, AppSignals.TaskDeleted));
 
     this.insert_sorted(task, this.task_sort.sort_by(mode, strategy));
   }

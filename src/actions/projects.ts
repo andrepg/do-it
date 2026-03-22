@@ -26,7 +26,7 @@ import { ProjectManager } from '../utils/project-manager.js';
 import { TaskGroup } from '../ui-handler/task-group.js';
 import { TaskListStore } from '../ui-handler/task-list-store.js';
 import { useTaskSort } from '../hooks/tasks.sort.js';
-import { SortingField } from '../app.enums.js';
+import { AppSignals, SortingField, WidgetIds } from '../app.enums.js';
 
 /**
  * Initializes and manages the grouping of tasks by project in the main view.
@@ -105,10 +105,10 @@ export default function projects(store: TaskListStore, projectManager: ProjectMa
     const setup = (window: DoItMainWindow) => {
         const listContainer = window.get_template_child(
             (window.constructor as any).GType,
-            'list_container'
+            WidgetIds.WindowListContainer
         ) as Gtk.Box;
 
-        projectManager.connect('project-added', (_: unknown, project: string) => {
+        projectManager.connect(AppSignals.ProjectAdded, (_: unknown, project: string) => {
             add_project_group(listContainer, project);
             // Apply current filter to new group
             const filter = projectManager.get_filter();
@@ -118,15 +118,15 @@ export default function projects(store: TaskListStore, projectManager: ProjectMa
             reorder_groups(listContainer);
         });
 
-        projectManager.connect('project-removed', (_: unknown, project: string) => {
+        projectManager.connect(AppSignals.ProjectRemoved, (_: unknown, project: string) => {
             remove_project_group(listContainer, project);
         });
 
-        projectManager.connect('filter-changed', (_: unknown, filter: string | null) => {
+        projectManager.connect(AppSignals.FilterChanged, (_: unknown, filter: string | null) => {
             applyFilter(filter);
         });
 
-        window.connect('sorting-changed', () => {
+        window.connect(AppSignals.SortingChanged, () => {
             reorder_groups(listContainer);
         });
     }

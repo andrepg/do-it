@@ -18,12 +18,13 @@
  */
 import Adw from "gi://Adw";
 import Gio from "gi://Gio";
+import { ActionNames, AppSignals } from "../app.enums.js";
 
 /**
  * Provides the application quit action and keyboard shortcut bindings.
  */
 const quit = () => {
-    const actionName = 'quit';
+    const actionName = ActionNames.Quit;
     const actionTrigger = 'app.quit';
 
     /**
@@ -36,7 +37,7 @@ const quit = () => {
             name: actionName
         });
 
-        quitAction.connect('activate', () => {
+        quitAction.connect(AppSignals.Activate, () => {
             application.quit();
         });
 

@@ -21,12 +21,13 @@ import Adw from "gi://Adw";
 import GLib from "gi://GLib";
 import Gtk from "gi://Gtk";
 import { APPLICATION_ID } from "../utils/application.js";
+import { ActionNames, AppSignals } from "../app.enums.js";
 
 /**
  * Provides the "about" action to display the application's About Dialog.
  */
 const about = () => {
-    const actionName = 'about';
+    const actionName = ActionNames.About;
 
     const dialogProperties: Partial<Adw.AboutDialog.ConstructorProps> = {
         applicationIcon: APPLICATION_ID,
@@ -54,7 +55,7 @@ const about = () => {
     const setup = (window: Adw.Application) => {
         const aboutActions = new Gio.SimpleAction({ name: actionName });
 
-        aboutActions.connect('activate', () => {
+        aboutActions.connect(AppSignals.Activate, () => {
             const dialog = new Adw.AboutDialog(dialogProperties);
             dialog.present(window.get_active_window() as Adw.Window);
         });

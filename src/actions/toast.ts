@@ -20,6 +20,7 @@ import Adw from 'gi://Adw';
 import Gio from 'gi://Gio';
 import GLib from 'gi://GLib';
 import GObject from 'gi://GObject';
+import { ActionNames, AppSignals, WidgetIds } from '../app.enums.js';
 
 /**
  * Displays an overlay toast on the currently active window.
@@ -39,7 +40,7 @@ export const showToast = (message: string): void => {
     // Retrieve the overlay from the window's template children
     const toast_overlay = window.get_template_child(
         window.constructor as unknown as GObject.GType,
-        'toast_overlay'
+        WidgetIds.WindowToastOverlay
     ) as Adw.ToastOverlay | null;
 
     toast_overlay?.add_toast(new Adw.Toast({ title: message }));
@@ -58,11 +59,11 @@ export const showToast = (message: string): void => {
 export default function toast() {
     const setup = (window: Adw.ApplicationWindow) => {
         const action = new Gio.SimpleAction({
-            name: 'show-toast',
+            name: ActionNames.ShowToast,
             parameter_type: new GLib.VariantType('s'),
         });
 
-        action.connect('activate', (_action, parameter) => {
+        action.connect(AppSignals.Activate, (_action, parameter) => {
             if (!parameter) return;
             showToast(parameter.unpack() as string);
         });

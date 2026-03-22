@@ -52,3 +52,82 @@ export const DoItSettings = {
     windowHeight: 'window-height',
     windowWidth: 'window-width',
 }
+
+/**
+ * Global signal names used throughout the project.
+ */
+export enum AppSignals {
+    // Standard GTK/GObject interactions
+    Clicked = 'clicked',
+    Toggled = 'toggled',
+    NotifyActive = 'notify::active',
+    Activate = 'activate',
+    ItemsChanged = 'items-changed',
+
+    // Custom Project state signals
+    ProjectAdded = 'project-added',
+    ProjectRemoved = 'project-removed',
+    FilterChanged = 'filter-changed',
+
+    // Custom Task and Window states
+    SortingChanged = 'sorting-changed',
+    TaskUpdated = 'task-updated',
+    TaskDeleted = 'task-deleted',
+}
+
+/**
+ * Names of standard GIO Actions.
+ */
+export enum ActionNames {
+    // Application wide general actions
+    About = 'about',
+    Quit = 'quit',
+
+    // Background jobs or management
+    ExportDatabase = 'export_database',
+    ImportDatabase = 'import_database',
+    PurgeDeletedTasks = 'purge_deleted_tasks',
+    
+    // UI toggles and layout control
+    OpenSidebar = 'open-sidebar',
+    CollapseSidebar = 'collapse-sidebar',
+    ShowToast = 'show-toast',
+}
+
+/**
+ * Standard CSS classes used in the application.
+ */
+export enum CssClasses {
+    SuggestedAction = 'suggested-action',
+    Devel = 'devel',
+}
+
+/**
+ * Common template child IDs across the application.
+ */
+export enum WidgetIds {
+    // Main UI layouts and menus
+    WindowSplitView = 'split_view',
+    WindowListContainer = 'list_container',
+    WindowToastOverlay = 'toast_overlay',
+    WindowSidebarProjectList = 'sidebar_project_list',
+    
+    // Header bar widgets
+    WindowButtonOpenSidebar = 'button_open_sidebar',
+    WindowButtonNewTask = 'button_new_task',
+    WindowTaskNewEntry = 'task_new_entry',
+    WindowButtonSorting = 'button_sorting',
+
+    // Popover Sort toggle group IDs
+    PopoverSortToggleGroupSortField = 'toggle-group-sort-field',
+    PopoverSortToggleGroupSortStrategy = 'toggle-group-sort-strategy',
+    PopoverSortLabelStrategy = 'label_strategy',
+
+    // Sidebar button Components
+    SidebarButtonContent = 'button_content',
+    SidebarButtonIcon = 'button_icon',
+
+    // Task Item components
+    TaskItemTaskDone = 'task_done',
+    TaskItemTaskDelete = 'task_delete',
+}

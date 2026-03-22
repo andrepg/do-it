@@ -26,15 +26,18 @@ import { SortingFieldOptions, SortingModeOptions } from '../app.static.js';
 import { ISortingFieldOption, ISortingStrategyOption } from '../app.types.js';
 
 import { useTaskSort } from '../hooks/tasks.sort.js';
-import { SortingField, SortingStrategy } from '../app.enums.js';
+import { AppSignals, SortingField, SortingStrategy, WidgetIds } from '../app.enums.js';
+
+// Declare _ global for translation
+declare function _(id: string): string;
 
 const GObjectProperties = {
   GTypeName: "PopoverSort",
   Template: get_template_path('ui/popover-sort.ui'),
   InternalChildren: [
-    'toggle-group-sort-field',
-    'toggle-group-sort-strategy',
-    'label_strategy'
+    WidgetIds.PopoverSortToggleGroupSortField,
+    WidgetIds.PopoverSortToggleGroupSortStrategy,
+    WidgetIds.PopoverSortLabelStrategy
   ]
 };
 
@@ -60,14 +63,14 @@ export class PopoverSort extends Gtk40.Popover {
   constructor(private window: Gtk40.Window) {
     super();
 
-    this.toggle_group_sort_field = this.get_template_child(PopoverSort.GType, 'toggle-group-sort-field') as Adw1.ToggleGroup;
-    this.toggle_group_sort_strategy = this.get_template_child(PopoverSort.GType, 'toggle-group-sort-strategy') as Adw1.ToggleGroup;
-    this.label_strategy = this.get_template_child(PopoverSort.GType, 'label_strategy') as Gtk40.Label;
+    this.toggle_group_sort_field = this.get_template_child(PopoverSort.GType, WidgetIds.PopoverSortToggleGroupSortField) as Adw1.ToggleGroup;
+    this.toggle_group_sort_strategy = this.get_template_child(PopoverSort.GType, WidgetIds.PopoverSortToggleGroupSortStrategy) as Adw1.ToggleGroup;
+    this.label_strategy = this.get_template_child(PopoverSort.GType, WidgetIds.PopoverSortLabelStrategy) as Gtk40.Label;
 
     this.initialise();
 
-    this.toggle_group_sort_field.connect('notify::active', () => this.notify_active());
-    this.toggle_group_sort_strategy.connect('notify::active', () => this.notify_active());
+    this.toggle_group_sort_field.connect(AppSignals.NotifyActive, () => this.notify_active());
+    this.toggle_group_sort_strategy.connect(AppSignals.NotifyActive, () => this.notify_active());
   }
 
   /**
@@ -77,7 +80,8 @@ export class PopoverSort extends Gtk40.Popover {
     const strategyToggle = this.get_current_strategy_toggle();
     const strategy = Number.parseInt(strategyToggle?.get_name() || '0') as SortingStrategy;
 
-    this.label_strategy.set_label(SortingStrategy[strategy].toString().toLowerCase());
+    const strategyName = strategy === SortingStrategy.ascending ? _("ascending") : _("descending");
+    this.label_strategy.set_label(strategyName);
   }
 
   /**
@@ -111,7 +115,7 @@ export class PopoverSort extends Gtk40.Popover {
 
     this.update_label();
 
-    this.window.emit('sorting-changed');
+    this.window.emit(AppSignals.SortingChanged);
   }
 
   /**

@@ -22,6 +22,7 @@ import { ITask } from "../app.types.js";
 import { get_template_path } from "../utils/application.js";
 import Gtk from "gi://Gtk";
 import { showToast } from "../actions/toast.js";
+import { AppSignals, WidgetIds } from "../app.enums.js";
 import { TaskDeleteButtonIcon, TaskEntryStyle } from "../app.static.js";
 
 const TaskItemProperties = {
@@ -66,12 +67,12 @@ const TaskItemProperties = {
       ""
     ),
   },
-  InternalChildren: ["task_done", "task_delete"],
+  InternalChildren: [WidgetIds.TaskItemTaskDone, WidgetIds.TaskItemTaskDelete],
   Signals: {
-    "task-updated": {
+    [AppSignals.TaskUpdated]: {
       param_types: [GObject.TYPE_OBJECT],
     },
-    "task-deleted": {
+    [AppSignals.TaskDeleted]: {
       param_types: [GObject.TYPE_OBJECT],
     },
   },
@@ -128,13 +129,13 @@ export class TaskItem extends Adw.ActionRow {
     this._deleted = false;
     this._tags = [];
 
-    this.task_delete = this.get_template_child(TaskItem as unknown as GObject.GType, 'task_delete') as Gtk.Button;
-    this.task_delete.connect('clicked', this._delete_task.bind(this));
+    this.task_delete = this.get_template_child(TaskItem as unknown as GObject.GType, WidgetIds.TaskItemTaskDelete) as Gtk.Button;
+    this.task_delete.connect(AppSignals.Clicked, this._delete_task.bind(this));
 
-    this.task_done = this.get_template_child(TaskItem as unknown as GObject.GType, 'task_done') as Gtk.CheckButton;
+    this.task_done = this.get_template_child(TaskItem as unknown as GObject.GType, WidgetIds.TaskItemTaskDone) as Gtk.CheckButton;
 
     this.task_done.set_active(done);
-    this.task_done.connect_after('toggled', this._finish_task.bind(this));
+    this.task_done.connect_after(AppSignals.Toggled, this._finish_task.bind(this));
 
     this._update_interface();
   }
@@ -171,7 +172,7 @@ export class TaskItem extends Adw.ActionRow {
 
     showToast(message)
 
-    this.emit('task-deleted', this);
+    this.emit(AppSignals.TaskDeleted, this);
 
     this._update_interface();
   }
@@ -181,7 +182,7 @@ export class TaskItem extends Adw.ActionRow {
 
     showToast(message)
 
-    this.emit('task-updated', this);
+    this.emit(AppSignals.TaskUpdated, this);
 
     this._update_interface();
   }
