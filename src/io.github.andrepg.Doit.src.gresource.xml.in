@@ -16,7 +16,6 @@
     <file alias="utils/application.js">application.js</file>
 
     <file>ui-handler/doit.js</file>
-    <file>ui-handler/window.js</file>
     <file>ui-handler/popover-sort.js</file>
     <file>ui-handler/sidebar-button.js</file>
     <file>ui-handler/task.js</file>
