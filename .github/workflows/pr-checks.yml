@@ -1,0 +1,44 @@
+name: PR Checks
+
+on:
+  pull_request:
+    branches: ["main"]
+
+jobs:
+  format:
+    name: Check Format
+    runs-on: ubuntu-latest
+    continue-on-error: true
+    steps:
+      - name: Setup Project
+        uses: ./.github/actions/setup-project
+        with:
+          setup-node: "true"
+
+      - name: Run Format Check
+        run: yarn format:check
+
+  lint:
+    name: Check Lint
+    runs-on: ubuntu-latest
+    continue-on-error: true
+    steps:
+      - name: Setup Project
+        uses: ./.github/actions/setup-project
+        with:
+          setup-node: "true"
+
+      - name: Run Lint
+        run: yarn lint:check
+
+  test:
+    name: Run Tests
+    runs-on: ubuntu-latest
+    steps:
+      - name: Setup Project
+        uses: ./.github/actions/setup-project
+        with:
+          setup-node: "true"
+
+      - name: Run Tests
+        run: yarn test
