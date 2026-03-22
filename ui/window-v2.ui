@@ -8,101 +8,129 @@
   <template class="DoItMainWindow" parent="AdwApplicationWindow">
     <property name="content">
       <object class="AdwOverlaySplitView" id="split_view">
-        <!-- ═══════════════════════════════════════════
-             MAIN CONTENT
-        ════════════════════════════════════════════ -->
         <property name="content">
-          <object class="AdwToolbarView">
-            <property name="bottom-bar-style">raised</property>
+          <object class="AdwBottomSheet">
             <property name="content">
-              <object class="AdwToastOverlay" id="toast_overlay">
-                <child>
-                  <object class="GtkScrolledWindow">
-                    <property name="hexpand">True</property>
-                    <property name="hexpand-set">True</property>
-                    <property name="vexpand">True</property>
-                    <property name="vexpand-set">True</property>
+              <object class="AdwToolbarView">
+                <property name="bottom-bar-style">raised</property>
+                <property name="content">
+                  <object class="AdwToastOverlay" id="toast_overlay">
                     <child>
-                      <object class="AdwClamp">
-                        <property name="margin-bottom">8</property>
-                        <property name="margin-end">8</property>
-                        <property name="margin-start">8</property>
-                        <property name="margin-top">8</property>
-                        <property name="valign">start</property>
+                      <object class="GtkScrolledWindow">
+                        <property name="hexpand">True</property>
+                        <property name="hexpand-set">True</property>
+                        <property name="vexpand">True</property>
+                        <property name="vexpand-set">True</property>
                         <child>
-                          <object class="GtkBox" id="list_container">
-                            <property name="orientation">vertical</property>
-                            <property name="spacing">8</property>
+                          <object class="AdwClamp">
+                            <property name="margin-bottom">8</property>
+                            <property name="margin-end">8</property>
+                            <property name="margin-start">8</property>
+                            <property name="margin-top">8</property>
                             <property name="valign">start</property>
+                            <child>
+                              <object class="GtkBox" id="list_container">
+                                <property name="orientation">vertical</property>
+                                <property name="spacing">8</property>
+                                <property name="valign">start</property>
+                              </object>
+                            </child>
+                          </object>
+                        </child>
+                      </object>
+                    </child>
+                  </object>
+                </property>
+                <child type="top">
+                  <object class="AdwHeaderBar">
+                    <property name="show-back-button">False</property>
+                    <property name="valign">start</property>
+                    <child type="end">
+                      <object class="GtkBox">
+                        <property name="spacing">4</property>
+                        <child>
+                          <object class="GtkMenuButton" id="button_sorting">
+                            <property name="icon-name">view-sort-descending-symbolic</property>
+                            <property name="tooltip-text" translatable="yes">Sorting options</property>
+                          </object>
+                        </child>
+                        <child>
+                          <object class="GtkMenuButton">
+                            <property name="focusable">True</property>
+                            <property name="icon-name">open-menu-symbolic</property>
+                            <property name="menu-model">primary_menu</property>
+                            <property name="primary">True</property>
+                            <property name="tooltip-text" translatable="yes">Main Menu</property>
+                          </object>
+                        </child>
+                      </object>
+                    </child>
+                    <child type="start">
+                      <object class="GtkBox">
+                        <property name="spacing">4</property>
+                        <child>
+                          <object class="GtkButton" id="button_open_sidebar">
+                            <property name="action-name">win.open-sidebar</property>
+                            <property name="icon-name">sidebar-show-symbolic</property>
+                            <property name="tooltip-text" translatable="yes">Open sidebar</property>
+                          </object>
+                        </child>
+                        <child>
+                          <object class="GtkButton" id="button_new_task">
+                            <property name="icon-name">list-add-symbolic</property>
+                            <property name="tooltip-text">Add new task (Ctrl + N)</property>
                           </object>
                         </child>
                       </object>
                     </child>
                   </object>
                 </child>
+                <child type="bottom">
+                  <object class="GtkActionBar">
+                    <property name="hexpand">True</property>
+                    <property name="hexpand-set">True</property>
+                    <property name="valign">end</property>
+                    <child type="center">
+                      <object class="GtkEntry" id="task_new_entry">
+                        <property name="enable-emoji-completion">True</property>
+                        <property name="hexpand">True</property>
+                        <property name="placeholder-text" translatable="yes">What do you need to do?</property>
+                        <property name="show-emoji-icon">True</property>
+                        <property name="truncate-multiline">True</property>
+                      </object>
+                    </child>
+                  </object>
+                </child>
               </object>
             </property>
-            <property name="top-bar-style">raised</property>
-            <child type="top">
-              <object class="AdwHeaderBar">
-                <property name="show-back-button">False</property>
-                <property name="valign">start</property>
-                <child type="end">
-                  <object class="GtkBox">
-                    <property name="spacing">4</property>
+            <property name="modal">False</property>
+            <property name="open">True</property>
+            <property name="reveal-bottom-bar">False</property>
+            <property name="sheet">
+              <object class="AdwClamp">
+                <property name="orientation">vertical</property>
+                <child>
+                  <object class="GtkBox" id="bottom_sheet_content">
+                    <property name="orientation">vertical</property>
                     <child>
-                      <object class="GtkMenuButton" id="button_sorting">
-                        <property name="icon-name">view-sort-descending-symbolic</property>
-                        <property name="tooltip-text" translatable="yes">Sorting options</property>
-                      </object>
+                      <object class="TaskItem"/>
                     </child>
                     <child>
-                      <object class="GtkMenuButton">
-                        <property name="focusable">True</property>
-                        <property name="icon-name">open-menu-symbolic</property>
-                        <property name="menu-model">primary_menu</property>
-                        <property name="primary">True</property>
-                        <property name="tooltip-text" translatable="yes">Main Menu</property>
-                      </object>
-                    </child>
-                  </object>
-                </child>
-                <child type="start">
-                  <object class="GtkBox">
-                    <property name="spacing">4</property>
-                    <child>
-                      <object class="GtkButton" id="button_open_sidebar">
-                        <property name="action-name">win.open-sidebar</property>
-                        <property name="icon-name">sidebar-show-symbolic</property>
-                        <property name="tooltip-text" translatable="yes">Open sidebar</property>
-                      </object>
+                      <object class="TaskItem"/>
                     </child>
                     <child>
-                      <object class="GtkButton" id="button_new_task">
-                        <property name="icon-name">list-add-symbolic</property>
-                        <property name="tooltip-text">Add new task (Ctrl + N)</property>
-                      </object>
+                      <object class="TaskItem"/>
+                    </child>
+                    <child>
+                      <object class="TaskItem"/>
+                    </child>
+                    <child>
+                      <object class="TaskItem"/>
                     </child>
                   </object>
                 </child>
               </object>
-            </child>
-            <child type="bottom">
-              <object class="GtkActionBar">
-                <property name="hexpand">True</property>
-                <property name="hexpand-set">True</property>
-                <property name="valign">end</property>
-                <child type="center">
-                  <object class="GtkEntry" id="task_new_entry">
-                    <property name="enable-emoji-completion">True</property>
-                    <property name="hexpand">True</property>
-                    <property name="placeholder-text" translatable="yes">What do you need to do?</property>
-                    <property name="show-emoji-icon">True</property>
-                    <property name="truncate-multiline">True</property>
-                  </object>
-                </child>
-              </object>
-            </child>
+            </property>
           </object>
         </property>
         <property name="max-sidebar-width">350.0</property>

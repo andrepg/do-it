@@ -7,6 +7,8 @@
   <ui template-class="TaskList" filename="ui/task-list.ui" sha256="15336331278ac45c4986065689f2d97212c5bbaad1437672fb1a34a503d630db"/>
   <ui template-class="TaskGroup" filename="ui/task-group.ui" sha256="698f2a69350915322c842e7f8914c939319bb6a29aaacff4d737622639515d73"/>
   <ui template-class="SidebarButton" filename="ui/sidebar-button.ui" sha256="2989fa8ef1efc339bd593d65a3eac9ac451cda95c38704175d2b41c87c192463"/>
-  <ui template-class="DoItMainWindow" filename="ui/window-v2.ui" sha256="acb916b7d1f291cf09c71b5959e75e63fe1b0a01e7cefa2288111c873b11ec2b"/>
-  <ui template-class="PopoverSort" filename="ui/popover-sort.ui" sha256="930c5e214fdebdb336b3ab9da297c6e912bd9343c9f203cdb947c4edbdaa2209"/>
+  <ui template-class="PopoverSort" filename="ui/popover-sort.ui" sha256="2af55c314530a0ecd2ad728a1dd63e7a5d3696db04a82405075db983031604f6"/>
+  <ui template-class="DoItMainWindow" filename="ui/window-v2.ui" sha256="35b7d37f8164db4dd70adcb8165136833420ae1e6caa45f9c453660b4861d816">
+    <requires>TaskItem</requires>
+  </ui>
 </cambalache-project>
