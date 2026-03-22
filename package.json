@@ -3,7 +3,12 @@
   "type": "module",
   "author": "",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "lint:check": "eslint . --fix",
+    "lint:fix": "eslint . --fix",
+    "format:check": "prettier . --check",
+    "format:fix": "prettier . --write",
+    "test": "vitest run",
+    "test:coverage": "vitest run --coverage"
   },
   "repository": {
     "type": "git",
@@ -22,10 +27,12 @@
     "@girs/gobject-2.0": "^2.86.4-4.0.0-beta.40",
     "@girs/gtk-4.0": "^4.20.3-4.0.0-beta.40",
     "@types/node": "^25.3.5",
+    "@vitest/coverage-v8": "^4.1.0",
     "esbuild": "^0.27.3",
     "eslint": "^10.0.2",
     "prettier": "^3.8.1",
     "typescript": "^5.9.3",
-    "typescript-eslint": "^8.56.1"
+    "typescript-eslint": "^8.56.1",
+    "vitest": "^4.1.0"
   }
 }
