@@ -27,20 +27,32 @@
     ],
     "modules": [
         {
-            "name": "node-deps",
+            "name": "Doit",
             "buildsystem": "simple",
             "build-options": {
+                "append-path": "/usr/lib/sdk/typescript/bin:/usr/lib/sdk/node24/bin",
                 "env": {
-                    "npm_config_offline": "true",
-                    "npm_config_cache": "/run/build/node-deps/npm-cache",
-                    "YARN_CACHE_FOLDER": "/run/build/node-deps/yarn-cache"
+                    "YARN_CACHE_FOLDER": "/run/build/Doit/flatpak-node/yarn-mirror"
                 }
             },
             "build-commands": [
-                "install -d /app/share/io.github.andrepg.Doit/node_modules",
-                "yarn install --offline --frozen-lockfile --modules-folder=/app/share/io.github.andrepg.Doit/node_modules"
+                "echo 'yarn-offline-mirror \"/run/build/Doit/flatpak-node/yarn-mirror\"' > .yarnrc",
+                "yarn install --offline --frozen-lockfile --production=false",
+                "meson setup _flatpak_build --prefix=/app --libdir=lib -Ddevelopment=false",
+                "meson compile -C _flatpak_build",
+                "meson install -C _flatpak_build"
             ],
             "sources": [
+                {
+                    "type": "git",
+                    "url": "https://github.com/andrepg/do-it/",
+                    "branch": "v2",
+                    "x-checker-data": {
+                        "type": "git",
+                        "github-repo": "andrepg/do-it"
+                    }
+                },
+                "generated-sources.json",
                 {
                     "type": "file",
                     "path": "../package.json"
@@ -48,29 +60,6 @@
                 {
                     "type": "file",
                     "path": "../yarn.lock"
-                },
-                {
-                    "type": "file",
-                    "path": "generated-sources.json",
-                    "dest": "."
-                }
-            ]
-        },
-        {
-            "name": "Doit",
-            "buildsystem": "meson",
-            "builddir": true,
-            "config-opts": ["--libdir=lib", "-Ddevelopment=false"],
-            "sources": [
-                {
-                    "type": "git",
-                    "url": "https://github.com/andrepg/do-it/",
-                    "branch": "v2",
-
-                    "x-checker-data": {
-                        "type": "git",
-                        "github-repo": "andrepg/do-it"
-                    }
                 }
             ]
         }

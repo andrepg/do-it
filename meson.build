@@ -31,6 +31,7 @@ app_datadir = get_option('prefix') / get_option('datadir')
 if app_is_dev
     app_id += '.Devel'
     app_res_path += '/Devel'
+    app_codename += ' (Devel)'
 endif
 
 app_config = configuration_data()
