@@ -156,6 +156,22 @@ export class TaskListStore extends Gio.ListStore<TaskItem> {
   }
 
   /**
+   * Removes a single item from the list store, using the ID as comparison to find
+   * which task we need to delete.
+   */
+  remove_task(id: number) {
+    const task = this.find_by_id(id);
+
+    if (!task) return;
+
+    const [found, position] = this.find(task);
+
+    if (!found) return;
+
+    this.remove(position);
+  }
+
+  /**
    * Initializes the application state, reading tasks from the disk and appending them to the store.
    */
   load() {

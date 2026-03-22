@@ -130,25 +130,18 @@ export class TaskItem extends Adw.ActionRow {
     this._deleted = false;
     this._tags = [];
 
-    this.task_delete = this.get_template_child(TaskItem as unknown as GObject.GType, WidgetIds.TaskItemTaskDelete) as Gtk.Button;
-    this.task_delete.connect(AppSignals.Clicked, this._delete_task.bind(this));
-
-    this.task_done = this.get_template_child(TaskItem as unknown as GObject.GType, WidgetIds.TaskItemTaskDone) as Gtk.CheckButton;
+    this._init_widgets();
+    this._update_interface();
 
     this.task_done.set_active(done);
+
+    this.task_delete.connect(AppSignals.Clicked, this._delete_task.bind(this));
     this.task_done.connect_after(AppSignals.Toggled, this._finish_task.bind(this));
+  }
 
-    this.connect("notify::title", () => this._update_interface());
-    this.connect("notify::done", () => {
-        this.task_done.set_active(this.get_property("done"));
-        this._update_interface();
-    });
-    this.connect("notify::project", () => {
-        this._project = this.get_property("project");
-        this._update_interface();
-    });
-
-    this._update_interface();
+  private _init_widgets() {
+    this.task_delete = this.get_template_child(TaskItem as unknown as GObject.GType, WidgetIds.TaskItemTaskDelete) as Gtk.Button;
+    this.task_done = this.get_template_child(TaskItem as unknown as GObject.GType, WidgetIds.TaskItemTaskDone) as Gtk.CheckButton;
   }
 
   private _update_interface(): void {

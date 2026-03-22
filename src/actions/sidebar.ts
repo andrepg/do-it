@@ -26,8 +26,8 @@ import { ActionNames, AppSignals, WidgetIds } from "../app.enums.js";
  * Retrieves the split_view template child from the window.
  * Returns null and logs an error if the widget is not found.
  */
-const getSplitView = (window: DoItMainWindow): Adw.OverlaySplitView | null => {
-    const splitView = window.get_template_child(DoItMainWindow.GType, WidgetIds.WindowSplitView) as Adw.OverlaySplitView;
+const getSplitView = (window: DoItMainWindow): Adw.NavigationSplitView | null => {
+    const splitView = window.get_template_child(DoItMainWindow.GType, WidgetIds.WindowSplitView) as Adw.NavigationSplitView;
 
     if (!splitView) {
         console.error('[action] sidebar: failed to get split_view object');
@@ -58,13 +58,22 @@ const getOpenButton = (window: DoItMainWindow): Gtk.Button | null => {
 export default function sidebar() {
     /**
      * Action: win.open-sidebar
-     * Shows the sidebar panel.
+     * Toggles or shows the sidebar panel.
      */
     const setupOpen = (window: DoItMainWindow) => {
         const action = new Gio.SimpleAction({ name: ActionNames.OpenSidebar });
 
         action.connect(AppSignals.Activate, () => {
-            getSplitView(window)?.set_show_sidebar(true);
+            const splitView = getSplitView(window);
+            if (splitView) {
+                // Toggle collapsed state for Desktop
+                splitView.set_collapsed(!splitView.collapsed);
+                
+                // For Mobile, if we want to "open" sidebar, we show sidebar (show-content = false)
+                if (!splitView.collapsed) {
+                   splitView.set_show_content(false);
+                }
+            }
         });
 
         window.add_action(action);
@@ -72,33 +81,20 @@ export default function sidebar() {
 
     /**
      * Action: win.collapse-sidebar
-     * Hides the sidebar panel.
+     * Hides the sidebar panel, going back to content tasks.
      */
     const setupCollapse = (window: DoItMainWindow) => {
         const action = new Gio.SimpleAction({ name: ActionNames.CollapseSidebar });
 
         action.connect(AppSignals.Activate, () => {
-            getSplitView(window)?.set_show_sidebar(false);
+            const splitView = getSplitView(window);
+            if (splitView) {
+                splitView.set_collapsed(true);    // Desktop
+                splitView.set_show_content(true); // Mobile
+            }
         });
 
         window.add_action(action);
-    }
-
-    /**
-     * Binds the open button's visibility to the inverse of show-sidebar.
-     * The button is visible only when the sidebar is closed.
-     */
-    const bindOpenButtonVisibility = (window: DoItMainWindow) => {
-        const splitView = getSplitView(window);
-        const openButton = getOpenButton(window);
-
-        if (!splitView || !openButton) return;
-
-        // Sync helper — button visible iff sidebar is NOT shown
-        const sync = () => { openButton.visible = !splitView.show_sidebar; };
-
-        sync();
-        splitView.connect('notify::show-sidebar', sync);
     }
 
     /**
@@ -107,7 +103,12 @@ export default function sidebar() {
     const setup = (window: DoItMainWindow) => {
         setupOpen(window);
         setupCollapse(window);
-        bindOpenButtonVisibility(window);
+
+        // Ensure we start showing the tasks content by default
+        const splitView = getSplitView(window);
+        if (splitView) {
+            splitView.set_show_content(true);
+        }
     }
 
     return {

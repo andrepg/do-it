@@ -23,8 +23,10 @@ import { get_template_path } from "../utils/application.js";
 import { TaskListStore } from "./task-list-store.js";
 import { ProjectManager } from "../utils/project-manager.js";
 import { TaskItem } from "./task-item.js";
-import { AppSignals, WidgetIds } from "../app.enums.js";
+import { AppSignals, WidgetIds, ActionNames } from "../app.enums.js";
 import { showToast } from "../actions/toast.js";
+import { log } from "../utils/log-manager.js";
+import * as Actions from "../actions/index.js";
 
 const TaskFormProperties = {
     GTypeName: 'TaskForm',
@@ -48,10 +50,15 @@ const TaskFormProperties = {
 export class TaskForm extends Gtk.Box {
     static readonly GType = TaskForm as unknown as GObject.GType;
 
+    static readonly LogClass = 'task-form';
+
     static {
         GObject.registerClass(TaskFormProperties, this);
     }
 
+    /**
+     * Gtk widget references
+     */
     private entry_title!: Adw.EntryRow;
     private entry_project!: Adw.EntryRow;
     private check_done!: Gtk.CheckButton;
@@ -59,6 +66,9 @@ export class TaskForm extends Gtk.Box {
     private btn_save!: Gtk.Button;
     private btn_discard!: Gtk.Button;
 
+    /**
+     * Instance and internal property handling
+     */
     private _taskId: number | null = null;
     private _store!: TaskListStore;
     private _projectManager!: ProjectManager;
@@ -66,20 +76,35 @@ export class TaskForm extends Gtk.Box {
     constructor() {
         super();
 
+        this.init_widgets();
+        this.connect_signals();
+    }
+
+    private connect_signals() {
+        log(TaskForm.LogClass, 'Connecting form signals and reactions');
+
+        /*this.btn_save.connect(AppSignals.Activate, this._on_save.bind(this));
+        this.btn_discard.connect(AppSignals.Activate, this._on_discard.bind(this));
+        this.btn_delete.connect(AppSignals.Clicked, this._on_delete.bind(this));*/
+    }
+
+    private init_widgets() {
+        log(TaskForm.LogClass, 'Initializing widget instances');
+
         this.btn_save = this.get_template_child(TaskForm.GType, WidgetIds.TaskFormBtnSave);
         this.btn_discard = this.get_template_child(TaskForm.GType, WidgetIds.TaskFormBtnDiscard);
         this.btn_delete = this.get_template_child(TaskForm.GType, WidgetIds.TaskFormBtnDelete);
 
-        this.btn_save.connect(AppSignals.Activate, this._on_save.bind(this));
-        this.btn_discard.connect(AppSignals.Activate, this._on_discard.bind(this));
-        this.btn_delete.connect(AppSignals.Clicked, this._on_delete.bind(this));
-
-        //   this._setup_project_completion();
+        this.entry_title = this.get_template_child(TaskForm.GType, WidgetIds.TaskFormEntryTitle);
+        this.entry_project = this.get_template_child(TaskForm.GType, WidgetIds.TaskFormEntryProject);
+        this.check_done = this.get_template_child(TaskForm.GType, WidgetIds.TaskFormCheckDone);
     }
 
-    public setup(store: TaskListStore, projectManager: ProjectManager) {
+    public setup(store: TaskListStore, projectManager: ProjectManager): this {
         this._store = store;
         this._projectManager = projectManager;
+
+        return this;
     }
 
     /**
@@ -87,16 +112,73 @@ export class TaskForm extends Gtk.Box {
      */
     public load_task(taskId: number) {
         this._taskId = taskId;
-        const taskItem = this._store.find_by_id(taskId);
+
+        const taskItem = this.find_task();
+
         if (!taskItem) return;
 
         const data = taskItem.to_object();
         this.entry_title.set_text(data.title);
         this.entry_project.set_text(data.project || "");
         this.check_done.set_active(data.done || false);
+
+        this.setup_project_autocomplete();
     }
 
-    private _on_save() {
+    private find_task(): TaskItem | null {
+        if (this._taskId === null) return null;
+        return this._store.find_by_id(this._taskId);
+    }
+
+    /**
+     * Setup project autocomplete on project entry
+     */
+    private setup_project_autocomplete(): void {
+
+    }
+
+    /**
+     * Save current task on list and dispatch window action to close bottom sheet
+     */
+    private dispatch_save(): void {
+        const task = this.find_task()?.to_object();
+        const title = this.entry_title.get_text().trim();
+
+        if (title === "") {
+            showToast(_("Title cannot be empty"));
+            return;
+        }
+
+        if (!task?.id) return;
+
+        // Before add another task, we need to remove the old one
+        this._store.remove_task(task.id);
+
+        this._store.append_task({
+            id: task.id,
+            title: title,
+            project: this.entry_project.get_text().trim(),
+            done: this.check_done.get_active(),
+            created_at: task.created_at,
+            deleted: task.deleted,
+            tags: task.tags,
+        });
+
+        showToast(_("Task updated"));
+
+        this.dispatch_cancel();
+    }
+
+    /**
+     * Clean the form state and call window action to close bottom sheet
+     */
+    private dispatch_cancel(): void {
+        this._taskId = null;
+
+        this.emit(AppSignals.TaskFormClosed, this);
+    }
+
+    /*private _on_save() {
         if (this._taskId === null) return;
 
         const taskItem = this._store.find_by_id(this._taskId);
@@ -111,18 +193,21 @@ export class TaskForm extends Gtk.Box {
             return;
         }
 
-        taskItem.set_property("title", title);
-        taskItem.set_property("project", project);
-        taskItem.set_property("done", done);
+                taskItem.set_property("title", title);
+                taskItem.set_property("project", project);
+                taskItem.set_property("done", done);
+                
+
+        console.log("taskItem", taskItem, { title, project, done });
 
         taskItem.emit(AppSignals.TaskUpdated, taskItem);
 
         showToast(_("Task updated"));
-        this.emit(AppSignals.TaskFormClosed);
+        this.activate_action(`win.${ActionNames.TaskEditClose}`, null);
     }
 
     private _on_discard() {
-        this.emit(AppSignals.TaskFormClosed);
+        this.activate_action(`win.${ActionNames.TaskEditClose}`, null);
     }
 
     private _on_delete() {
@@ -131,7 +216,7 @@ export class TaskForm extends Gtk.Box {
         if (taskItem) {
             taskItem.emit(AppSignals.TaskDeleted, taskItem);
             showToast(_("Task deleted"));
-            this.emit(AppSignals.TaskFormClosed);
+            this.activate_action(`win.${ActionNames.TaskEditClose}`, null);
         }
     }
 
@@ -169,5 +254,5 @@ export class TaskForm extends Gtk.Box {
         if (entry) {
             entry.set_completion(completion);
         }
-    }
+    }*/
 }

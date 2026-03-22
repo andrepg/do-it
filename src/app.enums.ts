@@ -95,6 +95,7 @@ export enum ActionNames {
     CollapseSidebar = 'collapse-sidebar',
     ShowToast = 'show-toast',
     TaskEdit = 'task-edit',
+    TaskEditClose = 'task-edit-close',
 }
 
 /**

@@ -13,8 +13,8 @@
     <property name="spacing">12</property>
     <child>
       <object class="AdwPreferencesGroup">
-        <property name="title" translatable="yes">Edit task</property>
         <property name="description" translatable="yes">Edit title, project, mark as completed or delete this task.</property>
+        <property name="title" translatable="yes">Edit task</property>
         <child>
           <object class="AdwEntryRow" id="task_form_entry_title">
             <property name="title" translatable="yes">Title</property>

@@ -124,15 +124,11 @@ export class DoItMainWindow extends Adw.ApplicationWindow {
     const bottomSheetContent = this.get_template_child(DoItMainWindow.GType, WidgetIds.WindowBottomSheetContent) as Gtk.Box;
     const bottomSheet = this.get_template_child(DoItMainWindow.GType, WidgetIds.WindowBottomSheet) as any;
 
-    const taskForm = new TaskForm();
-    taskForm.setup(this.taskListStore, this.projectManager);
+    const taskForm = new TaskForm().setup(this.taskListStore, this.projectManager);
+
     bottomSheetContent.append(taskForm);
 
     Actions.taskEdit(taskForm, bottomSheet).setup(this);
-
-    taskForm.connect(AppSignals.TaskFormClosed, () => {
-      bottomSheet.set_open(false);
-    });
   }
 
   public override vfunc_close_request(): boolean {

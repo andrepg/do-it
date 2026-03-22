@@ -104,12 +104,6 @@ export class ProjectManager extends GObject.Object {
       }
     }
 
-    // Ensure the default "All tasks" project always exists when completely empty
-    if (n_items === 0) {
-      currentProjectsSet.add("");
-      currentProjectsOrdered.push("");
-    }
-
     // 1. Find projects to remove (exist in cache but not in current)
     for (const project of this._projects_set) {
       if (!currentProjectsSet.has(project)) {

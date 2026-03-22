@@ -45,8 +45,9 @@ export default function projectSidebar(projectManager: ProjectManager) {
      * 
      * @param section The container where the item will be appended.
      * @param project The name of the project.
+     * @param splitView The main navigation split view.
      */
-    const add_sidebar_item = (section: Gtk40.Box, project: string) => {
+    const add_sidebar_item = (section: Gtk40.Box, project: string, splitView: Adw.NavigationSplitView | null) => {
         if (projectSidebarItems.has(project)) return;
 
         const sidebarItem = create_sidebar_button(project);
@@ -56,6 +57,7 @@ export default function projectSidebar(projectManager: ProjectManager) {
 
         sidebarItem.connect(AppSignals.Clicked, () => {
             projectManager.set_filter(project);
+            if (splitView) splitView.set_show_content(true);
         });
     }
 
@@ -110,10 +112,15 @@ export default function projectSidebar(projectManager: ProjectManager) {
             WidgetIds.WindowSidebarProjectList
         ) as Gtk40.Box;
 
-        setup_all_tasks_button(sidebarProjectList);
+        const splitView = window.get_template_child(
+            (window.constructor as any).GType,
+            WidgetIds.WindowSplitView
+        ) as Adw.NavigationSplitView;
+
+        setup_all_tasks_button(sidebarProjectList, splitView);
 
         projectManager.connect(AppSignals.ProjectAdded, (_: unknown, project: string) => {
-            add_sidebar_item(sidebarProjectList, project);
+            add_sidebar_item(sidebarProjectList, project, splitView);
             reorder_sidebar(sidebarProjectList);
             update_active_states(projectManager.get_filter());
         });
@@ -140,11 +147,12 @@ export default function projectSidebar(projectManager: ProjectManager) {
         });
     }
 
-    function setup_all_tasks_button(sidebarProjectList: Gtk40.Box): void {
+    function setup_all_tasks_button(sidebarProjectList: Gtk40.Box, splitView: Adw.NavigationSplitView | null): void {
         const sidebarBtnAll = create_sidebar_button(_("All tasks"));
 
         sidebarBtnAll.connect(AppSignals.Clicked, () => {
             projectManager.set_filter(null);
+            if (splitView) splitView.set_show_content(true);
         });
 
         sidebarProjectList.append(sidebarBtnAll);
