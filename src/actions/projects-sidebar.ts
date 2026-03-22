@@ -57,7 +57,6 @@ export default function projectSidebar(projectManager: ProjectManager) {
 
         sidebarItem.connect(AppSignals.Clicked, () => {
             projectManager.set_filter(project);
-            if (splitView) splitView.set_show_content(true);
         });
     }
 
@@ -152,7 +151,6 @@ export default function projectSidebar(projectManager: ProjectManager) {
 
         sidebarBtnAll.connect(AppSignals.Clicked, () => {
             projectManager.set_filter(null);
-            if (splitView) splitView.set_show_content(true);
         });
 
         sidebarProjectList.append(sidebarBtnAll);

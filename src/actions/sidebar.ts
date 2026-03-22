@@ -68,11 +68,6 @@ export default function sidebar() {
             if (splitView) {
                 // Toggle collapsed state for Desktop
                 splitView.set_collapsed(!splitView.collapsed);
-                
-                // For Mobile, if we want to "open" sidebar, we show sidebar (show-content = false)
-                if (!splitView.collapsed) {
-                   splitView.set_show_content(false);
-                }
             }
         });
 
@@ -90,7 +85,6 @@ export default function sidebar() {
             const splitView = getSplitView(window);
             if (splitView) {
                 splitView.set_collapsed(true);    // Desktop
-                splitView.set_show_content(true); // Mobile
             }
         });
 
@@ -107,7 +101,7 @@ export default function sidebar() {
         // Ensure we start showing the tasks content by default
         const splitView = getSplitView(window);
         if (splitView) {
-            splitView.set_show_content(true);
+            splitView.set_collapsed(true);
         }
     }
 
