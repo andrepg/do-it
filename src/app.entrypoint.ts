@@ -1,4 +1,4 @@
-/* main.ts
+/* app.entrypoint.ts
  * Copyright 2025 André Paul Grandsire
  *
  * This program is free software: you can redistribute it and/or modify
