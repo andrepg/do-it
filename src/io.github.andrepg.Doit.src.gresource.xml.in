@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <gresources>
   <gresource prefix="@APPLICATION_RES@/js">
-    <file>entrypoint.js</file>
+    <file>app.entrypoint.js</file>
 
 
     <file>app.wrapper.js</file>

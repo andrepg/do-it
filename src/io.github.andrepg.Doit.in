@@ -39,7 +39,7 @@ try {
 bindtextdomain(APP_ID, "@prefix@/share/locale");
 textdomain(APP_ID);
 
-const { main } = await import("resource://@APPLICATION_RES@/js/entrypoint.js");
+const { main } = await import("resource://@APPLICATION_RES@/js/app.entrypoint.js");
 
 const exitCode = await main(programArgs);
 exit(exitCode);

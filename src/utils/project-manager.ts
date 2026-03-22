@@ -48,7 +48,7 @@ export class ProjectManager extends GObject.Object {
     return this._current_filter;
   }
 
-  public initialize() {
+  public refresh_items() {
     this._update_projects();
   }
 
@@ -61,7 +61,7 @@ export class ProjectManager extends GObject.Object {
       currentProjects.add(task.get_project() || "");
     }
 
-    // Ensure the default "Tarefas" project always exists when completely empty
+    // Ensure the default "All tasks" project always exists when completely empty
     if (n_items === 0) {
       currentProjects.add("");
     }

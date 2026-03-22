@@ -33,10 +33,9 @@ const options = {
     "sidebar_project_list",
     "button_sorting"
   ],
+
   Signals: {
-    'change-sorting': {
-      param_types: [GObject.TYPE_JSOBJECT],
-    },
+    "sorting-changed": {}
   }
 };
 
@@ -44,8 +43,6 @@ export class DoItMainWindow extends Adw.ApplicationWindow {
   static readonly LogClass = 'window';
 
   static readonly GType = DoItMainWindow as unknown as GObject.GType;
-
-  private _task_sort = useTaskSort();
 
   taskListStore!: TaskListStore;
   projectManager!: ProjectManager;
@@ -68,16 +65,24 @@ export class DoItMainWindow extends Adw.ApplicationWindow {
     this.taskListStore = new TaskListStore();
     this.taskListStore.load();
 
-    log(DoItMainWindow.LogClass, "Initializing project manager");
-    this.projectManager = new ProjectManager(this.taskListStore);
-
     this.initialize_actions();
-
-    log(DoItMainWindow.LogClass, "Populating project manager");
-    this.projectManager.initialize();
+    this.initialize_project_manager()
 
     this.button_sorting = this.get_template_child(DoItMainWindow.GType, 'button_sorting') as Gtk.MenuButton;
     this.button_sorting.set_popover(new PopoverSort(this));
+
+    this.connect('sorting-changed', () => this.taskListStore.sort_list());
+  }
+
+  private initialize_project_manager(): void {
+    log(DoItMainWindow.LogClass, "Initializing project manager");
+
+    this.projectManager = new ProjectManager(this.taskListStore);
+
+    Actions.projects(this.taskListStore, this.projectManager).setup(this);
+    Actions.projectSidebar(this.projectManager).setup(this);
+
+    this.projectManager.refresh_items();
   }
 
   private initialize_actions() {
@@ -87,33 +92,20 @@ export class DoItMainWindow extends Adw.ApplicationWindow {
     Actions.toast().setup(this);
     Actions.newTask(this.taskListStore).setup(this);
     Actions.sidebar().setup(this);
-
-    Actions.projects(this.taskListStore, this.projectManager).setup(this);
-    Actions.projectSidebar(this.taskListStore, this.projectManager).setup(this);
-
-    this.connect('change-sorting', () => {
-      this.taskListStore.sort_list();
-    });
   }
 
   public override vfunc_close_request(): boolean {
-    this.save_window_size();
-    this.persist_tasks();
-
     log(DoItMainWindow.LogClass, "Disposing main window");
-    return super.vfunc_close_request();
-  }
 
-  private save_window_size() {
-    log(DoItMainWindow.LogClass, "Saving window size before closing");
     const [width, height] = this.get_default_size();
+
+    log(DoItMainWindow.LogClass, "Saving window size before closing");
     set_setting_int(DoItSettings.windowWidth, width);
     set_setting_int(DoItSettings.windowHeight, height);
-  }
 
-  private persist_tasks() {
     log(DoItMainWindow.LogClass, "Persisting tasks");
     this.taskListStore.persist_store();
-  }
 
+    return super.vfunc_close_request();
+  }
 }

@@ -79,6 +79,7 @@
         <ul>
           <li>New layout, with vertical sidebar and project groups</li>
           <li>Project management and automatic recognition with @ symbol</li>
+          <li>Project filtering within sidebar navigation</li>
           <li>New sorting popover and settings</li>
         </ul>
       </description>

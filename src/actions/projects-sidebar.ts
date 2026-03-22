@@ -8,7 +8,7 @@ import { SidebarButton } from "../ui-handler/sidebar-button.js";
 // Declare _ global for translation
 declare function _(id: string): string;
 
-export default function projectSidebar(store: TaskListStore, projectManager: ProjectManager) {
+export default function projectSidebar(projectManager: ProjectManager) {
     const projectSidebarItems: Map<string, SidebarButton> = new Map();
 
     const create_sidebar_button = (project: string): SidebarButton => new SidebarButton(project);
