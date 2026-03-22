@@ -20,6 +20,7 @@
     <file>ui-handler/sidebar-button.js</file>
     <file>ui-handler/task-group.js</file>
     <file>ui-handler/task-item.js</file>
+    <file>ui-handler/task-form.js</file>
     <file>ui-handler/task-list.js</file>
     <file>ui-handler/task-list-store.js</file>
 
@@ -30,6 +31,7 @@
     <file>actions/quit.js</file>
     <file>actions/backup.js</file>
     <file>actions/sidebar.js</file>
+    <file>actions/task-edit.js</file>
     <file>actions/toast.js</file>
     <file>actions/projects.js</file>
     <file>actions/projects-sidebar.js</file>

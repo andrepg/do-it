@@ -18,9 +18,10 @@
  */
 import GObject from "gi://GObject";
 import Gio from "gi://Gio"
+import GLib from "gi://GLib"
 
 import { Persistence } from "../utils/persistence.js";
-import { AppSignals } from "../app.enums.js";
+import { AppSignals, ActionNames } from "../app.enums.js";
 import { ITask } from "../app.types.js";
 import { log } from "../utils/log-manager.js";
 import { useTaskSort } from "../hooks/tasks.sort.js";
@@ -61,6 +62,23 @@ export class TaskListStore extends Gio.ListStore<TaskItem> {
   }
 
   /**
+   * Finds a specific TaskItem by its unique identifier.
+   * 
+   * @param id The task ID to look for.
+   * @returns The matching TaskItem or null if not found.
+   */
+  find_by_id(id: number): TaskItem | null {
+    for (let index = 0; index < this.get_count(); index++) {
+      const item = this.get_item(index);
+      if (item instanceof TaskItem && item.to_object().id === id) {
+        return item;
+      }
+    }
+
+    return null;
+  }
+
+  /**
    * Returns the total amount of tasks tracked in the store.
    */
   get_count(): number {
@@ -95,6 +113,12 @@ export class TaskListStore extends Gio.ListStore<TaskItem> {
 
     task.connect(AppSignals.TaskUpdated, _update_interface.bind(this, AppSignals.TaskUpdated));
     task.connect(AppSignals.TaskDeleted, _update_interface.bind(this, AppSignals.TaskDeleted));
+    task.connect(AppSignals.Activated, () => {
+      const root = task.get_root() as any;
+      if (root && root.activate_action) {
+        root.activate_action(ActionNames.TaskEdit, new GLib.Variant('i', task.to_object().id as number));
+      }
+    })
 
     this.insert_sorted(task, this.task_sort.sort_by(mode, strategy));
   }

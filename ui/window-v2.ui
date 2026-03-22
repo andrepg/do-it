@@ -9,7 +9,7 @@
     <property name="content">
       <object class="AdwOverlaySplitView" id="split_view">
         <property name="content">
-          <object class="AdwBottomSheet">
+          <object class="AdwBottomSheet" id="window_bottom_sheet">
             <property name="content">
               <object class="AdwToolbarView">
                 <property name="bottom-bar-style">raised</property>
@@ -104,29 +104,13 @@
               </object>
             </property>
             <property name="modal">False</property>
-            <property name="open">True</property>
             <property name="reveal-bottom-bar">False</property>
             <property name="sheet">
               <object class="AdwClamp">
                 <property name="orientation">vertical</property>
                 <child>
-                  <object class="GtkBox" id="bottom_sheet_content">
+                  <object class="GtkBox" id="window_bottom_sheet_content">
                     <property name="orientation">vertical</property>
-                    <child>
-                      <object class="TaskItem"/>
-                    </child>
-                    <child>
-                      <object class="TaskItem"/>
-                    </child>
-                    <child>
-                      <object class="TaskItem"/>
-                    </child>
-                    <child>
-                      <object class="TaskItem"/>
-                    </child>
-                    <child>
-                      <object class="TaskItem"/>
-                    </child>
                   </object>
                 </child>
               </object>

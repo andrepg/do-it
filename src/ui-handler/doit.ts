@@ -33,6 +33,7 @@ import { ProjectManager } from '../utils/project-manager.js';
 import { PopoverSort } from './popover-sort.js';
 import { SortingModeSchema } from '../app.enums.js';
 import { useTaskSort } from '../hooks/tasks.sort.js';
+import { TaskForm } from './task-form.js';
 
 const options = {
   GTypeName: "DoItMainWindow",
@@ -49,7 +50,9 @@ const options = {
     // Content (sidebar and main)
     WidgetIds.WindowListContainer,
     WidgetIds.WindowSidebarProjectList,
-    WidgetIds.WindowButtonSorting
+    WidgetIds.WindowButtonSorting,
+    WidgetIds.WindowBottomSheetContent,
+    WidgetIds.WindowBottomSheet
   ],
 
   Signals: {
@@ -117,6 +120,19 @@ export class DoItMainWindow extends Adw.ApplicationWindow {
     Actions.newTask(this.taskListStore).setup(this);
     Actions.purgeDeleted(this.taskListStore).setup(this);
     Actions.sidebar().setup(this);
+
+    const bottomSheetContent = this.get_template_child(DoItMainWindow.GType, WidgetIds.WindowBottomSheetContent) as Gtk.Box;
+    const bottomSheet = this.get_template_child(DoItMainWindow.GType, WidgetIds.WindowBottomSheet) as any;
+
+    const taskForm = new TaskForm();
+    taskForm.setup(this.taskListStore, this.projectManager);
+    bottomSheetContent.append(taskForm);
+
+    Actions.taskEdit(taskForm, bottomSheet).setup(this);
+
+    taskForm.connect(AppSignals.TaskFormClosed, () => {
+      bottomSheet.set_open(false);
+    });
   }
 
   public override vfunc_close_request(): boolean {

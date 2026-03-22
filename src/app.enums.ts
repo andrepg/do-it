@@ -62,6 +62,7 @@ export enum AppSignals {
     Toggled = 'toggled',
     NotifyActive = 'notify::active',
     Activate = 'activate',
+    Activated = 'activated',
     ItemsChanged = 'items-changed',
 
     // Custom Project state signals
@@ -73,6 +74,7 @@ export enum AppSignals {
     SortingChanged = 'sorting-changed',
     TaskUpdated = 'task-updated',
     TaskDeleted = 'task-deleted',
+    TaskFormClosed = 'task-form-closed',
 }
 
 /**
@@ -87,11 +89,12 @@ export enum ActionNames {
     ExportDatabase = 'export_database',
     ImportDatabase = 'import_database',
     PurgeDeletedTasks = 'purge_deleted_tasks',
-    
+
     // UI toggles and layout control
     OpenSidebar = 'open-sidebar',
     CollapseSidebar = 'collapse-sidebar',
     ShowToast = 'show-toast',
+    TaskEdit = 'task-edit',
 }
 
 /**
@@ -111,7 +114,7 @@ export enum WidgetIds {
     WindowListContainer = 'list_container',
     WindowToastOverlay = 'toast_overlay',
     WindowSidebarProjectList = 'sidebar_project_list',
-    
+
     // Header bar widgets
     WindowButtonOpenSidebar = 'button_open_sidebar',
     WindowButtonNewTask = 'button_new_task',
@@ -130,4 +133,16 @@ export enum WidgetIds {
     // Task Item components
     TaskItemTaskDone = 'task_done',
     TaskItemTaskDelete = 'task_delete',
+
+    // Task Form components
+    TaskFormEntryTitle = 'task_form_entry_title',
+    TaskFormEntryProject = 'task_form_entry_project',
+    TaskFormCheckDone = 'task_form_check_done',
+    TaskFormBtnDelete = 'task_form_btn_delete',
+    TaskFormBtnSave = 'task_form_btn_save',
+    TaskFormBtnDiscard = 'task_form_btn_discard',
+
+    // Window Bottom Sheet
+    WindowBottomSheet = 'window_bottom_sheet',
+    WindowBottomSheetContent = 'window_bottom_sheet_content',
 }

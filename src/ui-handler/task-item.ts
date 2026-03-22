@@ -18,11 +18,12 @@
  */
 import Adw from "gi://Adw"
 import GObject from "gi://GObject"
+import GLib from "gi://GLib"
 import { ITask } from "../app.types.js";
 import { get_template_path } from "../utils/application.js";
 import Gtk from "gi://Gtk";
 import { showToast } from "../actions/toast.js";
-import { AppSignals, WidgetIds } from "../app.enums.js";
+import { AppSignals, WidgetIds, ActionNames } from "../app.enums.js";
 import { TaskDeleteButtonIcon, TaskEntryStyle } from "../app.static.js";
 
 const TaskItemProperties = {
@@ -136,6 +137,16 @@ export class TaskItem extends Adw.ActionRow {
 
     this.task_done.set_active(done);
     this.task_done.connect_after(AppSignals.Toggled, this._finish_task.bind(this));
+
+    this.connect("notify::title", () => this._update_interface());
+    this.connect("notify::done", () => {
+        this.task_done.set_active(this.get_property("done"));
+        this._update_interface();
+    });
+    this.connect("notify::project", () => {
+        this._project = this.get_property("project");
+        this._update_interface();
+    });
 
     this._update_interface();
   }
