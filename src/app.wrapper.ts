@@ -10,6 +10,10 @@ import { DoItMainWindow } from './ui-handler/doit.js';
 
 const options = { GTypeName: "DoitApplication" };
 
+/**
+ * Main application instance responsible for managing the application lifecycle,
+ * initializing global actions, and presenting the main window.
+ */
 export class DoitApplication extends Adw.Application {
     static readonly LogClass = 'app';
 

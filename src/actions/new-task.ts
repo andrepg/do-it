@@ -3,6 +3,11 @@ import { DoItMainWindow } from "../ui-handler/doit.js"
 import { showToast } from "./toast.js"
 import { TaskListStore } from "../ui-handler/task-list-store.js"
 
+/**
+ * Handles the creation of new tasks from the main entry field.
+ * 
+ * @param store The global TaskListStore.
+ */
 export const newTask = (store: TaskListStore) => {
     const buttonNewTaskId = 'button_new_task';
     const fieldNewTaskId = 'task_new_entry';
@@ -14,6 +19,12 @@ export const newTask = (store: TaskListStore) => {
         id
     ) as unknown as T
 
+    /**
+     * Parses the input string to extract a trailing project tag (`@ProjectName`).
+     * 
+     * @param text The raw text typed by the user.
+     * @returns An object containing the capitalized project name and the remaining clean text.
+     */
     const parseProject = (text: string) => {
         let project = "";
         let parsedText = text;
@@ -28,6 +39,11 @@ export const newTask = (store: TaskListStore) => {
         return { project, parsedText }
     }
 
+    /**
+     * Creates and appends a new task to the store.
+     * 
+     * @param text The complete raw input from the entry field.
+     */
     const create_task = (text: string) => {
         const { project, parsedText: title } = parseProject(text);
 
@@ -40,6 +56,9 @@ export const newTask = (store: TaskListStore) => {
         store.persist_store();
     }
 
+    /**
+     * Wires the new task button and entry field signals to their handlers.
+     */
     const setup = (window: DoItMainWindow) => {
         const buttonNewTask = get_widget<Gtk40.Button>(window, buttonNewTaskId);
         buttonNewTask.connect('clicked', () => fieldNewTask.grab_focus())

@@ -6,6 +6,12 @@ interface IExtractorFunction {
     <T>(item: T): unknown;
 }
 
+/**
+ * React-like hook that provides task sorting capabilities and state management.
+ * 
+ * Exposes methods to sort tasks by date, status, title, or project, and to persist
+ * and retrieve sorting preferences from system settings.
+ */
 export const useTaskSort = () => {
     let current_sort_mode: SortingField = SortingField.byTitle;
 

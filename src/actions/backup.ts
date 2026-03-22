@@ -5,7 +5,15 @@ import { log } from '../utils/log-manager.js';
 import { Persistence } from '../utils/persistence.js';
 import { ITask } from '../app.types.js';
 
+/**
+ * Provides actions for exporting and importing the task database.
+ */
 const backup = () => {
+    /**
+     * Initializes the "export_database" and "import_database" actions.
+     * 
+     * @param parent The main application window.
+     */
     const setup = (parent: Adw.ApplicationWindow) => {
         const export_action = new Gio.SimpleAction({ name: 'export_database' });
         const import_action = new Gio.SimpleAction({ name: 'import_database' });
@@ -27,6 +35,9 @@ const backup = () => {
         return dialog;
     }
 
+    /**
+     * Handles the export process by opening a file dialog and saving the DB contents.
+     */
     // TODO: Missing toast notifications
     const exportJson = (parent: Adw.ApplicationWindow) => {
         log("backup-manager", "Exporting database");
@@ -47,6 +58,9 @@ const backup = () => {
         })
     };
 
+    /**
+     * Handles the import process by opening an existing JSON file and overriding the DB.
+     */
     // TODO: Missing toast notifications
     const importJson = (parent: Adw.ApplicationWindow) => {
         log("backup-manager", "Importing database");

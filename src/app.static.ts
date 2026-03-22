@@ -3,6 +3,9 @@ import { ISortingFieldOption, ISortingStrategyOption } from "./app.types.js"
 
 pkg.initGettext();
 
+/**
+ * Styles for task entries depending on their state.
+ */
 export const TaskEntryStyle = {
   enabled: {
     opacity: 1,
@@ -16,11 +19,17 @@ export const TaskEntryStyle = {
   }
 }
 
+/**
+ * Icons used for the task delete/undo button.
+ */
 export const TaskDeleteButtonIcon = {
   default: "user-trash-symbolic",
   deleted: "edit-undo-symbolic"
 }
 
+/**
+ * Predefined options for sorting fields available in the UI.
+ */
 export const SortingFieldOptions: ISortingFieldOption[] = [
   {
     label: _("Date"),
@@ -44,6 +53,9 @@ export const SortingFieldOptions: ISortingFieldOption[] = [
   },
 ]
 
+/**
+ * Predefined options for sorting strategies available in the UI.
+ */
 export const SortingModeOptions: ISortingStrategyOption[] = [
   {
     icon: "view-sort-ascending-symbolic",

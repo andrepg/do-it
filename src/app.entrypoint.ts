@@ -25,6 +25,12 @@ import { DoitApplication } from "./app.wrapper.js";
 pkg.initGettext();
 pkg.initFormat();
 
+/**
+ * Application entry point. Initializes global configurations and runs the application.
+ * 
+ * @param argv Command line arguments.
+ * @returns The exit code of the application.
+ */
 export async function main(argv: string[]): Promise<number> {
     return await (new DoitApplication()).runAsync(argv);
 }

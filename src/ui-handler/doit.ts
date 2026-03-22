@@ -39,6 +39,12 @@ const options = {
   }
 };
 
+/**
+ * The main application window for Do It.
+ * 
+ * Manages the top-level UI components, including the sidebar and the main content area.
+ * Also initializes global actions and connects to the global task store and project manager.
+ */
 export class DoItMainWindow extends Adw.ApplicationWindow {
   static readonly LogClass = 'window';
 

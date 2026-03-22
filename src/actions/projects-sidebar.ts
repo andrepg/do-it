@@ -11,12 +11,23 @@ import { SortingStrategy } from "../app.enums.js";
 // Declare _ global for translation
 declare function _(id: string): string;
 
+/**
+ * Initializes and manages the sidebar list of discovered projects.
+ * 
+ * @param projectManager The global ProjectManager instance used to listen for project changes.
+ */
 export default function projectSidebar(projectManager: ProjectManager) {
     const projectSidebarItems: Map<string, SidebarButton> = new Map();
     const taskSort = useTaskSort();
 
     const create_sidebar_button = (project: string): SidebarButton => new SidebarButton(project);
 
+    /**
+     * Appends a new project to the sidebar list and binds its click event.
+     * 
+     * @param section The container where the item will be appended.
+     * @param project The name of the project.
+     */
     const add_sidebar_item = (section: Gtk40.Box, project: string) => {
         if (projectSidebarItems.has(project)) return;
 
@@ -30,6 +41,12 @@ export default function projectSidebar(projectManager: ProjectManager) {
         });
     }
 
+    /**
+     * Removes a project from the sidebar list.
+     * 
+     * @param section The container from which the item will be removed.
+     * @param project The name of the project to remove.
+     */
     const remove_sidebar_item = (section: Gtk40.Box, project: string) => {
         const item = projectSidebarItems.get(project);
 
@@ -39,6 +56,11 @@ export default function projectSidebar(projectManager: ProjectManager) {
         }
     }
 
+    /**
+     * Reorders the sidebar items alphabetically to maintain a stable layout.
+     * 
+     * @param section The container whose children should be reordered.
+     */
     const reorder_sidebar = (section: Gtk40.Box) => {
         const sortedProjects = Array.from(projectSidebarItems.keys())
             .filter(p => p !== "__all__")
@@ -61,6 +83,9 @@ export default function projectSidebar(projectManager: ProjectManager) {
         }
     }
 
+    /**
+     * Bootstraps the sidebar tracking by connecting it to the project manager signals.
+     */
     const setup = (window: DoItMainWindow) => {
         const sidebarProjectList = window.get_template_child(
             (window.constructor as any).GType,

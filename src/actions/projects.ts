@@ -10,6 +10,12 @@ import { TaskListStore } from '../ui-handler/task-list-store.js';
 import { useTaskSort } from '../hooks/tasks.sort.js';
 import { SortingField } from '../app.enums.js';
 
+/**
+ * Initializes and manages the grouping of tasks by project in the main view.
+ * 
+ * @param store The global TaskListStore.
+ * @param projectManager The global ProjectManager instance.
+ */
 export default function projects(store: TaskListStore, projectManager: ProjectManager) {
 
     const projectGroups: Map<string, TaskGroup> = new Map();
@@ -17,6 +23,9 @@ export default function projects(store: TaskListStore, projectManager: ProjectMa
 
     const create_task_group = (project: string) => new TaskGroup(project, store);
 
+    /**
+     * Appends a new project group to the main list container.
+     */
     const add_project_group = (container: Gtk.Box, project: string) => {
         if (projectGroups.has(project)) {
             return;
@@ -28,6 +37,9 @@ export default function projects(store: TaskListStore, projectManager: ProjectMa
         container.append(taskGroup);
     }
 
+    /**
+     * Removes an existing project group from the main list container.
+     */
     const remove_project_group = (container: Gtk.Box, project: string) => {
         if (!projectGroups.has(project)) return;
 
@@ -39,6 +51,9 @@ export default function projects(store: TaskListStore, projectManager: ProjectMa
         }
     }
 
+    /**
+     * Sets the visibility of each project group based on the currently active filter.
+     */
     const applyFilter = (filter: string | null) => {
         for (const [project, taskGroup] of projectGroups.entries()) {
             taskGroup.set_visible(
@@ -47,6 +62,9 @@ export default function projects(store: TaskListStore, projectManager: ProjectMa
         }
     };
 
+    /**
+     * Reorders the project groups within the container according to the active sorting strategy.
+     */
     const reorder_groups = (container: Gtk.Box) => {
         const { mode, strategy } = taskSort.retrieve_sort_preferences();
         const comparatorOrder = (mode === SortingField.byProject) ? strategy : 0;
@@ -63,6 +81,9 @@ export default function projects(store: TaskListStore, projectManager: ProjectMa
         }
     }
 
+    /**
+     * Bootstraps the project grouping system by connecting to signals and establishing initial layout.
+     */
     const setup = (window: DoItMainWindow) => {
         const listContainer = window.get_template_child(
             (window.constructor as any).GType,

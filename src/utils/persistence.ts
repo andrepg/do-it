@@ -2,6 +2,9 @@ import GLib from 'gi://GLib';
 import Gio from 'gi://Gio';
 import { ITask } from '../app.types.js';
 
+/**
+ * Handles reading and writing application data to a local JSON file.
+ */
 export class Persistence {
   private filename: string = 'data.json';
   private databaseDir: string;
@@ -20,6 +23,9 @@ export class Persistence {
     this.databaseFilePath = this.databaseFile.get_path();
   }
 
+  /**
+   * Ensures that the database directory and file exist, creating them if necessary.
+   */
   create_database() {
     try {
       Gio.File.new_for_path(this.databaseDir).make_directory_with_parents(null);
@@ -51,6 +57,11 @@ export class Persistence {
       : JSON.parse(file_content);
   }
 
+  /**
+   * Writes the provided data to the JSON database file.
+   *
+   * @param data The array of data objects to persist.
+   */
   write_database(data: unknown[]) {
     this.create_database();
 

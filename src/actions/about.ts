@@ -4,6 +4,9 @@ import GLib from "gi://GLib";
 import Gtk from "gi://Gtk";
 import { APPLICATION_ID } from "../utils/application.js";
 
+/**
+ * Provides the "about" action to display the application's About Dialog.
+ */
 const about = () => {
     const actionName = 'about';
 
@@ -25,6 +28,11 @@ const about = () => {
         copyright: '© 2025 André Paul Grandsire'
     }
 
+    /**
+     * Initializes the "about" action and connects it to the main window.
+     * 
+     * @param window The main application wrapper instance.
+     */
     const setup = (window: Adw.Application) => {
         const aboutActions = new Gio.SimpleAction({ name: actionName });
 

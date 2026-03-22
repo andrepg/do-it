@@ -38,10 +38,18 @@ export class ProjectManager extends GObject.Object {
     this._handler_id = this._store.connect('items-changed', this._update_projects.bind(this));
   }
 
+  /**
+   * Retrieves the current ordered list of discovered projects.
+   */
   public get_projects(): string[] {
     return this._projects_ordered;
   }
 
+  /**
+   * Sets the active project filter and emits the 'filter-changed' signal if changed.
+   * 
+   * @param project The name of the project to filter by, or null for all tasks.
+   */
   public set_filter(project: string | null) {
     if (this._current_filter === project) return;
 
@@ -49,10 +57,16 @@ export class ProjectManager extends GObject.Object {
     this.emit('filter-changed', project);
   }
 
+  /**
+   * Retrieves the current active project filter.
+   */
   public get_filter(): string | null {
     return this._current_filter;
   }
 
+  /**
+   * Forces a refresh of the discovered projects by rescanning the store.
+   */
   public refresh_items() {
     this._update_projects();
   }

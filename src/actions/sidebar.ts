@@ -33,6 +33,9 @@ const getOpenButton = (window: DoItMainWindow): Gtk.Button | null => {
     return button;
 }
 
+/**
+ * Initializes global actions required for opening and collapsing the main application sidebar.
+ */
 export default function sidebar() {
     /**
      * Action: win.open-sidebar
@@ -79,6 +82,9 @@ export default function sidebar() {
         splitView.connect('notify::show-sidebar', sync);
     }
 
+    /**
+     * Bootstraps sidebar actions and dynamic UI visibility behaviors.
+     */
     const setup = (window: DoItMainWindow) => {
         setupOpen(window);
         setupCollapse(window);

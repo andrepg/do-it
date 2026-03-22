@@ -52,6 +52,9 @@ export class PopoverSort extends Gtk40.Popover {
     this.toggle_group_sort_strategy.connect('notify::active', () => this.notify_active());
   }
 
+  /**
+   * Updates the strategy label to reflect the currently active sorting strategy alphabetically.
+   */
   private update_label() {
     const strategyToggle = this.get_current_strategy_toggle();
     const strategy = Number.parseInt(strategyToggle?.get_name() || '0') as SortingStrategy;
@@ -59,14 +62,25 @@ export class PopoverSort extends Gtk40.Popover {
     this.label_strategy.set_label(SortingStrategy[strategy].toString().toLowerCase());
   }
 
+  /**
+   * Retrieves the active Adw1.Toggle representing the selected sorting field.
+   */
   private get_current_field_toggle() {
     return this.toggle_group_sort_field.get_toggle(this.toggle_group_sort_field.get_active());
   }
 
+  /**
+   * Retrieves the active Adw1.Toggle representing the selected sorting strategy.
+   */
   private get_current_strategy_toggle() {
     return this.toggle_group_sort_strategy.get_toggle(this.toggle_group_sort_strategy.get_active());
   }
 
+  /**
+   * Callback activated when any toggle button changes its state.
+   * Reads the current selections, applies sorting to the taskStore via useTaskSort hook, 
+   * persists the settings, and emits a signal to update the main window's task list.
+   */
   private notify_active() {
     const fieldToggle = this.get_current_field_toggle();
     const strategyToggle = this.get_current_strategy_toggle();

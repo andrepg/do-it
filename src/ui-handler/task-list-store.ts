@@ -11,6 +11,12 @@ const TaskListStoreType = {
   GTypeName: 'TaskListStore',
 }
 
+/**
+ * A global list store containing all TaskItem instances.
+ * 
+ * Inherits from Gio.ListStore. It handles sorting, persisting task changes to disk,
+ * and maintaining the comprehensive list of tasks for the application state.
+ */
 export class TaskListStore extends Gio.ListStore<TaskItem> {
   static {
     GObject.registerClass(TaskListStoreType, this);
@@ -19,6 +25,9 @@ export class TaskListStore extends Gio.ListStore<TaskItem> {
   private persistence = new Persistence();
   private task_sort = useTaskSort();
 
+  /**
+   * Retrieves all tasks current loaded in the internal store as plain serializable objects.
+   */
   get_all(): ITask[] {
     const tasks: ITask[] = [];
 
@@ -32,10 +41,18 @@ export class TaskListStore extends Gio.ListStore<TaskItem> {
     return tasks;
   }
 
+  /**
+   * Returns the total amount of tasks tracked in the store.
+   */
   get_count(): number {
     return this.get_n_items();
   }
 
+  /**
+   * Instantiates and registers a new TaskItem into the list store.
+   * 
+   * @param data Raw initialization data for the new task.
+   */
   append_task(data: ITask) {
     const taskId = data.id ?? 0;
 
@@ -63,12 +80,18 @@ export class TaskListStore extends Gio.ListStore<TaskItem> {
     this.insert_sorted(task, this.task_sort.sort_by(mode, strategy));
   }
 
+  /**
+   * Forces the list store to perform an internal sort based on global preferences.
+   */
   sort_list() {
     const { mode, strategy } = this.task_sort.retrieve_sort_preferences();
 
     this.sort(this.task_sort.sort_by(mode, strategy));
   }
 
+  /**
+   * Erases all logically soft-deleted entries from the database, reloading the state afterwards.
+   */
   purge_deleted() {
     log("list-store", "Purging deleted entries")
 
@@ -77,6 +100,11 @@ export class TaskListStore extends Gio.ListStore<TaskItem> {
     this.load()
   }
 
+  /**
+   * Triggers a rewrite of the current state of tasks to the local JSON database file.
+   * 
+   * @param keep_deleted If false, soft-deleted elements will not be saved (causing removal).
+   */
   persist_store(keep_deleted = true) {
     log("list-store", "Saving tasks to database");
     const tasks = this.get_all().filter(item => keep_deleted ? true : !item.deleted);
@@ -84,6 +112,9 @@ export class TaskListStore extends Gio.ListStore<TaskItem> {
     this.persistence.write_database(tasks);
   }
 
+  /**
+   * Initializes the application state, reading tasks from the disk and appending them to the store.
+   */
   load() {
     log("list-store", "Loading tasks from database")
 

@@ -168,14 +168,23 @@ export class TaskItem extends Adw.ActionRow {
     this._update_interface();
   }
 
+  /**
+   * Retrieves the raw string name of the project associated with this task.
+   */
   public get_project(): string {
     return this._project;
   }
 
+  /**
+   * Casts the underlying object to its GTK TaskItem widget shape.
+   */
   public to_widget(): TaskItem {
     return this;
   }
 
+  /**
+   * Hydrates the internal Adwaita row state into a JSON-serializable ITask object.
+   */
   public to_object(): ITask {
     return {
       id: this._taskId,

@@ -25,6 +25,12 @@ const GObjectProperties = {
 // Declare _ global for translation
 declare function _(id: string): string;
 
+/**
+ * A custom sidebar button representing a specific project or "All tasks".
+ * 
+ * Provides visual indication (icons and CSS classes) indicating whether this project 
+ * is currently selected as the active filter.
+ */
 export class SidebarButton extends Gtk40.Button {
   static {
     GObject.registerClass(GObjectProperties, this);
@@ -50,6 +56,11 @@ export class SidebarButton extends Gtk40.Button {
     this.button_content.set_text(btnTitle);
   }
 
+  /**
+   * Sets the visual active state of the button to reflect the current global filter.
+   * 
+   * @param active True if this project is currently selected, False otherwise.
+   */
   public set_active(active: boolean) {
     const ICONS = {
       due_tasks: "task-due-symbolic",
