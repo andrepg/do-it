@@ -16,7 +16,7 @@ jobs:
           setup-node: "true"
 
       - name: Run Format Check
-        run: yarn format:check
+        run: yarn format
 
   lint:
     name: Check Lint
@@ -29,7 +29,7 @@ jobs:
           setup-node: "true"
 
       - name: Run Lint
-        run: yarn lint:check
+        run: yarn lint
 
   test:
     name: Run Tests

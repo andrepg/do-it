@@ -33,7 +33,7 @@ function build_and_run() {
     fi
 
     echo "==> Running application (without installing)"
-    flatpak run --user org.flatpak.Builder --run "$BUILD_DIR" "flatpak/$MANIFEST" "$APP_COMMAND"
+    flatpak run --user org.flatpak.Builder --run "$BUILD_DIR" "flatpak/$MANIFEST" "$APP_COMMAND" --development=true
 }
 
 if $WATCH; then

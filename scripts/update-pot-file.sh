@@ -6,10 +6,11 @@ set -euo pipefail
 # @see https://docs.elementary.io/develop/writing-apps/our-first-app/translations
 
 echo "====> Generating POT template file"
-meson setup --reconfigure _build
-meson compile -C _build io.github.andrepg.Doit-pot
+rm -rf _build_pot || true
+meson setup _build_pot
+meson compile -C _build_pot io.github.andrepg.Doit-pot
 
 echo "====> Generating PO language files"
-meson compile -C _build io.github.andrepg.Doit-update-po
+meson compile -C _build_pot io.github.andrepg.Doit-update-po
 
 echo "====> Translation files generated."

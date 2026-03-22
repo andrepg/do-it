@@ -1,0 +1,34 @@
+{
+  "tabWidth": 4,
+  "useTabs": false,
+  "semi": true,
+  "singleQuote": true,
+  "trailingComma": "es5",
+  "printWidth": 100,
+  "overrides": [
+    {
+      "files": ["*.json", ".prettierrc", ".eslintrc"],
+      "options": {
+        "parser": "json",
+        "tabWidth": 4,
+        "singleQuote": false
+      }
+    },
+    {
+      "files": ["*.ts", "*.tsx", "*.js", "*.jsx"],
+      "options": {
+        "tabWidth": 4,
+        "singleQuote": true,
+        "semi": true,
+        "trailingComma": "all"
+      }
+    },
+    {
+      "files": ["*.yml", "*.yaml"],
+      "options": {
+        "tabWidth": 2,
+        "singleQuote": true
+      }
+    }
+  ]
+}

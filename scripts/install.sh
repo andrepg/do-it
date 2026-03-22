@@ -2,30 +2,74 @@
 set -euo pipefail
 clear
 
-# Parse options
+# ===========================================================================
+# install.sh — Compila e instala ou exporta o bundle Flatpak.
+#
+# Uso: scripts/install.sh [-c] [-C] [-e] [manifest.json]
+#   -c, --compile    Compila antes de instalar/exportar
+#   -C, --clean      Passa limpeza completa para o compile.sh (implica -c)
+#   -e, --export     Exporta como arquivo .flatpak em vez de instalar
+# ===========================================================================
+
 COMPILE=false
-while getopts "c-:" opt; do
+CLEAN=false
+EXPORT_BUNDLE=false
+
+while getopts "cCe-:" opt; do
     case $opt in
         c) COMPILE=true ;;
+        C) COMPILE=true; CLEAN=true ;;
+        e) EXPORT_BUNDLE=true ;;
         -) case "${OPTARG}" in
                compile) COMPILE=true ;;
-               *) echo "Invalid option: --${OPTARG}" >&2; exit 1 ;;
+               clean)   COMPILE=true; CLEAN=true ;;
+               export)  EXPORT_BUNDLE=true ;;
+               *) echo "Opção inválida: --${OPTARG}" >&2; exit 1 ;;
            esac ;;
-        *) echo "Usage: $0 [-c|--compile] <manifest.json>" >&2; exit 1 ;;
+        *) echo "Uso: $0 [-c|--compile] [-C|--clean] [-e|--export] [manifest.json]" >&2; exit 1 ;;
     esac
 done
 shift $((OPTIND-1))
 
-MANIFEST="${1:?Usage: $0 [-c|--compile] <manifest.json>}"
+MANIFEST="${1:-io.github.andrepg.Doit.json}"
 BUILD_DIR="_build"
 
-APP_COMMAND="io.github.andrepg.Doit"
-SCRIPTS_PATH="$(cd "$(dirname "$0")" && pwd)"
-
-if $COMPILE; then
-    echo "==> Invoking Compilation script"
-    "$SCRIPTS_PATH/compile.sh" "$MANIFEST" "$BUILD_DIR"
+APP_ID="io.github.andrepg.Doit"
+if [[ "$MANIFEST" == *"Devel"* ]] || [[ "$MANIFEST" == *"devel"* ]]; then
+    APP_ID="io.github.andrepg.Doit.Devel"
 fi
 
-echo "==> Running application (without installing)"
-flatpak run --user org.flatpak.Builder --run "$BUILD_DIR" "$MANIFEST" "$APP_COMMAND"
+SCRIPTS_PATH="$(cd "$(dirname "$0")" && pwd)"
+
+# ----- passo de compilação -------------------------------------------------
+if $COMPILE; then
+    echo "==> Compilando $MANIFEST..."
+    CLEAN_FLAG=""
+    $CLEAN && CLEAN_FLAG="--clean"
+    "$SCRIPTS_PATH/compile.sh" $CLEAN_FLAG "$MANIFEST" "$BUILD_DIR"
+fi
+
+# ----- exportar bundle ou instalar -----------------------------------------
+if $EXPORT_BUNDLE; then
+    REPO_DIR="repo"
+    BUNDLE_FILE="${APP_ID}.flatpak"
+
+    echo "==> Exportando bundle $BUNDLE_FILE..."
+    flatpak run --user org.flatpak.Builder \
+        --repo="$REPO_DIR" \
+        --force-clean \
+        "$BUILD_DIR" \
+        "flatpak/$MANIFEST"
+
+    flatpak build-bundle "$REPO_DIR" "$BUNDLE_FILE" "$APP_ID"
+    echo "==> Bundle gerado: $BUNDLE_FILE"
+else
+    echo "==> Instalando $APP_ID no ambiente flatpak do usuário..."
+    flatpak run --user org.flatpak.Builder \
+        --install \
+        --user \
+        --force-clean \
+        "$BUILD_DIR" \
+        "flatpak/$MANIFEST"
+    echo "==> Instalado com sucesso."
+fi
