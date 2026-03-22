@@ -2,12 +2,14 @@ import Gio from "gi://Gio";
 
 import { APPLICATION_ID } from "./application.js";
 
+let settings: Gio.Settings | null = null;
 
 function get_settings_container(): Gio.Settings {
-    console.log(`[settings] Opening settings with schema id: ${APPLICATION_ID}`);
-    return new Gio.Settings({
-        schema_id: APPLICATION_ID
-    })
+    if (!settings) {
+        settings = new Gio.Settings({ schema_id: APPLICATION_ID });
+    }
+
+    return settings;
 }
 
 export function get_setting_int(name: string) {

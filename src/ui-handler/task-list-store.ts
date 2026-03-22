@@ -7,16 +7,16 @@ import { log } from "../utils/log-manager.js";
 import { useTaskSort } from "../hooks/tasks.sort.js";
 import { TaskItem } from "./task-item.js";
 
+const TaskListStoreType = {
+  GTypeName: 'TaskListStore',
+}
+
 export class TaskListStore extends Gio.ListStore<TaskItem> {
   static {
-    GObject.registerClass({
-      GTypeName: "TaskListStore",
-      Properties: {},
-      InternalChildren: [],
-      Signals: {},
-    }, this);
+    GObject.registerClass(TaskListStoreType, this);
   }
 
+  private persistence = new Persistence();
   private task_sort = useTaskSort();
 
   get_all(): ITask[] {
@@ -52,18 +52,15 @@ export class TaskListStore extends Gio.ListStore<TaskItem> {
     const _update_interface = (signal: string) => {
       log("list-store", `Received ${signal} signal.`)
 
-      this.sort(this.task_sort.sort_by(mode, strategy))
-
-      this.persist_store()
       this.task_sort.persist_sort_preferences();
+      this.sort_list()
+      this.persist_store();
     }
 
     task.connect('task-updated', _update_interface.bind(this, 'task-updated'));
     task.connect('task-deleted', _update_interface.bind(this, 'task-deleted'));
 
     this.insert_sorted(task, this.task_sort.sort_by(mode, strategy));
-
-    this.persist_store();
   }
 
   sort_list() {
@@ -75,24 +72,22 @@ export class TaskListStore extends Gio.ListStore<TaskItem> {
   purge_deleted() {
     log("list-store", "Purging deleted entries")
 
-    this.persist_store()
+    this.persist_store(false)
     this.remove_all()
     this.load()
   }
 
-  persist_store() {
+  persist_store(keep_deleted = true) {
     log("list-store", "Saving tasks to database");
-    const tasks = this.get_all().filter(item => !item.deleted);
+    const tasks = this.get_all().filter(item => keep_deleted ? true : !item.deleted);
 
-    const persistence = new Persistence();
-    persistence.write_database(tasks);
+    this.persistence.write_database(tasks);
   }
 
   load() {
     log("list-store", "Loading tasks from database")
 
-    const persistence = new Persistence();
-    const tasks = persistence.read_database() as ITask[];
+    const tasks = this.persistence.read_database() as ITask[];
 
     tasks.forEach((item) => {
       log("list-store", `Loading task ${item.title}`)
