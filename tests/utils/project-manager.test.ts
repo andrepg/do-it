@@ -50,7 +50,7 @@ describe('ProjectManager', () => {
     // but GObject mock handles registerClass
   });
 
-  it('should identify new projects and emit project-added', () => {
+  it('should identify new projects and emit project-added in order', () => {
     const emitSpy = vi.spyOn(projectManager as any, 'emit');
     
     const tasks = [
@@ -65,7 +65,7 @@ describe('ProjectManager', () => {
 
     expect(emitSpy).toHaveBeenCalledWith('project-added', 'Work');
     expect(emitSpy).toHaveBeenCalledWith('project-added', 'Home');
-    expect(emitSpy).not.toHaveBeenCalledWith('project-added', '');
+    expect(projectManager.get_projects()).toEqual(['Work', 'Home']);
   });
 
   it('should identify removed projects and emit project-removed', () => {

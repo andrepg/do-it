@@ -18,7 +18,6 @@
     <file>ui-handler/doit.js</file>
     <file>ui-handler/popover-sort.js</file>
     <file>ui-handler/sidebar-button.js</file>
-    <file>ui-handler/task.js</file>
     <file>ui-handler/task-group.js</file>
     <file>ui-handler/task-item.js</file>
     <file>ui-handler/task-list.js</file>
@@ -34,6 +33,7 @@
     <file>actions/toast.js</file>
     <file>actions/projects.js</file>
     <file>actions/projects-sidebar.js</file>
+    <file>actions/purge-deleted.js</file>
     <file>actions/index.js</file>
   </gresource>
 </gresources>

@@ -26,7 +26,8 @@ export class ProjectManager extends GObject.Object {
   }
 
   private _store: TaskListStore;
-  private _projects: Set<string> = new Set();
+  private _projects_set: Set<string> = new Set();
+  private _projects_ordered: string[] = [];
   private _handler_id: number;
   private _current_filter: string | null = null;
 
@@ -35,6 +36,10 @@ export class ProjectManager extends GObject.Object {
     this._store = store;
 
     this._handler_id = this._store.connect('items-changed', this._update_projects.bind(this));
+  }
+
+  public get_projects(): string[] {
+    return this._projects_ordered;
   }
 
   public set_filter(project: string | null) {
@@ -53,38 +58,47 @@ export class ProjectManager extends GObject.Object {
   }
 
   private _update_projects() {
-    const currentProjects = new Set<string>();
+    const currentProjectsSet = new Set<string>();
+    const currentProjectsOrdered: string[] = [];
     const n_items = this._store.get_n_items();
 
     for (let i = 0; i < n_items; i++) {
       const task = this._store.get_item(i) as TaskItem;
-      currentProjects.add(task.get_project() || "");
+      const project = task.get_project() || "";
+      if (!currentProjectsSet.has(project)) {
+        currentProjectsSet.add(project);
+        currentProjectsOrdered.push(project);
+      }
     }
 
     // Ensure the default "All tasks" project always exists when completely empty
     if (n_items === 0) {
-      currentProjects.add("");
+      currentProjectsSet.add("");
+      currentProjectsOrdered.push("");
     }
 
     // 1. Find projects to remove (exist in cache but not in current)
-    for (const project of this._projects) {
-      if (!currentProjects.has(project)) {
-        this._projects.delete(project);
+    for (const project of this._projects_set) {
+      if (!currentProjectsSet.has(project)) {
+        this._projects_set.delete(project);
         this.emit('project-removed', project);
       }
     }
 
     // 2. Find projects to add (exist in current but not in cache)
-    for (const project of currentProjects) {
-      if (!this._projects.has(project)) {
-        this._projects.add(project);
+    for (const project of currentProjectsOrdered) {
+      if (!this._projects_set.has(project)) {
+        this._projects_set.add(project);
         this.emit('project-added', project);
       }
     }
+
+    this._projects_ordered = currentProjectsOrdered;
   }
 
   public destroy() {
     this._store.disconnect(this._handler_id);
-    this._projects.clear();
+    this._projects_set.clear();
+    this._projects_ordered = [];
   }
 }

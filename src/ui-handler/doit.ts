@@ -91,6 +91,7 @@ export class DoItMainWindow extends Adw.ApplicationWindow {
     Actions.backup().setup(this);
     Actions.toast().setup(this);
     Actions.newTask(this.taskListStore).setup(this);
+    Actions.purgeDeleted(this.taskListStore).setup(this);
     Actions.sidebar().setup(this);
   }
 

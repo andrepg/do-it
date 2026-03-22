@@ -49,8 +49,24 @@ export const useTaskSort = () => {
         return create_comparator([(item) => (item as TaskItem).to_object().title], strategy);
     }
 
+    const sort_by_project_name = (strategy: SortingStrategy) => {
+        return (a: string, b: string) => {
+            if (a === "") return -1;
+            if (b === "") return 1;
+
+            const isAscending = strategy === SortingStrategy.ascending;
+            const comparison = a.localeCompare(b);
+
+            return isAscending ? comparison : -comparison;
+        }
+    }
+
     const sort_by_project = (strategy: SortingStrategy) => {
-        return create_comparator([(item) => (item as TaskItem).to_object().project], strategy);
+        return (a: TaskItem, b: TaskItem) => {
+            const project_a = a.to_object().project || "";
+            const project_b = b.to_object().project || "";
+            return sort_by_project_name(strategy)(project_a, project_b);
+        }
     }
 
     const sort_by = (field: SortingField, strategy: SortingStrategy) => {
@@ -92,6 +108,7 @@ export const useTaskSort = () => {
         sort_by_status,
         sort_by_title,
         sort_by_project,
+        sort_by_project_name,
 
         persist_sort_preferences,
         retrieve_sort_preferences,

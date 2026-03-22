@@ -5,11 +5,15 @@ import { ProjectManager } from "../utils/project-manager.js";
 import Gtk40 from "gi://Gtk";
 import { SidebarButton } from "../ui-handler/sidebar-button.js";
 
+import { useTaskSort } from "../hooks/tasks.sort.js";
+import { SortingStrategy } from "../app.enums.js";
+
 // Declare _ global for translation
 declare function _(id: string): string;
 
 export default function projectSidebar(projectManager: ProjectManager) {
     const projectSidebarItems: Map<string, SidebarButton> = new Map();
+    const taskSort = useTaskSort();
 
     const create_sidebar_button = (project: string): SidebarButton => new SidebarButton(project);
 
@@ -35,6 +39,28 @@ export default function projectSidebar(projectManager: ProjectManager) {
         }
     }
 
+    const reorder_sidebar = (section: Gtk40.Box) => {
+        const sortedProjects = Array.from(projectSidebarItems.keys())
+            .filter(p => p !== "__all__")
+            .sort(taskSort.sort_by_project_name(SortingStrategy.ascending));
+
+        // Re-append items in order
+        // Note: "__all__" is handled differently or we can just keep it at the top
+        const allTasksBtn = projectSidebarItems.get("__all__");
+        if (allTasksBtn) {
+            section.remove(allTasksBtn);
+            section.append(allTasksBtn);
+        }
+
+        for (const project of sortedProjects) {
+            const sidebarItem = projectSidebarItems.get(project);
+            if (sidebarItem) {
+                section.remove(sidebarItem);
+                section.append(sidebarItem);
+            }
+        }
+    }
+
     const setup = (window: DoItMainWindow) => {
         const sidebarProjectList = window.get_template_child(
             (window.constructor as any).GType,
@@ -45,6 +71,7 @@ export default function projectSidebar(projectManager: ProjectManager) {
 
         projectManager.connect('project-added', (_: unknown, project: string) => {
             add_sidebar_item(sidebarProjectList, project);
+            reorder_sidebar(sidebarProjectList);
             update_active_states(projectManager.get_filter());
         });
 
