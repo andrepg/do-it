@@ -22,18 +22,16 @@ import Gtk from 'gi://Gtk';
 
 import { AppSignals, DoItSettings, WidgetIds } from '../app.enums.js';
 
-import { get_template_path } from '../utils/application.js';
+import { APPLICATION_NAME, get_template_path } from '../utils/application.js';
 import { log } from '../utils/log-manager.js';
-import { get_setting_int, set_setting_int, set_setting_string } from '../utils/settings.js';
 
 import * as Actions from '../actions/index.js';
 
 import { TaskListStore } from './task-list-store.js';
 import { ProjectManager } from '../utils/project-manager.js';
 import { PopoverSort } from './popover-sort.js';
-import { SortingModeSchema } from '../app.enums.js';
-import { useTaskSort } from '../hooks/tasks.sort.js';
 import { TaskForm } from './task-form.js';
+import { useSettings } from '../hooks/settings.js';
 
 const options = {
   GTypeName: "DoItMainWindow",
@@ -60,6 +58,8 @@ const options = {
   }
 };
 
+const settings = useSettings();
+
 /**
  * The main application window for Do It.
  * 
@@ -68,8 +68,6 @@ const options = {
  */
 export class DoItMainWindow extends Adw.ApplicationWindow {
   static readonly LogClass = 'window';
-
-  static readonly GType = DoItMainWindow as unknown as GObject.GType;
 
   taskListStore!: TaskListStore;
   projectManager!: ProjectManager;
@@ -89,26 +87,30 @@ export class DoItMainWindow extends Adw.ApplicationWindow {
   constructor(application: Adw.Application) {
     super({
       application,
-      title: "Do It",
-      defaultWidth: get_setting_int(DoItSettings.windowWidth),
-      defaultHeight: get_setting_int(DoItSettings.windowHeight),
+      title: APPLICATION_NAME,
+      defaultWidth: settings.get_int(DoItSettings.windowWidth),
+      defaultHeight: settings.get_int(DoItSettings.windowHeight),
     });
 
     log(DoItMainWindow.LogClass, "Initializing task store");
     this.taskListStore = new TaskListStore();
     this.taskListStore.load();
 
-
-    this.bottom_sheet = this.get_template_child(DoItMainWindow.GType, WidgetIds.WindowBottomSheet) as Adw.BottomSheet;
-    this.bottom_sheet_content = this.get_template_child(DoItMainWindow.GType, WidgetIds.WindowBottomSheetContent) as Gtk.Box;
-    this.button_sorting = this.get_template_child(DoItMainWindow.GType, WidgetIds.WindowButtonSorting) as Gtk.MenuButton;
-
-    this.button_sorting.set_popover(new PopoverSort(this));
-
+    this.initialize_widgets();
     this.initialize_actions();
     this.initialize_project_manager()
 
     this.connect(AppSignals.SortingChanged, () => this.taskListStore.sort_list());
+  }
+
+  private initialize_widgets() {
+    log(DoItMainWindow.LogClass, "Initializing widgets");
+
+    this.bottom_sheet = this.get_template_child(DoItMainWindow.$gtype, WidgetIds.WindowBottomSheet) as Adw.BottomSheet;
+    this.bottom_sheet_content = this.get_template_child(DoItMainWindow.$gtype, WidgetIds.WindowBottomSheetContent) as Gtk.Box;
+    this.button_sorting = this.get_template_child(DoItMainWindow.$gtype, WidgetIds.WindowButtonSorting) as Gtk.MenuButton;
+
+    this.button_sorting.set_popover(new PopoverSort(this));
   }
 
   private initialize_project_manager(): void {
@@ -143,8 +145,8 @@ export class DoItMainWindow extends Adw.ApplicationWindow {
     const [width, height] = this.get_default_size();
 
     log(DoItMainWindow.LogClass, "Saving window size before closing");
-    set_setting_int(DoItSettings.windowWidth, width);
-    set_setting_int(DoItSettings.windowHeight, height);
+    settings.set_int(DoItSettings.windowWidth, width);
+    settings.set_int(DoItSettings.windowHeight, height);
 
     log(DoItMainWindow.LogClass, "Persisting tasks");
     this.taskListStore.persist_store();

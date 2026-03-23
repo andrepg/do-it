@@ -18,7 +18,7 @@
  */
 import { SortingField, SortingModeSchema, SortingStrategy } from "../app.enums.js";
 import { TaskItem } from "../ui-handler/task-item.js";
-import { get_setting_int, get_setting_string, set_setting_int, set_setting_string } from "../utils/settings.js";
+import { useSettings } from "./settings.js";
 
 interface IExtractorFunction {
     <T>(item: T): unknown;
@@ -34,6 +34,8 @@ export const useTaskSort = () => {
     let current_sort_mode: SortingField = SortingField.byTitle;
 
     let current_sort_strategy: SortingStrategy = SortingStrategy.ascending;
+
+    const settings = useSettings();
 
     const create_comparator = <T>(extractors: IExtractorFunction[], strategy: SortingStrategy) => {
         const isAscending = strategy === SortingStrategy.ascending;
@@ -62,7 +64,7 @@ export const useTaskSort = () => {
     }
 
     const sort_by_date = (strategy: SortingStrategy) => {
-        return create_comparator([(item) => (item as TaskItem).to_object().created_at.valueOf()], strategy);
+        return create_comparator([(item) => -(item as TaskItem).to_object().created_at], strategy);
     }
 
     const sort_by_status = (strategy: SortingStrategy) => {
@@ -112,13 +114,13 @@ export const useTaskSort = () => {
     }
 
     const persist_sort_preferences = () => {
-        set_setting_string(SortingModeSchema.MODE, current_sort_mode);
-        set_setting_int(SortingModeSchema.STRATEGY, current_sort_strategy);
+        settings.set_string(SortingModeSchema.MODE, current_sort_mode);
+        settings.set_int(SortingModeSchema.STRATEGY, current_sort_strategy);
     }
 
     const retrieve_sort_preferences = () => {
-        current_sort_mode = get_setting_string(SortingModeSchema.MODE) as SortingField;
-        current_sort_strategy = get_setting_int(SortingModeSchema.STRATEGY) as SortingStrategy;
+        current_sort_mode = settings.get_string(SortingModeSchema.MODE) as SortingField;
+        current_sort_strategy = settings.get_int(SortingModeSchema.STRATEGY) as SortingStrategy;
 
         return {
             mode: current_sort_mode,

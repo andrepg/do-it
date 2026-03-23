@@ -19,14 +19,6 @@
 import { SortingField, SortingStrategy } from "./app.enums.js";
 
 /**
- * Represents the current sorting configuration.
- */
-export type SortingSettings = {
-    mode: SortingField;
-    strategy: SortingStrategy;
-}
-
-/**
  * Represents a single task entity in the application.
  */
 export interface ITask {

@@ -28,9 +28,6 @@ import { ISortingFieldOption, ISortingStrategyOption } from '../app.types.js';
 import { useTaskSort } from '../hooks/tasks.sort.js';
 import { AppSignals, SortingField, SortingStrategy, WidgetIds } from '../app.enums.js';
 
-// Declare _ global for translation
-declare function _(id: string): string;
-
 const GObjectProperties = {
   GTypeName: "PopoverSort",
   Template: get_template_path('ui/popover-sort.ui'),
@@ -46,8 +43,6 @@ const GObjectProperties = {
  * Populates sorting fields and strategies dynamically from app.static.ts.
  */
 export class PopoverSort extends Gtk40.Popover {
-  static readonly GType = PopoverSort as unknown as GObject.GType;
-
   private _task_sort = useTaskSort();
 
   private toggle_group_sort_field!: Adw1.ToggleGroup;
@@ -63,9 +58,9 @@ export class PopoverSort extends Gtk40.Popover {
   constructor(private window: Gtk40.Window) {
     super();
 
-    this.toggle_group_sort_field = this.get_template_child(PopoverSort.GType, WidgetIds.PopoverSortToggleGroupSortField) as Adw1.ToggleGroup;
-    this.toggle_group_sort_strategy = this.get_template_child(PopoverSort.GType, WidgetIds.PopoverSortToggleGroupSortStrategy) as Adw1.ToggleGroup;
-    this.label_strategy = this.get_template_child(PopoverSort.GType, WidgetIds.PopoverSortLabelStrategy) as Gtk40.Label;
+    this.toggle_group_sort_field = this.get_template_child(PopoverSort.$gtype, WidgetIds.PopoverSortToggleGroupSortField) as Adw1.ToggleGroup;
+    this.toggle_group_sort_strategy = this.get_template_child(PopoverSort.$gtype, WidgetIds.PopoverSortToggleGroupSortStrategy) as Adw1.ToggleGroup;
+    this.label_strategy = this.get_template_child(PopoverSort.$gtype, WidgetIds.PopoverSortLabelStrategy) as Gtk40.Label;
 
     this.initialise();
 
@@ -82,7 +77,7 @@ export class PopoverSort extends Gtk40.Popover {
     const strategyToggle = this.get_current_strategy_toggle();
     const strategy = Number.parseInt(strategyToggle?.get_name() || '0') as SortingStrategy;
 
-    const strategyName = strategy === SortingStrategy.ascending ? _("ascending") : _("descending");
+    const strategyName = strategy === SortingStrategy.ascending ? _("Ascending") : _("Descending");
     this.label_strategy.set_label(strategyName);
   }
 

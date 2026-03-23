@@ -52,8 +52,6 @@ const TaskFormProperties = {
  * A form component to edit task details.
  */
 export class TaskForm extends Gtk.Box {
-    static readonly GType = TaskForm as unknown as GObject.GType;
-
     static readonly LogClass = 'task-form';
 
     static {
@@ -95,13 +93,13 @@ export class TaskForm extends Gtk.Box {
     private init_widgets() {
         log(TaskForm.LogClass, 'Initializing widget instances');
 
-        this.btn_save = this.get_template_child(TaskForm.GType, WidgetIds.TaskFormBtnSave) as Gtk.Button;
-        this.btn_discard = this.get_template_child(TaskForm.GType, WidgetIds.TaskFormBtnDiscard) as Gtk.Button;
-        this.btn_delete = this.get_template_child(TaskForm.GType, WidgetIds.TaskFormBtnDelete) as Gtk.Button;
+        this.btn_save = this.get_template_child(TaskForm.$gtype, WidgetIds.TaskFormBtnSave) as Gtk.Button;
+        this.btn_discard = this.get_template_child(TaskForm.$gtype, WidgetIds.TaskFormBtnDiscard) as Gtk.Button;
+        this.btn_delete = this.get_template_child(TaskForm.$gtype, WidgetIds.TaskFormBtnDelete) as Gtk.Button;
 
-        this.entry_title = this.get_template_child(TaskForm.GType, WidgetIds.TaskFormEntryTitle) as Adw.EntryRow;
-        this.entry_project = this.get_template_child(TaskForm.GType, WidgetIds.TaskFormEntryProject) as Adw.EntryRow;
-        this.check_done = this.get_template_child(TaskForm.GType, WidgetIds.TaskFormCheckDone) as Gtk.CheckButton;
+        this.entry_title = this.get_template_child(TaskForm.$gtype, WidgetIds.TaskFormEntryTitle) as Adw.EntryRow;
+        this.entry_project = this.get_template_child(TaskForm.$gtype, WidgetIds.TaskFormEntryProject) as Adw.EntryRow;
+        this.check_done = this.get_template_child(TaskForm.$gtype, WidgetIds.TaskFormCheckDone) as Gtk.CheckButton;
     }
 
     public setup(store: TaskListStore, projectManager: ProjectManager): this {

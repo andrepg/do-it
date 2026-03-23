@@ -19,8 +19,8 @@
 import Adw from 'gi://Adw';
 import Gio from 'gi://Gio';
 import GLib from 'gi://GLib';
-import GObject from 'gi://GObject';
 import { ActionNames, AppSignals, WidgetIds } from '../app.enums.js';
+import { DoItMainWindow } from '../ui-handler/doit.js';
 
 /**
  * Displays an overlay toast on the currently active window.
@@ -39,7 +39,7 @@ export const showToast = (message: string): void => {
 
     // Retrieve the overlay from the window's template children
     const toast_overlay = window.get_template_child(
-        window.constructor as unknown as GObject.GType,
+        DoItMainWindow.$gtype,
         WidgetIds.WindowToastOverlay
     ) as Adw.ToastOverlay | null;
 

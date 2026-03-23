@@ -16,7 +16,7 @@
  *
  * SPDX-License-Identifier: GPL-3.0-or-later
  */
-import type { DoItMainWindow } from '../ui-handler/doit.js';
+import { DoItMainWindow } from '../ui-handler/doit.js';
 
 import Adw from 'gi://Adw';
 import Gtk from 'gi://Gtk';
@@ -104,7 +104,7 @@ export default function projects(store: TaskListStore, projectManager: ProjectMa
      */
     const setup = (window: DoItMainWindow) => {
         const listContainer = window.get_template_child(
-            (window.constructor as any).GType,
+            DoItMainWindow.$gtype,
             WidgetIds.WindowListContainer
         ) as Gtk.Box;
 

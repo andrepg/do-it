@@ -27,7 +27,7 @@ import { ActionNames, AppSignals, WidgetIds } from "../app.enums.js";
  * Returns null and logs an error if the widget is not found.
  */
 const getSplitView = (window: DoItMainWindow): Adw.NavigationSplitView | null => {
-    const splitView = window.get_template_child(DoItMainWindow.GType, WidgetIds.WindowSplitView) as Adw.NavigationSplitView;
+    const splitView = window.get_template_child(DoItMainWindow.$gtype, WidgetIds.WindowSplitView) as Adw.NavigationSplitView;
 
     if (!splitView) {
         console.error('[action] sidebar: failed to get split_view object');
@@ -42,7 +42,7 @@ const getSplitView = (window: DoItMainWindow): Adw.NavigationSplitView | null =>
  * Returns null and logs an error if the widget is not found.
  */
 const getOpenButton = (window: DoItMainWindow): Gtk.Button | null => {
-    const button = window.get_template_child(DoItMainWindow.GType, WidgetIds.WindowButtonOpenSidebar) as Gtk.Button;
+    const button = window.get_template_child(DoItMainWindow.$gtype, WidgetIds.WindowButtonOpenSidebar) as Gtk.Button;
 
     if (!button) {
         console.error('[action] sidebar: failed to get button_open_sidebar');

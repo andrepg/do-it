@@ -34,7 +34,7 @@ export const newTask = (store: TaskListStore) => {
     let fieldNewTask: Gtk40.Entry;
 
     const get_widget = <T>(window: DoItMainWindow, id: string): T => window.get_template_child(
-        DoItMainWindow.GType,
+        DoItMainWindow.$gtype,
         id
     ) as unknown as T
 

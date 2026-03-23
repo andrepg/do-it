@@ -1,4 +1,5 @@
 const APPLICATION_ID = '@APPLICATION_ID@';
+const APPLICATION_NAME = '@APPLICATION_NAME@';
 const APPLICATION_RES = '@APPLICATION_RES@';
 const IS_DEVEL = '@is_devel@' === 'true';
 
@@ -21,6 +22,7 @@ function is_development_mode() {
 export {
   APPLICATION_ID,
   APPLICATION_RES,
+  APPLICATION_NAME,
   IS_DEVEL,
   get_resource_path,
   get_application_id,

@@ -152,8 +152,8 @@ export class TaskItem extends Adw.ActionRow {
   }
 
   private _init_widgets() {
-    this.task_delete = this.get_template_child(TaskItem as unknown as GObject.GType, WidgetIds.TaskItemTaskDelete) as Gtk.Button;
-    this.task_done = this.get_template_child(TaskItem as unknown as GObject.GType, WidgetIds.TaskItemTaskDone) as Gtk.CheckButton;
+    this.task_delete = this.get_template_child(TaskItem.$gtype, WidgetIds.TaskItemTaskDelete) as Gtk.Button;
+    this.task_done = this.get_template_child(TaskItem.$gtype, WidgetIds.TaskItemTaskDone) as Gtk.CheckButton;
   }
 
   private _update_interface(): void {

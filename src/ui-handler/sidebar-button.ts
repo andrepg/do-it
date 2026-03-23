@@ -21,7 +21,6 @@ import GObject from 'gi://GObject';
 
 import { get_template_path } from '../utils/application.js';
 import { CssClasses, WidgetIds } from '../app.enums.js';
-import Adw1 from 'gi://Adw';
 
 const GObjectProperties = {
   GTypeName: "SidebarButton",
@@ -40,9 +39,6 @@ const GObjectProperties = {
     WidgetIds.SidebarButtonIcon,
   ]
 };
-
-// Declare _ global for translation
-declare function _(id: string): string;
 
 /**
  * A custom sidebar button representing a specific project or "All tasks".
@@ -68,8 +64,8 @@ export class SidebarButton extends Gtk40.Button {
     super();
 
     this.project_name = project;
-    this.button_content = this.get_template_child(SidebarButton as unknown as GObject.GType, WidgetIds.SidebarButtonContent) as Gtk40.Label;
-    this.button_icon = this.get_template_child(SidebarButton as unknown as GObject.GType, WidgetIds.SidebarButtonIcon) as Gtk40.Image;
+    this.button_content = this.get_template_child(SidebarButton.$gtype, WidgetIds.SidebarButtonContent) as Gtk40.Label;
+    this.button_icon = this.get_template_child(SidebarButton.$gtype, WidgetIds.SidebarButtonIcon) as Gtk40.Image;
 
     this.button_icon.set_from_icon_name(btnIcon);
     this.button_content.set_text(btnTitle);

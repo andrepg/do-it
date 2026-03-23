@@ -17,7 +17,7 @@
  * SPDX-License-Identifier: GPL-3.0-or-later
  */
 import Adw from "gi://Adw";
-import type { DoItMainWindow } from "../ui-handler/doit.js";
+import { DoItMainWindow } from "../ui-handler/doit.js";
 import { TaskListStore } from "../ui-handler/task-list-store.js";
 import { ProjectManager } from "../utils/project-manager.js";
 import Gtk40 from "gi://Gtk";
@@ -107,12 +107,12 @@ export default function projectSidebar(projectManager: ProjectManager) {
      */
     const setup = (window: DoItMainWindow) => {
         const sidebarProjectList = window.get_template_child(
-            (window.constructor as any).GType,
+            DoItMainWindow.$gtype,
             WidgetIds.WindowSidebarProjectList
         ) as Gtk40.Box;
 
         const splitView = window.get_template_child(
-            (window.constructor as any).GType,
+            DoItMainWindow.$gtype,
             WidgetIds.WindowSplitView
         ) as Adw.NavigationSplitView;
 
