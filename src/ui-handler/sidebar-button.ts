@@ -19,13 +19,15 @@
 import Gtk40 from 'gi://Gtk';
 import GObject from 'gi://GObject';
 
-import { get_template_path } from '../utils/application.js';
-import { CssClasses, WidgetIds } from '../app.enums.js';
-import { AppLocale } from '../app.strings.js';
+import { CssClasses, WidgetIds } from '~/app.enums.js';
+import { AppLocale } from '~/app.strings.js';
+import { SymbolicIcons } from '~/app.static.js';
+
+import { get_template_path } from '~/utils/application.js';
 
 const GObjectProperties = {
   GTypeName: 'SidebarButton',
-  Template: get_template_path('ui/sidebar-button.ui'),
+  Template: get_template_path('sidebar-button.ui'),
   Properties: {
     project: GObject.ParamSpec.string(
       'project',
@@ -57,8 +59,7 @@ export class SidebarButton extends Gtk40.Button {
 
   constructor(project: string) {
     const btnTitle = project === '' ? AppLocale.tasks.list.noProject : project;
-    // TODO Move this to enum
-    const btnIcon = project === '' ? 'task-due-symbolic' : 'folder-symbolic';
+    const btnIcon = project === '' ? SymbolicIcons.sidebar.task_due : SymbolicIcons.sidebar.folder;
 
     super();
 
@@ -82,21 +83,22 @@ export class SidebarButton extends Gtk40.Button {
    * @param active True if this project is currently selected, False otherwise.
    */
   public set_active(active: boolean) {
-    const ICONS = {
-      due_tasks: 'task-due-symbolic',
-      folder: 'folder-symbolic',
-      folder_open: 'folder-open-symbolic',
-    };
+    this.set_button_icon(active);
+    this.set_button_active_state(active);
+  }
 
-    const default_icon = this.project_name === '' ? ICONS.due_tasks : ICONS.folder;
-    const active_icon = this.project_name === '' ? ICONS.due_tasks : ICONS.folder_open;
+  private set_button_icon(isActive: boolean) {
+    let icon = SymbolicIcons.sidebar.folder;
 
-    if (active) {
-      this.add_css_class(CssClasses.SuggestedAction);
-    } else {
-      this.remove_css_class(CssClasses.SuggestedAction);
-    }
+    if (isActive) icon = SymbolicIcons.sidebar.folder_open;
 
-    this.button_icon.set_from_icon_name(active ? active_icon : default_icon);
+    if (this.project_name === '') icon = SymbolicIcons.sidebar.task_due;
+
+    this.button_icon.set_from_icon_name(icon);
+  }
+
+  private set_button_active_state(isActive: boolean) {
+    if (isActive) this.add_css_class(CssClasses.SuggestedAction);
+    else this.remove_css_class(CssClasses.SuggestedAction);
   }
 }

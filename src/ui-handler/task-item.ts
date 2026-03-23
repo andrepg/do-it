@@ -20,17 +20,18 @@ import Adw from 'gi://Adw';
 import GObject from 'gi://GObject';
 import Gtk from 'gi://Gtk';
 
-import { AppSignals, WidgetIds } from '../app.enums.js';
-import { AppLocale } from '../app.strings.js';
-import { TaskDeleteButtonIcon, TaskEntryStyle } from '../app.static.js';
-import { ITask } from '../app.types.js';
+import { showToast } from '~/actions/toast.js';
 
-import { showToast } from '../actions/toast.js';
-import { get_template_path } from '../utils/application.js';
+import { AppSignals, WidgetIds } from '~/app.enums.js';
+import { AppLocale } from '~/app.strings.js';
+import { TaskDeleteButtonIcon, TaskEntryStyle } from '~/app.static.js';
+import { ITask } from '~/app.types.js';
+
+import { get_template_path } from '~/utils/application.js';
 
 const TaskItemProperties = {
   GTypeName: 'TaskItem',
-  Template: get_template_path('ui/task.ui'),
+  Template: get_template_path('task.ui'),
   Properties: {
     taskId: GObject.ParamSpec.int(
       'taskId',

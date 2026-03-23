@@ -19,19 +19,25 @@
 import Adw from 'gi://Adw';
 import GObject from 'gi://GObject';
 import Gtk from 'gi://Gtk';
-import { get_template_path } from '../utils/application.js';
-import { TaskListStore } from './task-list-store.js';
-import { ProjectManager } from '../utils/project-manager.js';
+
+import { showToast } from '~/actions/toast.js';
+
+import { AppSignals, WidgetIds } from '~/app.enums.js';
+import { AppLocale } from '~/app.strings.js';
+import { ITask } from '~/app.types.js';
+
+import { get_template_path } from '~/utils/application.js';
+import { log } from '~/utils/log-manager.js';
+
 import { TaskItem } from './task-item.js';
-import { AppSignals, WidgetIds } from '../app.enums.js';
-import { showToast } from '../actions/toast.js';
-import { log } from '../utils/log-manager.js';
-import { ITask } from '../app.types.js';
-import { AppLocale } from '../app.strings.js';
+import { TaskListStore } from './task-list-store.js';
+
+import { ProjectManager } from '~/utils/project-manager.js';
+
 
 const TaskFormProperties = {
   GTypeName: 'TaskForm',
-  Template: get_template_path('ui/task-form.ui'),
+  Template: get_template_path('task-form.ui'),
   InternalChildren: [
     WidgetIds.TaskFormEntryTitle,
     WidgetIds.TaskFormEntryProject,
@@ -159,7 +165,7 @@ export class TaskForm extends Gtk.Box {
   /**
    * Setup project autocomplete on project entry
    */
-  private setup_project_autocomplete(): void {}
+  private setup_project_autocomplete(): void { }
 
   /*
 

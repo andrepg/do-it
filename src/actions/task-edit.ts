@@ -20,10 +20,10 @@ import Gio from 'gi://Gio';
 import GLib from 'gi://GLib';
 import Adw1 from 'gi://Adw';
 
-import { ActionNames, AppSignals, WidgetIds } from '../app.enums.js';
-import { DoItMainWindow } from '../ui-handler/doit.js';
-import { TaskForm } from '../ui-handler/task-form.js';
-import { log } from '../utils/log-manager.js';
+import { ActionNames, AppSignals, WidgetIds } from '~/app.enums.js';
+import { DoItMainWindow } from '~/ui-handler/doit.js';
+import { TaskForm } from '~/ui-handler/task-form.js';
+import { log } from '~/utils/log-manager.js';
 
 /**
  * Action to handle task editing via the bottom sheet.

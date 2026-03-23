@@ -21,17 +21,19 @@ import GObject from 'gi://GObject';
 
 import Adw1 from 'gi://Adw';
 
-import { get_template_path } from '../utils/application.js';
-import { SortingFieldOptions, SortingModeOptions } from '../app.static.js';
-import { ISortingFieldOption, ISortingStrategyOption } from '../app.types.js';
+import { AppSignals, SortingField, SortingStrategy, WidgetIds } from '~/app.enums.js';
+import { ISortingFieldOption, ISortingStrategyOption } from '~/app.types.js';
+
+import { get_template_path } from '~/utils/application.js';
+
+import { SortingFieldOptions, SortingModeOptions } from '~/app.static.js';
 
 import { useTaskSort } from '../hooks/tasks.sort.js';
-import { AppSignals, SortingField, SortingStrategy, WidgetIds } from '../app.enums.js';
-import { AppLocale } from '../app.strings.js';
+import { AppLocale } from '~/app.strings.js';
 
 const GObjectProperties = {
   GTypeName: 'PopoverSort',
-  Template: get_template_path('ui/popover-sort.ui'),
+  Template: get_template_path('popover-sort.ui'),
   InternalChildren: [
     WidgetIds.PopoverSortToggleGroupSortField,
     WidgetIds.PopoverSortToggleGroupSortStrategy,

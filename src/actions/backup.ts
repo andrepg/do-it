@@ -19,11 +19,12 @@
 import Adw from 'gi://Adw';
 import Gio from 'gi://Gio';
 import Gtk from 'gi://Gtk';
-import { log } from '../utils/log-manager.js';
-import { Persistence } from '../utils/persistence.js';
-import { ITask } from '../app.types.js';
-import { ActionNames, AppSignals } from '../app.enums.js';
-import { AppLocale } from '../app.strings.js';
+import { ActionNames, AppSignals } from '~/app.enums.js';
+import { ITask } from '~/app.types.js';
+import { AppLocale } from '~/app.strings.js';
+
+import { log } from '~/utils/log-manager.js';
+import { Persistence } from '~/utils/persistence.js';
 
 /**
  * Provides actions for exporting and importing the task database.

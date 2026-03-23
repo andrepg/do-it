@@ -18,8 +18,10 @@
  */
 import Adw1 from 'gi://Adw';
 import Gio from 'gi://Gio';
-import { TaskListStore } from '../ui-handler/task-list-store.js';
-import { ActionNames, AppSignals } from '../app.enums.js';
+
+import { ActionNames, AppSignals } from '~/app.enums.js';
+
+import { TaskListStore } from '~/ui-handler/task-list-store.js';
 
 /**
  * Provides an action to permanently remove soft-deleted tasks from the database.

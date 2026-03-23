@@ -11,6 +11,9 @@
         "rootDir": ".",
         "allowJs": true,
         "pretty": true,
+        "paths": {
+            "~/*": ["./src/*"]
+        },
         "types": [
             "@girs/gjs",
             "@girs/adw-1",

@@ -19,8 +19,8 @@
 import Adw from 'gi://Adw';
 import Gio from 'gi://Gio';
 import GLib from 'gi://GLib';
-import { ActionNames, AppSignals, WidgetIds } from '../app.enums.js';
-import { DoItMainWindow } from '../ui-handler/doit.js';
+import { ActionNames, AppSignals, WidgetIds } from '~/app.enums.js';
+import { DoItMainWindow } from '~/ui-handler/doit.js';
 
 /**
  * Displays an overlay toast on the currently active window.

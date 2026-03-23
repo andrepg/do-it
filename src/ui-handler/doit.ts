@@ -20,22 +20,24 @@ import Adw from 'gi://Adw';
 import GObject from 'gi://GObject';
 import Gtk from 'gi://Gtk';
 
-import { AppSignals, DoItSettings, WidgetIds } from '../app.enums.js';
+import { AppSignals, DoItSettings, WidgetIds } from '~/app.enums.js';
 
-import { APPLICATION_NAME, get_template_path } from '../utils/application.js';
-import { log } from '../utils/log-manager.js';
+import * as Actions from '~/actions/index.js';
 
-import * as Actions from '../actions/index.js';
+import { APPLICATION_NAME, get_template_path } from '~/utils/application.js';
+import { log } from '~/utils/log-manager.js';
+
+
+import { useSettings } from '~/hooks/settings.js';
+import { ProjectManager } from '~/utils/project-manager.js';
 
 import { TaskListStore } from './task-list-store.js';
-import { ProjectManager } from '../utils/project-manager.js';
-import { PopoverSort } from './popover-sort.js';
 import { TaskForm } from './task-form.js';
-import { useSettings } from '../hooks/settings.js';
+import { PopoverSort } from './popover-sort.js';
 
 const options = {
   GTypeName: 'DoItMainWindow',
-  Template: get_template_path('ui/window-v2.ui'),
+  Template: get_template_path('window-v2.ui'),
   InternalChildren: [
     WidgetIds.WindowToastOverlay,
     WidgetIds.WindowSplitView,

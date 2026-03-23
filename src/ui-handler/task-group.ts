@@ -20,16 +20,17 @@ import Adw from 'gi://Adw';
 import GObject from 'gi://GObject';
 import Gtk from 'gi://Gtk';
 
+import { AppLocale } from '~/app.strings.js';
+
+import { get_template_path } from '~/utils/application.js';
+
+import { TaskItem } from './task-item.js';
 import { TaskList } from './task-list.js';
 import type { TaskListStore } from './task-list-store.js';
-import { TaskItem } from './task-item.js';
-
-import { get_template_path } from '../utils/application.js';
-import { AppLocale } from '../app.strings.js';
 
 const GObjectProperties = {
   GTypeName: 'TaskGroup',
-  Template: get_template_path('ui/task-group.ui'),
+  Template: get_template_path('task-group.ui'),
 };
 
 /**

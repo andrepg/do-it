@@ -18,9 +18,11 @@
  */
 import GObject from 'gi://GObject';
 import GLib from 'gi://GLib';
-import { TaskListStore } from '../ui-handler/task-list-store.js';
-import { TaskItem } from '../ui-handler/task-item.js';
-import { AppSignals } from '../app.enums.js';
+
+import { AppSignals } from '~/app.enums.js';
+
+import { TaskItem } from '~/ui-handler/task-item.js';
+import { TaskListStore } from '~/ui-handler/task-list-store.js';
 
 /**
  * Manages the dynamic discovery of task groups based on projects in the store.

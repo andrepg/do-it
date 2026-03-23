@@ -20,13 +20,13 @@ import GObject from 'gi://GObject';
 import Gtk from 'gi://Gtk';
 import Gio from 'gi://Gio';
 
-import { AppSignals } from '../app.enums.js';
-import { get_template_path } from '../utils/application.js';
+import { AppSignals } from '~/app.enums.js';
+import { get_template_path } from '~/utils/application.js';
 import { TaskItem } from './task-item.js';
 
 const GObjectProperties = {
   GTypeName: 'TaskList',
-  Template: get_template_path('ui/task-list.ui'),
+  Template: get_template_path('task-list.ui'),
   Signals: {
     [AppSignals.ItemsChanged]: {
       param_types: [],

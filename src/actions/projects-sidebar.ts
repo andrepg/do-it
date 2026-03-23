@@ -18,13 +18,13 @@
  */
 import Gtk40 from 'gi://Gtk';
 
-import { AppSignals, SortingStrategy, WidgetIds } from '../app.enums.js';
-import { AppLocale } from '../app.strings.js';
+import { AppSignals, SortingStrategy, WidgetIds } from '~/app.enums.js';
+import { AppLocale } from '~/app.strings.js';
 
-import { DoItMainWindow } from '../ui-handler/doit.js';
-import { SidebarButton } from '../ui-handler/sidebar-button.js';
+import { DoItMainWindow } from '~/ui-handler/doit.js';
+import { SidebarButton } from '~/ui-handler/sidebar-button.js';
 
-import { ProjectManager } from '../utils/project-manager.js';
+import { ProjectManager } from '~/utils/project-manager.js';
 import { useTaskSort } from '../hooks/tasks.sort.js';
 
 /**

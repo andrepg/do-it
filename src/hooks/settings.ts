@@ -18,7 +18,7 @@
  */
 import Gio20 from 'gi://Gio';
 
-import { APPLICATION_ID } from '../utils/application.js';
+import { APPLICATION_ID } from '~/utils/application.js';
 
 export const useSettings = () => {
   const settings: Gio20.Settings = new Gio20.Settings({ schemaId: APPLICATION_ID });

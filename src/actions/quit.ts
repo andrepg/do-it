@@ -18,7 +18,8 @@
  */
 import Adw from 'gi://Adw';
 import Gio from 'gi://Gio';
-import { ActionNames, AppSignals } from '../app.enums.js';
+
+import { ActionNames, AppSignals } from '~/app.enums.js';
 
 /**
  * Provides the application quit action and keyboard shortcut bindings.

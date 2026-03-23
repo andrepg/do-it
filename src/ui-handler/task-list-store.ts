@@ -20,11 +20,14 @@ import GObject from 'gi://GObject';
 import Gio from 'gi://Gio';
 import GLib from 'gi://GLib';
 
-import { Persistence } from '../utils/persistence.js';
-import { AppSignals, ActionNames } from '../app.enums.js';
-import { ITask } from '../app.types.js';
-import { log } from '../utils/log-manager.js';
-import { useTaskSort } from '../hooks/tasks.sort.js';
+import { useTaskSort } from '~/hooks/tasks.sort.js';
+
+import { ActionNames, AppSignals } from '~/app.enums.js';
+import { ITask } from '~/app.types.js';
+
+import { log } from '~/utils/log-manager.js';
+import { Persistence } from '~/utils/persistence.js';
+
 import { TaskItem } from './task-item.js';
 import { DoItMainWindow } from './doit.js';
 

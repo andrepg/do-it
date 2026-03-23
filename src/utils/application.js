@@ -12,7 +12,7 @@ function get_resource_path() {
 }
 
 function get_template_path(path) {
-  return `resource://${APPLICATION_RES}/${path}`;
+  return `resource://${APPLICATION_RES}/ui/${path}`;
 }
 
 function is_development_mode() {
