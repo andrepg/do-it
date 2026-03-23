@@ -22,6 +22,7 @@ import backup from './backup.js';
 import sidebar from './sidebar.js';
 import toast from './toast.js';
 import projects from './projects.js';
+import shortcuts from './shortcuts.js';
 import projectSidebar from './projects-sidebar.js';
 import purgeDeleted from './purge-deleted.js';
 import taskEdit from './task-edit.js';
@@ -29,4 +30,4 @@ import taskEdit from './task-edit.js';
 export { newTask } from './new-task.js';
 export { showToast } from './toast.js';
 
-export { about, quit, backup, sidebar, toast, projects, projectSidebar, purgeDeleted, taskEdit };
+export { about, quit, shortcuts, backup, sidebar, toast, projects, projectSidebar, purgeDeleted, taskEdit };

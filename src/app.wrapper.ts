@@ -49,6 +49,7 @@ export class DoitApplication extends Adw.Application {
     log(DoitApplication.LogClass, 'Initializing application actions');
 
     Actions.about().setup(this);
+    Actions.shortcuts().setup(this);
     Actions.quit().setup(this);
   }
 

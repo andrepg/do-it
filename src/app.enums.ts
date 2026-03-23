@@ -82,6 +82,7 @@ export enum ActionNames {
   // Application wide general actions
   About = 'about',
   Quit = 'quit',
+  Shortcuts = 'shortcuts',
 
   // Background jobs or management
   ExportDatabase = 'export_database',

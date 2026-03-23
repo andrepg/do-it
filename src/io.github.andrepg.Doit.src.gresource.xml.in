@@ -38,6 +38,7 @@
     <file>actions/projects.js</file>
     <file>actions/projects-sidebar.js</file>
     <file>actions/purge-deleted.js</file>
+    <file>actions/shortcuts.js</file>
     <file>actions/index.js</file>
   </gresource>
 </gresources>

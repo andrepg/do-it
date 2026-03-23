@@ -26,11 +26,11 @@ import { DoItMainWindow } from '~/ui-handler/doit.js';
  * Retrieves the split_view template child from the window.
  * Returns null and logs an error if the widget is not found.
  */
-const getSplitView = (window: DoItMainWindow): Adw.NavigationSplitView | null => {
+const getSplitView = (window: DoItMainWindow): Adw.OverlaySplitView | null => {
   const splitView = window.get_template_child(
     DoItMainWindow.$gtype,
     WidgetIds.WindowSplitView,
-  ) as Adw.NavigationSplitView;
+  ) as Adw.OverlaySplitView;
 
   if (!splitView) {
     console.error('[action] sidebar: failed to get split_view object');
@@ -41,56 +41,25 @@ const getSplitView = (window: DoItMainWindow): Adw.NavigationSplitView | null =>
 };
 
 /**
- * Initializes global actions required for opening and collapsing the main application sidebar.
+ * Initializes the win.open-sidebar action which toggles the sidebar panel.
+ *
+ * AdwOverlaySplitView handles the overlay behavior automatically:
+ * - On wide screens (>500sp) the sidebar is visible by default (set via breakpoint).
+ * - On narrow screens the sidebar is hidden and toggled on demand via this action.
+ * - Clicking outside the sidebar on narrow screens closes it automatically.
  */
 export default function sidebar() {
-  /**
-   * Action: win.open-sidebar
-   * Toggles or shows the sidebar panel.
-   */
-  const setupOpen = (window: DoItMainWindow) => {
+  const setup = (window: DoItMainWindow) => {
     const action = new Gio.SimpleAction({ name: ActionNames.OpenSidebar });
 
     action.connect(AppSignals.Activate, () => {
       const splitView = getSplitView(window);
       if (splitView) {
-        // Toggle collapsed state for Desktop
-        splitView.set_collapsed(!splitView.collapsed);
+        splitView.set_show_sidebar(!splitView.show_sidebar);
       }
     });
 
     window.add_action(action);
-  };
-
-  /**
-   * Action: win.collapse-sidebar
-   * Hides the sidebar panel, going back to content tasks.
-   */
-  const setupCollapse = (window: DoItMainWindow) => {
-    const action = new Gio.SimpleAction({ name: ActionNames.CollapseSidebar });
-
-    action.connect(AppSignals.Activate, () => {
-      const splitView = getSplitView(window);
-      if (splitView) {
-        splitView.set_collapsed(true); // Desktop
-      }
-    });
-
-    window.add_action(action);
-  };
-
-  /**
-   * Bootstraps sidebar actions and dynamic UI visibility behaviors.
-   */
-  const setup = (window: DoItMainWindow) => {
-    setupOpen(window);
-    setupCollapse(window);
-
-    // Ensure we start showing the tasks content by default
-    const splitView = getSplitView(window);
-    if (splitView) {
-      splitView.set_collapsed(true);
-    }
   };
 
   return {
