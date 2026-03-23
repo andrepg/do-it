@@ -65,7 +65,7 @@
                       </object>
                     </property>
 
-                    <!-- Start: Sidebar toggle (only visible on narrow screens) + New task -->
+                    <!-- Start: Sidebar toggle + New task -->
                     <child type="start">
                       <object class="GtkBox">
                         <property name="spacing">4</property>
@@ -74,8 +74,6 @@
                             <property name="action-name">win.open-sidebar</property>
                             <property name="icon-name">sidebar-show-symbolic</property>
                             <property name="tooltip-text" translatable="yes">Open sidebar</property>
-                            <!-- Hidden by default on wide screens; breakpoint shows it on narrow screens -->
-                            <property name="visible">False</property>
                           </object>
                         </child>
                         <child>
@@ -183,7 +181,6 @@
       <object class="AdwBreakpoint">
         <condition>max-width: 500sp</condition>
         <setter object="split_view" property="show-sidebar">False</setter>
-        <setter object="button_open_sidebar" property="visible">True</setter>
       </object>
     </child>
   </template>
