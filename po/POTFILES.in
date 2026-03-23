@@ -7,7 +7,6 @@
 src/app.static.js
 src/app.strings.js
 
-
 # Interface handlers
 src/ui-handler/doit.js
 src/ui-handler/sidebar-button.js

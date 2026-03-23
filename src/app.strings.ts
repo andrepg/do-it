@@ -19,6 +19,8 @@
 
 import { SortingField, SortingStrategy } from './app.enums.js';
 
+pkg.initGettext();
+
 const SortingStrings = {
   [SortingStrategy.ascending]: {
     [SortingField.byDate]: _('Older to newer'),

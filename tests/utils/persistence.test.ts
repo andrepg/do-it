@@ -1,20 +1,26 @@
 import { describe, it, expect, vi, beforeEach } from 'vitest';
-import { Persistence } from '../../src/utils/persistence.js';
-import Gio from 'gi://Gio';
 
-// Mocking Gio.File more specifically for this test
-vi.mock('gi://Gio', () => {
-  return {
-    default: {
-      File: {
-        new_for_path: vi.fn(),
-      },
-      FileCreateFlags: {
-        PRIVATE: 1,
-      },
+// Provide mocks for GI protocols BEFORE any other imports to catch ESM loader
+vi.mock('gi://GLib', () => ({
+  default: {
+    get_user_data_dir: () => '/home/test/.local/share/doit',
+    build_filenamev: (args: string[]) => args.join('/'),
+  },
+}));
+
+vi.mock('gi://Gio', () => ({
+  default: {
+    File: {
+      new_for_path: vi.fn(),
     },
-  };
-});
+    FileCreateFlags: {
+      PRIVATE: 1,
+    },
+  },
+}));
+
+import Gio from 'gi://Gio';
+import { Persistence } from '../../src/utils/persistence.js';
 
 describe('Persistence', () => {
   let persistence: Persistence;
@@ -25,13 +31,15 @@ describe('Persistence', () => {
 
     mockFile = {
       get_path: vi.fn().mockReturnValue('/home/test/.local/share/doit/data.json'),
+      query_exists: vi.fn().mockReturnValue(true),
       make_directory_with_parents: vi.fn(),
       create: vi.fn(),
       load_contents: vi.fn().mockReturnValue([null, new TextEncoder().encode('[]')]),
       replace_contents: vi.fn(),
     };
 
-    (Gio.File.new_for_path as any).mockReturnValue(mockFile);
+    ((Gio as any).File.new_for_path as any).mockReturnValue(mockFile);
+    
     persistence = new Persistence();
   });
 
@@ -62,6 +70,7 @@ describe('Persistence', () => {
   });
 
   it('should create database directory if it does not exist', () => {
+    mockFile.query_exists.mockReturnValue(false);
     persistence.read_database();
     expect(mockFile.make_directory_with_parents).toHaveBeenCalled();
   });

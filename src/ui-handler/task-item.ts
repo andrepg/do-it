@@ -170,14 +170,19 @@ export class TaskItem extends Adw.ActionRow {
   }
 
   private _update_widget_style(): void {
-    const is_disabled = this._deleted || this.task_done.get_active();
+    const is_done = this.task_done.get_active();
+    const is_deleted = this._deleted;
 
-    const opacity = is_disabled ? TaskEntryStyle.disabled.opacity : TaskEntryStyle.enabled.opacity;
-    const markup = is_disabled ? TaskEntryStyle.disabled.markup : TaskEntryStyle.enabled.markup;
+    let style = TaskEntryStyle.enabled;
 
-    this.set_use_markup(true);
-    this.set_opacity(opacity);
-    this.set_title(markup.format(this._raw_title));
+    if (is_deleted) {
+      style = TaskEntryStyle.deleted;
+    } else if (is_done) {
+      style = TaskEntryStyle.done;
+    }
+
+    this.set_opacity(style.opacity);
+    this.set_title(this._raw_title);
   }
 
   private _update_widget_interface(): void {

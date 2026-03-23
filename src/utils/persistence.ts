@@ -23,35 +23,34 @@ import Gio from 'gi://Gio';
  * Handles reading and writing application data to a local JSON file.
  */
 export class Persistence {
-  private filename: string = 'data.json';
-  private databaseDir: string;
-  private databaseFile: Gio.File;
-  private databaseFilePath: string | null;
+  private databaseFileName = 'data.json';
+
+  private encoder = new TextEncoder();
+  private decoder = new TextDecoder();
+
+  private databaseLocation: Gio.File = Gio.File.new_for_path(GLib.get_user_data_dir() as string);
+
+  private databaseFilePath = GLib.build_filenamev([
+    this.databaseLocation.get_path() as string,
+    this.databaseFileName
+  ]) as string;
+
+  private databaseFileHandler = Gio.File.new_for_path(this.databaseFilePath);
 
   constructor() {
-    this.databaseDir = GLib.get_user_data_dir() as string;
-
-    const dbPath = GLib.build_filenamev([this.databaseDir, this.filename]) as string;
-
-    this.databaseFile = Gio.File.new_for_path(dbPath);
-    this.databaseFilePath = this.databaseFile.get_path();
+    this.check_database_existence();
   }
 
   /**
    * Ensures that the database directory and file exist, creating them if necessary.
    */
-  create_database() {
-    try {
-      Gio.File.new_for_path(this.databaseDir).make_directory_with_parents(null);
-    } catch {
-      console.error('[persistence] Error creating database directory');
-    }
-
-    if (this.databaseFilePath) {
+  check_database_existence() {
+    if (!this.databaseLocation?.query_exists(null) || !this.databaseFileHandler?.query_exists(null)) {
       try {
-        Gio.File.new_for_path(this.databaseFilePath).create(Gio.FileCreateFlags.PRIVATE, null);
+        this.databaseLocation.make_directory_with_parents(null);
+        this.databaseFileHandler.create(Gio.FileCreateFlags.PRIVATE, null);
       } catch {
-        console.error('[persistence] Error creating database file');
+        console.error('[persistence] Error creating database');
       }
     }
   }
@@ -62,15 +61,12 @@ export class Persistence {
    * @returns {ITask[]} Returns the data read from the file.
    */
   read_database(): unknown[] {
-    this.create_database();
+    this.check_database_existence();
 
-    const decoder = new TextDecoder();
+    const [, content] = this.databaseFileHandler.load_contents(null);
 
-    const [, content] = this.databaseFile.load_contents(null);
-
-    const file_content = decoder.decode(content);
-
-    return file_content.trim() === '' ? [] : JSON.parse(file_content);
+    const file_content = this.decoder.decode(content).trim();
+    return file_content === '' ? [] : (JSON.parse(file_content) ?? []);
   }
 
   /**
@@ -79,12 +75,11 @@ export class Persistence {
    * @param data The array of data objects to persist.
    */
   write_database(data: unknown[]) {
-    this.create_database();
+    this.check_database_existence();
 
-    const encoder = new TextEncoder();
-    const file = encoder.encode(JSON.stringify(data));
+    const file = this.encoder.encode(JSON.stringify(data));
 
-    this.databaseFile.replace_contents(
+    this.databaseFileHandler.replace_contents(
       file, // ByteArray to save
       null, // old file etag
       true, // if we should make a backup

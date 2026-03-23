@@ -2,13 +2,19 @@ import { describe, it, expect, vi, beforeEach } from 'vitest';
 import { useTaskSort } from '../../src/hooks/tasks.sort.js';
 import { SortingField, SortingStrategy } from '../../src/app.enums.js';
 
-// Mock settings
-vi.mock('../../src/utils/settings.js', () => ({
-  get_setting_int: vi.fn(),
-  get_setting_string: vi.fn(),
-  set_setting_int: vi.fn(),
-  set_setting_string: vi.fn(),
+// Mock settings hook
+vi.mock('../../src/hooks/settings.js', () => ({
+  useSettings: () => ({
+    get_int: vi.fn(),
+    get_string: vi.fn(),
+    set_int: vi.fn(),
+    set_string: vi.fn(),
+  }),
 }));
+
+// Provide mocks for GI protocols
+vi.mock('gi://Gio', () => ({ default: { Settings: vi.fn() } }));
+vi.mock('gi://GLib', () => ({ default: {} }));
 
 // Mock TaskItem
 const createMockTask = (overrides: any) => ({

@@ -173,7 +173,6 @@
         <!-- Custom object fragments -->
         <condition>max-width: 550px</condition>
         <setter object="split_view" property="collapsed">True</setter>
-        <setter object="button_open_sidebar" property="visible">False</setter>
       </object>
     </child>
   </template>

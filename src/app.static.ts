@@ -52,13 +52,12 @@ export const SymbolicIcons = {
 export const TaskEntryStyle = {
   enabled: {
     opacity: 1,
-    editable: true,
-    markup: '%s',
   },
-  disabled: {
-    opacity: 0.5,
-    editable: false,
-    markup: '<s>%s</s>',
+  done: {
+    opacity: 0.6,
+  },
+  deleted: {
+    opacity: 0.3,
   },
 };
 

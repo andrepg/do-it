@@ -65,7 +65,7 @@ export const useTaskSort = () => {
   };
 
   const sort_by_date = (strategy: SortingStrategy) => {
-    return create_comparator([(item) => -(item as TaskItem).to_object().created_at], strategy);
+    return create_comparator([(item) => (item as TaskItem).to_object().created_at], strategy);
   };
 
   const sort_by_status = (strategy: SortingStrategy) => {
