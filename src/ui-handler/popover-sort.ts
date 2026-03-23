@@ -87,7 +87,7 @@ export class PopoverSort extends Gtk40.Popover {
     const fieldToggle = this.get_current_field_toggle();
     const strategyToggle = this.get_current_strategy_toggle();
 
-    const field = fieldToggle?.get_name() as SortingField;
+    const field = Number.parseInt(fieldToggle?.get_name() || '0') as SortingField;
     const strategy = Number.parseInt(strategyToggle?.get_name() || '0') as SortingStrategy;
 
     const strategyName = AppLocale.sorting[strategy][field];
@@ -117,7 +117,7 @@ export class PopoverSort extends Gtk40.Popover {
     const fieldToggle = this.get_current_field_toggle();
     const strategyToggle = this.get_current_strategy_toggle();
 
-    const fieldName = fieldToggle?.get_name() as SortingField;
+    const fieldName = Number.parseInt(fieldToggle?.get_name() || '0') as SortingField;
     const strategy = Number.parseInt(strategyToggle?.get_name() || '0') as SortingStrategy;
 
     this._task_sort.sort_by(fieldName, strategy);

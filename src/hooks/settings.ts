@@ -31,10 +31,16 @@ export const useSettings = () => {
 
   const set_string = (key: string, value: string) => settings.set_string(key, value);
 
+  const get_enum = (key: string) => settings.get_enum(key);
+
+  const set_enum = (key: string, value: number) => settings.set_enum(key, value);
+
   return {
     get_int,
     set_int,
     get_string,
     set_string,
+    get_enum,
+    set_enum,
   };
 };

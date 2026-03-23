@@ -9,6 +9,8 @@ vi.mock('../../src/hooks/settings.js', () => ({
     get_string: vi.fn(),
     set_int: vi.fn(),
     set_string: vi.fn(),
+    get_enum: vi.fn(),
+    set_enum: vi.fn(),
   }),
 }));
 
@@ -39,7 +41,7 @@ describe('useTaskSort', () => {
     const taskC = createMockTask({ title: 'C' });
 
     const comparator = sort_by(SortingField.byTitle, SortingStrategy.ascending);
-    const sorted = [taskA, taskB, taskC].sort(comparator);
+    const sorted = [taskA, taskB, taskC].sort(comparator as any);
 
     expect((sorted[0] as any).to_object().title).toBe('A');
     expect((sorted[1] as any).to_object().title).toBe('B');
@@ -52,7 +54,7 @@ describe('useTaskSort', () => {
     const taskC = createMockTask({ title: 'C' });
 
     const comparator = sort_by(SortingField.byTitle, SortingStrategy.descending);
-    const sorted = [taskA, taskB, taskC].sort(comparator);
+    const sorted = [taskA, taskB, taskC].sort(comparator as any);
 
     expect((sorted[0] as any).to_object().title).toBe('C');
     expect((sorted[1] as any).to_object().title).toBe('B');
@@ -64,7 +66,7 @@ describe('useTaskSort', () => {
     const taskB = createMockTask({ done: false });
 
     const comparator = sort_by(SortingField.byStatus, SortingStrategy.ascending);
-    const sorted = [taskA, taskB].sort(comparator);
+    const sorted = [taskA, taskB].sort(comparator as any);
 
     expect((sorted[0] as any).to_object().done).toBe(false);
     expect((sorted[1] as any).to_object().done).toBe(true);
@@ -75,7 +77,7 @@ describe('useTaskSort', () => {
     const taskB = createMockTask({ created_at: 1000 });
 
     const comparator = sort_by(SortingField.byDate, SortingStrategy.ascending);
-    const sorted = [taskA, taskB].sort(comparator);
+    const sorted = [taskA, taskB].sort(comparator as any);
 
     expect((sorted[0] as any).to_object().created_at).toBe(1000);
     expect((sorted[1] as any).to_object().created_at).toBe(2000);
@@ -86,7 +88,7 @@ describe('useTaskSort', () => {
     const taskB = createMockTask({ project: 'Home' });
 
     const comparator = sort_by(SortingField.byProject, SortingStrategy.ascending);
-    const sorted = [taskA, taskB].sort(comparator);
+    const sorted = [taskA, taskB].sort(comparator as any);
 
     expect((sorted[0] as any).to_object().project).toBe('Home');
     expect((sorted[1] as any).to_object().project).toBe('Work');

@@ -2,6 +2,18 @@
 <!DOCTYPE schemalist SYSTEM "https://gitlab.gnome.org/GNOME/glib/-/raw/HEAD/gio/gschema.dtd">
 
 <schemalist gettext-domain="Doit">
+  <enum id="@APPLICATION_ID@.SortingMode">
+    <value nick="by_date" value="0"/>
+    <value nick="by_status" value="1"/>
+    <value nick="by_title" value="2"/>
+    <value nick="by_project" value="3"/>
+  </enum>
+
+  <enum id="@APPLICATION_ID@.SortingStrategy">
+    <value nick="ascending" value="0"/>
+    <value nick="descending" value="1"/>
+  </enum>
+
   <schema id="@APPLICATION_ID@" path="@APPLICATION_RES@/">
     <key name="window-width" type="i">
       <default>800</default>      
@@ -13,19 +25,13 @@
       <summary>Last known window height</summary>
     </key>
 
-    <key name="sorting-mode" type="s">
+    <key name="sorting-mode" enum="@APPLICATION_ID@.SortingMode">
       <default>"by_date"</default>      
-      <choices>
-        <choice value="by_date" />
-        <choice value="by_status" />
-        <choice value="by_title" />
-        <choice value="by_project" />
-      </choices>
       <summary>Last known sorting mode used</summary>
     </key>
 
-    <key name="sorting-strategy" type="i">
-      <default>0</default>
+    <key name="sorting-strategy" enum="@APPLICATION_ID@.SortingStrategy">
+      <default>"ascending"</default>
       <summary>Last known sorting strategy used</summary>
     </key>
   </schema>

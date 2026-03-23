@@ -21,13 +21,10 @@
  * Defines the available fields by which tasks can be sorted.
  */
 export enum SortingField {
-  byDate = 'by_date',
-
-  byStatus = 'by_status',
-
-  byTitle = 'by_title',
-
-  byProject = 'by_project',
+  byDate = 0,
+  byStatus = 1,
+  byTitle = 2,
+  byProject = 3,
 }
 
 /**
