@@ -67,6 +67,13 @@ const TaskItemProperties = {
       GObject.ParamFlags.READWRITE,
       ""
     ),
+    deleted: GObject.ParamSpec.boolean(
+      "deleted",
+      "Deleted",
+      "Task deleted status",
+      GObject.ParamFlags.READWRITE,
+      false
+    )
   },
   InternalChildren: [WidgetIds.TaskItemTaskDone, WidgetIds.TaskItemTaskDelete],
   Signals: {
@@ -120,6 +127,7 @@ export class TaskItem extends Adw.ActionRow {
     done = false,
     created: number | null = null,
     project = "",
+    deleted = false
   ) {
     super({
       title,
@@ -130,7 +138,7 @@ export class TaskItem extends Adw.ActionRow {
     this._raw_title = title;
     this._project = project;
     this._created_at = new Date(created ?? Date.now());
-    this._deleted = false;
+    this._deleted = deleted;
     this._tags = [];
 
     this._init_widgets();
@@ -171,6 +179,7 @@ export class TaskItem extends Adw.ActionRow {
 
     this.task_delete.set_icon_name(delete_icon);
     this.task_done.set_sensitive(!this._deleted);
+    this.set_activatable(!this._deleted);
   }
 
   private _delete_task() {

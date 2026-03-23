@@ -99,6 +99,7 @@ export class TaskListStore extends Gio.ListStore<TaskItem> {
       data.done,
       data.created_at,
       data.project,
+      data.deleted
     )
 
     const _update_interface = (signal: string) => {
