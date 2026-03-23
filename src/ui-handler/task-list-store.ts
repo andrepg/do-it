@@ -101,18 +101,19 @@ export class TaskListStore extends Gio.ListStore<TaskItem> {
       data.project,
     )
 
-    const { mode, strategy } = this.task_sort.retrieve_sort_preferences();
-
     const _update_interface = (signal: string) => {
-      log("list-store", `Received ${signal} signal.`)
+      log("list-store", `Received ${signal} signal.`);
 
-      this.task_sort.persist_sort_preferences();
-      this.sort_list()
-      this.persist_store();
+      GLib.idle_add(GLib.PRIORITY_DEFAULT_IDLE, () => {
+        this.task_sort.persist_sort_preferences();
+        this.sort_list();
+        this.persist_store();
+        return GLib.SOURCE_REMOVE;
+      });
     }
 
-    task.connect(AppSignals.TaskUpdated, _update_interface.bind(this, AppSignals.TaskUpdated));
-    task.connect(AppSignals.TaskDeleted, _update_interface.bind(this, AppSignals.TaskDeleted));
+    task.connect(AppSignals.TaskUpdated, () => _update_interface(AppSignals.TaskUpdated));
+    task.connect(AppSignals.TaskDeleted, () => _update_interface(AppSignals.TaskDeleted));
     task.connect(AppSignals.Activated, () => {
       const root = task.get_root() as any;
       if (root && root.activate_action) {
@@ -120,6 +121,7 @@ export class TaskListStore extends Gio.ListStore<TaskItem> {
       }
     })
 
+    const { mode, strategy } = this.task_sort.retrieve_sort_preferences();
     this.insert_sorted(task, this.task_sort.sort_by(mode, strategy));
   }
 

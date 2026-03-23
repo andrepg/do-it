@@ -76,6 +76,12 @@ export class DoItMainWindow extends Adw.ApplicationWindow {
 
   private button_sorting!: Gtk.MenuButton;
 
+  private bottom_sheet!: Adw.BottomSheet;
+
+  private bottom_sheet_content!: Gtk.Box;
+
+  private task_form!: TaskForm;
+
   static {
     GObject.registerClass(options, this);
   }
@@ -92,11 +98,15 @@ export class DoItMainWindow extends Adw.ApplicationWindow {
     this.taskListStore = new TaskListStore();
     this.taskListStore.load();
 
+
+    this.bottom_sheet = this.get_template_child(DoItMainWindow.GType, WidgetIds.WindowBottomSheet) as Adw.BottomSheet;
+    this.bottom_sheet_content = this.get_template_child(DoItMainWindow.GType, WidgetIds.WindowBottomSheetContent) as Gtk.Box;
+    this.button_sorting = this.get_template_child(DoItMainWindow.GType, WidgetIds.WindowButtonSorting) as Gtk.MenuButton;
+
+    this.button_sorting.set_popover(new PopoverSort(this));
+
     this.initialize_actions();
     this.initialize_project_manager()
-
-    this.button_sorting = this.get_template_child(DoItMainWindow.GType, WidgetIds.WindowButtonSorting) as Gtk.MenuButton;
-    this.button_sorting.set_popover(new PopoverSort(this));
 
     this.connect(AppSignals.SortingChanged, () => this.taskListStore.sort_list());
   }
@@ -121,14 +131,10 @@ export class DoItMainWindow extends Adw.ApplicationWindow {
     Actions.purgeDeleted(this.taskListStore).setup(this);
     Actions.sidebar().setup(this);
 
-    const bottomSheetContent = this.get_template_child(DoItMainWindow.GType, WidgetIds.WindowBottomSheetContent) as Gtk.Box;
-    const bottomSheet = this.get_template_child(DoItMainWindow.GType, WidgetIds.WindowBottomSheet) as any;
+    this.task_form = new TaskForm().setup(this.taskListStore, this.projectManager);
+    this.bottom_sheet_content.append(this.task_form);
 
-    const taskForm = new TaskForm().setup(this.taskListStore, this.projectManager);
-
-    bottomSheetContent.append(taskForm);
-
-    Actions.taskEdit(taskForm, bottomSheet).setup(this);
+    Actions.taskEdit(this.task_form, this.bottom_sheet).setup(this);
   }
 
   public override vfunc_close_request(): boolean {

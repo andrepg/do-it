@@ -98,6 +98,8 @@ export class TaskItem extends Adw.ActionRow {
    */
   private _taskId = 0;
 
+  private _raw_title = '';
+
   private _created_at: Date;
 
   private _project = '';
@@ -125,18 +127,20 @@ export class TaskItem extends Adw.ActionRow {
     });
 
     this._taskId = taskId;
+    this._raw_title = title;
     this._project = project;
     this._created_at = new Date(created ?? Date.now());
     this._deleted = false;
     this._tags = [];
 
     this._init_widgets();
-    this._update_interface();
 
     this.task_done.set_active(done);
 
     this.task_delete.connect(AppSignals.Clicked, this._delete_task.bind(this));
     this.task_done.connect_after(AppSignals.Toggled, this._finish_task.bind(this));
+
+    this._update_interface();
   }
 
   private _init_widgets() {
@@ -157,7 +161,7 @@ export class TaskItem extends Adw.ActionRow {
 
     this.set_use_markup(true);
     this.set_opacity(opacity);
-    this.set_title(markup.format(this.title));
+    this.set_title(markup.format(this._raw_title));
   }
 
   private _update_widget_interface(): void {

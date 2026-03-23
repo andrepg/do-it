@@ -40,7 +40,9 @@ const TaskFormProperties = {
         WidgetIds.TaskFormBtnDiscard
     ],
     Signals: {
-        [AppSignals.TaskFormClosed]: {},
+        [AppSignals.TaskFormClosed]: {
+            param_types: [GObject.TYPE_OBJECT]
+        },
     }
 }
 
@@ -83,21 +85,21 @@ export class TaskForm extends Gtk.Box {
     private connect_signals() {
         log(TaskForm.LogClass, 'Connecting form signals and reactions');
 
-        /*this.btn_save.connect(AppSignals.Activate, this._on_save.bind(this));
-        this.btn_discard.connect(AppSignals.Activate, this._on_discard.bind(this));
-        this.btn_delete.connect(AppSignals.Clicked, this._on_delete.bind(this));*/
+        this.btn_save.connect(AppSignals.Clicked, this.dispatch_save.bind(this));
+        this.btn_discard.connect(AppSignals.Clicked, this.dispatch_cancel.bind(this));
+        this.btn_delete.connect(AppSignals.Clicked, this._on_delete.bind(this));
     }
 
     private init_widgets() {
         log(TaskForm.LogClass, 'Initializing widget instances');
 
-        this.btn_save = this.get_template_child(TaskForm.GType, WidgetIds.TaskFormBtnSave);
-        this.btn_discard = this.get_template_child(TaskForm.GType, WidgetIds.TaskFormBtnDiscard);
-        this.btn_delete = this.get_template_child(TaskForm.GType, WidgetIds.TaskFormBtnDelete);
+        this.btn_save = this.get_template_child(TaskForm.GType, WidgetIds.TaskFormBtnSave) as Gtk.Button;
+        this.btn_discard = this.get_template_child(TaskForm.GType, WidgetIds.TaskFormBtnDiscard) as Gtk.Button;
+        this.btn_delete = this.get_template_child(TaskForm.GType, WidgetIds.TaskFormBtnDelete) as Gtk.Button;
 
-        this.entry_title = this.get_template_child(TaskForm.GType, WidgetIds.TaskFormEntryTitle);
-        this.entry_project = this.get_template_child(TaskForm.GType, WidgetIds.TaskFormEntryProject);
-        this.check_done = this.get_template_child(TaskForm.GType, WidgetIds.TaskFormCheckDone);
+        this.entry_title = this.get_template_child(TaskForm.GType, WidgetIds.TaskFormEntryTitle) as Adw.EntryRow;
+        this.entry_project = this.get_template_child(TaskForm.GType, WidgetIds.TaskFormEntryProject) as Adw.EntryRow;
+        this.check_done = this.get_template_child(TaskForm.GType, WidgetIds.TaskFormCheckDone) as Gtk.CheckButton;
     }
 
     public setup(store: TaskListStore, projectManager: ProjectManager): this {
@@ -111,11 +113,15 @@ export class TaskForm extends Gtk.Box {
      * Loads a task into the form by its ID.
      */
     public load_task(taskId: number) {
+        log(TaskForm.LogClass, `Loading task: ${taskId}`);
         this._taskId = taskId;
 
         const taskItem = this.find_task();
 
-        if (!taskItem) return;
+        if (!taskItem) {
+            log(TaskForm.LogClass, `Failed to find task: ${taskId}`);
+            return;
+        }
 
         const data = taskItem.to_object();
         this.entry_title.set_text(data.title);
@@ -141,7 +147,9 @@ export class TaskForm extends Gtk.Box {
      * Save current task on list and dispatch window action to close bottom sheet
      */
     private dispatch_save(): void {
-        const task = this.find_task()?.to_object();
+        log(TaskForm.LogClass, 'Dispatching save action');
+        const taskItem = this.find_task();
+        const task = taskItem?.to_object();
         const title = this.entry_title.get_text().trim();
 
         if (title === "") {
@@ -149,13 +157,21 @@ export class TaskForm extends Gtk.Box {
             return;
         }
 
-        if (!task?.id) return;
+        if (!task || task.id === null || task.id === undefined) {
+            log(TaskForm.LogClass, 'No task loaded to save');
+            return;
+        }
 
-        // Before add another task, we need to remove the old one
-        this._store.remove_task(task.id);
+        const taskId = task.id as number;
+
+        log(TaskForm.LogClass, `Updating task in store: ${taskId}`);
+
+        // Update existing task data
+        // We recreate it by removing and re-appending, which is the pattern in TaskListStore
+        this._store.remove_task(taskId);
 
         this._store.append_task({
-            id: task.id,
+            id: taskId,
             title: title,
             project: this.entry_project.get_text().trim(),
             done: this.check_done.get_active(),
@@ -163,6 +179,8 @@ export class TaskForm extends Gtk.Box {
             deleted: task.deleted,
             tags: task.tags,
         });
+
+        this._store.persist_store();
 
         showToast(_("Task updated"));
 
@@ -173,9 +191,22 @@ export class TaskForm extends Gtk.Box {
      * Clean the form state and call window action to close bottom sheet
      */
     private dispatch_cancel(): void {
+        log(TaskForm.LogClass, 'Dispatching cancel/close action');
         this._taskId = null;
 
         this.emit(AppSignals.TaskFormClosed, this);
+    }
+
+    private _on_delete() {
+        log(TaskForm.LogClass, 'Dispatching delete action');
+        if (this._taskId === null) return;
+
+        const taskItem = this.find_task();
+        if (taskItem) {
+            taskItem.emit(AppSignals.TaskDeleted, taskItem);
+            showToast(_("Task deleted"));
+            this.dispatch_cancel();
+        }
     }
 
     /*private _on_save() {

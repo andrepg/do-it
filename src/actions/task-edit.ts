@@ -22,40 +22,50 @@ import GLib from "gi://GLib";
 import { DoItMainWindow } from "../ui-handler/doit.js";
 import { TaskForm } from "../ui-handler/task-form.js";
 import { ActionNames, AppSignals } from "../app.enums.js";
+import { log } from "../utils/log-manager.js";
 
 /**
  * Action to handle task editing via the bottom sheet.
  */
 export default function taskEdit(taskForm: TaskForm, bottomSheet: any) {
+    const setup = (window: DoItMainWindow) => {
+        task_edit_action(window);
+        task_edit_close_action();
+    }
+
+    const toggle_bottom_sheet = () => {
+        bottomSheet.set_open(!bottomSheet.get_open());
+    }
+
+    const task_edit_action = (window: DoItMainWindow) => {
+        const action = new Gio.SimpleAction({
+            name: ActionNames.TaskEdit,
+            parameter_type: new GLib.VariantType('i'),
+        });
+
+        action.connect(AppSignals.Activate, (_action, parameter) => {
+            if (!parameter) return;
+
+            const taskId = parameter.get_int32();
+
+            taskForm.load_task(taskId);
+            toggle_bottom_sheet()
+        });
+
+        window.add_action(action);
+    }
+
+    const task_edit_close_action = () => {
+        taskForm.connect(AppSignals.TaskFormClosed, () => {
+            log(DoItMainWindow.LogClass, 'Task form closed signal received, Closing bottom sheet');
+            toggle_bottom_sheet()
+        });
+    }
+
     return {
         name: ActionNames.TaskEdit,
         parameter_type: new GLib.VariantType('i'),
 
-        setup(window: DoItMainWindow) {
-            const action = new Gio.SimpleAction({
-                name: ActionNames.TaskEdit,
-                parameter_type: new GLib.VariantType('i'),
-            });
-
-            action.connect(AppSignals.Activate, (_action, parameter) => {
-                if (!parameter) return;
-
-                const taskId = parameter.get_int32();
-                taskForm.load_task(taskId);
-
-                bottomSheet.set_open(true);
-            });
-
-            const closeAction = new Gio.SimpleAction({
-                name: ActionNames.TaskEditClose,
-            });
-
-            closeAction.connect(AppSignals.Activate, () => {
-                bottomSheet.set_open(false);
-            });
-
-            window.add_action(action);
-            window.add_action(closeAction);
-        }
+        setup,
     };
 }

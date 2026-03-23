@@ -17,6 +17,7 @@
  * SPDX-License-Identifier: GPL-3.0-or-later
  */
 import GObject from 'gi://GObject';
+import GLib from 'gi://GLib';
 import { TaskListStore } from '../ui-handler/task-list-store.js';
 import { TaskItem } from '../ui-handler/task-item.js';
 import { AppSignals } from '../app.enums.js';
@@ -47,6 +48,7 @@ export class ProjectManager extends GObject.Object {
   private _store: TaskListStore;
   private _projects_set: Set<string> = new Set();
   private _projects_ordered: string[] = [];
+  private _update_queued = false;
   private _handler_id: number;
   private _current_filter: string | null = null;
 
@@ -54,7 +56,7 @@ export class ProjectManager extends GObject.Object {
     super();
     this._store = store;
 
-    this._handler_id = this._store.connect(AppSignals.ItemsChanged, this._update_projects.bind(this));
+    this._handler_id = this._store.connect(AppSignals.ItemsChanged, () => this._update_projects());
   }
 
   /**
@@ -91,33 +93,45 @@ export class ProjectManager extends GObject.Object {
   }
 
   private _update_projects() {
+    if (this._update_queued) return;
+    this._update_queued = true;
+
+    GLib.idle_add(GLib.PRIORITY_DEFAULT_IDLE, () => {
+      this._do_update_projects();
+      this._update_queued = false;
+      return GLib.SOURCE_REMOVE;
+    });
+  }
+
+  private _do_update_projects() {
     const currentProjectsSet = new Set<string>();
     const currentProjectsOrdered: string[] = [];
     const n_items = this._store.get_n_items();
 
     for (let i = 0; i < n_items; i++) {
-      const task = this._store.get_item(i) as TaskItem;
-      const project = task.get_project() || "";
-      if (!currentProjectsSet.has(project)) {
-        currentProjectsSet.add(project);
-        currentProjectsOrdered.push(project);
-      }
+        const item = this._store.get_item(i);
+        if (item instanceof TaskItem) {
+            const project = item.get_project() || "";
+            if (!currentProjectsSet.has(project)) {
+                currentProjectsSet.add(project);
+                currentProjectsOrdered.push(project);
+            }
+        }
     }
 
     // 1. Find projects to remove (exist in cache but not in current)
-    for (const project of this._projects_set) {
-      if (!currentProjectsSet.has(project)) {
+    const projectsToRemove = [...this._projects_set].filter(p => !currentProjectsSet.has(p));
+    for (const project of projectsToRemove) {
         this._projects_set.delete(project);
         this.emit(AppSignals.ProjectRemoved, project);
-      }
     }
 
     // 2. Find projects to add (exist in current but not in cache)
     for (const project of currentProjectsOrdered) {
-      if (!this._projects_set.has(project)) {
-        this._projects_set.add(project);
-        this.emit(AppSignals.ProjectAdded, project);
-      }
+        if (!this._projects_set.has(project)) {
+            this._projects_set.add(project);
+            this.emit(AppSignals.ProjectAdded, project);
+        }
     }
 
     this._projects_ordered = currentProjectsOrdered;
