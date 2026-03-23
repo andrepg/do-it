@@ -29,7 +29,6 @@ tsc_target = custom_target(
 
 ##
 ## Configure and replace application.js strings
-## TODO - This should be removed in the future
 ##
 configure_file(
     input: 'utils/application.js',

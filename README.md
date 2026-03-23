@@ -8,11 +8,11 @@ Too many subtasks, links, categories and options. So I decided to build my own.
 All I want was an app to pop up, write down a simple task and _done_. None of
 them has a small footprint to use it this way, nor fit perfectly my requirements.
 
-✨ **Do It** is my solution. I just type a task, mark a project and hit <pre>Enter</pre>. Then I can edit, mark done or delete it whenever I want.
+✨ **Do It** is my solution. I just type a task, mark a project and hit <kbd>Enter</kbd>. Then I can edit, mark done or delete it whenever I want.
 
-<img style="@media (prefers-color-scheme: light) { display: block; } @media (prefers-color-scheme: dark) { display: none; }" src="images/light.png" width="400" />
-
-<img style="@media (prefers-color-scheme: light) { display: none; } @media (prefers-color-scheme: dark) { display: block; }" src="images/dark.png" width="400" />
+| Light Mode                      | Dark Mode                     |
+| ------------------------------- | ----------------------------- |
+| ![Light Mode](images/light.png) | ![Dark Mode](images/dark.png) |
 
 ## ✨ Features
 
@@ -50,7 +50,8 @@ Before opening a bug is always welcome to search your problem in the Discussions
 
 ### Your data is yours
 
-All your data is stored locally on your device. You can export and import your data (in JSON format) at any time. The task format follows the [ITask](https://github.com/andrepg/do-it/blob/main/src/app.types.ts) interface, being:
+All your data is stored locally on your device. You can export and import your data (in JSON format) at any time.
+The task format follows the [ITask](https://github.com/andrepg/do-it/blob/main/src/app.types.ts) interface, being:
 
 | Property   | Type       | Description                                 |
 | ---------- | ---------- | ------------------------------------------- |

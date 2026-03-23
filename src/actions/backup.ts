@@ -25,6 +25,7 @@ import { AppLocale } from '~/app.strings.js';
 
 import { log } from '~/utils/log-manager.js';
 import { Persistence } from '~/utils/persistence.js';
+import { showToast } from './toast.js';
 
 /**
  * Provides actions for exporting and importing the task database.
@@ -59,7 +60,6 @@ const backup = () => {
   /**
    * Handles the export process by opening a file dialog and saving the DB contents.
    */
-  // TODO: Missing toast notifications
   const exportJson = (parent: Adw.ApplicationWindow) => {
     log('backup-manager', 'Exporting database');
 
@@ -73,8 +73,11 @@ const backup = () => {
         const encoder = new TextEncoder();
         const data = encoder.encode(JSON.stringify(tasks));
         file?.replace_contents(data, null, false, Gio.FileCreateFlags.REPLACE_DESTINATION, null);
+
+        showToast(AppLocale.app.backup.exportSuccess);
       } catch (error) {
         console.error(error);
+        showToast(AppLocale.app.backup.exportError);
       }
     });
   };
@@ -82,7 +85,6 @@ const backup = () => {
   /**
    * Handles the import process by opening an existing JSON file and overriding the DB.
    */
-  // TODO: Missing toast notifications
   const importJson = (parent: Adw.ApplicationWindow) => {
     log('backup-manager', 'Importing database');
 
@@ -97,8 +99,11 @@ const backup = () => {
         if (!ok || !content) return;
         const tasks = JSON.parse(decoder.decode(content)) as ITask[];
         new Persistence().write_database(tasks);
+
+        showToast(AppLocale.app.backup.importSuccess);
       } catch (error) {
         console.error(error);
+        showToast(AppLocale.app.backup.importError);
       }
     });
   };

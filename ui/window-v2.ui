@@ -16,6 +16,10 @@
       ════════════════════════════════════════════ -->
       <object class="AdwOverlaySplitView" id="split_view">
         <property name="show-sidebar">True</property>
+        <!-- min-sidebar-width=0 lets sidebar-width-fraction control the actual size,
+             preventing GTK from adding ~180px to the minimum layout calculation
+             and pushing content to the right on narrow screens. -->
+        <property name="min-sidebar-width">0</property>
 
         <!-- ─── SIDEBAR ─── -->
         <property name="sidebar">
@@ -180,7 +184,10 @@
     <child>
       <object class="AdwBreakpoint">
         <condition>max-width: 500sp</condition>
+        <!-- Hide sidebar by default on narrow screens -->
         <setter object="split_view" property="show-sidebar">False</setter>
+        <!-- Use 75% width as a proper mobile drawer overlay -->
+        <setter object="split_view" property="sidebar-width-fraction">0.75</setter>
       </object>
     </child>
   </template>

@@ -80,6 +80,12 @@ const AppStrings = {
   backup: {
     export: _('Export database'),
     import: _('Import database'),
+
+    exportSuccess: _('Database exported successfully'),
+    exportError: _('Error exporting database'),
+
+    importSuccess: _('Database imported successfully'),
+    importError: _('Error importing database'),
   },
   about: {
     translatorCredits: _('translators-credits'),
