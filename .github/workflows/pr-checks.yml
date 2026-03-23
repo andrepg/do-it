@@ -2,7 +2,7 @@ name: PR Checks
 
 on:
   pull_request:
-    branches: ["main"]
+    branches: ['main']
 
 jobs:
   format:
@@ -13,7 +13,7 @@ jobs:
       - name: Setup Project
         uses: ./.github/actions/setup-project
         with:
-          setup-node: "true"
+          setup-node: 'true'
 
       - name: Run Format Check
         run: yarn format
@@ -26,7 +26,7 @@ jobs:
       - name: Setup Project
         uses: ./.github/actions/setup-project
         with:
-          setup-node: "true"
+          setup-node: 'true'
 
       - name: Run Lint
         run: yarn lint
@@ -38,7 +38,7 @@ jobs:
       - name: Setup Project
         uses: ./.github/actions/setup-project
         with:
-          setup-node: "true"
+          setup-node: 'true'
 
       - name: Run Tests
         run: yarn test

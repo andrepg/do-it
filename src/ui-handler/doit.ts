@@ -34,7 +34,7 @@ import { TaskForm } from './task-form.js';
 import { useSettings } from '../hooks/settings.js';
 
 const options = {
-  GTypeName: "DoItMainWindow",
+  GTypeName: 'DoItMainWindow',
   Template: get_template_path('ui/window-v2.ui'),
   InternalChildren: [
     WidgetIds.WindowToastOverlay,
@@ -50,19 +50,19 @@ const options = {
     WidgetIds.WindowSidebarProjectList,
     WidgetIds.WindowButtonSorting,
     WidgetIds.WindowBottomSheetContent,
-    WidgetIds.WindowBottomSheet
+    WidgetIds.WindowBottomSheet,
   ],
 
   Signals: {
-    [AppSignals.SortingChanged]: {}
-  }
+    [AppSignals.SortingChanged]: {},
+  },
 };
 
 const settings = useSettings();
 
 /**
  * The main application window for Do It.
- * 
+ *
  * Manages the top-level UI components, including the sidebar and the main content area.
  * Also initializes global actions and connects to the global task store and project manager.
  */
@@ -92,29 +92,38 @@ export class DoItMainWindow extends Adw.ApplicationWindow {
       defaultHeight: settings.get_int(DoItSettings.windowHeight),
     });
 
-    log(DoItMainWindow.LogClass, "Initializing task store");
+    log(DoItMainWindow.LogClass, 'Initializing task store');
     this.taskListStore = new TaskListStore();
     this.taskListStore.load();
 
     this.initialize_widgets();
     this.initialize_actions();
-    this.initialize_project_manager()
+    this.initialize_project_manager();
 
     this.connect(AppSignals.SortingChanged, () => this.taskListStore.sort_list());
   }
 
   private initialize_widgets() {
-    log(DoItMainWindow.LogClass, "Initializing widgets");
+    log(DoItMainWindow.LogClass, 'Initializing widgets');
 
-    this.bottom_sheet = this.get_template_child(DoItMainWindow.$gtype, WidgetIds.WindowBottomSheet) as Adw.BottomSheet;
-    this.bottom_sheet_content = this.get_template_child(DoItMainWindow.$gtype, WidgetIds.WindowBottomSheetContent) as Gtk.Box;
-    this.button_sorting = this.get_template_child(DoItMainWindow.$gtype, WidgetIds.WindowButtonSorting) as Gtk.MenuButton;
+    this.bottom_sheet = this.get_template_child(
+      DoItMainWindow.$gtype,
+      WidgetIds.WindowBottomSheet,
+    ) as Adw.BottomSheet;
+    this.bottom_sheet_content = this.get_template_child(
+      DoItMainWindow.$gtype,
+      WidgetIds.WindowBottomSheetContent,
+    ) as Gtk.Box;
+    this.button_sorting = this.get_template_child(
+      DoItMainWindow.$gtype,
+      WidgetIds.WindowButtonSorting,
+    ) as Gtk.MenuButton;
 
     this.button_sorting.set_popover(new PopoverSort(this));
   }
 
   private initialize_project_manager(): void {
-    log(DoItMainWindow.LogClass, "Initializing project manager");
+    log(DoItMainWindow.LogClass, 'Initializing project manager');
 
     this.projectManager = new ProjectManager(this.taskListStore);
 
@@ -125,7 +134,7 @@ export class DoItMainWindow extends Adw.ApplicationWindow {
   }
 
   private initialize_actions() {
-    log(DoItMainWindow.LogClass, "Initializing window actions");
+    log(DoItMainWindow.LogClass, 'Initializing window actions');
 
     Actions.backup().setup(this);
     Actions.toast().setup(this);
@@ -140,15 +149,15 @@ export class DoItMainWindow extends Adw.ApplicationWindow {
   }
 
   public override vfunc_close_request(): boolean {
-    log(DoItMainWindow.LogClass, "Disposing main window");
+    log(DoItMainWindow.LogClass, 'Disposing main window');
 
     const [width, height] = this.get_default_size();
 
-    log(DoItMainWindow.LogClass, "Saving window size before closing");
+    log(DoItMainWindow.LogClass, 'Saving window size before closing');
     settings.set_int(DoItSettings.windowWidth, width);
     settings.set_int(DoItSettings.windowHeight, height);
 
-    log(DoItMainWindow.LogClass, "Persisting tasks");
+    log(DoItMainWindow.LogClass, 'Persisting tasks');
     this.taskListStore.persist_store();
 
     return super.vfunc_close_request();

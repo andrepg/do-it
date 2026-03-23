@@ -30,13 +30,13 @@ import { AppSignals, SortingField, SortingStrategy, WidgetIds } from '../app.enu
 import { AppLocale } from '../app.strings.js';
 
 const GObjectProperties = {
-  GTypeName: "PopoverSort",
+  GTypeName: 'PopoverSort',
   Template: get_template_path('ui/popover-sort.ui'),
   InternalChildren: [
     WidgetIds.PopoverSortToggleGroupSortField,
     WidgetIds.PopoverSortToggleGroupSortStrategy,
-    WidgetIds.PopoverSortLabelStrategy
-  ]
+    WidgetIds.PopoverSortLabelStrategy,
+  ],
 };
 
 /**
@@ -59,9 +59,18 @@ export class PopoverSort extends Gtk40.Popover {
   constructor(private window: Gtk40.Window) {
     super();
 
-    this.toggle_group_sort_field = this.get_template_child(PopoverSort.$gtype, WidgetIds.PopoverSortToggleGroupSortField) as Adw1.ToggleGroup;
-    this.toggle_group_sort_strategy = this.get_template_child(PopoverSort.$gtype, WidgetIds.PopoverSortToggleGroupSortStrategy) as Adw1.ToggleGroup;
-    this.label_strategy = this.get_template_child(PopoverSort.$gtype, WidgetIds.PopoverSortLabelStrategy) as Gtk40.Label;
+    this.toggle_group_sort_field = this.get_template_child(
+      PopoverSort.$gtype,
+      WidgetIds.PopoverSortToggleGroupSortField,
+    ) as Adw1.ToggleGroup;
+    this.toggle_group_sort_strategy = this.get_template_child(
+      PopoverSort.$gtype,
+      WidgetIds.PopoverSortToggleGroupSortStrategy,
+    ) as Adw1.ToggleGroup;
+    this.label_strategy = this.get_template_child(
+      PopoverSort.$gtype,
+      WidgetIds.PopoverSortLabelStrategy,
+    ) as Gtk40.Label;
 
     this.initialise();
 
@@ -101,7 +110,7 @@ export class PopoverSort extends Gtk40.Popover {
 
   /**
    * Callback activated when any toggle button changes its state.
-   * Reads the current selections, applies sorting to the taskStore via useTaskSort hook, 
+   * Reads the current selections, applies sorting to the taskStore via useTaskSort hook,
    * persists the settings, and emits a signal to update the main window's task list.
    */
   private notify_active() {
@@ -128,7 +137,7 @@ export class PopoverSort extends Gtk40.Popover {
     SortingFieldOptions.forEach((option: ISortingFieldOption, index: number) => {
       const toggle = new Adw1.Toggle({
         label: AppLocale.sorting.fields[option.mode],
-        name: option.mode.toString()
+        name: option.mode.toString(),
       });
 
       this.toggle_group_sort_field.add(toggle);
@@ -141,7 +150,7 @@ export class PopoverSort extends Gtk40.Popover {
     SortingModeOptions.forEach((option: ISortingStrategyOption, index: number) => {
       const toggle = new Adw1.Toggle({
         iconName: option.icon,
-        name: option.strategy.toString()
+        name: option.strategy.toString(),
       });
 
       this.toggle_group_sort_strategy.add(toggle);

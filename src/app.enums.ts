@@ -21,130 +21,130 @@
  * Defines the available fields by which tasks can be sorted.
  */
 export enum SortingField {
-    byDate = 'by_date',
+  byDate = 'by_date',
 
-    byStatus = 'by_status',
+  byStatus = 'by_status',
 
-    byTitle = 'by_title',
+  byTitle = 'by_title',
 
-    byProject = 'by_project'
+  byProject = 'by_project',
 }
 
 /**
  * Defines the direction of the sorting strategy.
  */
 export enum SortingStrategy {
-    ascending = 0,
-    descending = 1,
+  ascending = 0,
+  descending = 1,
 }
 
 /**
  * GSettings keys for sorting mode preferences.
  */
 export const SortingModeSchema = {
-    MODE: 'sorting-mode',
-    STRATEGY: 'sorting-strategy',
-}
+  MODE: 'sorting-mode',
+  STRATEGY: 'sorting-strategy',
+};
 
 /**
  * GSettings keys for main window application settings.
  */
 export const DoItSettings = {
-    windowHeight: 'window-height',
-    windowWidth: 'window-width',
-}
+  windowHeight: 'window-height',
+  windowWidth: 'window-width',
+};
 
 /**
  * Global signal names used throughout the project.
  */
 export enum AppSignals {
-    // Standard GTK/GObject interactions
-    Clicked = 'clicked',
-    Toggled = 'toggled',
-    NotifyActive = 'notify::active',
-    Activate = 'activate',
-    Activated = 'activated',
-    ItemsChanged = 'items-changed',
+  // Standard GTK/GObject interactions
+  Clicked = 'clicked',
+  Toggled = 'toggled',
+  NotifyActive = 'notify::active',
+  Activate = 'activate',
+  Activated = 'activated',
+  ItemsChanged = 'items-changed',
 
-    // Custom Project state signals
-    ProjectAdded = 'project-added',
-    ProjectRemoved = 'project-removed',
-    FilterChanged = 'filter-changed',
+  // Custom Project state signals
+  ProjectAdded = 'project-added',
+  ProjectRemoved = 'project-removed',
+  FilterChanged = 'filter-changed',
 
-    // Custom Task and Window states
-    SortingChanged = 'sorting-changed',
-    TaskUpdated = 'task-updated',
-    TaskDeleted = 'task-deleted',
-    TaskFormClosed = 'task-form-closed',
+  // Custom Task and Window states
+  SortingChanged = 'sorting-changed',
+  TaskUpdated = 'task-updated',
+  TaskDeleted = 'task-deleted',
+  TaskFormClosed = 'task-form-closed',
 }
 
 /**
  * Names of standard GIO Actions.
  */
 export enum ActionNames {
-    // Application wide general actions
-    About = 'about',
-    Quit = 'quit',
+  // Application wide general actions
+  About = 'about',
+  Quit = 'quit',
 
-    // Background jobs or management
-    ExportDatabase = 'export_database',
-    ImportDatabase = 'import_database',
-    PurgeDeletedTasks = 'purge_deleted_tasks',
+  // Background jobs or management
+  ExportDatabase = 'export_database',
+  ImportDatabase = 'import_database',
+  PurgeDeletedTasks = 'purge_deleted_tasks',
 
-    // UI toggles and layout control
-    OpenSidebar = 'open-sidebar',
-    CollapseSidebar = 'collapse-sidebar',
-    ShowToast = 'show-toast',
-    TaskEdit = 'task-edit',
-    TaskEditClose = 'task-edit-close',
+  // UI toggles and layout control
+  OpenSidebar = 'open-sidebar',
+  CollapseSidebar = 'collapse-sidebar',
+  ShowToast = 'show-toast',
+  TaskEdit = 'task-edit',
+  TaskEditClose = 'task-edit-close',
 }
 
 /**
  * Standard CSS classes used in the application.
  */
 export enum CssClasses {
-    SuggestedAction = 'suggested-action',
-    Devel = 'devel',
+  SuggestedAction = 'suggested-action',
+  Devel = 'devel',
 }
 
 /**
  * Common template child IDs across the application.
  */
 export enum WidgetIds {
-    // Main UI layouts and menus
-    WindowSplitView = 'split_view',
-    WindowListContainer = 'list_container',
-    WindowToastOverlay = 'toast_overlay',
-    WindowSidebarProjectList = 'sidebar_project_list',
+  // Main UI layouts and menus
+  WindowSplitView = 'split_view',
+  WindowListContainer = 'list_container',
+  WindowToastOverlay = 'toast_overlay',
+  WindowSidebarProjectList = 'sidebar_project_list',
 
-    // Header bar widgets
-    WindowButtonOpenSidebar = 'button_open_sidebar',
-    WindowButtonNewTask = 'button_new_task',
-    WindowTaskNewEntry = 'task_new_entry',
-    WindowButtonSorting = 'button_sorting',
+  // Header bar widgets
+  WindowButtonOpenSidebar = 'button_open_sidebar',
+  WindowButtonNewTask = 'button_new_task',
+  WindowTaskNewEntry = 'task_new_entry',
+  WindowButtonSorting = 'button_sorting',
 
-    // Popover Sort toggle group IDs
-    PopoverSortToggleGroupSortField = 'toggle-group-sort-field',
-    PopoverSortToggleGroupSortStrategy = 'toggle-group-sort-strategy',
-    PopoverSortLabelStrategy = 'label_strategy',
+  // Popover Sort toggle group IDs
+  PopoverSortToggleGroupSortField = 'toggle-group-sort-field',
+  PopoverSortToggleGroupSortStrategy = 'toggle-group-sort-strategy',
+  PopoverSortLabelStrategy = 'label_strategy',
 
-    // Sidebar button Components
-    SidebarButtonContent = 'button_content',
-    SidebarButtonIcon = 'button_icon',
+  // Sidebar button Components
+  SidebarButtonContent = 'button_content',
+  SidebarButtonIcon = 'button_icon',
 
-    // Task Item components
-    TaskItemTaskDone = 'task_done',
-    TaskItemTaskDelete = 'task_delete',
+  // Task Item components
+  TaskItemTaskDone = 'task_done',
+  TaskItemTaskDelete = 'task_delete',
 
-    // Task Form components
-    TaskFormEntryTitle = 'task_form_entry_title',
-    TaskFormEntryProject = 'task_form_entry_project',
-    TaskFormCheckDone = 'task_form_check_done',
-    TaskFormBtnDelete = 'task_form_btn_delete',
-    TaskFormBtnSave = 'task_form_btn_save',
-    TaskFormBtnDiscard = 'task_form_btn_discard',
+  // Task Form components
+  TaskFormEntryTitle = 'task_form_entry_title',
+  TaskFormEntryProject = 'task_form_entry_project',
+  TaskFormCheckDone = 'task_form_check_done',
+  TaskFormBtnDelete = 'task_form_btn_delete',
+  TaskFormBtnSave = 'task_form_btn_save',
+  TaskFormBtnDiscard = 'task_form_btn_discard',
 
-    // Window Bottom Sheet
-    WindowBottomSheet = 'window_bottom_sheet',
-    WindowBottomSheetContent = 'window_bottom_sheet_content',
+  // Window Bottom Sheet
+  WindowBottomSheet = 'window_bottom_sheet',
+  WindowBottomSheetContent = 'window_bottom_sheet_content',
 }

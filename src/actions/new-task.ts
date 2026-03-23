@@ -16,90 +16,88 @@
  *
  * SPDX-License-Identifier: GPL-3.0-or-later
  */
-import Gtk40 from "gi://Gtk"
-import { DoItMainWindow } from "../ui-handler/doit.js"
-import { showToast } from "./toast.js"
-import { TaskListStore } from "../ui-handler/task-list-store.js"
-import { AppSignals, WidgetIds } from "../app.enums.js";
-import { AppLocale } from "../app.strings.js";
+import Gtk40 from 'gi://Gtk';
+import { DoItMainWindow } from '../ui-handler/doit.js';
+import { showToast } from './toast.js';
+import { TaskListStore } from '../ui-handler/task-list-store.js';
+import { AppSignals, WidgetIds } from '../app.enums.js';
+import { AppLocale } from '../app.strings.js';
 
 /**
  * Handles the creation of new tasks from the main entry field.
- * 
+ *
  * @param store The global TaskListStore.
  */
 export const newTask = (store: TaskListStore) => {
-    const buttonNewTaskId = WidgetIds.WindowButtonNewTask;
-    const fieldNewTaskId = WidgetIds.WindowTaskNewEntry;
+  const buttonNewTaskId = WidgetIds.WindowButtonNewTask;
+  const fieldNewTaskId = WidgetIds.WindowTaskNewEntry;
 
-    let fieldNewTask: Gtk40.Entry;
+  let fieldNewTask: Gtk40.Entry;
 
-    const get_widget = <T>(window: DoItMainWindow, id: string): T => window.get_template_child(
-        DoItMainWindow.$gtype,
-        id
-    ) as unknown as T
+  const get_widget = <T>(window: DoItMainWindow, id: string): T =>
+    window.get_template_child(DoItMainWindow.$gtype, id) as unknown as T;
 
-    /**
-     * Parses the input string to extract a trailing project tag (`@ProjectName`).
-     * 
-     * @param text The raw text typed by the user.
-     * @returns An object containing the capitalized project name and the remaining clean text.
-     */
-    const parseProject = (text: string) => {
-        let project = "";
-        let parsedText = text;
-        const projectMatch = text.match(/@(\S+)/);
+  /**
+   * Parses the input string to extract a trailing project tag (`@ProjectName`).
+   *
+   * @param text The raw text typed by the user.
+   * @returns An object containing the capitalized project name and the remaining clean text.
+   */
+  const parseProject = (text: string) => {
+    let project = '';
+    let parsedText = text;
+    const projectMatch = text.match(/@(\S+)/);
 
-        if (projectMatch) {
-            const rawProject = projectMatch[1];
-            project = rawProject.charAt(0).toUpperCase() + rawProject.slice(1).toLowerCase();
-            parsedText = text.replace(projectMatch[0], '').trim();
-        }
-
-        return { project, parsedText }
+    if (projectMatch) {
+      const rawProject = projectMatch[1];
+      project = rawProject.charAt(0).toUpperCase() + rawProject.slice(1).toLowerCase();
+      parsedText = text.replace(projectMatch[0], '').trim();
     }
 
-    /**
-     * Creates and appends a new task to the store.
-     * 
-     * @param text The complete raw input from the entry field.
-     */
-    const create_task = (text: string) => {
-        const { project, parsedText: title } = parseProject(text);
+    return { project, parsedText };
+  };
 
-        store.append_task({
-            title,
-            created_at: new Date().getTime(),
-            project,
-        });
+  /**
+   * Creates and appends a new task to the store.
+   *
+   * @param text The complete raw input from the entry field.
+   */
+  const create_task = (text: string) => {
+    const { project, parsedText: title } = parseProject(text);
 
-        store.persist_store();
-    }
+    store.append_task({
+      title,
+      created_at: new Date().getTime(),
+      project,
+    });
 
-    /**
-     * Wires the new task button and entry field signals to their handlers.
-     */
-    const setup = (window: DoItMainWindow) => {
-        const buttonNewTask = get_widget<Gtk40.Button>(window, buttonNewTaskId);
-        buttonNewTask.connect(AppSignals.Clicked, () => fieldNewTask.grab_focus())
+    store.persist_store();
+  };
 
-        fieldNewTask = get_widget<Gtk40.Entry>(window, fieldNewTaskId);
-        fieldNewTask.connect(AppSignals.Activate, handle_user_input)
-    }
+  /**
+   * Wires the new task button and entry field signals to their handlers.
+   */
+  const setup = (window: DoItMainWindow) => {
+    const buttonNewTask = get_widget<Gtk40.Button>(window, buttonNewTaskId);
+    buttonNewTask.connect(AppSignals.Clicked, () => fieldNewTask.grab_focus());
 
-    const handle_user_input = () => {
-        const text = fieldNewTask.get_text().trim();
+    fieldNewTask = get_widget<Gtk40.Entry>(window, fieldNewTaskId);
+    fieldNewTask.connect(AppSignals.Activate, handle_user_input);
+  };
 
-        if (text.length == 0) return;
+  const handle_user_input = () => {
+    const text = fieldNewTask.get_text().trim();
 
-        create_task(text);
+    if (text.length == 0) return;
 
-        fieldNewTask.set_text('');
+    create_task(text);
 
-        showToast(AppLocale.tasks.toast.created);
-    }
+    fieldNewTask.set_text('');
 
-    return {
-        setup,
-    }
-}
+    showToast(AppLocale.tasks.toast.created);
+  };
+
+  return {
+    setup,
+  };
+};

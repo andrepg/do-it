@@ -36,7 +36,7 @@ trigger: always_on
 
 ## Behavior guideline
 
-- ALWAYS change the minimal possible amount of code. 
+- ALWAYS change the minimal possible amount of code.
 - Be concise, simple and direct on solutions
 - Comment the most complex codes
 - Keep JSDocs updated and create them if required

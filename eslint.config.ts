@@ -26,13 +26,14 @@ export default defineConfig([
   },
   {
     files: ['**/*.{js,mjs,cjs,ts,mts,cts}'],
-    plugins: { js },
-    extends: ['js/recommended', prettier],
+    ...js.configs.recommended,
+  },
+  ...tseslint.configs.recommended,
+  {
     languageOptions: {
       globals: globals.node,
     },
   },
-  tseslint.configs.recommended,
   {
     files: ['**/*.json'],
     plugins: { json },
@@ -51,4 +52,5 @@ export default defineConfig([
     language: 'json/json5',
     extends: ['json/recommended'],
   },
+  prettier,
 ]);

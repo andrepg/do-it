@@ -16,9 +16,9 @@
  *
  * SPDX-License-Identifier: GPL-3.0-or-later
  */
-import { SortingField, SortingStrategy } from "./app.enums.js"
-import { ISortingFieldOption, ISortingStrategyOption } from "./app.types.js"
-import { AppLocale } from "./app.strings.js"
+import { SortingField, SortingStrategy } from './app.enums.js';
+import { ISortingFieldOption, ISortingStrategyOption } from './app.types.js';
+import { AppLocale } from './app.strings.js';
 
 pkg.initGettext();
 
@@ -26,25 +26,25 @@ pkg.initGettext();
  * Symbolic icons used in the application
  */
 export const SymbolicIcons = {
-  none: "",
+  none: '',
 
   sidebar: {
-    task_due: "task-due-symbolic",
-    folder: "folder-symbolic",
-    folder_open: "folder-open-symbolic",
+    task_due: 'task-due-symbolic',
+    folder: 'folder-symbolic',
+    folder_open: 'folder-open-symbolic',
   },
 
   tasks: {
-    trash_bin: "user-trash-symbolic",
-    undo: "edit-undo-symbolic",
-    new_task: "appointment-new-symbolic",
+    trash_bin: 'user-trash-symbolic',
+    undo: 'edit-undo-symbolic',
+    new_task: 'appointment-new-symbolic',
   },
 
   sorting: {
-    sort_ascending: "view-sort-ascending-symbolic",
-    sort_descending: "view-sort-descending-symbolic",
-  }
-}
+    sort_ascending: 'view-sort-ascending-symbolic',
+    sort_descending: 'view-sort-descending-symbolic',
+  },
+};
 
 /**
  * Styles for task entries depending on their state.
@@ -58,9 +58,9 @@ export const TaskEntryStyle = {
   disabled: {
     opacity: 0.5,
     editable: false,
-    markup: '<s>%s</s>'
-  }
-}
+    markup: '<s>%s</s>',
+  },
+};
 
 /**
  * Icons used for the task delete/undo button.
@@ -68,7 +68,7 @@ export const TaskEntryStyle = {
 export const TaskDeleteButtonIcon = {
   default: SymbolicIcons.tasks.trash_bin,
   deleted: SymbolicIcons.tasks.undo,
-}
+};
 
 /**
  * Predefined options for sorting fields available in the UI.
@@ -94,7 +94,7 @@ export const SortingFieldOptions: ISortingFieldOption[] = [
     icon: SymbolicIcons.none,
     mode: SortingField.byTitle,
   },
-]
+];
 
 /**
  * Predefined options for sorting strategies available in the UI.
@@ -108,4 +108,4 @@ export const SortingModeOptions: ISortingStrategyOption[] = [
     icon: SymbolicIcons.sorting.sort_descending,
     strategy: SortingStrategy.descending,
   },
-]
+];

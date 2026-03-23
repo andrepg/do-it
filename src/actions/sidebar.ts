@@ -16,81 +16,84 @@
  *
  * SPDX-License-Identifier: GPL-3.0-or-later
  */
-import Adw from "gi://Adw";
-import Gio from "gi://Gio";
+import Adw from 'gi://Adw';
+import Gio from 'gi://Gio';
 
-import { ActionNames, AppSignals, WidgetIds } from "../app.enums.js";
-import { DoItMainWindow } from "../ui-handler/doit.js";
+import { ActionNames, AppSignals, WidgetIds } from '../app.enums.js';
+import { DoItMainWindow } from '../ui-handler/doit.js';
 
 /**
  * Retrieves the split_view template child from the window.
  * Returns null and logs an error if the widget is not found.
  */
 const getSplitView = (window: DoItMainWindow): Adw.NavigationSplitView | null => {
-    const splitView = window.get_template_child(DoItMainWindow.$gtype, WidgetIds.WindowSplitView) as Adw.NavigationSplitView;
+  const splitView = window.get_template_child(
+    DoItMainWindow.$gtype,
+    WidgetIds.WindowSplitView,
+  ) as Adw.NavigationSplitView;
 
-    if (!splitView) {
-        console.error('[action] sidebar: failed to get split_view object');
-        return null;
-    }
+  if (!splitView) {
+    console.error('[action] sidebar: failed to get split_view object');
+    return null;
+  }
 
-    return splitView;
-}
+  return splitView;
+};
 
 /**
  * Initializes global actions required for opening and collapsing the main application sidebar.
  */
 export default function sidebar() {
-    /**
-     * Action: win.open-sidebar
-     * Toggles or shows the sidebar panel.
-     */
-    const setupOpen = (window: DoItMainWindow) => {
-        const action = new Gio.SimpleAction({ name: ActionNames.OpenSidebar });
+  /**
+   * Action: win.open-sidebar
+   * Toggles or shows the sidebar panel.
+   */
+  const setupOpen = (window: DoItMainWindow) => {
+    const action = new Gio.SimpleAction({ name: ActionNames.OpenSidebar });
 
-        action.connect(AppSignals.Activate, () => {
-            const splitView = getSplitView(window);
-            if (splitView) {
-                // Toggle collapsed state for Desktop
-                splitView.set_collapsed(!splitView.collapsed);
-            }
-        });
+    action.connect(AppSignals.Activate, () => {
+      const splitView = getSplitView(window);
+      if (splitView) {
+        // Toggle collapsed state for Desktop
+        splitView.set_collapsed(!splitView.collapsed);
+      }
+    });
 
-        window.add_action(action);
+    window.add_action(action);
+  };
+
+  /**
+   * Action: win.collapse-sidebar
+   * Hides the sidebar panel, going back to content tasks.
+   */
+  const setupCollapse = (window: DoItMainWindow) => {
+    const action = new Gio.SimpleAction({ name: ActionNames.CollapseSidebar });
+
+    action.connect(AppSignals.Activate, () => {
+      const splitView = getSplitView(window);
+      if (splitView) {
+        splitView.set_collapsed(true); // Desktop
+      }
+    });
+
+    window.add_action(action);
+  };
+
+  /**
+   * Bootstraps sidebar actions and dynamic UI visibility behaviors.
+   */
+  const setup = (window: DoItMainWindow) => {
+    setupOpen(window);
+    setupCollapse(window);
+
+    // Ensure we start showing the tasks content by default
+    const splitView = getSplitView(window);
+    if (splitView) {
+      splitView.set_collapsed(true);
     }
+  };
 
-    /**
-     * Action: win.collapse-sidebar
-     * Hides the sidebar panel, going back to content tasks.
-     */
-    const setupCollapse = (window: DoItMainWindow) => {
-        const action = new Gio.SimpleAction({ name: ActionNames.CollapseSidebar });
-
-        action.connect(AppSignals.Activate, () => {
-            const splitView = getSplitView(window);
-            if (splitView) {
-                splitView.set_collapsed(true);    // Desktop
-            }
-        });
-
-        window.add_action(action);
-    }
-
-    /**
-     * Bootstraps sidebar actions and dynamic UI visibility behaviors.
-     */
-    const setup = (window: DoItMainWindow) => {
-        setupOpen(window);
-        setupCollapse(window);
-
-        // Ensure we start showing the tasks content by default
-        const splitView = getSplitView(window);
-        if (splitView) {
-            splitView.set_collapsed(true);
-        }
-    }
-
-    return {
-        setup,
-    }
+  return {
+    setup,
+  };
 }

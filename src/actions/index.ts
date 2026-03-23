@@ -16,8 +16,8 @@
  *
  * SPDX-License-Identifier: GPL-3.0-or-later
  */
-import about from "./about.js";
-import quit from "./quit.js";
+import about from './about.js';
+import quit from './quit.js';
 import backup from './backup.js';
 import sidebar from './sidebar.js';
 import toast from './toast.js';
@@ -29,14 +29,4 @@ import taskEdit from './task-edit.js';
 export { newTask } from './new-task.js';
 export { showToast } from './toast.js';
 
-export {
-    about,
-    quit,
-    backup,
-    sidebar,
-    toast,
-    projects,
-    projectSidebar,
-    purgeDeleted,
-    taskEdit,
-}
+export { about, quit, backup, sidebar, toast, projects, projectSidebar, purgeDeleted, taskEdit };

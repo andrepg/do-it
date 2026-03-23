@@ -21,26 +21,26 @@ import Gtk from 'gi://Gtk';
 import Gio from 'gi://Gio';
 
 import { AppSignals } from '../app.enums.js';
-import { get_template_path } from "../utils/application.js";
+import { get_template_path } from '../utils/application.js';
 import { TaskItem } from './task-item.js';
 
 const GObjectProperties = {
-  GTypeName: "TaskList",
+  GTypeName: 'TaskList',
   Template: get_template_path('ui/task-list.ui'),
   Signals: {
     [AppSignals.ItemsChanged]: {
-      param_types: []
-    }
-  }
-}
+      param_types: [],
+    },
+  },
+};
 
 /**
  * A ListBox container that renders a filtered set of TaskItems.
- * 
+ *
  * Hierarchy: TaskGroup -> TaskList -> TaskItem(s)
- * 
- * This class inherits from Gtk.ListBox and is responsible for binding 
- * a GTK ListModel (typically a Gtk.FilterListModel containing Tasks 
+ *
+ * This class inherits from Gtk.ListBox and is responsible for binding
+ * a GTK ListModel (typically a Gtk.FilterListModel containing Tasks
  * for a specific project) to create and render individual TaskItem widgets.
  */
 export class TaskList extends Gtk.ListBox {
@@ -58,4 +58,3 @@ export class TaskList extends Gtk.ListBox {
     this.bind_model(model, (item: GObject.Object) => (item as TaskItem).to_widget());
   }
 }
-

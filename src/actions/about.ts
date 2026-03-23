@@ -16,57 +16,55 @@
  *
  * SPDX-License-Identifier: GPL-3.0-or-later
  */
-import Gio from "gi://Gio";
-import Adw from "gi://Adw";
-import GLib from "gi://GLib";
-import Gtk from "gi://Gtk";
-import { APPLICATION_ID } from "../utils/application.js";
-import { ActionNames, AppSignals } from "../app.enums.js";
-import { AppLocale } from "../app.strings.js";
+import Gio from 'gi://Gio';
+import Adw from 'gi://Adw';
+import GLib from 'gi://GLib';
+import Gtk from 'gi://Gtk';
+import { APPLICATION_ID } from '../utils/application.js';
+import { ActionNames, AppSignals } from '../app.enums.js';
+import { AppLocale } from '../app.strings.js';
 
 /**
  * Provides the "about" action to display the application's About Dialog.
  */
 const about = () => {
-    const actionName = ActionNames.About;
+  const actionName = ActionNames.About;
 
-    const dialogProperties: Partial<Adw.AboutDialog.ConstructorProps> = {
-        applicationIcon: APPLICATION_ID,
-        applicationName: GLib.get_application_name() as string,
-        developerName: 'André Paul Grandsire',
-        version: pkg.version,
-        website: "https://github.com/andrepg/do-it",
-        issueUrl: "https://github.com/andrepg/do-it/issues",
-        supportUrl: "https://github.com/andrepg/do-it/discussions",
-        licenseType: Gtk.License.GPL_3_0,
-        developers: [
-            'André Paul Grandsire'
-        ],
-        // Translators: Replace "translator-credits" with your
-        // name/username, and optionally an email or URL.
-        translatorCredits: AppLocale.app.about.translatorCredits,
-        copyright: '© 2025 André Paul Grandsire'
-    }
+  const dialogProperties: Partial<Adw.AboutDialog.ConstructorProps> = {
+    applicationIcon: APPLICATION_ID,
+    applicationName: GLib.get_application_name() as string,
+    developerName: 'André Paul Grandsire',
+    version: pkg.version,
+    website: 'https://github.com/andrepg/do-it',
+    issueUrl: 'https://github.com/andrepg/do-it/issues',
+    supportUrl: 'https://github.com/andrepg/do-it/discussions',
+    licenseType: Gtk.License.GPL_3_0,
+    developers: ['André Paul Grandsire'],
+    // Translators: Replace "translator-credits" with your
+    // name/username, and optionally an email or URL.
+    translatorCredits: AppLocale.app.about.translatorCredits,
+    copyright: '© 2025 André Paul Grandsire',
+  };
 
-    /**
-     * Initializes the "about" action and connects it to the main window.
-     * 
-     * @param window The main application wrapper instance.
-     */
-    const setup = (window: Adw.Application) => {
-        const aboutActions = new Gio.SimpleAction({ name: actionName });
+  /**
+   * Initializes the "about" action and connects it to the main window.
+   *
+   * @param window The main application wrapper instance.
+   */
+  const setup = (window: Adw.Application) => {
+    const aboutActions = new Gio.SimpleAction({ name: actionName });
 
-        aboutActions.connect(AppSignals.Activate, () => {
-            const dialog = new Adw.AboutDialog(dialogProperties);
-            dialog.present(window.get_active_window() as Adw.Window);
-        });
+    aboutActions.connect(AppSignals.Activate, () => {
+      const dialog = new Adw.AboutDialog(dialogProperties);
+      dialog.present(window.get_active_window() as Adw.Window);
+    });
 
-        window.add_action(aboutActions);
-    }
+    window.add_action(aboutActions);
+  };
 
-    return {
-        setup
-    }
-}
+  return {
+    setup,
+  };
+};
 
 export default about;

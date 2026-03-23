@@ -16,7 +16,7 @@ vi.mock('gi://GObject', () => {
       registerClass: vi.fn(),
       TYPE_STRING: 'string',
       TYPE_OBJECT: 'object',
-    }
+    },
   };
 });
 
@@ -46,17 +46,14 @@ describe('ProjectManager', () => {
     };
 
     projectManager = new ProjectManager(mockStore);
-    // Manually trigger the static block equivalent if needed, 
+    // Manually trigger the static block equivalent if needed,
     // but GObject mock handles registerClass
   });
 
   it('should identify new projects and emit project-added in order', () => {
     const emitSpy = vi.spyOn(projectManager as any, 'emit');
-    
-    const tasks = [
-      new MockTaskItem('Work'),
-      new MockTaskItem('Home'),
-    ];
+
+    const tasks = [new MockTaskItem('Work'), new MockTaskItem('Home')];
 
     mockStore.get_n_items.mockReturnValue(tasks.length);
     mockStore.get_item.mockImplementation((i: number) => tasks[i]);
@@ -87,7 +84,7 @@ describe('ProjectManager', () => {
 
   it('should set and get filters correctly', () => {
     const emitSpy = vi.spyOn(projectManager as any, 'emit');
-    
+
     projectManager.set_filter('Work');
     expect(projectManager.get_filter()).toBe('Work');
     expect(emitSpy).toHaveBeenCalledWith('filter-changed', 'Work');

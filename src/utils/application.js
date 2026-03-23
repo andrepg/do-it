@@ -28,4 +28,4 @@ export {
   get_application_id,
   get_template_path,
   is_development_mode,
-}
+};

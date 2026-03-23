@@ -16,136 +16,152 @@
  *
  * SPDX-License-Identifier: GPL-3.0-or-later
  */
-import Adw from "gi://Adw";
-import GObject from "gi://GObject";
-import Gtk from "gi://Gtk";
-import { get_template_path } from "../utils/application.js";
-import { TaskListStore } from "./task-list-store.js";
-import { ProjectManager } from "../utils/project-manager.js";
-import { TaskItem } from "./task-item.js";
-import { AppSignals, WidgetIds } from "../app.enums.js";
-import { showToast } from "../actions/toast.js";
-import { log } from "../utils/log-manager.js";
-import { ITask } from "../app.types.js";
-import { AppLocale } from "../app.strings.js";
+import Adw from 'gi://Adw';
+import GObject from 'gi://GObject';
+import Gtk from 'gi://Gtk';
+import { get_template_path } from '../utils/application.js';
+import { TaskListStore } from './task-list-store.js';
+import { ProjectManager } from '../utils/project-manager.js';
+import { TaskItem } from './task-item.js';
+import { AppSignals, WidgetIds } from '../app.enums.js';
+import { showToast } from '../actions/toast.js';
+import { log } from '../utils/log-manager.js';
+import { ITask } from '../app.types.js';
+import { AppLocale } from '../app.strings.js';
 
 const TaskFormProperties = {
-    GTypeName: 'TaskForm',
-    Template: get_template_path('ui/task-form.ui'),
-    InternalChildren: [
-        WidgetIds.TaskFormEntryTitle,
-        WidgetIds.TaskFormEntryProject,
-        WidgetIds.TaskFormCheckDone,
-        WidgetIds.TaskFormBtnDelete,
-        WidgetIds.TaskFormBtnSave,
-        WidgetIds.TaskFormBtnDiscard
-    ],
-    Signals: {
-        [AppSignals.TaskFormClosed]: {
-            param_types: [GObject.TYPE_OBJECT]
-        },
-    }
-}
+  GTypeName: 'TaskForm',
+  Template: get_template_path('ui/task-form.ui'),
+  InternalChildren: [
+    WidgetIds.TaskFormEntryTitle,
+    WidgetIds.TaskFormEntryProject,
+    WidgetIds.TaskFormCheckDone,
+    WidgetIds.TaskFormBtnDelete,
+    WidgetIds.TaskFormBtnSave,
+    WidgetIds.TaskFormBtnDiscard,
+  ],
+  Signals: {
+    [AppSignals.TaskFormClosed]: {
+      param_types: [GObject.TYPE_OBJECT],
+    },
+  },
+};
 
 /**
  * A form component to edit task details.
  */
 export class TaskForm extends Gtk.Box {
-    static readonly LogClass = 'task-form';
+  static readonly LogClass = 'task-form';
 
-    static {
-        GObject.registerClass(TaskFormProperties, this);
+  static {
+    GObject.registerClass(TaskFormProperties, this);
+  }
+
+  /**
+   * Gtk widget references
+   */
+  private entry_title!: Adw.EntryRow;
+  private entry_project!: Adw.EntryRow;
+  private check_done!: Gtk.CheckButton;
+  private btn_delete!: Gtk.Button;
+  private btn_save!: Gtk.Button;
+  private btn_discard!: Gtk.Button;
+
+  /**
+   * Instance and internal property handling
+   */
+  private _taskId: number | null = null;
+  private _store!: TaskListStore;
+  private _projectManager!: ProjectManager;
+
+  constructor() {
+    super();
+
+    this.init_widgets();
+    this.connect_signals();
+  }
+
+  private connect_signals() {
+    log(TaskForm.LogClass, 'Connecting form signals and reactions');
+
+    this.btn_save.connect(AppSignals.Clicked, this.dispatch_save.bind(this));
+    this.btn_discard.connect(AppSignals.Clicked, this.dispatch_cancel.bind(this));
+    this.btn_delete.connect(AppSignals.Clicked, this.dispatch_delete.bind(this));
+  }
+
+  private init_widgets() {
+    log(TaskForm.LogClass, 'Initializing widget instances');
+
+    this.btn_save = this.get_template_child(
+      TaskForm.$gtype,
+      WidgetIds.TaskFormBtnSave,
+    ) as Gtk.Button;
+    this.btn_discard = this.get_template_child(
+      TaskForm.$gtype,
+      WidgetIds.TaskFormBtnDiscard,
+    ) as Gtk.Button;
+    this.btn_delete = this.get_template_child(
+      TaskForm.$gtype,
+      WidgetIds.TaskFormBtnDelete,
+    ) as Gtk.Button;
+
+    this.entry_title = this.get_template_child(
+      TaskForm.$gtype,
+      WidgetIds.TaskFormEntryTitle,
+    ) as Adw.EntryRow;
+    this.entry_project = this.get_template_child(
+      TaskForm.$gtype,
+      WidgetIds.TaskFormEntryProject,
+    ) as Adw.EntryRow;
+    this.check_done = this.get_template_child(
+      TaskForm.$gtype,
+      WidgetIds.TaskFormCheckDone,
+    ) as Gtk.CheckButton;
+  }
+
+  public setup(store: TaskListStore, projectManager: ProjectManager): this {
+    this._store = store;
+    this._projectManager = projectManager;
+
+    return this;
+  }
+
+  /**
+   * Loads a task into the form by its ID.
+   */
+  public load_task(taskId: number) {
+    log(TaskForm.LogClass, `Loading task: ${taskId}`);
+    this._taskId = taskId;
+
+    const taskItem = this.find_task();
+
+    if (!taskItem) {
+      log(TaskForm.LogClass, `Failed to find task: ${taskId}`);
+      return;
     }
 
-    /**
-     * Gtk widget references
-     */
-    private entry_title!: Adw.EntryRow;
-    private entry_project!: Adw.EntryRow;
-    private check_done!: Gtk.CheckButton;
-    private btn_delete!: Gtk.Button;
-    private btn_save!: Gtk.Button;
-    private btn_discard!: Gtk.Button;
+    const data = taskItem.to_object();
+    this.entry_title.set_text(data.title);
+    this.entry_project.set_text(data.project || '');
+    this.check_done.set_active(data.done || false);
 
-    /**
-     * Instance and internal property handling
-     */
-    private _taskId: number | null = null;
-    private _store!: TaskListStore;
-    private _projectManager!: ProjectManager;
+    this.setup_project_autocomplete();
+  }
 
-    constructor() {
-        super();
+  /**
+   * Finds the task currently loaded in the form.
+   */
+  private find_task(): TaskItem | null {
+    if (this._taskId === null) return null;
+    return this._store.find_by_id(this._taskId);
+  }
 
-        this.init_widgets();
-        this.connect_signals();
-    }
+  /**
+   * Setup project autocomplete on project entry
+   */
+  private setup_project_autocomplete(): void {}
 
-    private connect_signals() {
-        log(TaskForm.LogClass, 'Connecting form signals and reactions');
-
-        this.btn_save.connect(AppSignals.Clicked, this.dispatch_save.bind(this));
-        this.btn_discard.connect(AppSignals.Clicked, this.dispatch_cancel.bind(this));
-        this.btn_delete.connect(AppSignals.Clicked, this.dispatch_delete.bind(this));
-    }
-
-    private init_widgets() {
-        log(TaskForm.LogClass, 'Initializing widget instances');
-
-        this.btn_save = this.get_template_child(TaskForm.$gtype, WidgetIds.TaskFormBtnSave) as Gtk.Button;
-        this.btn_discard = this.get_template_child(TaskForm.$gtype, WidgetIds.TaskFormBtnDiscard) as Gtk.Button;
-        this.btn_delete = this.get_template_child(TaskForm.$gtype, WidgetIds.TaskFormBtnDelete) as Gtk.Button;
-
-        this.entry_title = this.get_template_child(TaskForm.$gtype, WidgetIds.TaskFormEntryTitle) as Adw.EntryRow;
-        this.entry_project = this.get_template_child(TaskForm.$gtype, WidgetIds.TaskFormEntryProject) as Adw.EntryRow;
-        this.check_done = this.get_template_child(TaskForm.$gtype, WidgetIds.TaskFormCheckDone) as Gtk.CheckButton;
-    }
-
-    public setup(store: TaskListStore, projectManager: ProjectManager): this {
-        this._store = store;
-        this._projectManager = projectManager;
-
-        return this;
-    }
-
-    /**
-     * Loads a task into the form by its ID.
-     */
-    public load_task(taskId: number) {
-        log(TaskForm.LogClass, `Loading task: ${taskId}`);
-        this._taskId = taskId;
-
-        const taskItem = this.find_task();
-
-        if (!taskItem) {
-            log(TaskForm.LogClass, `Failed to find task: ${taskId}`);
-            return;
-        }
-
-        const data = taskItem.to_object();
-        this.entry_title.set_text(data.title);
-        this.entry_project.set_text(data.project || "");
-        this.check_done.set_active(data.done || false);
-
-        this.setup_project_autocomplete();
-    }
-
-    /**
-     * Finds the task currently loaded in the form.
-     */
-    private find_task(): TaskItem | null {
-        if (this._taskId === null) return null;
-        return this._store.find_by_id(this._taskId);
-    }
-
-    /**
-     * Setup project autocomplete on project entry
-     */
-    private setup_project_autocomplete(): void {
-
-    }
-
-    /*
+  /*
 
     private _setup_project_completion() {
         const completion = new Gtk.EntryCompletion();
@@ -183,76 +199,76 @@ export class TaskForm extends Gtk.Box {
         }
     }*/
 
-    /**
-     * Save current task on list and dispatch window action to close bottom sheet
-     */
-    private dispatch_save(): void {
-        log(TaskForm.LogClass, 'Dispatching save action');
-        const task = this.find_task()?.to_object();
-        const title = this.entry_title.get_text().trim();
+  /**
+   * Save current task on list and dispatch window action to close bottom sheet
+   */
+  private dispatch_save(): void {
+    log(TaskForm.LogClass, 'Dispatching save action');
+    const task = this.find_task()?.to_object();
+    const title = this.entry_title.get_text().trim();
 
-        if (title === "") {
-            showToast(AppLocale.tasks.form.errorEmptyTitle);
-            return;
-        }
-
-        if (!task || !task.id) {
-            log(TaskForm.LogClass, 'No task loaded to save');
-            return;
-        }
-
-        log(TaskForm.LogClass, `Updating task in store: ${task.id}`);
-
-        // Update existing task data
-        // We recreate it by removing and re-appending, which is the pattern in TaskListStore
-        this.update_task({
-            ...task,
-            title: title,
-            project: this.entry_project.get_text().trim(),
-            done: this.check_done.get_active(),
-        });
-
-        this.dispatch_cancel();
-
-        showToast(AppLocale.tasks.toast.updated);
+    if (title === '') {
+      showToast(AppLocale.tasks.form.errorEmptyTitle);
+      return;
     }
 
-    private update_task(task: ITask) {
-        this._store.remove_task(task.id || 0);
-        this._store.append_task(task);
-        this._store.persist_store();
+    if (!task || !task.id) {
+      log(TaskForm.LogClass, 'No task loaded to save');
+      return;
     }
 
-    /**
-     * Clean the form state and call window action to close bottom sheet
-     */
-    private dispatch_cancel(): void {
-        log(TaskForm.LogClass, 'Dispatching cancel/close action');
+    log(TaskForm.LogClass, `Updating task in store: ${task.id}`);
 
-        this._taskId = null;
+    // Update existing task data
+    // We recreate it by removing and re-appending, which is the pattern in TaskListStore
+    this.update_task({
+      ...task,
+      title: title,
+      project: this.entry_project.get_text().trim(),
+      done: this.check_done.get_active(),
+    });
 
-        this.emit(AppSignals.TaskFormClosed, this);
+    this.dispatch_cancel();
+
+    showToast(AppLocale.tasks.toast.updated);
+  }
+
+  private update_task(task: ITask) {
+    this._store.remove_task(task.id || 0);
+    this._store.append_task(task);
+    this._store.persist_store();
+  }
+
+  /**
+   * Clean the form state and call window action to close bottom sheet
+   */
+  private dispatch_cancel(): void {
+    log(TaskForm.LogClass, 'Dispatching cancel/close action');
+
+    this._taskId = null;
+
+    this.emit(AppSignals.TaskFormClosed, this);
+  }
+
+  /**
+   * Update deleted status and save
+   */
+  private dispatch_delete() {
+    log(TaskForm.LogClass, 'Dispatching delete action');
+
+    if (this._taskId === null) return;
+
+    const taskItem = this.find_task();
+
+    if (taskItem) {
+      this.update_task({
+        ...taskItem.to_object(),
+        deleted: true,
+      });
+
+      this.dispatch_cancel();
+
+      showToast(AppLocale.tasks.toast.softDeleted);
     }
-
-    /**
-     * Update deleted status and save
-     */
-    private dispatch_delete() {
-        log(TaskForm.LogClass, 'Dispatching delete action');
-
-        if (this._taskId === null) return;
-
-        const taskItem = this.find_task();
-
-        if (taskItem) {
-            this.update_task({
-                ...taskItem.to_object(),
-                deleted: true,
-            });
-
-            this.dispatch_cancel();
-
-            showToast(AppLocale.tasks.toast.softDeleted);
-        }
-    }
+  }
 }

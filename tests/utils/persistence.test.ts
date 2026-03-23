@@ -12,7 +12,7 @@ vi.mock('gi://Gio', () => {
       FileCreateFlags: {
         PRIVATE: 1,
       },
-    }
+    },
   };
 });
 
@@ -22,7 +22,7 @@ describe('Persistence', () => {
 
   beforeEach(() => {
     vi.clearAllMocks();
-    
+
     mockFile = {
       get_path: vi.fn().mockReturnValue('/home/test/.local/share/doit/data.json'),
       make_directory_with_parents: vi.fn(),

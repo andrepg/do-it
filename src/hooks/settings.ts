@@ -16,25 +16,25 @@
  *
  * SPDX-License-Identifier: GPL-3.0-or-later
  */
-import Gio20 from "gi://Gio";
+import Gio20 from 'gi://Gio';
 
-import { APPLICATION_ID } from "../utils/application.js";
+import { APPLICATION_ID } from '../utils/application.js';
 
 export const useSettings = () => {
-    const settings: Gio20.Settings = new Gio20.Settings({ schemaId: APPLICATION_ID });
+  const settings: Gio20.Settings = new Gio20.Settings({ schemaId: APPLICATION_ID });
 
-    const get_int = (key: string) => settings.get_int(key);
+  const get_int = (key: string) => settings.get_int(key);
 
-    const set_int = (key: string, value: number) => settings.set_int(key, value);
+  const set_int = (key: string, value: number) => settings.set_int(key, value);
 
-    const get_string = (key: string) => settings.get_string(key);
+  const get_string = (key: string) => settings.get_string(key);
 
-    const set_string = (key: string, value: string) => settings.set_string(key, value);
+  const set_string = (key: string, value: string) => settings.set_string(key, value);
 
-    return {
-        get_int,
-        set_int,
-        get_string,
-        set_string
-    }
-}
+  return {
+    get_int,
+    set_int,
+    get_string,
+    set_string,
+  };
+};

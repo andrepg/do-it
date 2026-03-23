@@ -16,66 +16,66 @@
  *
  * SPDX-License-Identifier: GPL-3.0-or-later
  */
-import Adw from "gi://Adw"
-import GObject from "gi://GObject"
-import Gtk from "gi://Gtk";
+import Adw from 'gi://Adw';
+import GObject from 'gi://GObject';
+import Gtk from 'gi://Gtk';
 
-import { AppSignals, WidgetIds } from "../app.enums.js";
-import { AppLocale } from "../app.strings.js";
-import { TaskDeleteButtonIcon, TaskEntryStyle } from "../app.static.js";
-import { ITask } from "../app.types.js";
+import { AppSignals, WidgetIds } from '../app.enums.js';
+import { AppLocale } from '../app.strings.js';
+import { TaskDeleteButtonIcon, TaskEntryStyle } from '../app.static.js';
+import { ITask } from '../app.types.js';
 
-import { showToast } from "../actions/toast.js";
-import { get_template_path } from "../utils/application.js";
+import { showToast } from '../actions/toast.js';
+import { get_template_path } from '../utils/application.js';
 
 const TaskItemProperties = {
   GTypeName: 'TaskItem',
   Template: get_template_path('ui/task.ui'),
   Properties: {
     taskId: GObject.ParamSpec.int(
-      "taskId",
-      "Task Id",
-      "Task unique id",
+      'taskId',
+      'Task Id',
+      'Task unique id',
       GObject.ParamFlags.READABLE,
       0,
       2147483647,
-      0
+      0,
     ),
     title: GObject.ParamSpec.string(
-      "title",
-      "Title",
-      "Title task",
+      'title',
+      'Title',
+      'Title task',
       GObject.ParamFlags.READWRITE,
-      ""
+      '',
     ),
     done: GObject.ParamSpec.boolean(
-      "done",
-      "Done",
-      "Task status",
+      'done',
+      'Done',
+      'Task status',
       GObject.ParamFlags.READWRITE,
-      false
+      false,
     ),
     created: GObject.ParamSpec.string(
-      "created",
-      "Created At",
-      "Task creation timestamp",
+      'created',
+      'Created At',
+      'Task creation timestamp',
       GObject.ParamFlags.READWRITE,
-      ""
+      '',
     ),
     project: GObject.ParamSpec.string(
-      "project",
-      "Project",
-      "Task project",
+      'project',
+      'Project',
+      'Task project',
       GObject.ParamFlags.READWRITE,
-      ""
+      '',
     ),
     deleted: GObject.ParamSpec.boolean(
-      "deleted",
-      "Deleted",
-      "Task deleted status",
+      'deleted',
+      'Deleted',
+      'Task deleted status',
       GObject.ParamFlags.READWRITE,
-      false
-    )
+      false,
+    ),
   },
   InternalChildren: [WidgetIds.TaskItemTaskDone, WidgetIds.TaskItemTaskDelete],
   Signals: {
@@ -86,15 +86,15 @@ const TaskItemProperties = {
       param_types: [GObject.TYPE_OBJECT],
     },
   },
-}
+};
 
 /**
  * Represents a single task row in the UI.
- * 
+ *
  * Hierarchy: TaskGroup -> TaskList -> TaskItem
- * 
- * Inherits from Adw.ActionRow. This widget displays the task's title, 
- * creation date as a subtitle, and provides interactions such as a checkbox 
+ *
+ * Inherits from Adw.ActionRow. This widget displays the task's title,
+ * creation date as a subtitle, and provides interactions such as a checkbox
  * for marking the task as done and a button for deleting it.
  */
 export class TaskItem extends Adw.ActionRow {
@@ -125,11 +125,11 @@ export class TaskItem extends Adw.ActionRow {
 
   constructor(
     taskId = 0,
-    title = "",
+    title = '',
     done = false,
     created: number | null = null,
-    project = "",
-    deleted = false
+    project = '',
+    deleted = false,
   ) {
     super({
       title,
@@ -154,8 +154,14 @@ export class TaskItem extends Adw.ActionRow {
   }
 
   private _init_widgets() {
-    this.task_delete = this.get_template_child(TaskItem.$gtype, WidgetIds.TaskItemTaskDelete) as Gtk.Button;
-    this.task_done = this.get_template_child(TaskItem.$gtype, WidgetIds.TaskItemTaskDone) as Gtk.CheckButton;
+    this.task_delete = this.get_template_child(
+      TaskItem.$gtype,
+      WidgetIds.TaskItemTaskDelete,
+    ) as Gtk.Button;
+    this.task_done = this.get_template_child(
+      TaskItem.$gtype,
+      WidgetIds.TaskItemTaskDone,
+    ) as Gtk.CheckButton;
   }
 
   private _update_interface(): void {
@@ -175,9 +181,7 @@ export class TaskItem extends Adw.ActionRow {
   }
 
   private _update_widget_interface(): void {
-    const delete_icon = this._deleted
-      ? TaskDeleteButtonIcon.deleted
-      : TaskDeleteButtonIcon.default;
+    const delete_icon = this._deleted ? TaskDeleteButtonIcon.deleted : TaskDeleteButtonIcon.default;
 
     this.task_delete.set_icon_name(delete_icon);
     this.task_done.set_sensitive(!this._deleted);
@@ -187,9 +191,11 @@ export class TaskItem extends Adw.ActionRow {
   private _delete_task() {
     this._deleted = !this._deleted;
 
-    const message = this._deleted ? AppLocale.tasks.toast.softDeleted : AppLocale.tasks.toast.restored;
+    const message = this._deleted
+      ? AppLocale.tasks.toast.softDeleted
+      : AppLocale.tasks.toast.restored;
 
-    showToast(message)
+    showToast(message);
 
     this.emit(AppSignals.TaskDeleted, this);
 
@@ -197,9 +203,11 @@ export class TaskItem extends Adw.ActionRow {
   }
 
   private _finish_task() {
-    const message = this.task_done.get_active() ? AppLocale.tasks.toast.finished : AppLocale.tasks.toast.restored;
+    const message = this.task_done.get_active()
+      ? AppLocale.tasks.toast.finished
+      : AppLocale.tasks.toast.restored;
 
-    showToast(message)
+    showToast(message);
 
     this.emit(AppSignals.TaskUpdated, this);
 

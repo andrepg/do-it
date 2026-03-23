@@ -24,27 +24,24 @@ import { CssClasses, WidgetIds } from '../app.enums.js';
 import { AppLocale } from '../app.strings.js';
 
 const GObjectProperties = {
-  GTypeName: "SidebarButton",
+  GTypeName: 'SidebarButton',
   Template: get_template_path('ui/sidebar-button.ui'),
   Properties: {
-    'project': GObject.ParamSpec.string(
+    project: GObject.ParamSpec.string(
       'project',
       'Project',
       'Project',
       GObject.ParamFlags.READWRITE,
-      ""
-    )
+      '',
+    ),
   },
-  InternalChildren: [
-    WidgetIds.SidebarButtonContent,
-    WidgetIds.SidebarButtonIcon,
-  ]
+  InternalChildren: [WidgetIds.SidebarButtonContent, WidgetIds.SidebarButtonIcon],
 };
 
 /**
  * A custom sidebar button representing a specific project or "All tasks".
- * 
- * Provides visual indication (icons and CSS classes) indicating whether this project 
+ *
+ * Provides visual indication (icons and CSS classes) indicating whether this project
  * is currently selected as the active filter.
  */
 export class SidebarButton extends Gtk40.Button {
@@ -59,15 +56,21 @@ export class SidebarButton extends Gtk40.Button {
   private project_name: string;
 
   constructor(project: string) {
-    const btnTitle = project === "" ? AppLocale.tasks.list.noProject : project;
+    const btnTitle = project === '' ? AppLocale.tasks.list.noProject : project;
     // TODO Move this to enum
-    const btnIcon = project === "" ? "task-due-symbolic" : "folder-symbolic";
+    const btnIcon = project === '' ? 'task-due-symbolic' : 'folder-symbolic';
 
     super();
 
     this.project_name = project;
-    this.button_content = this.get_template_child(SidebarButton.$gtype, WidgetIds.SidebarButtonContent) as Gtk40.Label;
-    this.button_icon = this.get_template_child(SidebarButton.$gtype, WidgetIds.SidebarButtonIcon) as Gtk40.Image;
+    this.button_content = this.get_template_child(
+      SidebarButton.$gtype,
+      WidgetIds.SidebarButtonContent,
+    ) as Gtk40.Label;
+    this.button_icon = this.get_template_child(
+      SidebarButton.$gtype,
+      WidgetIds.SidebarButtonIcon,
+    ) as Gtk40.Image;
 
     this.button_icon.set_from_icon_name(btnIcon);
     this.button_content.set_text(btnTitle);
@@ -75,18 +78,18 @@ export class SidebarButton extends Gtk40.Button {
 
   /**
    * Sets the visual active state of the button to reflect the current global filter.
-   * 
+   *
    * @param active True if this project is currently selected, False otherwise.
    */
   public set_active(active: boolean) {
     const ICONS = {
-      due_tasks: "task-due-symbolic",
-      folder: "folder-symbolic",
-      folder_open: "folder-open-symbolic",
-    }
+      due_tasks: 'task-due-symbolic',
+      folder: 'folder-symbolic',
+      folder_open: 'folder-open-symbolic',
+    };
 
-    const default_icon = this.project_name === "" ? ICONS.due_tasks : ICONS.folder;
-    const active_icon = this.project_name === "" ? ICONS.due_tasks : ICONS.folder_open;
+    const default_icon = this.project_name === '' ? ICONS.due_tasks : ICONS.folder;
+    const active_icon = this.project_name === '' ? ICONS.due_tasks : ICONS.folder_open;
 
     if (active) {
       this.add_css_class(CssClasses.SuggestedAction);

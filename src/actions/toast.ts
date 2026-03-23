@@ -29,21 +29,21 @@ import { DoItMainWindow } from '../ui-handler/doit.js';
  * so no reference needs to be passed by the caller.
  */
 export const showToast = (message: string): void => {
-    const app = Gio.Application.get_default() as Adw.Application | null;
-    const window = app?.active_window as Adw.ApplicationWindow | null;
+  const app = Gio.Application.get_default() as Adw.Application | null;
+  const window = app?.active_window as Adw.ApplicationWindow | null;
 
-    if (!window) {
-        console.warn('[toast] no active window found, skipping toast');
-        return;
-    }
+  if (!window) {
+    console.warn('[toast] no active window found, skipping toast');
+    return;
+  }
 
-    // Retrieve the overlay from the window's template children
-    const toast_overlay = window.get_template_child(
-        DoItMainWindow.$gtype,
-        WidgetIds.WindowToastOverlay
-    ) as Adw.ToastOverlay | null;
+  // Retrieve the overlay from the window's template children
+  const toast_overlay = window.get_template_child(
+    DoItMainWindow.$gtype,
+    WidgetIds.WindowToastOverlay,
+  ) as Adw.ToastOverlay | null;
 
-    toast_overlay?.add_toast(new Adw.Toast({ title: message }));
+  toast_overlay?.add_toast(new Adw.Toast({ title: message }));
 };
 
 /**
@@ -57,19 +57,19 @@ export const showToast = (message: string): void => {
  *   window.activate_action('show-toast', GLib.Variant.new_string('Hello!'));
  */
 export default function toast() {
-    const setup = (window: Adw.ApplicationWindow) => {
-        const action = new Gio.SimpleAction({
-            name: ActionNames.ShowToast,
-            parameter_type: new GLib.VariantType('s'),
-        });
+  const setup = (window: Adw.ApplicationWindow) => {
+    const action = new Gio.SimpleAction({
+      name: ActionNames.ShowToast,
+      parameter_type: new GLib.VariantType('s'),
+    });
 
-        action.connect(AppSignals.Activate, (_action, parameter) => {
-            if (!parameter) return;
-            showToast(parameter.unpack() as string);
-        });
+    action.connect(AppSignals.Activate, (_action, parameter) => {
+      if (!parameter) return;
+      showToast(parameter.unpack() as string);
+    });
 
-        window.add_action(action);
-    };
+    window.add_action(action);
+  };
 
-    return { setup };
+  return { setup };
 }

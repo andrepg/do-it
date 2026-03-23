@@ -16,64 +16,64 @@
  *
  * SPDX-License-Identifier: GPL-3.0-or-later
  */
-import Gio from "gi://Gio";
-import GLib from "gi://GLib";
-import Adw1 from "gi://Adw";
+import Gio from 'gi://Gio';
+import GLib from 'gi://GLib';
+import Adw1 from 'gi://Adw';
 
-import { ActionNames, AppSignals, WidgetIds } from "../app.enums.js";
-import { DoItMainWindow } from "../ui-handler/doit.js";
-import { TaskForm } from "../ui-handler/task-form.js";
-import { log } from "../utils/log-manager.js";
+import { ActionNames, AppSignals, WidgetIds } from '../app.enums.js';
+import { DoItMainWindow } from '../ui-handler/doit.js';
+import { TaskForm } from '../ui-handler/task-form.js';
+import { log } from '../utils/log-manager.js';
 
 /**
  * Action to handle task editing via the bottom sheet.
  */
 export default function taskEdit(taskForm: TaskForm) {
-    let bottomSheet: Adw1.BottomSheet;
+  let bottomSheet: Adw1.BottomSheet;
 
-    const setup = (window: DoItMainWindow) => {
-        bottomSheet = window.get_template_child(
-            DoItMainWindow.$gtype,
-            WidgetIds.WindowBottomSheet
-        ) as Adw1.BottomSheet;
+  const setup = (window: DoItMainWindow) => {
+    bottomSheet = window.get_template_child(
+      DoItMainWindow.$gtype,
+      WidgetIds.WindowBottomSheet,
+    ) as Adw1.BottomSheet;
 
-        task_edit_action(window);
-        task_edit_close_action();
-    }
+    task_edit_action(window);
+    task_edit_close_action();
+  };
 
-    const toggle_bottom_sheet = () => {
-        bottomSheet.set_open(!bottomSheet.get_open());
-    }
+  const toggle_bottom_sheet = () => {
+    bottomSheet.set_open(!bottomSheet.get_open());
+  };
 
-    const task_edit_action = (window: DoItMainWindow) => {
-        const action = new Gio.SimpleAction({
-            name: ActionNames.TaskEdit,
-            parameter_type: new GLib.VariantType('i'),
-        });
+  const task_edit_action = (window: DoItMainWindow) => {
+    const action = new Gio.SimpleAction({
+      name: ActionNames.TaskEdit,
+      parameter_type: new GLib.VariantType('i'),
+    });
 
-        action.connect(AppSignals.Activate, (_action, parameter) => {
-            if (!parameter) return;
+    action.connect(AppSignals.Activate, (_action, parameter) => {
+      if (!parameter) return;
 
-            const taskId = parameter.get_int32();
+      const taskId = parameter.get_int32();
 
-            taskForm.load_task(taskId);
-            toggle_bottom_sheet()
-        });
+      taskForm.load_task(taskId);
+      toggle_bottom_sheet();
+    });
 
-        window.add_action(action);
-    }
+    window.add_action(action);
+  };
 
-    const task_edit_close_action = () => {
-        taskForm.connect(AppSignals.TaskFormClosed, () => {
-            log(DoItMainWindow.LogClass, 'Task form closed signal received, Closing bottom sheet');
-            toggle_bottom_sheet()
-        });
-    }
+  const task_edit_close_action = () => {
+    taskForm.connect(AppSignals.TaskFormClosed, () => {
+      log(DoItMainWindow.LogClass, 'Task form closed signal received, Closing bottom sheet');
+      toggle_bottom_sheet();
+    });
+  };
 
-    return {
-        name: ActionNames.TaskEdit,
-        parameter_type: new GLib.VariantType('i'),
+  return {
+    name: ActionNames.TaskEdit,
+    parameter_type: new GLib.VariantType('i'),
 
-        setup,
-    };
+    setup,
+  };
 }
