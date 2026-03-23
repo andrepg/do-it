@@ -18,10 +18,8 @@
  */
 import { DoItMainWindow } from '../ui-handler/doit.js';
 
-import Adw from 'gi://Adw';
 import Gtk from 'gi://Gtk';
 
-import { log } from '../utils/log-manager.js';
 import { ProjectManager } from '../utils/project-manager.js';
 import { TaskGroup } from '../ui-handler/task-group.js';
 import { TaskListStore } from '../ui-handler/task-list-store.js';

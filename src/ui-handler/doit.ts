@@ -136,7 +136,7 @@ export class DoItMainWindow extends Adw.ApplicationWindow {
     this.task_form = new TaskForm().setup(this.taskListStore, this.projectManager);
     this.bottom_sheet_content.append(this.task_form);
 
-    Actions.taskEdit(this.task_form, this.bottom_sheet).setup(this);
+    Actions.taskEdit(this.task_form).setup(this);
   }
 
   public override vfunc_close_request(): boolean {

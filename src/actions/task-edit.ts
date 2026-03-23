@@ -17,18 +17,26 @@
  * SPDX-License-Identifier: GPL-3.0-or-later
  */
 import Gio from "gi://Gio";
-import GObject from "gi://GObject";
 import GLib from "gi://GLib";
+import Adw1 from "gi://Adw";
+
+import { ActionNames, AppSignals, WidgetIds } from "../app.enums.js";
 import { DoItMainWindow } from "../ui-handler/doit.js";
 import { TaskForm } from "../ui-handler/task-form.js";
-import { ActionNames, AppSignals } from "../app.enums.js";
 import { log } from "../utils/log-manager.js";
 
 /**
  * Action to handle task editing via the bottom sheet.
  */
-export default function taskEdit(taskForm: TaskForm, bottomSheet: any) {
+export default function taskEdit(taskForm: TaskForm) {
+    let bottomSheet: Adw1.BottomSheet;
+
     const setup = (window: DoItMainWindow) => {
+        bottomSheet = window.get_template_child(
+            DoItMainWindow.$gtype,
+            WidgetIds.WindowBottomSheet
+        ) as Adw1.BottomSheet;
+
         task_edit_action(window);
         task_edit_close_action();
     }

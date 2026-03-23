@@ -24,25 +24,28 @@ import { AppSignals } from '../app.enums.js';
 
 /**
  * Manages the dynamic discovery of task groups based on projects in the store.
- * 
+ *
  * Emits signals when a new project is found or an existing project no longer has any tasks.
  */
 export class ProjectManager extends GObject.Object {
   static {
-    GObject.registerClass({
-      GTypeName: 'ProjectManager',
-      Signals: {
-        [AppSignals.ProjectAdded]: {
-          param_types: [GObject.TYPE_STRING]
+    GObject.registerClass(
+      {
+        GTypeName: 'ProjectManager',
+        Signals: {
+          [AppSignals.ProjectAdded]: {
+            param_types: [GObject.TYPE_STRING],
+          },
+          [AppSignals.ProjectRemoved]: {
+            param_types: [GObject.TYPE_STRING],
+          },
+          [AppSignals.FilterChanged]: {
+            param_types: [GObject.TYPE_STRING],
+          },
         },
-        [AppSignals.ProjectRemoved]: {
-          param_types: [GObject.TYPE_STRING]
-        },
-        [AppSignals.FilterChanged]: {
-          param_types: [GObject.TYPE_STRING]
-        }
-      }
-    }, this);
+      },
+      this,
+    );
   }
 
   private _store: TaskListStore;
@@ -68,7 +71,7 @@ export class ProjectManager extends GObject.Object {
 
   /**
    * Sets the active project filter and emits the 'filter-changed' signal if changed.
-   * 
+   *
    * @param project The name of the project to filter by, or null for all tasks.
    */
   public set_filter(project: string | null) {
@@ -109,29 +112,29 @@ export class ProjectManager extends GObject.Object {
     const n_items = this._store.get_n_items();
 
     for (let i = 0; i < n_items; i++) {
-        const item = this._store.get_item(i);
-        if (item instanceof TaskItem) {
-            const project = item.get_project() || "";
-            if (!currentProjectsSet.has(project)) {
-                currentProjectsSet.add(project);
-                currentProjectsOrdered.push(project);
-            }
+      const item = this._store.get_item(i);
+      if (item instanceof TaskItem) {
+        const project = item.get_project() || '';
+        if (!currentProjectsSet.has(project)) {
+          currentProjectsSet.add(project);
+          currentProjectsOrdered.push(project);
         }
+      }
     }
 
     // 1. Find projects to remove (exist in cache but not in current)
-    const projectsToRemove = [...this._projects_set].filter(p => !currentProjectsSet.has(p));
+    const projectsToRemove = [...this._projects_set].filter((p) => !currentProjectsSet.has(p));
     for (const project of projectsToRemove) {
-        this._projects_set.delete(project);
-        this.emit(AppSignals.ProjectRemoved, project);
+      this._projects_set.delete(project);
+      this.emit(AppSignals.ProjectRemoved, project);
     }
 
     // 2. Find projects to add (exist in current but not in cache)
     for (const project of currentProjectsOrdered) {
-        if (!this._projects_set.has(project)) {
-            this._projects_set.add(project);
-            this.emit(AppSignals.ProjectAdded, project);
-        }
+      if (!this._projects_set.has(project)) {
+        this._projects_set.add(project);
+        this.emit(AppSignals.ProjectAdded, project);
+      }
     }
 
     this._projects_ordered = currentProjectsOrdered;

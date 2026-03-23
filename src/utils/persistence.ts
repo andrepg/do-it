@@ -24,74 +24,72 @@ import { ITask } from '../app.types.js';
  * Handles reading and writing application data to a local JSON file.
  */
 export class Persistence {
-  private filename: string = 'data.json';
-  private databaseDir: string;
-  private databaseFile: Gio.File;
-  private databaseFilePath: string | null;
+    private filename: string = 'data.json';
+    private databaseDir: string;
+    private databaseFile: Gio.File;
+    private databaseFilePath: string | null;
 
-  constructor() {
-    this.databaseDir = GLib.get_user_data_dir() as string;
+    constructor() {
+        this.databaseDir = GLib.get_user_data_dir() as string;
 
-    const dbPath = GLib.build_filenamev([
-      this.databaseDir,
-      this.filename,
-    ]) as string;
+        const dbPath = GLib.build_filenamev([this.databaseDir, this.filename]) as string;
 
-    this.databaseFile = Gio.File.new_for_path(dbPath);
-    this.databaseFilePath = this.databaseFile.get_path();
-  }
-
-  /**
-   * Ensures that the database directory and file exist, creating them if necessary.
-   */
-  create_database() {
-    try {
-      Gio.File.new_for_path(this.databaseDir).make_directory_with_parents(null);
-    } catch { }
-
-    if (this.databaseFilePath) {
-      try {
-        Gio.File.new_for_path(this.databaseFilePath).create(Gio.FileCreateFlags.PRIVATE, null);
-      } catch { }
+        this.databaseFile = Gio.File.new_for_path(dbPath);
+        this.databaseFilePath = this.databaseFile.get_path();
     }
-  }
 
-  /**
-   * Reads data from database file, creating it first if does not exists.
-   *
-   * @returns {ITask[]} Returns the data read from the file.
-   */
-  read_database(): unknown[] {
-    this.create_database();
+    /**
+     * Ensures that the database directory and file exist, creating them if necessary.
+     */
+    create_database() {
+        try {
+            Gio.File.new_for_path(this.databaseDir).make_directory_with_parents(null);
+        } catch {}
 
-    const decoder = new TextDecoder();
+        if (this.databaseFilePath) {
+            try {
+                Gio.File.new_for_path(this.databaseFilePath).create(
+                    Gio.FileCreateFlags.PRIVATE,
+                    null,
+                );
+            } catch {}
+        }
+    }
 
-    let [_, content] = this.databaseFile.load_contents(null);
+    /**
+     * Reads data from database file, creating it first if does not exists.
+     *
+     * @returns {ITask[]} Returns the data read from the file.
+     */
+    read_database(): unknown[] {
+        this.create_database();
 
-    const file_content = decoder.decode(content);
+        const decoder = new TextDecoder();
 
-    return file_content.trim() === ""
-      ? []
-      : JSON.parse(file_content);
-  }
+        const [_, content] = this.databaseFile.load_contents(null);
 
-  /**
-   * Writes the provided data to the JSON database file.
-   *
-   * @param data The array of data objects to persist.
-   */
-  write_database(data: unknown[]) {
-    this.create_database();
+        const file_content = decoder.decode(content);
 
-    const encoder = new TextEncoder();
-    const file = encoder.encode(JSON.stringify(data));
+        return file_content.trim() === '' ? [] : JSON.parse(file_content);
+    }
 
-    this.databaseFile.replace_contents(
-      file, // ByteArray to save
-      null, // old file etag
-      true, // if we should make a backup
-      Gio.FileCreateFlags.PRIVATE,
-      null,
-    );
-  }
+    /**
+     * Writes the provided data to the JSON database file.
+     *
+     * @param data The array of data objects to persist.
+     */
+    write_database(data: unknown[]) {
+        this.create_database();
+
+        const encoder = new TextEncoder();
+        const file = encoder.encode(JSON.stringify(data));
+
+        this.databaseFile.replace_contents(
+            file, // ByteArray to save
+            null, // old file etag
+            true, // if we should make a backup
+            Gio.FileCreateFlags.PRIVATE,
+            null,
+        );
+    }
 }
