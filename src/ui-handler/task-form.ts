@@ -27,6 +27,8 @@ import { AppSignals, WidgetIds, ActionNames } from "../app.enums.js";
 import { showToast } from "../actions/toast.js";
 import { log } from "../utils/log-manager.js";
 import * as Actions from "../actions/index.js";
+import { ITask } from "../app.types.js";
+import useAutocomplete from "../hooks/autocomplete.js";
 
 const TaskFormProperties = {
     GTypeName: 'TaskForm',
@@ -87,7 +89,7 @@ export class TaskForm extends Gtk.Box {
 
         this.btn_save.connect(AppSignals.Clicked, this.dispatch_save.bind(this));
         this.btn_discard.connect(AppSignals.Clicked, this.dispatch_cancel.bind(this));
-        this.btn_delete.connect(AppSignals.Clicked, this._on_delete.bind(this));
+        this.btn_delete.connect(AppSignals.Clicked, this.dispatch_delete.bind(this));
     }
 
     private init_widgets() {
@@ -131,6 +133,9 @@ export class TaskForm extends Gtk.Box {
         this.setup_project_autocomplete();
     }
 
+    /**
+     * Finds the task currently loaded in the form.
+     */
     private find_task(): TaskItem | null {
         if (this._taskId === null) return null;
         return this._store.find_by_id(this._taskId);
@@ -143,113 +148,7 @@ export class TaskForm extends Gtk.Box {
 
     }
 
-    /**
-     * Save current task on list and dispatch window action to close bottom sheet
-     */
-    private dispatch_save(): void {
-        log(TaskForm.LogClass, 'Dispatching save action');
-        const taskItem = this.find_task();
-        const task = taskItem?.to_object();
-        const title = this.entry_title.get_text().trim();
-
-        if (title === "") {
-            showToast(_("Title cannot be empty"));
-            return;
-        }
-
-        if (!task || task.id === null || task.id === undefined) {
-            log(TaskForm.LogClass, 'No task loaded to save');
-            return;
-        }
-
-        const taskId = task.id as number;
-
-        log(TaskForm.LogClass, `Updating task in store: ${taskId}`);
-
-        // Update existing task data
-        // We recreate it by removing and re-appending, which is the pattern in TaskListStore
-        this._store.remove_task(taskId);
-
-        this._store.append_task({
-            id: taskId,
-            title: title,
-            project: this.entry_project.get_text().trim(),
-            done: this.check_done.get_active(),
-            created_at: task.created_at,
-            deleted: task.deleted,
-            tags: task.tags,
-        });
-
-        this._store.persist_store();
-
-        showToast(_("Task updated"));
-
-        this.dispatch_cancel();
-    }
-
-    /**
-     * Clean the form state and call window action to close bottom sheet
-     */
-    private dispatch_cancel(): void {
-        log(TaskForm.LogClass, 'Dispatching cancel/close action');
-        this._taskId = null;
-
-        this.emit(AppSignals.TaskFormClosed, this);
-    }
-
-    private _on_delete() {
-        log(TaskForm.LogClass, 'Dispatching delete action');
-        if (this._taskId === null) return;
-
-        const taskItem = this.find_task();
-        if (taskItem) {
-            taskItem.emit(AppSignals.TaskDeleted, taskItem);
-            showToast(_("Task deleted"));
-            this.dispatch_cancel();
-        }
-    }
-
-    /*private _on_save() {
-        if (this._taskId === null) return;
-
-        const taskItem = this._store.find_by_id(this._taskId);
-        if (!taskItem) return;
-
-        const title = this.entry_title.get_text().trim();
-        const project = this.entry_project.get_text().trim();
-        const done = this.check_done.get_active();
-
-        if (title === "") {
-            showToast(_("Title cannot be empty"));
-            return;
-        }
-
-                taskItem.set_property("title", title);
-                taskItem.set_property("project", project);
-                taskItem.set_property("done", done);
-                
-
-        console.log("taskItem", taskItem, { title, project, done });
-
-        taskItem.emit(AppSignals.TaskUpdated, taskItem);
-
-        showToast(_("Task updated"));
-        this.activate_action(`win.${ActionNames.TaskEditClose}`, null);
-    }
-
-    private _on_discard() {
-        this.activate_action(`win.${ActionNames.TaskEditClose}`, null);
-    }
-
-    private _on_delete() {
-        if (this._taskId === null) return;
-        const taskItem = this._store.find_by_id(this._taskId);
-        if (taskItem) {
-            taskItem.emit(AppSignals.TaskDeleted, taskItem);
-            showToast(_("Task deleted"));
-            this.activate_action(`win.${ActionNames.TaskEditClose}`, null);
-        }
-    }
+    /*
 
     private _setup_project_completion() {
         const completion = new Gtk.EntryCompletion();
@@ -286,4 +185,77 @@ export class TaskForm extends Gtk.Box {
             entry.set_completion(completion);
         }
     }*/
+
+    /**
+     * Save current task on list and dispatch window action to close bottom sheet
+     */
+    private dispatch_save(): void {
+        log(TaskForm.LogClass, 'Dispatching save action');
+        const task = this.find_task()?.to_object();
+        const title = this.entry_title.get_text().trim();
+
+        if (title === "") {
+            showToast(_("Title cannot be empty"));
+            return;
+        }
+
+        if (!task || !task.id) {
+            log(TaskForm.LogClass, 'No task loaded to save');
+            return;
+        }
+
+        log(TaskForm.LogClass, `Updating task in store: ${task.id}`);
+
+        // Update existing task data
+        // We recreate it by removing and re-appending, which is the pattern in TaskListStore
+        this.update_task({
+            ...task,
+            title: title,
+            project: this.entry_project.get_text().trim(),
+            done: this.check_done.get_active(),
+        });
+
+        this.dispatch_cancel();
+
+        showToast(_("Task updated"));
+    }
+
+    private update_task(task: ITask) {
+        this._store.remove_task(task.id || 0);
+        this._store.append_task(task);
+        this._store.persist_store();
+    }
+
+    /**
+     * Clean the form state and call window action to close bottom sheet
+     */
+    private dispatch_cancel(): void {
+        log(TaskForm.LogClass, 'Dispatching cancel/close action');
+
+        this._taskId = null;
+
+        this.emit(AppSignals.TaskFormClosed, this);
+    }
+
+    /**
+     * Update deleted status and save
+     */
+    private dispatch_delete() {
+        log(TaskForm.LogClass, 'Dispatching delete action');
+
+        if (this._taskId === null) return;
+
+        const taskItem = this.find_task();
+
+        if (taskItem) {
+            this.update_task({
+                ...taskItem.to_object(),
+                deleted: true,
+            });
+
+            this.dispatch_cancel();
+
+            showToast(_("Task deleted"));
+        }
+    }
 }
