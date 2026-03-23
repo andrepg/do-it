@@ -18,7 +18,6 @@
  */
 import GLib from 'gi://GLib';
 import Gio from 'gi://Gio';
-import { ITask } from '../app.types.js';
 
 /**
  * Handles reading and writing application data to a local JSON file.
@@ -44,7 +43,9 @@ export class Persistence {
     create_database() {
         try {
             Gio.File.new_for_path(this.databaseDir).make_directory_with_parents(null);
-        } catch {}
+        } catch {
+            console.error("[persistence] Error creating database directory");
+        }
 
         if (this.databaseFilePath) {
             try {
@@ -52,7 +53,9 @@ export class Persistence {
                     Gio.FileCreateFlags.PRIVATE,
                     null,
                 );
-            } catch {}
+            } catch {
+                console.error("[persistence] Error creating database file");
+            }
         }
     }
 
@@ -66,7 +69,7 @@ export class Persistence {
 
         const decoder = new TextDecoder();
 
-        const [_, content] = this.databaseFile.load_contents(null);
+        const [, content] = this.databaseFile.load_contents(null);
 
         const file_content = decoder.decode(content);
 

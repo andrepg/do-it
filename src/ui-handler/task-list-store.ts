@@ -26,6 +26,7 @@ import { ITask } from "../app.types.js";
 import { log } from "../utils/log-manager.js";
 import { useTaskSort } from "../hooks/tasks.sort.js";
 import { TaskItem } from "./task-item.js";
+import { DoItMainWindow } from "./doit.js";
 
 const TaskListStoreType = {
   GTypeName: 'TaskListStore',
@@ -116,7 +117,7 @@ export class TaskListStore extends Gio.ListStore<TaskItem> {
     task.connect(AppSignals.TaskUpdated, () => _update_interface(AppSignals.TaskUpdated));
     task.connect(AppSignals.TaskDeleted, () => _update_interface(AppSignals.TaskDeleted));
     task.connect(AppSignals.Activated, () => {
-      const root = task.get_root() as any;
+      const root = task.get_root() as DoItMainWindow;
       if (root && root.activate_action) {
         root.activate_action(ActionNames.TaskEdit, new GLib.Variant('i', task.to_object().id as number));
       }

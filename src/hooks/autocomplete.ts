@@ -26,11 +26,11 @@ const useAutocomplete = () => {
         listModel.set(listModel.append(), [0], [item])
     }
 
-    const append_many = (items: string[]) => {
+    /*const append_many = (items: string[]) => {
         items.forEach((item) => {
             append(item);
         })
-    }
+    }*/
 
     /**
      * Clear list model
