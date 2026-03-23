@@ -3,8 +3,8 @@ name: '[build] flatpak bundle'
 on:
   push:
     tags: ['*']
-  release:
-    types: [released]
+
+permissions: {}
 
 jobs:
   flatpak-validation:

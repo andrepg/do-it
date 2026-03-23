@@ -10,6 +10,8 @@ on:
     branches:
       - main
 
+permissions: {}
+
 jobs:
   bundle-prod:
     name: 'Validate prod bundle'
