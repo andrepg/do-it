@@ -1,119 +1,114 @@
 {
-  "folders": [
-    {
-      "path": ".",
-    },
-  ],
-  "settings": {
-    "editor.fontFamily": "'0xProto Nerd Font'",
-    "editor.fontSize": 12,
-    "terminal.integrated.fontSize": 12,
-    "files.watcherExclude": {
-      "**/.git/objects/**": true,
-      "**/.git/subtree-cache/**": true,
-      "**/.hg/store/**": true,
-      ".flatpak/**": true,
-      "_build-**/**": true,
-      "_build/**": true
-    },
-    "files.exclude": {
-      "**/_build": true,
-      "**/_build-*/**": true,
-      "**/_repo-*/**": true,
-      "**/.build/**": true,
-      "**/.flatpak": true,
-      "**/.flatpak-**/**": true,
-    },
-    "editor.formatOnPaste": true,
-    "editor.autoIndentOnPaste": true,
-    "terminal.integrated.fontLigatures.enabled": true,
-    "mesonbuild.linting.enabled": true,
-    "mesonbuild.downloadLanguageServer": true,
-    "mesonbuild.formatting.enabled": true,
-    "mesonbuild.mesonlsp.others.removeDefaultTypesInInlayHints": true,
-    "typescript.referencesCodeLens.showOnAllFunctions": true,
-    "typescript.referencesCodeLens.enabled": true,
-    "typescript.implementationsCodeLens.showOnInterfaceMethods": true,
-    "typescript.implementationsCodeLens.showOnAllClassMethods": true,
-    "typescript.implementationsCodeLens.enabled": true,
-    "javascript.referencesCodeLens.showOnAllFunctions": true,
-    "javascript.referencesCodeLens.enabled": true,
-    "mesonbuild.configureOnOpen": false,
-    "mesonbuild.buildFolder": "_build",
-    "mesonbuild.mesonPath": "${workspaceFolder}/.flatpak/meson.sh",
-  },
-  "tasks": {
-    "version": "2.0.0",
-    "tasks": [
-      {
-        "command": "sh ${workspaceFolder}/scripts/update-pot-file.sh",
-        "label": "Update .pot file",
-        "detail": "Updates the translation template (.pot) file",
-        "group": "build",
-        "type": "shell",
-        "presentation": {
-          "clear": true,
-          "showReuseMessage": false,
+    "folders": [
+        {
+            "path": ".",
         },
-        "runOptions": {
-          "instanceLimit": 1,
-          "instancePolicy": "terminateNewest",
-        },
-        "icon": {
-          "id": "symbol-text",
-        },
-      },
-      {
-        "command": "sh ${workspaceFolder}/scripts/compile.sh ${input:manifest}",
-        "label": "Compile app",
-        "detail": "Compiles the application using given manifest",
-        "type": "shell",
-        "group": "build",
-        "presentation": {
-          "clear": true,
-          "showReuseMessage": false,
-        },
-        "runOptions": {
-          "instanceLimit": 1,
-          "instancePolicy": "terminateNewest",
-        },
-        "icon": {
-          "id": "archive",
-        },
-      },
-      {
-        "command": "sh ${workspaceFolder}/scripts/run.sh ${input:manifest}",
-        "label": "Compile and run app",
-        "detail": "Runs the application using given manifest",
-        "type": "shell",
-        "dependsOn": [
-          "Compile app"
-        ],
-        "group": "build",
-        "presentation": {
-          "clear": true,
-          "showReuseMessage": false,
-        },
-        "runOptions": {
-          "instanceLimit": 1,
-          "instancePolicy": "terminateNewest",
-        },
-        "icon": {
-          "id": "play",
-        },
-      },
     ],
-    "inputs": [
-      {
-        "id": "manifest",
-        "type": "pickString",
-        "description": "Which manifest should be used to run the application?",
-        "default": "io.github.andrepg.Doit.devel.json",
-        "options": [
-          "io.github.andrepg.Doit.json",
-          "io.github.andrepg.Doit.devel.json",
+    "settings": {
+        "editor.fontFamily": "'0xProto Nerd Font'",
+        "editor.fontSize": 12,
+        "terminal.integrated.fontSize": 12,
+        "files.watcherExclude": {
+            "**/.git/objects/**": true,
+            "**/.git/subtree-cache/**": true,
+            "**/.hg/store/**": true,
+            ".flatpak/**": true,
+            "_build-**/**": true,
+            "_build/**": true
+        },
+        "files.exclude": {
+            "**/_build": true,
+            "**/_build-*/**": true,
+            "**/_repo-*/**": true,
+            "**/.build/**": true,
+            "**/.flatpak": true,
+            "**/.flatpak-**/**": true,
+        },
+        "editor.formatOnPaste": true,
+        "editor.autoIndentOnPaste": true,
+        "terminal.integrated.fontLigatures.enabled": true,
+        "mesonbuild.linting.enabled": true,
+        "mesonbuild.downloadLanguageServer": true,
+        "mesonbuild.formatting.enabled": true,
+        "mesonbuild.mesonlsp.others.removeDefaultTypesInInlayHints": true,
+        "typescript.referencesCodeLens.showOnAllFunctions": true,
+        "typescript.referencesCodeLens.enabled": true,
+        "typescript.implementationsCodeLens.showOnInterfaceMethods": true,
+        "typescript.implementationsCodeLens.showOnAllClassMethods": true,
+        "typescript.implementationsCodeLens.enabled": true,
+        "javascript.referencesCodeLens.showOnAllFunctions": true,
+        "javascript.referencesCodeLens.enabled": true,
+        "mesonbuild.configureOnOpen": false,
+        "mesonbuild.buildFolder": "_build",
+        "mesonbuild.mesonPath": "${workspaceFolder}/.flatpak/meson.sh",
+    },
+    "tasks": {
+        "version": "2.0.0",
+        "tasks": [
+            {
+                "command": "sh ${workspaceFolder}/scripts/update-pot-file.sh",
+                "label": "Update .pot file",
+                "detail": "Updates the translation template (.pot) file",
+                "group": "build",
+                "type": "shell",
+                "presentation": {
+                    "clear": true,
+                    "showReuseMessage": false,
+                },
+                "runOptions": {
+                    "instanceLimit": 1,
+                    "instancePolicy": "terminateNewest",
+                },
+                "icon": {
+                    "id": "symbol-text",
+                },
+            },
+            {
+                "command": "sh ${workspaceFolder}/scripts/compile.sh ${input:manifest}",
+                "label": "Compile app",
+                "detail": "Compiles the application using given manifest",
+                "type": "shell",
+                "group": "build",
+                "presentation": {
+                    "clear": true,
+                    "showReuseMessage": false,
+                },
+                "runOptions": {
+                    "instanceLimit": 1,
+                    "instancePolicy": "terminateNewest",
+                },
+                "icon": {
+                    "id": "archive",
+                },
+            },
+            {
+                "command": "sh ${workspaceFolder}/scripts/run.sh ${input:manifest}",
+                "label": "Compile and run app",
+                "detail": "Runs the application using given manifest",
+                "type": "shell",
+                "dependsOn": ["Compile app"],
+                "group": "build",
+                "presentation": {
+                    "clear": true,
+                    "showReuseMessage": false,
+                },
+                "runOptions": {
+                    "instanceLimit": 1,
+                    "instancePolicy": "terminateNewest",
+                },
+                "icon": {
+                    "id": "play",
+                },
+            },
         ],
-      },
-    ],
-  },
+        "inputs": [
+            {
+                "id": "manifest",
+                "type": "pickString",
+                "description": "Which manifest should be used to run the application?",
+                "default": "io.github.andrepg.Doit.devel.json",
+                "options": ["io.github.andrepg.Doit.json", "io.github.andrepg.Doit.devel.json"],
+            },
+        ],
+    },
 }
