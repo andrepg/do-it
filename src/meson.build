@@ -18,7 +18,7 @@ tsc_target = custom_target(
     build_always_stale: true, # Ignores TSC incremental caching and rebuild
     command: [
         'sh', '-c',
-        'tsc --outDir "$1" --rootDir "$2" --project "$3" && touch "$4"',
+        'tsc --outDir "$1" --rootDir "$2" --project "$3" && "$2/../node_modules/.bin/tsc-alias" -p "$3" --outDir "$1" && touch "$4"',
         '_',
         meson.current_build_dir(),
         meson.current_source_dir(),

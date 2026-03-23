@@ -83,6 +83,7 @@ const AppStrings = {
   },
   about: {
     translatorCredits: _('translators-credits'),
+    donate: _('Donate'),
   },
 };
 
@@ -92,6 +93,4 @@ export const AppLocale = {
   tasks: TaskStrings,
 
   sorting: SortingStrings,
-
-  projects: {},
 };

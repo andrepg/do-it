@@ -26,7 +26,6 @@ export interface ITask {
   title: string;
   created_at: number;
   project?: string;
-  completed_at?: Date | null;
   tags?: string[];
   deleted?: boolean;
   done?: boolean;

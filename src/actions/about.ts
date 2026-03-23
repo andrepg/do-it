@@ -33,19 +33,16 @@ const about = () => {
   const actionName = ActionNames.About;
 
   const dialogProperties: Partial<Adw.AboutDialog.ConstructorProps> = {
+    version: pkg.version,
     applicationIcon: APPLICATION_ID,
     applicationName: GLib.get_application_name() as string,
-    developerName: 'André Paul Grandsire',
-    version: pkg.version,
     website: 'https://github.com/andrepg/do-it',
     issueUrl: 'https://github.com/andrepg/do-it/issues',
     supportUrl: 'https://github.com/andrepg/do-it/discussions',
     licenseType: Gtk.License.GPL_3_0,
     developers: ['André Paul Grandsire'],
-    // Translators: Replace "translator-credits" with your
-    // name/username, and optionally an email or URL.
-    translatorCredits: AppLocale.app.about.translatorCredits,
     copyright: '© 2025 André Paul Grandsire',
+    translatorCredits: AppLocale.app.about.translatorCredits,
   };
 
   /**
@@ -58,6 +55,9 @@ const about = () => {
 
     aboutActions.connect(AppSignals.Activate, () => {
       const dialog = new Adw.AboutDialog(dialogProperties);
+
+      dialog.add_link(AppLocale.app.about.donate, 'https://github.com/sponsors/andrepg');
+
       dialog.present(window.get_active_window() as Adw.Window);
     });
 
