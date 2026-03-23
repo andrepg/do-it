@@ -7,6 +7,7 @@
     <file>app.wrapper.js</file>
     <file>app.enums.js</file>
     <file>app.static.js</file>
+    <file>app.strings.js</file>
     <file>app.types.js</file>
 
     <file>utils/log-manager.js</file>

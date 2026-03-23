@@ -25,9 +25,7 @@ import { SidebarButton } from "../ui-handler/sidebar-button.js";
 
 import { useTaskSort } from "../hooks/tasks.sort.js";
 import { AppSignals, SortingStrategy, WidgetIds } from "../app.enums.js";
-
-// Declare _ global for translation
-declare function _(id: string): string;
+import { AppLocale } from "../app.strings.js";
 
 /**
  * Initializes and manages the sidebar list of discovered projects.
@@ -147,7 +145,7 @@ export default function projectSidebar(projectManager: ProjectManager) {
     }
 
     function setup_all_tasks_button(sidebarProjectList: Gtk40.Box, splitView: Adw.NavigationSplitView | null): void {
-        const sidebarBtnAll = create_sidebar_button(_("All tasks"));
+        const sidebarBtnAll = create_sidebar_button(AppLocale.tasks.list.all);
 
         sidebarBtnAll.connect(AppSignals.Clicked, () => {
             projectManager.set_filter(null);

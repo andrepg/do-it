@@ -27,6 +27,7 @@ import { ISortingFieldOption, ISortingStrategyOption } from '../app.types.js';
 
 import { useTaskSort } from '../hooks/tasks.sort.js';
 import { AppSignals, SortingField, SortingStrategy, WidgetIds } from '../app.enums.js';
+import { AppLocale } from '../app.strings.js';
 
 const GObjectProperties = {
   GTypeName: "PopoverSort",
@@ -74,10 +75,13 @@ export class PopoverSort extends Gtk40.Popover {
    * Updates the strategy label to reflect the currently active sorting strategy alphabetically.
    */
   private update_label() {
+    const fieldToggle = this.get_current_field_toggle();
     const strategyToggle = this.get_current_strategy_toggle();
+
+    const field = fieldToggle?.get_name() as SortingField;
     const strategy = Number.parseInt(strategyToggle?.get_name() || '0') as SortingStrategy;
 
-    const strategyName = strategy === SortingStrategy.ascending ? _("Ascending") : _("Descending");
+    const strategyName = (AppLocale.sorting as any)[strategy][field];
     this.label_strategy.set_label(strategyName);
   }
 
@@ -123,7 +127,7 @@ export class PopoverSort extends Gtk40.Popover {
 
     SortingFieldOptions.forEach((option: ISortingFieldOption, index: number) => {
       const toggle = new Adw1.Toggle({
-        label: option.label,
+        label: AppLocale.sorting.fields[option.mode],
         name: option.mode.toString()
       });
 

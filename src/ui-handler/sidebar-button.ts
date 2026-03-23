@@ -21,6 +21,7 @@ import GObject from 'gi://GObject';
 
 import { get_template_path } from '../utils/application.js';
 import { CssClasses, WidgetIds } from '../app.enums.js';
+import { AppLocale } from '../app.strings.js';
 
 const GObjectProperties = {
   GTypeName: "SidebarButton",
@@ -58,7 +59,8 @@ export class SidebarButton extends Gtk40.Button {
   private project_name: string;
 
   constructor(project: string) {
-    const btnTitle = project === "" ? _("Without project") : project;
+    const btnTitle = project === "" ? AppLocale.tasks.list.noProject : project;
+    // TODO Move this to enum
     const btnIcon = project === "" ? "task-due-symbolic" : "folder-symbolic";
 
     super();

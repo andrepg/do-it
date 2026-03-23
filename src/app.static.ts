@@ -18,8 +18,33 @@
  */
 import { SortingField, SortingStrategy } from "./app.enums.js"
 import { ISortingFieldOption, ISortingStrategyOption } from "./app.types.js"
+import { AppLocale } from "./app.strings.js"
 
 pkg.initGettext();
+
+/**
+ * Symbolic icons used in the application
+ */
+export const SymbolicIcons = {
+  none: "",
+
+  sidebar: {
+    task_due: "task-due-symbolic",
+    folder: "folder-symbolic",
+    folder_open: "folder-open-symbolic",
+  },
+
+  tasks: {
+    trash_bin: "user-trash-symbolic",
+    undo: "edit-undo-symbolic",
+    new_task: "appointment-new-symbolic",
+  },
+
+  sorting: {
+    sort_ascending: "view-sort-ascending-symbolic",
+    sort_descending: "view-sort-descending-symbolic",
+  }
+}
 
 /**
  * Styles for task entries depending on their state.
@@ -41,8 +66,8 @@ export const TaskEntryStyle = {
  * Icons used for the task delete/undo button.
  */
 export const TaskDeleteButtonIcon = {
-  default: "user-trash-symbolic",
-  deleted: "edit-undo-symbolic"
+  default: SymbolicIcons.tasks.trash_bin,
+  deleted: SymbolicIcons.tasks.undo,
 }
 
 /**
@@ -50,23 +75,23 @@ export const TaskDeleteButtonIcon = {
  */
 export const SortingFieldOptions: ISortingFieldOption[] = [
   {
-    label: _("Date"),
-    icon: "appointment-new-symbolic",
+    label: AppLocale.sorting.fields[SortingField.byDate],
+    icon: SymbolicIcons.none,
     mode: SortingField.byDate,
   },
   {
-    label: _("Project"),
-    icon: "folder-symbolic",
+    label: AppLocale.sorting.fields[SortingField.byProject],
+    icon: SymbolicIcons.none,
     mode: SortingField.byProject,
   },
   {
-    label: _("Status"),
-    icon: "task-due-symbolic",
+    label: AppLocale.sorting.fields[SortingField.byStatus],
+    icon: SymbolicIcons.none,
     mode: SortingField.byStatus,
   },
   {
-    label: _("Title"),
-    icon: "document-decrypt-symbolic",
+    label: AppLocale.sorting.fields[SortingField.byTitle],
+    icon: SymbolicIcons.none,
     mode: SortingField.byTitle,
   },
 ]
@@ -76,11 +101,11 @@ export const SortingFieldOptions: ISortingFieldOption[] = [
  */
 export const SortingModeOptions: ISortingStrategyOption[] = [
   {
-    icon: "view-sort-ascending-symbolic",
+    icon: SymbolicIcons.sorting.sort_ascending,
     strategy: SortingStrategy.ascending,
   },
   {
-    icon: "view-sort-descending-symbolic",
+    icon: SymbolicIcons.sorting.sort_descending,
     strategy: SortingStrategy.descending,
   },
 ]

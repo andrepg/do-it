@@ -21,6 +21,7 @@ import { DoItMainWindow } from "../ui-handler/doit.js"
 import { showToast } from "./toast.js"
 import { TaskListStore } from "../ui-handler/task-list-store.js"
 import { AppSignals, WidgetIds } from "../app.enums.js";
+import { AppLocale } from "../app.strings.js";
 
 /**
  * Handles the creation of new tasks from the main entry field.
@@ -95,7 +96,7 @@ export const newTask = (store: TaskListStore) => {
 
         fieldNewTask.set_text('');
 
-        showToast(_('Task created'));
+        showToast(AppLocale.tasks.toast.created);
     }
 
     return {

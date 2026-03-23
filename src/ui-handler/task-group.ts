@@ -25,6 +25,7 @@ import type { TaskListStore } from './task-list-store.js';
 import { TaskItem } from './task-item.js';
 
 import { get_template_path } from '../utils/application.js';
+import { AppLocale } from '../app.strings.js';
 
 const GObjectProperties = {
   GTypeName: "TaskGroup",
@@ -51,7 +52,7 @@ export class TaskGroup extends Adw.PreferencesGroup {
    * @param {TaskListStore} store - The global state store containing all tasks
    */
   constructor(project: string, store: TaskListStore) {
-    const groupTitle = project === "" ? _("Without project") : project;
+    const groupTitle = project === "" ? AppLocale.tasks.list.noProject : project;
 
     super({ title: groupTitle });
 

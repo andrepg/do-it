@@ -22,6 +22,7 @@ import GLib from "gi://GLib";
 import Gtk from "gi://Gtk";
 import { APPLICATION_ID } from "../utils/application.js";
 import { ActionNames, AppSignals } from "../app.enums.js";
+import { AppLocale } from "../app.strings.js";
 
 /**
  * Provides the "about" action to display the application's About Dialog.
@@ -43,7 +44,7 @@ const about = () => {
         ],
         // Translators: Replace "translator-credits" with your
         // name/username, and optionally an email or URL.
-        translatorCredits: _("translators-credits"),
+        translatorCredits: AppLocale.app.about.translatorCredits,
         copyright: '© 2025 André Paul Grandsire'
     }
 

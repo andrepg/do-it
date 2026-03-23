@@ -16,6 +16,7 @@
  *
  * SPDX-License-Identifier: GPL-3.0-or-later
  */
+
 /**
  * Defines the available fields by which tasks can be sorted.
  */

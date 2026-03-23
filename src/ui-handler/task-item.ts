@@ -23,8 +23,9 @@ import { ITask } from "../app.types.js";
 import { get_template_path } from "../utils/application.js";
 import Gtk from "gi://Gtk";
 import { showToast } from "../actions/toast.js";
-import { AppSignals, WidgetIds, ActionNames } from "../app.enums.js";
+import { AppSignals, WidgetIds } from "../app.enums.js";
 import { TaskDeleteButtonIcon, TaskEntryStyle } from "../app.static.js";
+import { AppLocale } from "../app.strings.js";
 
 const TaskItemProperties = {
   GTypeName: 'TaskItem',
@@ -185,7 +186,7 @@ export class TaskItem extends Adw.ActionRow {
   private _delete_task() {
     this._deleted = !this._deleted;
 
-    const message = this._deleted ? _("Task deleted") : _("Task restored");
+    const message = this._deleted ? AppLocale.tasks.toast.softDeleted : AppLocale.tasks.toast.restored;
 
     showToast(message)
 
@@ -195,7 +196,7 @@ export class TaskItem extends Adw.ActionRow {
   }
 
   private _finish_task() {
-    const message = this.task_done.get_active() ? _("Task finished") : _("Task restored");
+    const message = this.task_done.get_active() ? AppLocale.tasks.toast.finished : AppLocale.tasks.toast.restored;
 
     showToast(message)
 

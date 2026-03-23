@@ -23,12 +23,11 @@ import { get_template_path } from "../utils/application.js";
 import { TaskListStore } from "./task-list-store.js";
 import { ProjectManager } from "../utils/project-manager.js";
 import { TaskItem } from "./task-item.js";
-import { AppSignals, WidgetIds, ActionNames } from "../app.enums.js";
+import { AppSignals, WidgetIds } from "../app.enums.js";
 import { showToast } from "../actions/toast.js";
 import { log } from "../utils/log-manager.js";
-import * as Actions from "../actions/index.js";
 import { ITask } from "../app.types.js";
-import useAutocomplete from "../hooks/autocomplete.js";
+import { AppLocale } from "../app.strings.js";
 
 const TaskFormProperties = {
     GTypeName: 'TaskForm',
@@ -193,7 +192,7 @@ export class TaskForm extends Gtk.Box {
         const title = this.entry_title.get_text().trim();
 
         if (title === "") {
-            showToast(_("Title cannot be empty"));
+            showToast(AppLocale.tasks.form.errorEmptyTitle);
             return;
         }
 
@@ -215,7 +214,7 @@ export class TaskForm extends Gtk.Box {
 
         this.dispatch_cancel();
 
-        showToast(_("Task updated"));
+        showToast(AppLocale.tasks.toast.updated);
     }
 
     private update_task(task: ITask) {
@@ -253,7 +252,7 @@ export class TaskForm extends Gtk.Box {
 
             this.dispatch_cancel();
 
-            showToast(_("Task deleted"));
+            showToast(AppLocale.tasks.toast.softDeleted);
         }
     }
 }

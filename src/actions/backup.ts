@@ -23,6 +23,7 @@ import { log } from '../utils/log-manager.js';
 import { Persistence } from '../utils/persistence.js';
 import { ITask } from '../app.types.js';
 import { ActionNames, AppSignals } from '../app.enums.js';
+import { AppLocale } from '../app.strings.js';
 
 /**
  * Provides actions for exporting and importing the task database.
@@ -61,7 +62,7 @@ const backup = () => {
     const exportJson = (parent: Adw.ApplicationWindow) => {
         log("backup-manager", "Exporting database");
 
-        const dialog = createFileChooser(_("Export database"));
+        const dialog = createFileChooser(AppLocale.app.backup.export);
 
         dialog.save(parent, null, (dialog, result) => {
             const tasks = (new Persistence).read_database();
@@ -84,7 +85,7 @@ const backup = () => {
     const importJson = (parent: Adw.ApplicationWindow) => {
         log("backup-manager", "Importing database");
 
-        const dialog = createFileChooser(_("Import database"));
+        const dialog = createFileChooser(AppLocale.app.backup.import);
 
         dialog.open(parent, null, (dialog, result) => {
             const file = dialog?.open_finish(result);
