@@ -24,6 +24,8 @@
     <file>ui-handler/task-list.js</file>
     <file>ui-handler/task-list-store.js</file>
 
+    <file>hooks/autocomplete.js</file>
+    <file>hooks/settings.js</file>
     <file>hooks/tasks.sort.js</file>
 
     <file>actions/about.js</file>
