@@ -4,7 +4,6 @@
     "author": "",
     "homepage": "https://github.com/andrepg/do-it#readme",
     "scripts": {
-        "postinstall": "yarn flatpak:generate-sources",
         "lint": "eslint .",
         "lint:fix": "eslint . --fix",
         "format": "prettier . --check",
@@ -22,7 +21,6 @@
         "flatpak:generate-sources": "scripts/generate-sources.sh"
     },
     "scripts-info": {
-        "postinstall": "Gera o flatpak/generated-sources.json offline com flatpak-node-generator (rodar após mudanças no yarn.lock)",
         "lint": "Analisa o código em busca de erros",
         "lint:fix": "Analisa e corrige automaticamente os erros de lint",
         "format": "Checa a formatação usando o Prettier",
