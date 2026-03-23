@@ -5,9 +5,7 @@
         "strip-components": 1,
         "sha512": "b3a9cfbf64244aea49c0b6327d2fa0c1d8ab9b4ba4c9314d9772938191008890ddfa21d971b4cf3dc582711607f9694d6f00a1807d90904f4d4a536b313f067f",
         "dest": "flatpak-node/cache/esbuild/.package/@esbuild/linux-arm@0.27.3",
-        "only-arches": [
-            "arm"
-        ]
+        "only-arches": ["arm"]
     },
     {
         "type": "archive",
@@ -15,9 +13,7 @@
         "strip-components": 1,
         "sha512": "b193ae173ff15a7678287dd87c5aca09fd56c8f6476a45734e2aa38b7583734042976901c2224b097a732f35012e09a9e2f78565dbcde42856e04abff0573616",
         "dest": "flatpak-node/cache/esbuild/.package/@esbuild/linux-arm64@0.27.3",
-        "only-arches": [
-            "aarch64"
-        ]
+        "only-arches": ["aarch64"]
     },
     {
         "type": "archive",
@@ -25,9 +21,7 @@
         "strip-components": 1,
         "sha512": "c86950623771b4b761d1ade31e3bb03abc508ce6580ff0bd3df75b809245dd32195a79bfb4c77f45c3622e7822bb88b070100e7b376748b0304033ea4e6b5362",
         "dest": "flatpak-node/cache/esbuild/.package/@esbuild/linux-ia32@0.27.3",
-        "only-arches": [
-            "i386"
-        ]
+        "only-arches": ["i386"]
     },
     {
         "type": "archive",
@@ -35,9 +29,7 @@
         "strip-components": 1,
         "sha512": "0b38bccb35d458841802d2ffdb2eafa20111f29bdcb0eb24e5ca702f81a4e6726a1f9519895072218f04a2b9b9475de0abe0d0298834f89c90a32b4b41ab3874",
         "dest": "flatpak-node/cache/esbuild/.package/@esbuild/linux-x64@0.27.3",
-        "only-arches": [
-            "x86_64"
-        ]
+        "only-arches": ["x86_64"]
     },
     {
         "type": "file",
@@ -1642,9 +1634,7 @@
     },
     {
         "type": "shell",
-        "commands": [
-            "bash flatpak-node/setup_sdk_node_headers.sh"
-        ]
+        "commands": ["bash flatpak-node/setup_sdk_node_headers.sh"]
     },
     {
         "type": "shell",
@@ -1654,9 +1644,7 @@
             "ln -sf \"linux-arm64@0.27.3\" \"bin/esbuild-current\""
         ],
         "dest": "flatpak-node/cache/esbuild",
-        "only-arches": [
-            "aarch64"
-        ]
+        "only-arches": ["aarch64"]
     },
     {
         "type": "shell",
@@ -1666,9 +1654,7 @@
             "ln -sf \"linux-arm@0.27.3\" \"bin/esbuild-current\""
         ],
         "dest": "flatpak-node/cache/esbuild",
-        "only-arches": [
-            "arm"
-        ]
+        "only-arches": ["arm"]
     },
     {
         "type": "shell",
@@ -1678,9 +1664,7 @@
             "ln -sf \"linux-ia32@0.27.3\" \"bin/esbuild-current\""
         ],
         "dest": "flatpak-node/cache/esbuild",
-        "only-arches": [
-            "i386"
-        ]
+        "only-arches": ["i386"]
     },
     {
         "type": "shell",
@@ -1690,8 +1674,6 @@
             "ln -sf \"linux-x64@0.27.3\" \"bin/esbuild-current\""
         ],
         "dest": "flatpak-node/cache/esbuild",
-        "only-arches": [
-            "x86_64"
-        ]
+        "only-arches": ["x86_64"]
     }
 ]

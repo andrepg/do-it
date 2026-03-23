@@ -32,7 +32,7 @@ export class Persistence {
 
   private databaseFilePath = GLib.build_filenamev([
     this.databaseLocation.get_path() as string,
-    this.databaseFileName
+    this.databaseFileName,
   ]) as string;
 
   private databaseFileHandler = Gio.File.new_for_path(this.databaseFilePath);
@@ -45,7 +45,10 @@ export class Persistence {
    * Ensures that the database directory and file exist, creating them if necessary.
    */
   check_database_existence() {
-    if (!this.databaseLocation?.query_exists(null) || !this.databaseFileHandler?.query_exists(null)) {
+    if (
+      !this.databaseLocation?.query_exists(null) ||
+      !this.databaseFileHandler?.query_exists(null)
+    ) {
       try {
         this.databaseLocation.make_directory_with_parents(null);
         this.databaseFileHandler.create(Gio.FileCreateFlags.PRIVATE, null);

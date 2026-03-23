@@ -42,7 +42,9 @@ vi.mock('gi://Gio', () => ({
 // Mock TaskItem and TaskListStore to avoid loading them
 vi.mock('../../src/ui-handler/task-item.js', () => ({
   TaskItem: class {
-    get_project() { return ''; }
+    get_project() {
+      return '';
+    }
   },
 }));
 
@@ -77,7 +79,7 @@ describe('ProjectManager', () => {
     vi.spyOn(taskA, 'get_project').mockReturnValue('Work');
     const taskB = new TaskItem();
     vi.spyOn(taskB, 'get_project').mockReturnValue('Home');
-    
+
     const tasks = [taskA, taskB];
 
     mockStore.get_n_items.mockReturnValue(tasks.length);
@@ -95,7 +97,7 @@ describe('ProjectManager', () => {
     const taskWork = new TaskItem();
     vi.spyOn(taskWork, 'get_project').mockReturnValue('Work');
     const tasks1 = [taskWork];
-    
+
     mockStore.get_n_items.mockReturnValue(tasks1.length);
     mockStore.get_item.mockImplementation((i: number) => tasks1[i]);
     projectManager.refresh_items();

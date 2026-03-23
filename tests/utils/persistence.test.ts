@@ -39,7 +39,7 @@ describe('Persistence', () => {
     };
 
     ((Gio as any).File.new_for_path as any).mockReturnValue(mockFile);
-    
+
     persistence = new Persistence();
   });
 
