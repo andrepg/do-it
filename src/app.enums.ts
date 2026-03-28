@@ -90,7 +90,7 @@ export enum ActionNames {
   PurgeDeletedTasks = 'purge_deleted_tasks',
 
   // UI toggles and layout control
-  OpenSidebar = 'open-sidebar',
+  ToggleSidebar = 'toggle-sidebar',
   CollapseSidebar = 'collapse-sidebar',
   ShowToast = 'show-toast',
   TaskEdit = 'task-edit',

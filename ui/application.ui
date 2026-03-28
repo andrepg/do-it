@@ -91,6 +91,7 @@
                 </child>
                 <child>
                   <object class="GtkButton" id="button_toggle_sidebar">
+                    <property name="action-name">win.toggle-sidebar</property>
                     <property name="has-frame">False</property>
                     <property name="icon-name">sidebar-show-symbolic</property>
                   </object>
@@ -115,6 +116,12 @@
                     <property name="title">Projects</property>
                   </object>
                 </property>
+                <child type="start">
+                  <object class="GtkButton" id="button_close_sidebar">
+                    <property name="action-name">win.toggle-sidebar</property>
+                    <property name="icon-name">sidebar-hide-symbolic</property>
+                  </object>
+                </child>
               </object>
             </child>
             <child>
@@ -136,7 +143,11 @@
       </object>
     </child>
     <child>
-      <object class="AdwBreakpoint"/>
+      <object class="AdwBreakpoint">
+        <condition>max-width: 700sp</condition>
+        <setter object="split_view" property="collapsed">True</setter>
+        <setter object="split_view" property="show-sidebar">False</setter>
+      </object>
     </child>
   </template>
 </interface>

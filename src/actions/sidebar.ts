@@ -50,7 +50,7 @@ const getSplitView = (window: DoItMainWindow): Adw.OverlaySplitView | null => {
  */
 export default function sidebar() {
   const setup = (window: DoItMainWindow) => {
-    const action = new Gio.SimpleAction({ name: ActionNames.OpenSidebar });
+    const action = new Gio.SimpleAction({ name: ActionNames.ToggleSidebar });
 
     action.connect(AppSignals.Activate, () => {
       const splitView = getSplitView(window);
