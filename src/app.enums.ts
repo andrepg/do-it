@@ -117,6 +117,7 @@ export enum WidgetIds {
 
   // Header bar widgets
   WindowButtonOpenSidebar = 'button_open_sidebar',
+  WindowButtonToggleSidebar = 'button_toggle_sidebar',
   WindowButtonNewTask = 'button_new_task',
   WindowTaskNewEntry = 'task_new_entry',
   WindowButtonSorting = 'button_sorting',
@@ -145,4 +146,7 @@ export enum WidgetIds {
   // Window Bottom Sheet
   WindowBottomSheet = 'window_bottom_sheet',
   WindowBottomSheetContent = 'window_bottom_sheet_content',
+
+  // Task Form
+  TaskFormWidget = 'task_form',
 }

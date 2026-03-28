@@ -1,0 +1,142 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<!-- Created with Cambalache 1.0 -->
+<interface>
+  <!-- interface-name window-v2.ui -->
+  <requires lib="gio" version="2.0"/>
+  <requires lib="gtk" version="4.0"/>
+  <requires lib="libadwaita" version="1.8"/>
+  <menu id="primary_menu">
+    <section>
+      <item>
+        <attribute name="action">win.purge_deleted_tasks</attribute>
+        <attribute name="icon">user-trash-full-symbolic</attribute>
+        <attribute name="label" translatable="yes">Purge deleted tasks</attribute>
+      </item>
+    </section>
+    <section>
+      <attribute name="label">Backup</attribute>
+      <item>
+        <attribute name="action">win.export_database</attribute>
+        <attribute name="icon">document-save-symbolic</attribute>
+        <attribute name="label" translatable="yes">_Export Database</attribute>
+      </item>
+      <item>
+        <attribute name="action">win.import_database</attribute>
+        <attribute name="icon">document-send-symbolic</attribute>
+        <attribute name="label" translatable="yes">_Import Database</attribute>
+      </item>
+    </section>
+    <section>
+      <item>
+        <attribute name="action">app.shortcuts</attribute>
+        <attribute name="icon">keyboard-symbolic</attribute>
+        <attribute name="label" translatable="yes">_Keyboard Shortcuts</attribute>
+      </item>
+      <item>
+        <attribute name="action">app.about</attribute>
+        <attribute name="label" translatable="yes">_About Do It</attribute>
+      </item>
+    </section>
+  </menu>
+  <object class="DoItMainWindow" parent="AdwApplicationWindow">
+    <child>
+      <object class="AdwOverlaySplitView" id="split_view">
+        <property name="content">
+          <object class="AdwToolbarView">
+            <property name="content">
+              <object class="AdwToastOverlay" id="toast_overlay">
+                <property name="child">
+                  <object class="AdwBottomSheet">
+                    <property name="bottom-bar">
+                      <object class="AdwEntryRow" id="task_new_entry">
+                        <property name="title" translatable="yes">Create a new task</property>
+                      </object>
+                    </property>
+                    <property name="content">
+                      <object class="AdwClamp">
+                        <property name="child">
+                          <object class="GtkBox" id="list_container">
+                            <property name="orientation">vertical</property>
+                            <property name="valign">start</property>
+                          </object>
+                        </property>
+                      </object>
+                    </property>
+                    <property name="sheet">
+                      <object class="TaskForm" id="task_form"/>
+                    </property>
+                  </object>
+                </property>
+              </object>
+            </property>
+            <child type="top">
+              <object class="AdwHeaderBar">
+                <property name="show-back-button">False</property>
+                <property name="title-widget">
+                  <object class="AdwWindowTitle">
+                    <property name="title">Tasks</property>
+                  </object>
+                </property>
+                <property name="valign">start</property>
+                <child type="end">
+                  <object class="GtkMenuButton">
+                    <property name="icon-name">open-menu-symbolic</property>
+                    <property name="menu-model">primary_menu</property>
+                  </object>
+                </child>
+                <child type="end">
+                  <object class="GtkMenuButton" id="button_sorting">
+                    <property name="icon-name">view-sort-descending-symbolic-rtl</property>
+                  </object>
+                </child>
+                <child>
+                  <object class="GtkButton" id="button_toggle_sidebar">
+                    <property name="has-frame">False</property>
+                    <property name="icon-name">sidebar-show-symbolic</property>
+                  </object>
+                </child>
+                <child type="start">
+                  <object class="GtkButton" id="button_new_task">
+                    <property name="has-frame">False</property>
+                    <property name="icon-name">document-new-symbolic</property>
+                  </object>
+                </child>
+              </object>
+            </child>
+          </object>
+        </property>
+        <property name="sidebar">
+          <object class="AdwToolbarView">
+            <child type="top">
+              <object class="AdwHeaderBar">
+                <property name="show-back-button">False</property>
+                <property name="title-widget">
+                  <object class="AdwWindowTitle">
+                    <property name="title">Projects</property>
+                  </object>
+                </property>
+              </object>
+            </child>
+            <child>
+              <object class="GtkScrolledWindow">
+                <child>
+                  <object class="GtkBox" id="sidebar_project_list">
+                    <property name="margin-bottom">8</property>
+                    <property name="margin-end">8</property>
+                    <property name="margin-start">8</property>
+                    <property name="margin-top">8</property>
+                    <property name="orientation">vertical</property>
+                    <property name="valign">start</property>
+                  </object>
+                </child>
+              </object>
+            </child>
+          </object>
+        </property>
+      </object>
+    </child>
+    <child>
+      <object class="AdwBreakpoint"/>
+    </child>
+  </object>
+</interface>

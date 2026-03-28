@@ -27,7 +27,6 @@ import * as Actions from '~/actions/index.js';
 import { APPLICATION_NAME, get_template_path } from '~/utils/application.js';
 import { log } from '~/utils/log-manager.js';
 
-
 import { useSettings } from '~/hooks/settings.js';
 import { ProjectManager } from '~/utils/project-manager.js';
 
@@ -37,22 +36,23 @@ import { PopoverSort } from './popover-sort.js';
 
 const options = {
   GTypeName: 'DoItMainWindow',
-  Template: get_template_path('window-v2.ui'),
+  Template: get_template_path('application.ui'),
   InternalChildren: [
     WidgetIds.WindowToastOverlay,
     WidgetIds.WindowSplitView,
     WidgetIds.WindowTaskNewEntry,
 
-    // Top menu
-    WidgetIds.WindowButtonOpenSidebar,
+    // Header bar buttons
+    WidgetIds.WindowButtonToggleSidebar,
     WidgetIds.WindowButtonNewTask,
 
-    // Content (sidebar and main)
+    // Content
     WidgetIds.WindowListContainer,
     WidgetIds.WindowSidebarProjectList,
     WidgetIds.WindowButtonSorting,
-    WidgetIds.WindowBottomSheetContent,
-    WidgetIds.WindowBottomSheet,
+
+    // Task Form
+    WidgetIds.TaskFormWidget,
   ],
 
   Signals: {
@@ -75,10 +75,6 @@ export class DoItMainWindow extends Adw.ApplicationWindow {
   projectManager!: ProjectManager;
 
   private button_sorting!: Gtk.MenuButton;
-
-  private bottom_sheet!: Adw.BottomSheet;
-
-  private bottom_sheet_content!: Gtk.Box;
 
   private task_form!: TaskForm;
 
@@ -108,14 +104,6 @@ export class DoItMainWindow extends Adw.ApplicationWindow {
   private initialize_widgets() {
     log(DoItMainWindow.LogClass, 'Initializing widgets');
 
-    this.bottom_sheet = this.get_template_child(
-      DoItMainWindow.$gtype,
-      WidgetIds.WindowBottomSheet,
-    ) as Adw.BottomSheet;
-    this.bottom_sheet_content = this.get_template_child(
-      DoItMainWindow.$gtype,
-      WidgetIds.WindowBottomSheetContent,
-    ) as Gtk.Box;
     this.button_sorting = this.get_template_child(
       DoItMainWindow.$gtype,
       WidgetIds.WindowButtonSorting,
@@ -144,8 +132,11 @@ export class DoItMainWindow extends Adw.ApplicationWindow {
     Actions.purgeDeleted(this.taskListStore).setup(this);
     Actions.sidebar().setup(this);
 
-    this.task_form = new TaskForm().setup(this.taskListStore, this.projectManager);
-    this.bottom_sheet_content.append(this.task_form);
+    this.task_form = this.get_template_child(
+      DoItMainWindow.$gtype,
+      WidgetIds.TaskFormWidget,
+    ) as TaskForm;
+    this.task_form.setup(this.taskListStore, this.projectManager);
 
     Actions.taskEdit(this.task_form).setup(this);
   }
