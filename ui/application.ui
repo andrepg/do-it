@@ -38,7 +38,7 @@
       </item>
     </section>
   </menu>
-  <object class="DoItMainWindow" parent="AdwApplicationWindow">
+  <template class="DoItMainWindow" parent="AdwApplicationWindow">
     <child>
       <object class="AdwOverlaySplitView" id="split_view">
         <property name="content">
@@ -46,7 +46,7 @@
             <property name="content">
               <object class="AdwToastOverlay" id="toast_overlay">
                 <property name="child">
-                  <object class="AdwBottomSheet">
+                  <object class="AdwBottomSheet" id="window_bottom_sheet">
                     <property name="bottom-bar">
                       <object class="AdwEntryRow" id="task_new_entry">
                         <property name="title" translatable="yes">Create a new task</property>
@@ -138,5 +138,5 @@
     <child>
       <object class="AdwBreakpoint"/>
     </child>
-  </object>
+  </template>
 </interface>

@@ -53,6 +53,9 @@ const options = {
 
     // Task Form
     WidgetIds.TaskFormWidget,
+
+    // Bottom Sheet
+    WidgetIds.WindowBottomSheet,
   ],
 
   Signals: {
@@ -79,6 +82,7 @@ export class DoItMainWindow extends Adw.ApplicationWindow {
   private task_form!: TaskForm;
 
   static {
+    GObject.type_ensure(TaskForm.$gtype);
     GObject.registerClass(options, this);
   }
 

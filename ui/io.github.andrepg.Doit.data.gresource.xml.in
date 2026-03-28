@@ -9,7 +9,7 @@
     <file preprocess="xml-stripblanks">task-group.ui</file>
     <file preprocess="xml-stripblanks">task-list.ui</file>
     <file preprocess="xml-stripblanks">task-form.ui</file>
-    <file preprocess="xml-stripblanks">window-v2.ui</file>
+    <file preprocess="xml-stripblanks">application.ui</file>
   </gresource>
 </gresources>
 

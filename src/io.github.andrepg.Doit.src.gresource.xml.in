@@ -15,12 +15,12 @@
     <file>utils/project-manager.js</file>
     <file alias="utils/application.js">application.js</file>
 
+    <file>ui-handler/task-form.js</file>
     <file>ui-handler/doit.js</file>
     <file>ui-handler/popover-sort.js</file>
     <file>ui-handler/sidebar-button.js</file>
     <file>ui-handler/task-group.js</file>
     <file>ui-handler/task-item.js</file>
-    <file>ui-handler/task-form.js</file>
     <file>ui-handler/task-list.js</file>
     <file>ui-handler/task-list-store.js</file>
 
