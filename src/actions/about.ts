@@ -18,13 +18,12 @@
  */
 import Gio from 'gi://Gio';
 import Adw from 'gi://Adw';
-import GLib from 'gi://GLib';
 import Gtk from 'gi://Gtk';
 
 import { ActionNames, AppSignals } from '~/app.enums.js';
 import { AppLocale } from '~/app.strings.js';
 
-import { APPLICATION_ID } from '~/utils/application.js';
+import { APPLICATION_ID, APPLICATION_NAME } from '~/utils/application.js';
 
 /**
  * Provides the "about" action to display the application's About Dialog.
@@ -35,7 +34,7 @@ const about = () => {
   const dialogProperties: Partial<Adw.AboutDialog.ConstructorProps> = {
     version: pkg.version,
     applicationIcon: APPLICATION_ID,
-    applicationName: GLib.get_application_name() as string,
+    applicationName: APPLICATION_NAME,
     website: 'https://github.com/andrepg/do-it',
     issueUrl: 'https://github.com/andrepg/do-it/issues',
     supportUrl: 'https://github.com/andrepg/do-it/discussions',
