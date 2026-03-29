@@ -9,7 +9,7 @@
   <ui template-class="SidebarButton" filename="ui/sidebar-button.ui" sha256="2989fa8ef1efc339bd593d65a3eac9ac451cda95c38704175d2b41c87c192463"/>
   <ui template-class="PopoverSort" filename="ui/popover-sort.ui" sha256="2af55c314530a0ecd2ad728a1dd63e7a5d3696db04a82405075db983031604f6"/>
   <ui template-class="TaskForm" filename="ui/task-form.ui" sha256="92355664f82405d76654a333a8a8047e00b397fde2f1ff6a9ada670739d66bd3"/>
-  <ui filename="ui/application.ui" sha256="44833cd6ab708c096dbd8b2ea7f1b99749e3df96a482c8d3f0c67600887db725">
+  <ui template-class="DoItMainWindow" filename="ui/application.ui" sha256="d61c78f93a179ccee5c0e0d4cb2f4c77ff8ff4e89aba1c6265bbc384f572b066">
     <requires>TaskForm</requires>
   </ui>
 </cambalache-project>

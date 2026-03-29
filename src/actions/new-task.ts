@@ -85,10 +85,10 @@ export const newTask = (store: TaskListStore) => {
     buttonNewTask.connect(AppSignals.Clicked, () => fieldNewTask.grab_focus());
 
     fieldNewTask = get_widget<Gtk40.Entry>(window, fieldNewTaskId);
-    fieldNewTask.connect(AppSignals.Activate, handle_user_input);
+    fieldNewTask.connect(AppSignals.Apply, save_new_task);
   };
 
-  const handle_user_input = () => {
+  const save_new_task = () => {
     const text = fieldNewTask.get_text().trim();
 
     if (text.length == 0) return;

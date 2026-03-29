@@ -16,7 +16,7 @@
  *
  * SPDX-License-Identifier: GPL-3.0-or-later
  */
-import Gtk from 'gi://Gtk';
+import Adw from 'gi://Adw';
 
 import { AppSignals, SortingField, WidgetIds } from '~/app.enums.js';
 import { useTaskSort } from '~/hooks/tasks.sort.js';
@@ -42,7 +42,7 @@ export default function projects(store: TaskListStore, projectManager: ProjectMa
   /**
    * Appends a new project group to the main list container.
    */
-  const add_project_group = (container: Gtk.Box, project: string) => {
+  const add_project_group = (container: Adw.PreferencesPage, project: string) => {
     if (projectGroups.has(project)) {
       return;
     }
@@ -50,13 +50,13 @@ export default function projects(store: TaskListStore, projectManager: ProjectMa
     const taskGroup = create_task_group(project);
     projectGroups.set(project, taskGroup);
 
-    container.append(taskGroup);
+    container.add(taskGroup);
   };
 
   /**
    * Removes an existing project group from the main list container.
    */
-  const remove_project_group = (container: Gtk.Box, project: string) => {
+  const remove_project_group = (container: Adw.PreferencesPage, project: string) => {
     if (!projectGroups.has(project)) return;
 
     const taskGroup = projectGroups.get(project);
@@ -79,7 +79,7 @@ export default function projects(store: TaskListStore, projectManager: ProjectMa
   /**
    * Reorders the project groups within the container according to the active sorting strategy.
    */
-  const reorder_groups = (container: Gtk.Box) => {
+  const reorder_groups = (container: Adw.PreferencesPage) => {
     const { mode, strategy } = taskSort.retrieve_sort_preferences();
     const comparatorOrder = mode === SortingField.byProject ? strategy : 0;
     const sortedProjects = Array.from(projectGroups.keys()).sort(
@@ -89,9 +89,10 @@ export default function projects(store: TaskListStore, projectManager: ProjectMa
     for (const project of sortedProjects) {
       const taskGroup = projectGroups.get(project);
       if (taskGroup) {
-        // In GTK 4, to reorder children in a Box we can remove and append in the desired order
+        // We can still reorder in an AdwPreferencesPage by removing and adding
+        // This relies on the fact that AdwPreferencesPage respects the order of additions
         container.remove(taskGroup);
-        container.append(taskGroup);
+        container.add(taskGroup);
       }
     }
   };
@@ -103,7 +104,7 @@ export default function projects(store: TaskListStore, projectManager: ProjectMa
     const listContainer = window.get_template_child(
       DoItMainWindow.$gtype,
       WidgetIds.WindowListContainer,
-    ) as Gtk.Box;
+    ) as Adw.PreferencesPage;
 
     projectManager.connect(AppSignals.ProjectAdded, (_: unknown, project: string) => {
       add_project_group(listContainer, project);

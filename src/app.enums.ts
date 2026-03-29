@@ -56,6 +56,7 @@ export const DoItSettings = {
  */
 export enum AppSignals {
   // Standard GTK/GObject interactions
+  Apply = 'apply',
   Clicked = 'clicked',
   Toggled = 'toggled',
   NotifyActive = 'notify::active',

@@ -43,7 +43,6 @@ const options = {
     WidgetIds.WindowTaskNewEntry,
 
     // Header bar buttons
-    WidgetIds.WindowButtonToggleSidebar,
     WidgetIds.WindowButtonNewTask,
 
     // Content

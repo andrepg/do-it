@@ -132,9 +132,14 @@ export default function projectSidebar(projectManager: ProjectManager) {
   };
 
   function update_active_states(currentFilter: string | null) {
-    projectSidebarItems.forEach((button, project) =>
-      button.set_active((!currentFilter && project === ALL_TASKS) || project === currentFilter),
-    );
+    projectSidebarItems.forEach((button, project) => {
+      const isAllTasksButton = project === ALL_TASKS;
+
+      button.set_active(
+        (isAllTasksButton && currentFilter === null) ||
+        (project === currentFilter),
+      );
+    });
   }
 
   function setup_all_tasks_button(sidebarProjectList: Gtk40.Box): void {

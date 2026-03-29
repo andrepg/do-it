@@ -49,17 +49,17 @@
                   <object class="AdwBottomSheet" id="window_bottom_sheet">
                     <property name="bottom-bar">
                       <object class="AdwEntryRow" id="task_new_entry">
+                        <property name="enable-emoji-completion">True</property>
+                        <property name="show-apply-button">True</property>
                         <property name="title" translatable="yes">Create a new task</property>
                       </object>
                     </property>
                     <property name="content">
-                      <object class="AdwClamp">
-                        <property name="child">
-                          <object class="GtkBox" id="list_container">
-                            <property name="orientation">vertical</property>
-                            <property name="valign">start</property>
-                          </object>
-                        </property>
+                      <object class="AdwPreferencesPage" id="list_container">
+                        <property name="margin-bottom">24</property>
+                        <property name="margin-end">8</property>
+                        <property name="margin-start">8</property>
+                        <property name="margin-top">8</property>
                       </object>
                     </property>
                     <property name="sheet">
@@ -116,10 +116,10 @@
                     <property name="title">Projects</property>
                   </object>
                 </property>
-                <child type="start">
+                <child type="end">
                   <object class="GtkButton" id="button_close_sidebar">
                     <property name="action-name">win.toggle-sidebar</property>
-                    <property name="icon-name">sidebar-hide-symbolic</property>
+                    <property name="icon-name">sidebar-show-right-symbolic</property>
                   </object>
                 </child>
               </object>
@@ -133,6 +133,7 @@
                     <property name="margin-start">8</property>
                     <property name="margin-top">8</property>
                     <property name="orientation">vertical</property>
+                    <property name="spacing">4</property>
                     <property name="valign">start</property>
                   </object>
                 </child>
@@ -144,9 +145,17 @@
     </child>
     <child>
       <object class="AdwBreakpoint">
+        <!-- Custom object fragments -->
         <condition>max-width: 700sp</condition>
         <setter object="split_view" property="collapsed">True</setter>
         <setter object="split_view" property="show-sidebar">False</setter>
+      </object>
+    </child>
+    <child>
+      <object class="AdwBreakpoint">
+        <!-- Custom object fragments -->
+        <condition>min-width: 700sp</condition>
+        <setter object="button_close_sidebar" property="visible">False</setter>
       </object>
     </child>
   </template>
