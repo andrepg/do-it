@@ -63,9 +63,6 @@ const options = {
   },
 };
 
-
-const settings = useSettings();
-
 /**
  * The main application window for Do It.
  *
@@ -82,12 +79,15 @@ export class DoItMainWindow extends Adw.ApplicationWindow {
 
   private task_form!: TaskForm;
 
+  private settings = useSettings();
 
   static {
     GObject.type_ensure(TaskForm.$gtype);
     GObject.registerClass(options, this);
   }
   constructor(application: Adw.Application) {
+    const settings = useSettings();
+
     super({
       application,
       title: APPLICATION_NAME,
@@ -152,8 +152,8 @@ export class DoItMainWindow extends Adw.ApplicationWindow {
     const [width, height] = this.get_default_size();
 
     log(DoItMainWindow.LogClass, 'Saving window size before closing');
-    settings.set_int(DoItSettings.windowWidth, width);
-    settings.set_int(DoItSettings.windowHeight, height);
+    this.settings.set_int(DoItSettings.windowWidth, width);
+    this.settings.set_int(DoItSettings.windowHeight, height);
 
     log(DoItMainWindow.LogClass, 'Persisting tasks');
     this.taskListStore.persist_store();
