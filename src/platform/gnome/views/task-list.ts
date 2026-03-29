@@ -20,7 +20,7 @@ import GObject from 'gi://GObject';
 import Gtk from 'gi://Gtk';
 import Gio from 'gi://Gio';
 
-import { AppSignals } from '~/app.enums.js';
+import { AppSignals } from '../enums.js';
 import { get_template_path } from '~/utils/application.js';
 import { TaskItem } from './task-item.js';
 

@@ -17,12 +17,10 @@
  * SPDX-License-Identifier: GPL-3.0-or-later
  */
 import { SortingField, SortingModeSchema, SortingStrategy } from '~/app.enums.js';
-import { TaskItem } from '~/ui-handler/task-item.js';
+import type { ITaskView } from '~/core/interfaces/task-view.js';
 import { useSettings } from './settings.js';
 
-interface IExtractorFunction {
-  <T>(item: T): unknown;
-}
+type ExtractorFunction = (item: ITaskView) => unknown;
 
 /**
  * React-like hook that provides task sorting capabilities and state management.
@@ -37,13 +35,13 @@ export const useTaskSort = () => {
 
   const settings = useSettings();
 
-  const create_comparator = <T>(extractors: IExtractorFunction[], strategy: SortingStrategy) => {
+  const create_comparator = (extractors: ExtractorFunction[], strategy: SortingStrategy) => {
     const isAscending = strategy === SortingStrategy.ascending;
 
     const compare_numeric = (a: number, b: number) => a - b;
     const compare_string = (a: string, b: string) => a.localeCompare(b);
 
-    return (a: T, b: T) => {
+    return (a: ITaskView, b: ITaskView) => {
       for (const extractor of extractors) {
         const value_of_a = extractor(a);
         const value_of_b = extractor(b);
@@ -65,15 +63,15 @@ export const useTaskSort = () => {
   };
 
   const sort_by_date = (strategy: SortingStrategy) => {
-    return create_comparator([(item) => (item as TaskItem).to_object().created_at], strategy);
+    return create_comparator([(item: ITaskView) => new Date(item.created).getTime()], strategy);
   };
 
   const sort_by_status = (strategy: SortingStrategy) => {
-    return create_comparator([(item) => ((item as TaskItem).to_object().done ? 1 : 0)], strategy);
+    return create_comparator([(item: ITaskView) => (item.done ? 1 : 0)], strategy);
   };
 
   const sort_by_title = (strategy: SortingStrategy) => {
-    return create_comparator([(item) => (item as TaskItem).to_object().title], strategy);
+    return create_comparator([(item: ITaskView) => item.title], strategy);
   };
 
   const sort_by_project_name = (strategy: SortingStrategy) => {
@@ -89,9 +87,9 @@ export const useTaskSort = () => {
   };
 
   const sort_by_project = (strategy: SortingStrategy) => {
-    return (a: TaskItem, b: TaskItem) => {
-      const project_a = a.to_object().project || '';
-      const project_b = b.to_object().project || '';
+    return (a: ITaskView, b: ITaskView) => {
+      const project_a = a.project || '';
+      const project_b = b.project || '';
       return sort_by_project_name(strategy)(project_a, project_b);
     };
   };

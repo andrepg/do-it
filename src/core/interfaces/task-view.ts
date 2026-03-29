@@ -1,4 +1,4 @@
-/* app.enums.ts
+/* task-view.ts
  * Copyright 2025 André Paul Grandsire
  *
  * This program is free software: you can redistribute it and/or modify
@@ -16,25 +16,18 @@
  *
  * SPDX-License-Identifier: GPL-3.0-or-later
  */
+import type { ITask } from '../../app.types.js';
 
-export enum SortingField {
-  byDate = 0,
-  byStatus = 1,
-  byTitle = 2,
-  byProject = 3,
+export interface ITaskView {
+  taskId: number;
+  title: string;
+  done: boolean;
+  deleted: boolean;
+  project: string;
+  created: string;
+
+  update(task: ITask): void;
+  onTaskUpdated(callback: (task: ITask) => void): void;
+  onTaskDeleted(callback: (task: ITask) => void): void;
+  to_object(): ITask;
 }
-
-export enum SortingStrategy {
-  ascending = 0,
-  descending = 1,
-}
-
-export const SortingModeSchema = {
-  MODE: 'sorting-mode',
-  STRATEGY: 'sorting-strategy',
-};
-
-export const DoItSettings = {
-  windowHeight: 'window-height',
-  windowWidth: 'window-width',
-};

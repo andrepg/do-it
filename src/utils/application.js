@@ -12,7 +12,7 @@ function get_resource_path() {
 }
 
 function get_template_path(path) {
-  return `resource://${APPLICATION_RES}/ui/${path}`;
+  return `resource://${APPLICATION_RES}/platform/gnome/widgets/${path}`;
 }
 
 function is_development_mode() {

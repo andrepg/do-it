@@ -18,14 +18,15 @@
  */
 import Gtk40 from 'gi://Gtk';
 
-import { AppSignals, SortingStrategy, WidgetIds } from '~/app.enums.js';
-import { AppLocale } from '~/app.strings.js';
+import { AppSignals, WidgetIds } from '../enums.js';
+import { SortingStrategy } from '../../../app.enums.js';
+import { AppLocale } from '../../../app.strings.js';
 
-import { DoItMainWindow } from '~/ui-handler/doit.js';
-import { SidebarButton } from '~/ui-handler/sidebar-button.js';
+import { DoItMainWindow } from '../views/doit.js';
+import { SidebarButton } from '../views/sidebar-button.js';
 
-import { ProjectManager } from '~/utils/project-manager.js';
-import { useTaskSort } from '../hooks/tasks.sort.js';
+import { ProjectManager } from '../../../utils/project-manager.js';
+import { useTaskSort } from '../../../hooks/tasks.sort.js';
 
 /**
  * Initializes and manages the sidebar list of discovered projects.
@@ -135,10 +136,7 @@ export default function projectSidebar(projectManager: ProjectManager) {
     projectSidebarItems.forEach((button, project) => {
       const isAllTasksButton = project === ALL_TASKS;
 
-      button.set_active(
-        (isAllTasksButton && currentFilter === null) ||
-        (project === currentFilter),
-      );
+      button.set_active((isAllTasksButton && currentFilter === null) || project === currentFilter);
     });
   }
 

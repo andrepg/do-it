@@ -22,9 +22,9 @@ import Adw from 'gi://Adw';
 
 import { is_development_mode, APPLICATION_ID, APPLICATION_RES } from './utils/application.js';
 import { log } from './utils/log-manager.js';
-import * as Actions from './actions/index.js';
+import * as Actions from './platform/gnome/actions/index.js';
 
-import { DoItMainWindow } from './ui-handler/doit.js';
+import { DoItMainWindow } from './platform/gnome/views/doit.js';
 
 const options = { GTypeName: 'DoitApplication' };
 

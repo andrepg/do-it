@@ -15,14 +15,14 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  *
  * SPDX-License-Identifier: GPL-3.0-or-later
-*/
+ */
 import Gtk40 from 'gi://Gtk';
 
-import { AppSignals, WidgetIds } from '~/app.enums.js';
-import { AppLocale } from '~/app.strings.js';
+import { AppSignals, WidgetIds } from '../enums.js';
+import { AppLocale } from '../../../app.strings.js';
 
-import { DoItMainWindow } from '~/ui-handler/doit.js';
-import { TaskListStore } from '~/ui-handler/task-list-store.js';
+import { DoItMainWindow } from '../views/doit.js';
+import { TaskListStore } from '../views/task-list-store.js';
 
 import { showToast } from './toast.js';
 
