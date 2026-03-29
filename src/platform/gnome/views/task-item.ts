@@ -26,6 +26,7 @@ import { AppSignals, WidgetIds } from '../enums.js';
 import { AppLocale } from '~/app.strings.js';
 import { TaskDeleteButtonIcon, TaskEntryStyle } from '~/app.static.js';
 import { ITask } from '~/app.types.js';
+import type { ITaskView } from '~/core/interfaces/task-view.js';
 
 import { get_template_path } from '~/utils/application.js';
 
@@ -98,7 +99,7 @@ const TaskItemProperties = {
  * creation date as a subtitle, and provides interactions such as a checkbox
  * for marking the task as done and a button for deleting it.
  */
-export class TaskItem extends Adw.ActionRow {
+export class TaskItem extends Adw.ActionRow implements ITaskView {
   static {
     GObject.registerClass(TaskItemProperties, this);
   }
@@ -281,5 +282,27 @@ export class TaskItem extends Adw.ActionRow {
       deleted: this.deleted,
       tags: this._tags,
     };
+  }
+
+  public update(task: ITask): void {
+    this._taskId = task.id ?? 0;
+    this.title = task.title;
+    this.done = task.done ?? false;
+    this.deleted = task.deleted ?? false;
+    this.project = task.project ?? '';
+    this.created = new Date(task.created_at).toISOString();
+    this._update_interface();
+  }
+
+  public onTaskUpdated(callback: (task: ITask) => void): void {
+    this.connect(AppSignals.TaskUpdated, () => {
+      callback(this.to_object());
+    });
+  }
+
+  public onTaskDeleted(callback: (task: ITask) => void): void {
+    this.connect(AppSignals.TaskDeleted, () => {
+      callback(this.to_object());
+    });
   }
 }
