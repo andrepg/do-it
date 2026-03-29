@@ -29,7 +29,7 @@ function build_and_run() {
     clear
     if $COMPILE; then
         echo "==> Invoking compilation script"
-        "$SCRIPTS_PATH/compile.sh" "$MANIFEST" "$BUILD_DIR"
+        "$SCRIPTS_PATH/compile" "$MANIFEST" "$BUILD_DIR"
     fi
 
     echo "==> Running application (without installing)"

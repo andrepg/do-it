@@ -2,9 +2,9 @@
 set -euo pipefail
 
 # ===========================================================================
-# compile.sh — Compila a aplicação Flatpak localmente via flatpak-builder.
+# compile — Compila a aplicação Flatpak localmente via flatpak-builder.
 #
-# Uso: scripts/compile.sh [manifest.json] [build-dir]
+# Uso: scripts/compile [manifest.json] [build-dir]
 #   manifest.json  Manifesto Flatpak a usar (default: io.github.andrepg.Doit.json)
 #   build-dir      Diretório de build a usar (default: _build)
 #

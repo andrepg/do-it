@@ -7,7 +7,7 @@ echo "====> Validating Flatpak layout"
 
 MANIFEST="${1:-io.github.andrepg.Doit.json}"
 
-bash ./scripts/compile.sh "$MANIFEST"
+bash ./scripts/compile "$MANIFEST"
 
 echo "====> Validating Metainfo"
 flatpak run --command=flatpak-builder-lint org.flatpak.Builder appstream _build/files/share/metainfo/io.github.andrepg.Doit.metainfo.xml || true

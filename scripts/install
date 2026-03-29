@@ -3,11 +3,11 @@ set -euo pipefail
 clear
 
 # ===========================================================================
-# install.sh — Compila e instala ou exporta o bundle Flatpak.
+# install — Compila e instala ou exporta o bundle Flatpak.
 #
-# Uso: scripts/install.sh [-c] [-C] [-e] [manifest.json]
+# Uso: scripts/install [-c] [-C] [-e] [manifest.json]
 #   -c, --compile    Compila antes de instalar/exportar
-#   -C, --clean      Passa limpeza completa para o compile.sh (implica -c)
+#   -C, --clean      Passa limpeza completa para o compile (implica -c)
 #   -e, --export     Exporta como arquivo .flatpak em vez de instalar
 # ===========================================================================
 
@@ -46,7 +46,7 @@ if $COMPILE; then
     echo "==> Compilando $MANIFEST..."
     CLEAN_FLAG=""
     $CLEAN && CLEAN_FLAG="--clean"
-    "$SCRIPTS_PATH/compile.sh" $CLEAN_FLAG "$MANIFEST" "$BUILD_DIR"
+    "$SCRIPTS_PATH/compile" $CLEAN_FLAG "$MANIFEST" "$BUILD_DIR"
 fi
 
 # ----- exportar bundle ou instalar -----------------------------------------
