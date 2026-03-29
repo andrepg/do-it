@@ -103,12 +103,9 @@ export class TaskItem extends Adw.ActionRow {
     GObject.registerClass(TaskItemProperties, this);
   }
 
-  /**
-   * Internal Properties
-   */
   private _taskId = 0;
 
-  private _raw_title = '';
+  private _title = '';
 
   private _created_at: Date;
 
@@ -118,9 +115,6 @@ export class TaskItem extends Adw.ActionRow {
 
   private _tags: string[] = [];
 
-  /**
-   * Internal Children
-   */
   private task_done!: Gtk.CheckButton;
   private task_delete!: Gtk.Button;
 
@@ -138,7 +132,7 @@ export class TaskItem extends Adw.ActionRow {
     });
 
     this._taskId = taskId;
-    this._raw_title = title;
+    this._title = title;
     this._project = project;
     this._created_at = new Date(created ?? Date.now());
     this._deleted = deleted;
@@ -152,6 +146,61 @@ export class TaskItem extends Adw.ActionRow {
     this.task_done.connect_after(AppSignals.Toggled, this._finish_task.bind(this));
 
     this._update_interface();
+  }
+
+  get taskId() {
+    return this._taskId;
+  }
+
+  get title() {
+    return this._title;
+  }
+
+  set title(value) {
+    if (this._title === value) return;
+    this._title = value;
+    this.notify('title');
+  }
+
+  get done() {
+    return this.task_done.get_active();
+  }
+
+  set done(value) {
+    if (this.task_done.get_active() === value) return;
+    this.task_done.set_active(value);
+    this.notify('done');
+  }
+
+  get created() {
+    return this._created_at.toISOString();
+  }
+
+  set created(value) {
+    const date = new Date(value);
+    if (this._created_at.getTime() === date.getTime()) return;
+    this._created_at = date;
+    this.notify('created');
+  }
+
+  get project() {
+    return this._project;
+  }
+
+  set project(value) {
+    if (this._project === value) return;
+    this._project = value;
+    this.notify('project');
+  }
+
+  get deleted() {
+    return this._deleted;
+  }
+
+  set deleted(value) {
+    if (this._deleted === value) return;
+    this._deleted = value;
+    this.notify('deleted');
   }
 
   private _init_widgets() {
@@ -171,7 +220,7 @@ export class TaskItem extends Adw.ActionRow {
   }
 
   private _update_widget_style(): void {
-    const is_done = this.task_done.get_active();
+    const is_done = this.done;
     const is_deleted = this._deleted;
 
     let style = TaskEntryStyle.enabled;
@@ -183,7 +232,7 @@ export class TaskItem extends Adw.ActionRow {
     }
 
     this.set_opacity(style.opacity);
-    this.set_title(this._raw_title);
+    this.set_title(this._title);
   }
 
   private _update_widget_interface(): void {
@@ -195,9 +244,9 @@ export class TaskItem extends Adw.ActionRow {
   }
 
   private _delete_task() {
-    this._deleted = !this._deleted;
+    this.deleted = !this.deleted;
 
-    const message = this._deleted
+    const message = this.deleted
       ? AppLocale.tasks.toast.softDeleted
       : AppLocale.tasks.toast.restored;
 
@@ -209,9 +258,7 @@ export class TaskItem extends Adw.ActionRow {
   }
 
   private _finish_task() {
-    const message = this.task_done.get_active()
-      ? AppLocale.tasks.toast.finished
-      : AppLocale.tasks.toast.restored;
+    const message = this.done ? AppLocale.tasks.toast.finished : AppLocale.tasks.toast.restored;
 
     showToast(message);
 
@@ -220,45 +267,18 @@ export class TaskItem extends Adw.ActionRow {
     this._update_interface();
   }
 
-  /**
-   * Retrieves whether the task is marked as done.
-   */
-  public is_done(): boolean {
-    return this.task_done.get_active();
-  }
-
-  /**
-   * Retrieves whether the task is logically deleted.
-   */
-  public is_deleted(): boolean {
-    return this._deleted;
-  }
-
-  /**
-   * Retrieves the raw string name of the project associated with this task.
-   */
-  public get_project(): string {
-    return this._project;
-  }
-
-  /**
-   * Casts the underlying object to its GTK TaskItem widget shape.
-   */
   public to_widget(): TaskItem {
     return this;
   }
 
-  /**
-   * Hydrates the internal Adwaita row state into a JSON-serializable ITask object.
-   */
   public to_object(): ITask {
     return {
       id: this._taskId,
       title: this.title,
-      project: this._project,
-      done: this.task_done.get_active(),
+      project: this.project,
+      done: this.done,
       created_at: this._created_at.getTime(),
-      deleted: this._deleted,
+      deleted: this.deleted,
       tags: this._tags,
     };
   }

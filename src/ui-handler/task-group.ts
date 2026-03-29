@@ -45,7 +45,7 @@ const GObjectProperties = {
  */
 export class TaskGroup extends Adw.PreferencesGroup {
   // TODO Move to AppLocale
-  private static readonly DESCRIPTION = _("%s finished, %s deleted");
+  private static readonly DESCRIPTION = _('%s finished, %s deleted');
 
   private filter: Gtk.CustomFilter;
   private filterModel: Gtk.FilterListModel;
@@ -87,8 +87,8 @@ export class TaskGroup extends Adw.PreferencesGroup {
     for (let i = 0; i < n_items; i++) {
       const item = this.filterModel.get_item(i) as TaskItem;
 
-      if (item.is_done()) finished++;
-      if (item.is_deleted()) deleted++;
+      if (item.done) finished++;
+      if (item.deleted) deleted++;
     }
 
     this.set_description(TaskGroup.DESCRIPTION.format(finished, deleted));
@@ -102,7 +102,7 @@ export class TaskGroup extends Adw.PreferencesGroup {
   private create_project_filter(project: string): Gtk.CustomFilter {
     const filter = new Gtk.CustomFilter();
 
-    filter.set_filter_func((item: GObject.Object) => (item as TaskItem).get_project() === project);
+    filter.set_filter_func((item: GObject.Object) => (item as TaskItem).project === project);
 
     return filter;
   }

@@ -116,7 +116,7 @@ export class ProjectManager extends GObject.Object {
     for (let i = 0; i < n_items; i++) {
       const item = this._store.get_item(i);
       if (item instanceof TaskItem) {
-        const project = item.get_project() || '';
+        const project = item.project || '';
         if (!currentProjectsSet.has(project)) {
           currentProjectsSet.add(project);
           currentProjectsOrdered.push(project);
