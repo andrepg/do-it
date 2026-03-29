@@ -13,12 +13,12 @@
         "pretty": true,
         "paths": {
             "~/*": ["./src/*"],
-            "~gnome": ["./src/platform/gnome/"],
-            "~core": ["./src/core/"],
-            "~actions": ["./src/actions/"],
-            "~hooks": ["./src/hooks/"],
-            "~utils": ["./src/utils/"],
-            "~web": ["./src/web/"]
+            "~gnome/*": ["./src/platform/gnome/*"],
+            "~core/*": ["./src/core/*"],
+            "~actions/*": ["./src/actions/*"],
+            "~hooks/*": ["./src/hooks/*"],
+            "~utils/*": ["./src/utils/*"],
+            "~web/*": ["./src/web/*"]
         },
         "types": [
             "@girs/gjs",
