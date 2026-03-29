@@ -20,20 +20,24 @@ import Gio20 from 'gi://Gio';
 
 import { APPLICATION_ID } from '~/utils/application.js';
 
+let settingsInstance: Gio20.Settings | null = null;
+
 export const useSettings = () => {
-  const settings: Gio20.Settings = new Gio20.Settings({ schemaId: APPLICATION_ID });
+  if (!settingsInstance) {
+    settingsInstance = new Gio20.Settings({ schemaId: APPLICATION_ID });
+  }
 
-  const get_int = (key: string) => settings.get_int(key);
+  const get_int = (key: string) => settingsInstance!.get_int(key);
 
-  const set_int = (key: string, value: number) => settings.set_int(key, value);
+  const set_int = (key: string, value: number) => settingsInstance!.set_int(key, value);
 
-  const get_string = (key: string) => settings.get_string(key);
+  const get_string = (key: string) => settingsInstance!.get_string(key);
 
-  const set_string = (key: string, value: string) => settings.set_string(key, value);
+  const set_string = (key: string, value: string) => settingsInstance!.set_string(key, value);
 
-  const get_enum = (key: string) => settings.get_enum(key);
+  const get_enum = (key: string) => settingsInstance!.get_enum(key);
 
-  const set_enum = (key: string, value: number) => settings.set_enum(key, value);
+  const set_enum = (key: string, value: number) => settingsInstance!.set_enum(key, value);
 
   return {
     get_int,

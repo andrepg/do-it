@@ -78,6 +78,7 @@ export const useTaskSort = () => {
     return (a: string, b: string) => {
       if (a === '') return -1;
       if (b === '') return 1;
+      // Empty project names always sort to the beginning (intentional)
 
       const isAscending = strategy === SortingStrategy.ascending;
       const comparison = a.localeCompare(b);

@@ -93,6 +93,9 @@ export const newTask = (store: TaskListStore) => {
 
     if (text.length == 0) return;
 
+    const { parsedText: title } = parseProject(text);
+    if (title.length == 0) return;
+
     create_task(text);
 
     fieldNewTask.set_text('');

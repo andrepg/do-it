@@ -63,6 +63,7 @@ const options = {
   },
 };
 
+
 const settings = useSettings();
 
 /**
@@ -81,11 +82,11 @@ export class DoItMainWindow extends Adw.ApplicationWindow {
 
   private task_form!: TaskForm;
 
+
   static {
     GObject.type_ensure(TaskForm.$gtype);
     GObject.registerClass(options, this);
   }
-
   constructor(application: Adw.Application) {
     super({
       application,

@@ -103,10 +103,10 @@ export class TaskListStore extends Gio.ListStore<TaskItem> {
    * @param data Raw initialization data for the new task.
    */
   append_task(data: ITask) {
-    const taskId = data.id ?? 0;
+    const taskId = data.id ?? Date.now();
 
     const task = new TaskItem(
-      taskId > 0 ? taskId : this.get_count() + 1,
+      taskId > 0 ? taskId : Date.now(),
       data.title,
       data.done,
       data.created_at,
