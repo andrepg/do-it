@@ -19,12 +19,12 @@
 import Adw from 'gi://Adw';
 import Gio from 'gi://Gio';
 import Gtk from 'gi://Gtk';
-import { ActionNames, AppSignals } from '~/app.enums.js';
-import { ITask } from '~/app.types.js';
-import { AppLocale } from '~/app.strings.js';
+import { ActionNames, AppSignals } from '../enums.js';
+import { ITask } from '../../../app.types.js';
+import { AppLocale } from '../../../app.strings.js';
 
-import { log } from '~/utils/log-manager.js';
-import { Persistence } from '~/utils/persistence.js';
+import { log } from '../../../utils/log-manager.js';
+import { FilePersistence } from '../../../core/persistence/file-persistence.js';
 import { showToast } from './toast.js';
 
 /**
@@ -66,7 +66,7 @@ const backup = () => {
     const dialog = createFileChooser(AppLocale.app.backup.export);
 
     dialog.save(parent, null, (dialog, result) => {
-      const tasks = new Persistence().read_database();
+      const tasks = new FilePersistence().load();
       const file = dialog?.save_finish(result);
 
       try {
@@ -98,7 +98,7 @@ const backup = () => {
         const [ok, content] = file?.load_contents(null) || [false, null];
         if (!ok || !content) return;
         const tasks = JSON.parse(decoder.decode(content)) as ITask[];
-        new Persistence().write_database(tasks);
+        new FilePersistence().save(tasks);
 
         showToast(AppLocale.app.backup.importSuccess);
       } catch (error) {

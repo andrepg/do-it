@@ -22,11 +22,11 @@ import GLib from 'gi://GLib';
 
 import { useTaskSort } from '~/hooks/tasks.sort.js';
 
-import { ActionNames, AppSignals } from '~/app.enums.js';
-import { ITask } from '~/app.types.js';
+import { ActionNames, AppSignals } from '../enums.js';
+import { ITask } from '../../../app.types.js';
 
-import { log } from '~/utils/log-manager.js';
-import { Persistence } from '~/utils/persistence.js';
+import { log } from '../../../utils/log-manager.js';
+import { FilePersistence } from '../../../core/persistence/file-persistence.js';
 
 import { TaskItem } from './task-item.js';
 import { DoItMainWindow } from './doit.js';
@@ -54,7 +54,7 @@ export class TaskListStore extends Gio.ListStore<TaskItem> {
     GObject.registerClass(TaskListStoreType, this);
   }
 
-  private persistence = new Persistence();
+  private persistence = new FilePersistence();
   private task_sort = useTaskSort();
 
   /**
@@ -176,7 +176,7 @@ export class TaskListStore extends Gio.ListStore<TaskItem> {
     log('list-store', 'Saving tasks to database');
     const tasks = this.get_all().filter((item) => (keep_deleted ? true : !item.deleted));
 
-    this.persistence.write_database(tasks);
+    this.persistence.save(tasks);
   }
 
   /**
@@ -198,10 +198,10 @@ export class TaskListStore extends Gio.ListStore<TaskItem> {
   /**
    * Initializes the application state, reading tasks from the disk and appending them to the store.
    */
-  load() {
+  async load() {
     log('list-store', 'Loading tasks from database');
 
-    const tasks = this.persistence.read_database() as ITask[];
+    const tasks = await this.persistence.load();
 
     tasks.forEach((item) => {
       log('list-store', `Loading task ${item.title}`);

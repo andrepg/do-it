@@ -20,9 +20,9 @@ import Adw from 'gi://Adw';
 import GObject from 'gi://GObject';
 import Gtk from 'gi://Gtk';
 
-import { showToast } from '~/actions/toast.js';
+import { showToast } from '../actions/toast.js';
 
-import { AppSignals, WidgetIds } from '~/app.enums.js';
+import { AppSignals, WidgetIds } from '../enums.js';
 import { AppLocale } from '~/app.strings.js';
 import { ITask } from '~/app.types.js';
 
@@ -33,7 +33,6 @@ import { TaskItem } from './task-item.js';
 import { TaskListStore } from './task-list-store.js';
 
 import { ProjectManager } from '~/utils/project-manager.js';
-
 
 const TaskFormProperties = {
   GTypeName: 'TaskForm',
@@ -165,7 +164,7 @@ export class TaskForm extends Gtk.Box {
   /**
    * Setup project autocomplete on project entry
    */
-  private setup_project_autocomplete(): void { }
+  private setup_project_autocomplete(): void {}
 
   /*
 

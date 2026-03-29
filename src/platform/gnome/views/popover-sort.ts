@@ -21,14 +21,15 @@ import GObject from 'gi://GObject';
 
 import Adw1 from 'gi://Adw';
 
-import { AppSignals, SortingField, SortingStrategy, WidgetIds } from '~/app.enums.js';
+import { AppSignals, WidgetIds } from '../enums.js';
+import { SortingField, SortingStrategy } from '../../../app.enums.js';
 import { ISortingFieldOption, ISortingStrategyOption } from '~/app.types.js';
 
 import { get_template_path } from '~/utils/application.js';
 
 import { SortingFieldOptions, SortingModeOptions } from '~/app.static.js';
 
-import { useTaskSort } from '../hooks/tasks.sort.js';
+import { useTaskSort } from '../../../hooks/tasks.sort.js';
 import { AppLocale } from '~/app.strings.js';
 
 const GObjectProperties = {

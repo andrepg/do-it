@@ -14,7 +14,6 @@
         "--device=dri",
         "--socket=wayland",
         "--filesystem=host",
-        "--bind-mount=/usr/share/icons=/run/host/usr/share/icons",
         "--env=LC_ALL=pt_BR.UTF-8"
     ],
     "build-options": {

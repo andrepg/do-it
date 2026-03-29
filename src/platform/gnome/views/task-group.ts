@@ -20,7 +20,7 @@ import Adw from 'gi://Adw';
 import GObject from 'gi://GObject';
 import Gtk from 'gi://Gtk';
 
-import { AppSignals } from '~/app.enums.js';
+import { AppSignals } from '../enums.js';
 import { AppLocale } from '~/app.strings.js';
 
 import { get_template_path } from '~/utils/application.js';

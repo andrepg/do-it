@@ -20,9 +20,9 @@ import Gio from 'gi://Gio';
 import GLib from 'gi://GLib';
 import Adw1 from 'gi://Adw';
 
-import { ActionNames, AppSignals, WidgetIds } from '~/app.enums.js';
-import { DoItMainWindow } from '~/ui-handler/doit.js';
-import { TaskForm } from '~/ui-handler/task-form.js';
+import { ActionNames, AppSignals, WidgetIds } from '../enums.js';
+import { DoItMainWindow } from '../views/doit.js';
+import { TaskForm } from '../views/task-form.js';
 import { log } from '~/utils/log-manager.js';
 
 /**

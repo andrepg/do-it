@@ -17,7 +17,7 @@
  * SPDX-License-Identifier: GPL-3.0-or-later
  */
 import { SortingField, SortingModeSchema, SortingStrategy } from '~/app.enums.js';
-import { TaskItem } from '~/ui-handler/task-item.js';
+import { TaskItem } from '~/platform/gnome/views/task-item.js';
 import { useSettings } from './settings.js';
 
 interface IExtractorFunction {

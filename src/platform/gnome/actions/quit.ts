@@ -1,4 +1,4 @@
-/* purge-deleted.ts
+/* quit.ts
  * Copyright 2025 André Paul Grandsire
  *
  * This program is free software: you can redistribute it and/or modify
@@ -16,33 +16,39 @@
  *
  * SPDX-License-Identifier: GPL-3.0-or-later
  */
-import Adw1 from 'gi://Adw';
+import Adw from 'gi://Adw';
 import Gio from 'gi://Gio';
 
-import { ActionNames, AppSignals } from '~/app.enums.js';
-
-import { TaskListStore } from '~/ui-handler/task-list-store.js';
+import { ActionNames, AppSignals } from '../enums.js';
 
 /**
- * Provides an action to permanently remove soft-deleted tasks from the database.
- *
- * @param taskListStore The global TaskListStore.
+ * Provides the application quit action and keyboard shortcut bindings.
  */
-const purgeDeleted = (taskListStore: TaskListStore) => {
+const quit = () => {
+  const actionName = ActionNames.Quit;
+  const actionTrigger = 'app.quit';
+
   /**
-   * Initializes the "purge_deleted_tasks" action and binds it to the main window.
+   * Initializes the "quit" action and binds the `<Primary>q` shortcut.
    *
-   * @param window The main application window.
+   * @param application The main application wrapper instance.
    */
-  const setup = (window: Adw1.ApplicationWindow) => {
-    const action = new Gio.SimpleAction({ name: ActionNames.PurgeDeletedTasks });
+  const setup = (application: Adw.Application) => {
+    const quitAction = new Gio.SimpleAction({
+      name: actionName,
+    });
 
-    action.connect(AppSignals.Activate, () => taskListStore.purge_deleted());
+    quitAction.connect(AppSignals.Activate, () => {
+      application.quit();
+    });
 
-    window.add_action(action);
+    application.add_action(quitAction);
+    application.set_accels_for_action(actionTrigger, ['<Primary>q']);
   };
 
-  return { setup };
+  return {
+    setup,
+  };
 };
 
-export default purgeDeleted;
+export default quit;

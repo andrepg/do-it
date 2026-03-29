@@ -18,14 +18,15 @@
  */
 import Adw from 'gi://Adw';
 
-import { AppSignals, SortingField, WidgetIds } from '~/app.enums.js';
-import { useTaskSort } from '~/hooks/tasks.sort.js';
+import { AppSignals, WidgetIds } from '../enums.js';
+import { SortingField } from '../../../app.enums.js';
+import { useTaskSort } from '../../../hooks/tasks.sort.js';
 
-import { DoItMainWindow } from '~/ui-handler/doit.js';
-import { TaskGroup } from '~/ui-handler/task-group.js';
-import { TaskListStore } from '~/ui-handler/task-list-store.js';
+import { DoItMainWindow } from '../views/doit.js';
+import { TaskGroup } from '../views/task-group.js';
+import { TaskListStore } from '../views/task-list-store.js';
 
-import { ProjectManager } from '~/utils/project-manager.js';
+import { ProjectManager } from '../../../utils/project-manager.js';
 
 /**
  * Initializes and manages the grouping of tasks by project in the main view.

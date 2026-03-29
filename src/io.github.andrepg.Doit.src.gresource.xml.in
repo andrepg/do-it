@@ -15,30 +15,38 @@
     <file>utils/project-manager.js</file>
     <file alias="utils/application.js">application.js</file>
 
-    <file>ui-handler/task-form.js</file>
-    <file>ui-handler/doit.js</file>
-    <file>ui-handler/popover-sort.js</file>
-    <file>ui-handler/sidebar-button.js</file>
-    <file>ui-handler/task-group.js</file>
-    <file>ui-handler/task-item.js</file>
-    <file>ui-handler/task-list.js</file>
-    <file>ui-handler/task-list-store.js</file>
+    <file>core/interfaces/settings.js</file>
+    <file>core/interfaces/persistence.js</file>
+    <file>core/interfaces/task-view.js</file>
+    <file>core/persistence/file-persistence.js</file>
+
+    <file>platform/gnome/views/task-form.js</file>
+    <file>platform/gnome/views/doit.js</file>
+    <file>platform/gnome/views/popover-sort.js</file>
+    <file>platform/gnome/views/sidebar-button.js</file>
+    <file>platform/gnome/views/task-group.js</file>
+    <file>platform/gnome/views/task-item.js</file>
+    <file>platform/gnome/views/task-list.js</file>
+    <file>platform/gnome/views/task-list-store.js</file>
+    <file>platform/gnome/views/index.js</file>
+    <file>platform/gnome/enums.js</file>
+    <file>platform/gnome/index.js</file>
 
     <file>hooks/autocomplete.js</file>
     <file>hooks/settings.js</file>
     <file>hooks/tasks.sort.js</file>
 
-    <file>actions/about.js</file>
-    <file>actions/new-task.js</file>
-    <file>actions/quit.js</file>
-    <file>actions/backup.js</file>
-    <file>actions/sidebar.js</file>
-    <file>actions/task-edit.js</file>
-    <file>actions/toast.js</file>
-    <file>actions/projects.js</file>
-    <file>actions/projects-sidebar.js</file>
-    <file>actions/purge-deleted.js</file>
-    <file>actions/shortcuts.js</file>
-    <file>actions/index.js</file>
+    <file>platform/gnome/actions/about.js</file>
+    <file>platform/gnome/actions/new-task.js</file>
+    <file>platform/gnome/actions/quit.js</file>
+    <file>platform/gnome/actions/backup.js</file>
+    <file>platform/gnome/actions/sidebar.js</file>
+    <file>platform/gnome/actions/task-edit.js</file>
+    <file>platform/gnome/actions/toast.js</file>
+    <file>platform/gnome/actions/projects.js</file>
+    <file>platform/gnome/actions/projects-sidebar.js</file>
+    <file>platform/gnome/actions/purge-deleted.js</file>
+    <file>platform/gnome/actions/shortcuts.js</file>
+    <file>platform/gnome/actions/index.js</file>
   </gresource>
 </gresources>

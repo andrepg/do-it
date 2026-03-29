@@ -19,10 +19,10 @@
 import GObject from 'gi://GObject';
 import GLib from 'gi://GLib';
 
-import { AppSignals } from '~/app.enums.js';
+import { AppSignals } from '~/platform/gnome/enums.js';
 
-import { TaskItem } from '~/ui-handler/task-item.js';
-import { TaskListStore } from '~/ui-handler/task-list-store.js';
+import { TaskItem } from '~/platform/gnome/views/task-item.js';
+import { TaskListStore } from '~/platform/gnome/views/task-list-store.js';
 
 /**
  * Manages the dynamic discovery of task groups based on projects in the store.

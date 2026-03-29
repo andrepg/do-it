@@ -20,9 +20,9 @@ import Adw from 'gi://Adw';
 import GObject from 'gi://GObject';
 import Gtk from 'gi://Gtk';
 
-import { showToast } from '~/actions/toast.js';
+import { showToast } from '../actions/toast.js';
 
-import { AppSignals, WidgetIds } from '~/app.enums.js';
+import { AppSignals, WidgetIds } from '../enums.js';
 import { AppLocale } from '~/app.strings.js';
 import { TaskDeleteButtonIcon, TaskEntryStyle } from '~/app.static.js';
 import { ITask } from '~/app.types.js';

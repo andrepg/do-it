@@ -1,4 +1,4 @@
-/* app.enums.ts
+/* index.ts
  * Copyright 2025 André Paul Grandsire
  *
  * This program is free software: you can redistribute it and/or modify
@@ -16,25 +16,11 @@
  *
  * SPDX-License-Identifier: GPL-3.0-or-later
  */
-
-export enum SortingField {
-  byDate = 0,
-  byStatus = 1,
-  byTitle = 2,
-  byProject = 3,
-}
-
-export enum SortingStrategy {
-  ascending = 0,
-  descending = 1,
-}
-
-export const SortingModeSchema = {
-  MODE: 'sorting-mode',
-  STRATEGY: 'sorting-strategy',
-};
-
-export const DoItSettings = {
-  windowHeight: 'window-height',
-  windowWidth: 'window-width',
-};
+export { DoItMainWindow } from './doit.js';
+export { PopoverSort } from './popover-sort.js';
+export { SidebarButton } from './sidebar-button.js';
+export { TaskForm } from './task-form.js';
+export { TaskGroup } from './task-group.js';
+export { TaskItem } from './task-item.js';
+export { TaskList } from './task-list.js';
+export { TaskListStore } from './task-list-store.js';
