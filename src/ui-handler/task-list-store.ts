@@ -33,6 +33,14 @@ import { DoItMainWindow } from './doit.js';
 
 const TaskListStoreType = {
   GTypeName: 'TaskListStore',
+  Signals: {
+    [AppSignals.TaskUpdated]: {
+      param_types: [GObject.TYPE_OBJECT],
+    },
+    [AppSignals.TaskDeleted]: {
+      param_types: [GObject.TYPE_OBJECT],
+    },
+  },
 };
 
 /**
@@ -117,8 +125,14 @@ export class TaskListStore extends Gio.ListStore<TaskItem> {
       });
     };
 
-    task.connect(AppSignals.TaskUpdated, () => _update_interface(AppSignals.TaskUpdated));
-    task.connect(AppSignals.TaskDeleted, () => _update_interface(AppSignals.TaskDeleted));
+    task.connect(AppSignals.TaskUpdated, () => {
+      _update_interface(AppSignals.TaskUpdated);
+      this.emit(AppSignals.TaskUpdated, task);
+    });
+    task.connect(AppSignals.TaskDeleted, () => {
+      _update_interface(AppSignals.TaskDeleted);
+      this.emit(AppSignals.TaskDeleted, task);
+    });
     task.connect(AppSignals.Activated, () => {
       const root = task.get_root() as DoItMainWindow;
       if (root && root.activate_action) {

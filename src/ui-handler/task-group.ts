@@ -20,6 +20,7 @@ import Adw from 'gi://Adw';
 import GObject from 'gi://GObject';
 import Gtk from 'gi://Gtk';
 
+import { AppSignals } from '~/app.enums.js';
 import { AppLocale } from '~/app.strings.js';
 
 import { get_template_path } from '~/utils/application.js';
@@ -43,6 +44,13 @@ const GObjectProperties = {
  * It contains a single TaskList child that renders those filtered tasks.
  */
 export class TaskGroup extends Adw.PreferencesGroup {
+  // TODO Move to AppLocale
+  private static readonly DESCRIPTION = _("%s finished, %s deleted");
+
+  private filter: Gtk.CustomFilter;
+  private filterModel: Gtk.FilterListModel;
+  private taskList: TaskList;
+
   static {
     GObject.registerClass(GObjectProperties, this);
   }
@@ -57,16 +65,60 @@ export class TaskGroup extends Adw.PreferencesGroup {
 
     super({ title: groupTitle });
 
+    this.filter = this.create_project_filter(project);
+    this.filterModel = this.create_filter_model(store, this.filter);
+
+    this.taskList = new TaskList(this.filterModel);
+    this.add(this.taskList);
+
+    this.filterModel.connect(AppSignals.ItemsChanged, () => this.set_group_description());
+    store.connect(AppSignals.TaskUpdated, () => this.set_group_description());
+    store.connect(AppSignals.TaskDeleted, () => this.set_group_description());
+
+    this.set_group_description();
+  }
+
+  private set_group_description(): void {
+    let finished = 0;
+    let deleted = 0;
+
+    const n_items = this.filterModel.get_n_items();
+
+    for (let i = 0; i < n_items; i++) {
+      const item = this.filterModel.get_item(i) as TaskItem;
+
+      if (item.is_done()) finished++;
+      if (item.is_deleted()) deleted++;
+    }
+
+    this.set_description(TaskGroup.DESCRIPTION.format(finished, deleted));
+  }
+
+  /**
+   * Creates a filter that only includes tasks matching the given project.
+   * @param project The project name to filter by.
+   * @returns A Gtk.CustomFilter that only includes tasks matching the given project.
+   */
+  private create_project_filter(project: string): Gtk.CustomFilter {
     const filter = new Gtk.CustomFilter();
+
     filter.set_filter_func((item: GObject.Object) => (item as TaskItem).get_project() === project);
 
+    return filter;
+  }
+
+  /**
+   * Creates a filter list model that only includes tasks matching the given filter.
+   * @param store The store containing all tasks.
+   * @param filter The filter to apply to the store.
+   * @returns A Gtk.FilterListModel that only includes tasks matching the given filter.
+   */
+  private create_filter_model(store: TaskListStore, filter: Gtk.CustomFilter): Gtk.FilterListModel {
     const filterModel = new Gtk.FilterListModel({
       model: store,
       filter: filter,
     });
 
-    const taskList = new TaskList(filterModel);
-
-    this.add(taskList);
+    return filterModel;
   }
 }

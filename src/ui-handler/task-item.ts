@@ -221,6 +221,20 @@ export class TaskItem extends Adw.ActionRow {
   }
 
   /**
+   * Retrieves whether the task is marked as done.
+   */
+  public is_done(): boolean {
+    return this.task_done.get_active();
+  }
+
+  /**
+   * Retrieves whether the task is logically deleted.
+   */
+  public is_deleted(): boolean {
+    return this._deleted;
+  }
+
+  /**
    * Retrieves the raw string name of the project associated with this task.
    */
   public get_project(): string {
