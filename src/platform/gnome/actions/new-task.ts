@@ -17,8 +17,9 @@
  * SPDX-License-Identifier: GPL-3.0-or-later
  */
 import Gtk40 from 'gi://Gtk';
+import Gio from 'gi://Gio';
 
-import { AppSignals, WidgetIds } from '../enums.js';
+import { ActionNames, AppSignals, WidgetIds } from '../enums.js';
 import { AppLocale } from '../../../app.strings.js';
 
 import { DoItMainWindow } from '../views/doit.js';
@@ -86,6 +87,12 @@ export const newTask = (store: TaskListStore) => {
 
     fieldNewTask = get_widget<Gtk40.Entry>(window, fieldNewTaskId);
     fieldNewTask.connect(AppSignals.Apply, save_new_task);
+
+    const action = new Gio.SimpleAction({ name: ActionNames.NewTask });
+    action.connect(AppSignals.Activate, () => {
+      fieldNewTask.grab_focus();
+    });
+    window.add_action(action);
   };
 
   const save_new_task = () => {

@@ -207,7 +207,7 @@ export class TaskForm extends Gtk.Box {
   /**
    * Save current task on list and dispatch window action to close bottom sheet
    */
-  private dispatch_save(): void {
+  public dispatch_save(): void {
     log(TaskForm.LogClass, 'Dispatching save action');
     const task = this.find_task()?.to_object();
     const title = this.entry_title.get_text().trim();
@@ -247,7 +247,7 @@ export class TaskForm extends Gtk.Box {
   /**
    * Clean the form state and call window action to close bottom sheet
    */
-  private dispatch_cancel(): void {
+  public dispatch_cancel(): void {
     log(TaskForm.LogClass, 'Dispatching cancel/close action');
 
     this._taskId = null;

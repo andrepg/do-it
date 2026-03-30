@@ -39,6 +39,8 @@ export default function taskEdit(taskForm: TaskForm) {
 
     task_edit_action(window);
     task_edit_close_action();
+    task_save_action(window);
+    task_close_action(window);
   };
 
   const toggle_bottom_sheet = () => {
@@ -68,6 +70,30 @@ export default function taskEdit(taskForm: TaskForm) {
       log(DoItMainWindow.LogClass, 'Task form closed signal received, Closing bottom sheet');
       toggle_bottom_sheet();
     });
+  };
+
+  const task_save_action = (window: DoItMainWindow) => {
+    const action = new Gio.SimpleAction({ name: 'task-edit.save' });
+
+    action.connect(AppSignals.Activate, () => {
+      if (taskForm) {
+        taskForm.dispatch_save();
+      }
+    });
+
+    window.add_action(action);
+  };
+
+  const task_close_action = (window: DoItMainWindow) => {
+    const action = new Gio.SimpleAction({ name: 'task-edit.close' });
+
+    action.connect(AppSignals.Activate, () => {
+      if (taskForm) {
+        taskForm.dispatch_cancel();
+      }
+    });
+
+    window.add_action(action);
   };
 
   return {

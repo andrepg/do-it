@@ -51,6 +51,12 @@ export class DoitApplication extends Adw.Application {
     Actions.about().setup(this);
     Actions.shortcuts().setup(this);
     Actions.quit().setup(this);
+
+    this.set_accels_for_action('app.quit', ['<Ctrl>q']);
+    this.set_accels_for_action('win.new-task', ['<Ctrl>n']);
+    this.set_accels_for_action('win.toggle-sidebar', ['F9']);
+    this.set_accels_for_action('win.task-edit.save', ['<Ctrl>s']);
+    this.set_accels_for_action('win.task-edit.close', ['Escape']);
   }
 
   public override vfunc_activate(): void {

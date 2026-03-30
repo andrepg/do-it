@@ -45,6 +45,7 @@ export enum ActionNames {
   ShowToast = 'show-toast',
   TaskEdit = 'task-edit',
   TaskEditClose = 'task-edit-close',
+  NewTask = 'new-task',
 }
 
 export enum CssClasses {
