@@ -34,7 +34,9 @@ const shortcuts = () => {
 
     shortcutsAction.connect(AppSignals.Activate, () => {
       const activeWindow = window.get_active_window() as Adw.Window;
-      const builder = Gtk.Builder.new_from_resource(`${APPLICATION_RES}/ui/shortcuts-dialog.ui`);
+      const builder = Gtk.Builder.new_from_resource(
+        `${APPLICATION_RES}/platform/gnome/widgets/shortcuts-dialog.ui`,
+      );
       const dialog = builder.get_object('shortcuts_dialog') as Adw.ShortcutsDialog;
 
       if (dialog && activeWindow) {
