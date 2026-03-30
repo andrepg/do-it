@@ -145,6 +145,10 @@ export class TaskForm extends Gtk.Box {
     return this;
   }
 
+  public has_task_loaded(): boolean {
+    return this._taskId !== null;
+  }
+
   /**
    * Loads a task into the form by its ID.
    */

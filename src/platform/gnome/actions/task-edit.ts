@@ -47,6 +47,10 @@ export default function taskEdit(taskForm: TaskForm) {
     bottomSheet.set_open(!bottomSheet.get_open());
   };
 
+  const close_bottom_sheet = () => {
+    bottomSheet.set_open(false);
+  };
+
   const task_edit_action = (window: DoItMainWindow) => {
     const action = new Gio.SimpleAction({
       name: ActionNames.TaskEdit,
@@ -68,7 +72,7 @@ export default function taskEdit(taskForm: TaskForm) {
   const task_edit_close_action = () => {
     taskForm.connect(AppSignals.TaskFormClosed, () => {
       log(DoItMainWindow.LogClass, 'Task form closed signal received, Closing bottom sheet');
-      toggle_bottom_sheet();
+      close_bottom_sheet();
     });
   };
 
@@ -88,7 +92,7 @@ export default function taskEdit(taskForm: TaskForm) {
     const action = new Gio.SimpleAction({ name: 'task-edit.close' });
 
     action.connect(AppSignals.Activate, () => {
-      if (taskForm) {
+      if (taskForm && taskForm.has_task_loaded()) {
         taskForm.dispatch_cancel();
       }
     });
