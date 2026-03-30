@@ -19,6 +19,7 @@
 import Adw from 'gi://Adw';
 import GObject from 'gi://GObject';
 import Gtk from 'gi://Gtk';
+import Gdk from 'gi://Gdk';
 
 import { showToast } from '../actions/toast.js';
 
@@ -84,6 +85,19 @@ export class TaskForm extends Gtk.Box {
 
     this.init_widgets();
     this.connect_signals();
+    this.setup_key_controller();
+  }
+
+  private setup_key_controller(): void {
+    const keyController = new Gtk.EventControllerKey();
+    keyController.connect('key-pressed', (_controller: Gtk.EventControllerKey, keyval: number) => {
+      if (keyval === Gdk.KEY_Escape) {
+        this.dispatch_cancel();
+        return true;
+      }
+      return false;
+    });
+    this.add_controller(keyController);
   }
 
   private connect_signals() {
@@ -251,6 +265,9 @@ export class TaskForm extends Gtk.Box {
     log(TaskForm.LogClass, 'Dispatching cancel/close action');
 
     this._taskId = null;
+    this.entry_title.set_text('');
+    this.entry_project.set_text('');
+    this.check_done.set_active(false);
 
     this.emit(AppSignals.TaskFormClosed, this);
   }
