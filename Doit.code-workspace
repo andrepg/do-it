@@ -29,7 +29,7 @@
         "terminal.integrated.fontLigatures.enabled": true,
         "mesonbuild.linting.enabled": true,
         "mesonbuild.downloadLanguageServer": true,
-        "mesonbuild.formatting.enabled": true,
+        "mesonbuild.formatting.enabled": false,
         "mesonbuild.mesonlsp.others.removeDefaultTypesInInlayHints": true,
         "typescript.referencesCodeLens.showOnAllFunctions": true,
         "typescript.referencesCodeLens.enabled": true,
@@ -41,6 +41,7 @@
         "mesonbuild.configureOnOpen": false,
         "mesonbuild.buildFolder": "_build",
         "mesonbuild.mesonPath": "${workspaceFolder}/.flatpak/meson.sh",
+        "mesonbuild.linter.muon.enabled": true,
     },
     "tasks": {
         "version": "2.0.0",

@@ -35,6 +35,8 @@ import { TaskListStore } from './task-list-store.js';
 import { TaskForm } from './task-form.js';
 import { PopoverSort } from './popover-sort.js';
 
+const settings = useSettings();
+
 const options = {
   GTypeName: 'DoItMainWindow',
   Template: get_template_path('application.ui'),
@@ -85,9 +87,8 @@ export class DoItMainWindow extends Adw.ApplicationWindow {
     GObject.type_ensure(TaskForm.$gtype);
     GObject.registerClass(options, this);
   }
-  constructor(application: Adw.Application) {
-    const settings = useSettings();
 
+  constructor(application: Adw.Application) {
     super({
       application,
       title: APPLICATION_NAME,

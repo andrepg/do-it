@@ -48,13 +48,13 @@ export default function taskEdit(taskForm: TaskForm) {
   const task_edit_action = (window: DoItMainWindow) => {
     const action = new Gio.SimpleAction({
       name: ActionNames.TaskEdit,
-      parameter_type: new GLib.VariantType('i'),
+      parameter_type: new GLib.VariantType('s'),
     });
 
     action.connect(AppSignals.Activate, (_action, parameter) => {
       if (!parameter) return;
 
-      const taskId = parameter.get_int32();
+      const taskId = parameter.get_string()[0];
 
       taskForm.load_task(taskId);
       toggle_bottom_sheet();
@@ -72,7 +72,7 @@ export default function taskEdit(taskForm: TaskForm) {
 
   return {
     name: ActionNames.TaskEdit,
-    parameter_type: new GLib.VariantType('i'),
+    parameter_type: new GLib.VariantType('s'),
 
     setup,
   };

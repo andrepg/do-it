@@ -34,14 +34,12 @@ const TaskItemProperties = {
   GTypeName: 'TaskItem',
   Template: get_template_path('task.ui'),
   Properties: {
-    taskId: GObject.ParamSpec.int(
+    taskId: GObject.ParamSpec.string(
       'taskId',
       'Task Id',
       'Task unique id',
       GObject.ParamFlags.READABLE,
-      0,
-      2147483647,
-      0,
+      '',
     ),
     title: GObject.ParamSpec.string(
       'title',
@@ -104,7 +102,7 @@ export class TaskItem extends Adw.ActionRow implements ITaskView {
     GObject.registerClass(TaskItemProperties, this);
   }
 
-  private _taskId = 0;
+  private _taskId = '';
 
   private _title = '';
 
@@ -120,7 +118,7 @@ export class TaskItem extends Adw.ActionRow implements ITaskView {
   private task_delete!: Gtk.Button;
 
   constructor(
-    taskId = 0,
+    taskId = '',
     title = '',
     done = false,
     created: number | null = null,
@@ -285,7 +283,7 @@ export class TaskItem extends Adw.ActionRow implements ITaskView {
   }
 
   public update(task: ITask): void {
-    this._taskId = task.id ?? 0;
+    this._taskId = task.id ?? '';
     this.title = task.title;
     this.done = task.done ?? false;
     this.deleted = task.deleted ?? false;

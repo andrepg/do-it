@@ -30,4 +30,15 @@ import taskEdit from './task-edit.js';
 export { newTask } from './new-task.js';
 export { showToast } from './toast.js';
 
-export { about, quit, shortcuts, backup, sidebar, toast, projects, projectSidebar, purgeDeleted, taskEdit };
+export {
+  about,
+  quit,
+  shortcuts,
+  backup,
+  sidebar,
+  toast,
+  projects,
+  projectSidebar,
+  purgeDeleted,
+  taskEdit,
+};

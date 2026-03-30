@@ -26,12 +26,12 @@
     </key>
 
     <key name="sorting-mode" enum="@APPLICATION_ID@.SortingMode">
-      <default>0</default>
+      <default>"by_date"</default>
       <summary>Last known sorting mode used</summary>
     </key>
 
     <key name="sorting-strategy" enum="@APPLICATION_ID@.SortingStrategy">
-      <default>0</default>
+      <default>"ascending"</default>
       <summary>Last known sorting strategy used</summary>
     </key>
   </schema>

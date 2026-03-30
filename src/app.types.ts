@@ -22,7 +22,7 @@ import { SortingField, SortingStrategy } from './app.enums.js';
  * Represents a single task entity in the application.
  */
 export interface ITask {
-  id?: number;
+  id?: string;
   title: string;
   created_at: number;
   project?: string;

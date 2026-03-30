@@ -19,7 +19,7 @@
 import type { ITask } from '../../app.types.js';
 
 export interface ITaskView {
-  taskId: number;
+  taskId: string;
   title: string;
   done: boolean;
   deleted: boolean;

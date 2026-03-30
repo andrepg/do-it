@@ -75,7 +75,7 @@ export class TaskForm extends Gtk.Box {
   /**
    * Instance and internal property handling
    */
-  private _taskId: number | null = null;
+  private _taskId: string | null = null;
   private _store!: TaskListStore;
   private _projectManager!: ProjectManager;
 
@@ -134,7 +134,7 @@ export class TaskForm extends Gtk.Box {
   /**
    * Loads a task into the form by its ID.
    */
-  public load_task(taskId: number) {
+  public load_task(taskId: string) {
     log(TaskForm.LogClass, `Loading task: ${taskId}`);
     this._taskId = taskId;
 
@@ -239,7 +239,7 @@ export class TaskForm extends Gtk.Box {
   }
 
   private update_task(task: ITask) {
-    this._store.remove_task(task.id || 0);
+    this._store.remove_task(task.id || '');
     this._store.append_task(task);
     this._store.persist_store();
   }

@@ -79,7 +79,7 @@ export class TaskListStore extends Gio.ListStore<TaskItem> {
    * @param id The task ID to look for.
    * @returns The matching TaskItem or null if not found.
    */
-  find_by_id(id: number): TaskItem | null {
+  find_by_id(id: string): TaskItem | null {
     for (let index = 0; index < this.get_count(); index++) {
       const item = this.get_item(index);
       if (item instanceof TaskItem && item.to_object().id === id) {
@@ -103,10 +103,10 @@ export class TaskListStore extends Gio.ListStore<TaskItem> {
    * @param data Raw initialization data for the new task.
    */
   append_task(data: ITask) {
-    const taskId = data.id ?? Date.now();
+    const taskId = data.id !== undefined ? String(data.id) : crypto.randomUUID();
 
     const task = new TaskItem(
-      taskId > 0 ? taskId : Date.now(),
+      taskId || crypto.randomUUID(),
       data.title,
       data.done,
       data.created_at,
@@ -138,7 +138,7 @@ export class TaskListStore extends Gio.ListStore<TaskItem> {
       if (root && root.activate_action) {
         root.activate_action(
           ActionNames.TaskEdit,
-          new GLib.Variant('i', task.to_object().id as number),
+          new GLib.Variant('s', task.to_object().id as string),
         );
       }
     });
@@ -183,7 +183,7 @@ export class TaskListStore extends Gio.ListStore<TaskItem> {
    * Removes a single item from the list store, using the ID as comparison to find
    * which task we need to delete.
    */
-  remove_task(id: number) {
+  remove_task(id: string) {
     const task = this.find_by_id(id);
 
     if (!task) return;
