@@ -1,4 +1,4 @@
-name: '[test] validate build process'
+name: 'Build and Bundle'
 
 on:
   workflow_call:
@@ -6,13 +6,37 @@ on:
   pull_request:
     types:
       - ready_for_review
+    paths-ignore:
+      - 'po/**'
   push:
     branches:
       - main
+    paths-ignore:
+      - 'po/**'
 
-permissions: {}
+permissions:
+  contents: write
 
 jobs:
+  i18n-update:
+    name: 'Update translation files'
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Setup Project
+        uses: ./.github/actions/setup-project
+        with:
+          setup-node: 'true'
+
+      - name: Update POT files
+        run: yarn i18n:update-pot
+
+      - name: Commit changes
+        uses: stefanzweifel/git-auto-commit-action@v5
+        with:
+          commit_message: 'lang: update pot files'
+          file_pattern: 'po/*.po po/*.pot'
+
   bundle-prod:
     name: 'Validate prod bundle'
     runs-on: ubuntu-latest

@@ -8,7 +8,7 @@ permissions: {}
 
 jobs:
   flatpak-validation:
-    uses: ./.github/workflows/flatpak-ci.yml
+    uses: ./.github/workflows/build-and-bundle.yml
 
   flatpak-bundle:
     runs-on: ubuntu-latest
