@@ -47,17 +47,26 @@ export const SymbolicIcons = {
 };
 
 /**
+ * Opacity values for task entry styles.
+ */
+export const TaskEntryOpacity = {
+  enabled: 1,
+  done: 0.6,
+  deleted: 0.3,
+} as const;
+
+/**
  * Styles for task entries depending on their state.
  */
 export const TaskEntryStyle = {
   enabled: {
-    opacity: 1,
+    opacity: TaskEntryOpacity.enabled,
   },
   done: {
-    opacity: 0.6,
+    opacity: TaskEntryOpacity.done,
   },
   deleted: {
-    opacity: 0.3,
+    opacity: TaskEntryOpacity.deleted,
   },
 };
 

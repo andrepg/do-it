@@ -18,15 +18,15 @@
  */
 
 export enum SortingField {
-  byDate = 0,
-  byStatus = 1,
-  byTitle = 2,
-  byProject = 3,
+  byDate = 'byDate',
+  byStatus = 'byStatus',
+  byTitle = 'byTitle',
+  byProject = 'byProject',
 }
 
 export enum SortingStrategy {
-  ascending = 0,
-  descending = 1,
+  ascending = 'ascending',
+  descending = 'descending',
 }
 
 export const SortingModeSchema = {
