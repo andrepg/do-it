@@ -18,18 +18,25 @@ vi.mock('../../src/hooks/settings.js', () => ({
 vi.mock('gi://Gio', () => ({ default: { Settings: vi.fn() } }));
 vi.mock('gi://GLib', () => ({ default: {} }));
 
-// Mock TaskItem
+// Mock TaskItem - matches ITaskView interface
 const createMockTask = (overrides: any) => ({
-  to_object: () => ({
-    id: 1,
-    title: 'Task',
-    project: 'Project',
-    done: false,
-    created_at: 1000,
-    deleted: false,
-    tags: [],
-    ...overrides,
-  }),
+  taskId: '1',
+  title: 'Task',
+  project: 'Project',
+  done: false,
+  deleted: false,
+  created: '2024-01-01T00:00:00.000Z',
+  ...overrides,
+  to_object: function () {
+    return {
+      id: this.taskId,
+      title: this.title,
+      project: this.project,
+      done: this.done,
+      created_at: new Date(this.created).getTime(),
+      deleted: this.deleted,
+    };
+  },
 });
 
 describe('useTaskSort', () => {
@@ -73,14 +80,15 @@ describe('useTaskSort', () => {
   });
 
   it('should sort by date', () => {
-    const taskA = createMockTask({ created_at: 2000 });
-    const taskB = createMockTask({ created_at: 1000 });
+    const taskA = createMockTask({ created: '2024-01-02T00:00:00.000Z' });
+    const taskB = createMockTask({ created: '2024-01-01T00:00:00.000Z' });
 
     const comparator = sort_by(SortingField.byDate, SortingStrategy.ascending);
     const sorted = [taskA, taskB].sort(comparator as any);
 
-    expect((sorted[0] as any).to_object().created_at).toBe(1000);
-    expect((sorted[1] as any).to_object().created_at).toBe(2000);
+    const createdA = new Date((sorted[0] as any).created).getTime();
+    const createdB = new Date((sorted[1] as any).created).getTime();
+    expect(createdA).toBeLessThan(createdB);
   });
 
   it('should sort by project', () => {

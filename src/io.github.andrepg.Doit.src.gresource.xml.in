@@ -11,7 +11,6 @@
     <file>app.types.js</file>
 
     <file>utils/log-manager.js</file>
-    <file>utils/persistence.js</file>
     <file>utils/project-manager.js</file>
     <file alias="utils/application.js">application.js</file>
 

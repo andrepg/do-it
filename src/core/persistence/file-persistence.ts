@@ -21,6 +21,7 @@ import Gio from 'gi://Gio';
 
 import type { ITask } from '../../app.types.js';
 import type { IPersistence } from '../interfaces/persistence.js';
+import { log } from '~/utils/log-manager.js';
 
 export class FilePersistence implements IPersistence {
   private databaseFileName = 'data.json';
@@ -42,16 +43,16 @@ export class FilePersistence implements IPersistence {
   }
 
   check_database_existence() {
-    if (
-      !this.databaseLocation?.query_exists(null) ||
-      !this.databaseFileHandler?.query_exists(null)
-    ) {
-      try {
-        this.databaseLocation.make_directory_with_parents(null);
-        this.databaseFileHandler.create(Gio.FileCreateFlags.PRIVATE, null);
-      } catch {
-        console.error('[persistence] Error creating database');
-      }
+    if (this.databaseLocation.query_exists(null) || this.databaseFileHandler.query_exists(null)) {
+      log(this.toString(), 'Database exists. Nothing to do.');
+      return;
+    }
+
+    try {
+      this.databaseLocation.make_directory_with_parents(null);
+      this.databaseFileHandler.create(Gio.FileCreateFlags.PRIVATE, null);
+    } catch {
+      log(this.toString(), 'Error creating database');
     }
   }
 
