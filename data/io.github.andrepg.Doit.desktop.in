@@ -6,6 +6,6 @@ StartupWMClass=@APPLICATION_ID@
 Terminal=false
 Type=Application
 Categories=Utility;
-Keywords=GTK;Todo;Tasks
+Keywords=todo;work;tasks;lists;productivity
 StartupNotify=true
 DBusActivatable=true
