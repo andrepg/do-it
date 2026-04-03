@@ -27,8 +27,8 @@ jobs:
         with:
           build-bundle: true
           upload-artifact: true
-          manifest-path: flatpak/io.github.andrepg.Doit.ci.json
-          bundle: io.github.andrepg.Doit-${{ github.ref_name }}.flatpak
+          manifest-path: flatpak/io.github.andrepg.Doit.json
+          bundle: io.github.andrepg.Doit.${{ github.ref_name }}.flatpak
           cache-key: flatpak-release-${{ github.ref_name }}
 
       - name: Upload bundle to release
