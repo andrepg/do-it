@@ -1,0 +1,12 @@
+#!/bin/sh
+
+MESSAGE_FILE=$1
+COMMIT_MODE=$2
+
+if [ "$COMMIT_MODE" = "message" ]; then
+  exit 0
+fi
+
+node scripts/commit-prompt.mjs "$MESSAGE_FILE"
+
+exit 0
