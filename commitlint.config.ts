@@ -1,6 +1,6 @@
 import { UserConfig } from '@commitlint/types';
 import { RuleConfigSeverity } from '@commitlint/types';
-import { TypeEnum, generateCommitLintTypeEnum } from './commitlint.static';
+import { TypeEnum } from './commitlint.static';
 
 enum RuleConfigExecution {
   always = 'always',

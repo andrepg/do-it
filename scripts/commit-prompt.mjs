@@ -1,9 +1,20 @@
 #!/usr/bin/env node
 
 import inquirer from 'inquirer';
-import { writeFileSync, exit } from 'fs';
+import { writeFileSync } from 'fs';
+import { exit } from 'process';
 
 const messageFile = process.argv[2];
+
+function isInteractive() {
+  return process.stdin.isTTY || process.stdout.isTTY;
+}
+
+if (!isInteractive()) {
+  console.log('Running in non-interactive mode, using default commit format.');
+  console.log('Use "yarn commit" for interactive commit wizard.');
+  exit(0);
+}
 
 class ExitPromptError extends Error {
   constructor(message) {

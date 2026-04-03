@@ -7,6 +7,6 @@ if [ "$COMMIT_MODE" = "message" ]; then
   exit 0
 fi
 
-node scripts/commit-prompt.mjs "$MESSAGE_FILE"
+script -q -e -c "node scripts/commit-prompt.mjs \"$MESSAGE_FILE\"" /dev/null
 
 exit 0
