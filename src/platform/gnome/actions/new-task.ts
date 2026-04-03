@@ -16,7 +16,7 @@
  *
  * SPDX-License-Identifier: GPL-3.0-or-later
  */
-import Gtk40 from 'gi://Gtk';
+import Gtk from 'gi://Gtk';
 import Gio from 'gi://Gio';
 
 import { ActionNames, AppSignals, WidgetIds } from '../enums.js';
@@ -36,7 +36,7 @@ export const newTask = (store: TaskListStore) => {
   const buttonNewTaskId = WidgetIds.WindowButtonNewTask;
   const fieldNewTaskId = WidgetIds.WindowTaskNewEntry;
 
-  let fieldNewTask: Gtk40.Entry;
+  let fieldNewTask: Gtk.Entry;
 
   const get_widget = <T>(window: DoItMainWindow, id: string): T =>
     window.get_template_child(DoItMainWindow.$gtype, id) as unknown as T;
@@ -82,10 +82,10 @@ export const newTask = (store: TaskListStore) => {
    * Wires the new task button and entry field signals to their handlers.
    */
   const setup = (window: DoItMainWindow) => {
-    const buttonNewTask = get_widget<Gtk40.Button>(window, buttonNewTaskId);
+    const buttonNewTask = get_widget<Gtk.Button>(window, buttonNewTaskId);
     buttonNewTask.connect(AppSignals.Clicked, () => fieldNewTask.grab_focus());
 
-    fieldNewTask = get_widget<Gtk40.Entry>(window, fieldNewTaskId);
+    fieldNewTask = get_widget<Gtk.Entry>(window, fieldNewTaskId);
     fieldNewTask.connect_after(AppSignals.Apply, save_new_task);
 
     const action = new Gio.SimpleAction({ name: ActionNames.NewTask });

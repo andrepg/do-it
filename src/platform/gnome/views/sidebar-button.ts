@@ -16,7 +16,7 @@
  *
  * SPDX-License-Identifier: GPL-3.0-or-later
  */
-import Gtk40 from 'gi://Gtk';
+import Gtk from 'gi://Gtk';
 import GObject from 'gi://GObject';
 
 import { CssClasses, WidgetIds } from '../enums.js';
@@ -46,14 +46,14 @@ const GObjectProperties = {
  * Provides visual indication (icons and CSS classes) indicating whether this project
  * is currently selected as the active filter.
  */
-export class SidebarButton extends Gtk40.Button {
+export class SidebarButton extends Gtk.Button {
   static {
     GObject.registerClass(GObjectProperties, this);
   }
 
-  private button_icon!: Gtk40.Image;
+  private button_icon!: Gtk.Image;
 
-  private button_content!: Gtk40.Label;
+  private button_content!: Gtk.Label;
 
   private project_name: string;
 
@@ -67,11 +67,11 @@ export class SidebarButton extends Gtk40.Button {
     this.button_content = this.get_template_child(
       SidebarButton.$gtype,
       WidgetIds.SidebarButtonContent,
-    ) as Gtk40.Label;
+    ) as Gtk.Label;
     this.button_icon = this.get_template_child(
       SidebarButton.$gtype,
       WidgetIds.SidebarButtonIcon,
-    ) as Gtk40.Image;
+    ) as Gtk.Image;
 
     this.button_icon.set_from_icon_name(btnIcon);
     this.button_content.set_text(btnTitle);

@@ -18,7 +18,7 @@
  */
 import Gio from 'gi://Gio';
 import GLib from 'gi://GLib';
-import Adw1 from 'gi://Adw';
+import Adw from 'gi://Adw';
 
 import { ActionNames, AppSignals, WidgetIds } from '../enums.js';
 import { DoItMainWindow } from '../views/doit.js';
@@ -29,13 +29,13 @@ import { log } from '~/utils/log-manager.js';
  * Action to handle task editing via the bottom sheet.
  */
 export default function taskEdit(taskForm: TaskForm) {
-  let bottomSheet: Adw1.BottomSheet;
+  let bottomSheet: Adw.BottomSheet;
 
   const setup = (window: DoItMainWindow) => {
     bottomSheet = window.get_template_child(
       DoItMainWindow.$gtype,
       WidgetIds.WindowBottomSheet,
-    ) as Adw1.BottomSheet;
+    ) as Adw.BottomSheet;
 
     task_edit_action(window);
     task_edit_close_action();

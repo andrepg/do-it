@@ -16,7 +16,7 @@
  *
  * SPDX-License-Identifier: GPL-3.0-or-later
  */
-import Gtk40 from 'gi://Gtk';
+import Gtk from 'gi://Gtk';
 
 import { AppSignals, WidgetIds } from '../enums.js';
 import { SortingStrategy } from '../../../app.enums.js';
@@ -48,7 +48,7 @@ export default function projectSidebar(projectManager: ProjectManager) {
    * @param section The container where the item will be appended.
    * @param project The name of the project.
    */
-  const add_sidebar_item = (section: Gtk40.Box, project: string) => {
+  const add_sidebar_item = (section: Gtk.Box, project: string) => {
     if (projectSidebarItems.has(project)) return;
 
     const sidebarItem = create_sidebar_button(project);
@@ -67,7 +67,7 @@ export default function projectSidebar(projectManager: ProjectManager) {
    * @param section The container from which the item will be removed.
    * @param project The name of the project to remove.
    */
-  const remove_sidebar_item = (section: Gtk40.Box, project: string) => {
+  const remove_sidebar_item = (section: Gtk.Box, project: string) => {
     const item = projectSidebarItems.get(project);
 
     if (item) {
@@ -81,7 +81,7 @@ export default function projectSidebar(projectManager: ProjectManager) {
    *
    * @param section The container whose children should be reordered.
    */
-  const reorder_sidebar = (section: Gtk40.Box) => {
+  const reorder_sidebar = (section: Gtk.Box) => {
     const sortedProjects = Array.from(projectSidebarItems.keys())
       .filter((p) => p !== ALL_TASKS)
       .sort(taskSort.sort_by_project_name(SortingStrategy.ascending));
@@ -110,7 +110,7 @@ export default function projectSidebar(projectManager: ProjectManager) {
     const sidebarProjectList = window.get_template_child(
       DoItMainWindow.$gtype,
       WidgetIds.WindowSidebarProjectList,
-    ) as Gtk40.Box;
+    ) as Gtk.Box;
 
     setup_all_tasks_button(sidebarProjectList);
 
@@ -140,7 +140,7 @@ export default function projectSidebar(projectManager: ProjectManager) {
     });
   }
 
-  function setup_all_tasks_button(sidebarProjectList: Gtk40.Box): void {
+  function setup_all_tasks_button(sidebarProjectList: Gtk.Box): void {
     const sidebarBtnAll = create_sidebar_button(AppLocale.tasks.list.all);
 
     sidebarBtnAll.connect(AppSignals.Clicked, () => {

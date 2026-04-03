@@ -16,15 +16,15 @@
  *
  * SPDX-License-Identifier: GPL-3.0-or-later
  */
-import Gio20 from 'gi://Gio';
+import Gio from 'gi://Gio';
 
 import { APPLICATION_ID } from '~/utils/application.js';
 
-let settingsInstance: Gio20.Settings | null = null;
+let settingsInstance: Gio.Settings | null = null;
 
 export const useSettings = () => {
   if (!settingsInstance) {
-    settingsInstance = new Gio20.Settings({ schemaId: APPLICATION_ID });
+    settingsInstance = new Gio.Settings({ schemaId: APPLICATION_ID });
   }
 
   const get_int = (key: string) => settingsInstance!.get_int(key);

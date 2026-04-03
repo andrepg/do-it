@@ -16,7 +16,7 @@
  *
  * SPDX-License-Identifier: GPL-3.0-or-later
  */
-import Adw1 from 'gi://Adw';
+import Adw from 'gi://Adw';
 import Gio from 'gi://Gio';
 
 import { ActionNames, AppSignals } from '../enums.js';
@@ -34,7 +34,7 @@ const purgeDeleted = (taskListStore: TaskListStore) => {
    *
    * @param window The main application window.
    */
-  const setup = (window: Adw1.ApplicationWindow) => {
+  const setup = (window: Adw.ApplicationWindow) => {
     const action = new Gio.SimpleAction({ name: ActionNames.PurgeDeletedTasks });
 
     action.connect(AppSignals.Activate, () => taskListStore.purge_deleted());

@@ -1,18 +1,18 @@
-import GObject20 from 'gi://GObject';
-import Gtk40 from 'gi://Gtk';
+import GObject from 'gi://GObject';
+import Gtk from 'gi://Gtk';
 
 const useAutocomplete = () => {
   /**
    * Creates a new Gtk.EntryCompletion instance.
    */
-  const completion = new Gtk40.EntryCompletion();
+  const completion = new Gtk.EntryCompletion();
 
   /**
    * Creates a new Gtk.ListStore instance.
    */
-  const listModel = new Gtk40.ListStore();
+  const listModel = new Gtk.ListStore();
 
-  listModel.set_column_types([GObject20.TYPE_STRING]);
+  listModel.set_column_types([GObject.TYPE_STRING]);
 
   /**
    * Sets the list model for the completion.
