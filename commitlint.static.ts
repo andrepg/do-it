@@ -44,7 +44,7 @@ export enum TypeEnum {
   revert = 'revert',
   /** Translation and localization changes */
   lang = 'lang',
-};
+}
 
 /**
  * Mapping of commit types to their corresponding human-readable titles.
@@ -62,7 +62,7 @@ const commitLintEnumTitles: Record<TypeEnum, string> = {
   [TypeEnum.chore]: 'Chore',
   [TypeEnum.revert]: 'Revert',
   [TypeEnum.lang]: 'Language',
-}
+};
 
 /**
  * Mapping of commit types to their corresponding emojis.
@@ -80,7 +80,7 @@ const commitLintEnumEmojis: Record<TypeEnum, string> = {
   [TypeEnum.chore]: '🔨',
   [TypeEnum.revert]: '⏪',
   [TypeEnum.lang]: '🌐',
-}
+};
 
 /**
  * Mapping of commit types to their corresponding brief descriptions.
@@ -95,10 +95,10 @@ const commitLintEnumDescriptions: Record<TypeEnum, string> = {
   [TypeEnum.test]: 'Adding missing tests or correcting existing tests',
   [TypeEnum.build]: 'Changes that affect the build system or external dependencies',
   [TypeEnum.ci]: 'Changes to our CI configuration files and scripts',
-  [TypeEnum.chore]: 'Other changes that don\'t modify src or test files',
+  [TypeEnum.chore]: "Other changes that don't modify src or test files",
   [TypeEnum.revert]: 'Reverts a previous commit',
   [TypeEnum.lang]: 'Translation and localization changes',
-}
+};
 
 /**
  * Generates a single commit lint enumeration configuration object for a given commit type.
@@ -106,11 +106,12 @@ const commitLintEnumDescriptions: Record<TypeEnum, string> = {
  * @param type The commit type enumeration value.
  * @returns An object containing the emoji, title, and description for the provided type.
  */
-const generateSingleTypeEnum = (type: TypeEnum) => ({
-  emoji: commitLintEnumEmojis[type],
-  title: commitLintEnumTitles[type],
-  description: commitLintEnumDescriptions[type],
-} as ICommitLintEnum);
+const generateSingleTypeEnum = (type: TypeEnum) =>
+  ({
+    emoji: commitLintEnumEmojis[type],
+    title: commitLintEnumTitles[type],
+    description: commitLintEnumDescriptions[type],
+  }) as ICommitLintEnum;
 
 /**
  * Reducer callback function to populate the commit lint enumeration list.
@@ -122,7 +123,7 @@ const generateSingleTypeEnum = (type: TypeEnum) => ({
 const generateListTypeEnum = (acc: ICommitLintEnumList, type: TypeEnum) => {
   acc[type] = generateSingleTypeEnum(type);
   return acc;
-}
+};
 
 /**
  * Generates and returns a complete list of all supported commit lint configurations.
@@ -131,9 +132,5 @@ const generateListTypeEnum = (acc: ICommitLintEnumList, type: TypeEnum) => {
  * @returns A fully populated dictionary of all `ICommitLintEnum` configurations,
  * indexed by their string keys.
  */
-export const generateCommitLintTypeEnum = (): ICommitLintEnumList => Object
-  .values(TypeEnum)
-  .reduce(
-    generateListTypeEnum,
-    {} as ICommitLintEnumList
-  );
+export const generateCommitLintTypeEnum = (): ICommitLintEnumList =>
+  Object.values(TypeEnum).reduce(generateListTypeEnum, {} as ICommitLintEnumList);

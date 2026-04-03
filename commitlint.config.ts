@@ -11,7 +11,6 @@ enum RuleConfigName {
   headerCase = 'header-case',
 }
 
-
 const CommitConfig: UserConfig = {
   extends: ['@commitlint/config-conventional'],
   helpURL: 'https://www.conventionalcommits.org/',
@@ -20,25 +19,15 @@ const CommitConfig: UserConfig = {
     [RuleConfigName.typeEnum]: [
       RuleConfigSeverity.Error,
       RuleConfigExecution.always,
-      Object.values(TypeEnum)
+      Object.values(TypeEnum),
     ],
 
     [RuleConfigName.headerCase]: [
       RuleConfigSeverity.Error,
       RuleConfigExecution.always,
-      'lower-case'
+      'lower-case',
     ],
   },
-
-  prompt: {
-    questions: {
-      type: {
-        description: "Select the scope of change being commited",
-        emojiInHeader: true,
-        enum: generateCommitLintTypeEnum(),
-      }
-    }
-  }
 };
 
 export default CommitConfig;
