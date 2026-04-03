@@ -257,8 +257,10 @@ export class TaskForm extends Gtk.Box {
   }
 
   private update_task(task: ITask) {
-    this._store.remove_task(task.id || '');
-    this._store.append_task(task);
+    const taskItem = this.find_task();
+    if (!taskItem) return;
+
+    taskItem.update(task);
     this._store.persist_store();
   }
 

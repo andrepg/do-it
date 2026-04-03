@@ -23,6 +23,7 @@ export enum AppSignals {
   NotifyActive = 'notify::active',
   Activate = 'activate',
   Activated = 'activated',
+  EntryActivated = 'entry-activated',
   ItemsChanged = 'items-changed',
   ProjectAdded = 'project-added',
   ProjectRemoved = 'project-removed',

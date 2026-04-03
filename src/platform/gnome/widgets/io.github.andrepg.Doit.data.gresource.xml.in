@@ -1,15 +1,15 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <gresources>
   <gresource prefix="@APPLICATION_RES@/platform/gnome/widgets">
-    <file preprocess="xml-stripblanks">empty-list.ui</file>
-    <file preprocess="xml-stripblanks">shortcuts-dialog.ui</file>
-    <file preprocess="xml-stripblanks">popover-sort.ui</file>
-    <file preprocess="xml-stripblanks">sidebar-button.ui</file>
-    <file preprocess="xml-stripblanks">task.ui</file>
-    <file preprocess="xml-stripblanks">task-group.ui</file>
-    <file preprocess="xml-stripblanks">task-list.ui</file>
-    <file preprocess="xml-stripblanks">task-form.ui</file>
-    <file preprocess="xml-stripblanks">application.ui</file>
+    <file preprocess="xml-stripblanks" timestamp="1775233497">empty-list.ui</file>
+    <file preprocess="xml-stripblanks" timestamp="1775233497">shortcuts-dialog.ui</file>
+    <file preprocess="xml-stripblanks" timestamp="1775233497">popover-sort.ui</file>
+    <file preprocess="xml-stripblanks" timestamp="1775233497">sidebar-button.ui</file>
+    <file preprocess="xml-stripblanks" timestamp="1775233497">task.ui</file>
+    <file preprocess="xml-stripblanks" timestamp="1775233497">task-group.ui</file>
+    <file preprocess="xml-stripblanks" timestamp="1775233497">task-list.ui</file>
+    <file preprocess="xml-stripblanks" timestamp="1775233497">task-form.ui</file>
+    <file preprocess="xml-stripblanks" timestamp="1775233497">application.ui</file>
   </gresource>
 </gresources>
 

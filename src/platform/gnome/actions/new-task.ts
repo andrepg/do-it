@@ -86,7 +86,7 @@ export const newTask = (store: TaskListStore) => {
     buttonNewTask.connect(AppSignals.Clicked, () => fieldNewTask.grab_focus());
 
     fieldNewTask = get_widget<Gtk.Entry>(window, fieldNewTaskId);
-    fieldNewTask.connect_after(AppSignals.Apply, save_new_task);
+    fieldNewTask.connect(AppSignals.EntryActivated, save_new_task);
 
     const action = new Gio.SimpleAction({ name: ActionNames.NewTask });
     action.connect(AppSignals.Activate, () => {

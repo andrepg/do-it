@@ -1,6 +1,6 @@
 project(
     'io.github.andrepg.Doit',
-    version: '2.0.2',
+    version: '2.0.3',
     meson_version: '>= 1.4.0',
     default_options: [
         'warning_level=2',
