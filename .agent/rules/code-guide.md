@@ -51,6 +51,17 @@ trigger: always_on
 - If you ever encounter yourself in doubt, ask.
 - Web research is encouraged to documentation, official APIs and language related searches.
 
+## Git guidelines
+
+- This project uses **Husky** to manage Git hooks
+- Hooks are located in `.husky/` directory
+- **Commit messages** must follow [Conventional Commits](https://www.conventionalcommits.org/):
+  - Format: `<type>: <subject>` (e.g., `feat: add new feature`)
+  - Allowed types: `feat`, `fix`, `docs`, `style`, `refactor`, `perf`, `test`, `chore`, `revert`
+- **Pre-commit hook** runs `yarn lint` (non-blocking, warnings only)
+- Use `git commit -m "type: message"` for commits
+- To skip hooks temporarily: `git commit -m "..." -n`
+
 ## Scripts and Commands
 
 ### Bash Scripts (scripts/)
