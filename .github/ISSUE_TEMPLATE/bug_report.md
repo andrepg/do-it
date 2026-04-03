@@ -39,7 +39,12 @@ body:
   id: screenshots
   attributes:
   label: Screenshots
-  description: If applicable, add screenshots to help explain your problem.
+  description: >
+  If applicable, add screenshots to help explain your problem.
+  You can use a third-party URL, edit the issue after creating, or create a new comment with screenshots.
+  Not required.
+  validations:
+  required: false
 
 - type: input
   id: os
