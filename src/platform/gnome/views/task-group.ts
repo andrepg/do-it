@@ -45,7 +45,7 @@ const GObjectProperties = {
  */
 export class TaskGroup extends Adw.PreferencesGroup {
   // TODO Move to AppLocale
-  private static readonly DESCRIPTION = _('%s finished, %s deleted');
+  private static readonly DESCRIPTION = C_('task-group', '%s finished, %s deleted');
 
   private filter: Gtk.CustomFilter;
   private filterModel: Gtk.FilterListModel;

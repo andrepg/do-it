@@ -23,73 +23,73 @@ pkg.initGettext();
 
 const SortingStrings = {
   [SortingStrategy.ascending]: {
-    [SortingField.byDate]: _('Older to newer'),
-    [SortingField.byStatus]: _('To do first'),
-    [SortingField.byTitle]: _('A to Z'),
-    [SortingField.byProject]: _('A to Z'),
+    [SortingField.byDate]: C_('sorting', 'Older to newer'),
+    [SortingField.byStatus]: C_('sorting', 'To do first'),
+    [SortingField.byTitle]: C_('sorting', 'A to Z'),
+    [SortingField.byProject]: C_('sorting', 'A to Z'),
   },
   [SortingStrategy.descending]: {
-    [SortingField.byDate]: _('Newer to older'),
-    [SortingField.byStatus]: _('Done first'),
-    [SortingField.byTitle]: _('Z to A'),
-    [SortingField.byProject]: _('Z to A'),
+    [SortingField.byDate]: C_('sorting', 'Newer to older'),
+    [SortingField.byStatus]: C_('sorting', 'Done first'),
+    [SortingField.byTitle]: C_('sorting', 'Z to A'),
+    [SortingField.byProject]: C_('sorting', 'Z to A'),
   },
 
   fields: {
-    [SortingField.byDate]: _('Date'),
-    [SortingField.byStatus]: _('Status'),
-    [SortingField.byTitle]: _('Title'),
-    [SortingField.byProject]: _('Project'),
+    [SortingField.byDate]: C_('sorting-field', 'Date'),
+    [SortingField.byStatus]: C_('sorting-field', 'Status'),
+    [SortingField.byTitle]: C_('sorting-field', 'Title'),
+    [SortingField.byProject]: C_('sorting-field', 'Project'),
   },
 };
 
 const TaskStrings = {
   list: {
-    title: _('Tasks'),
-    empty: _('No tasks found'),
-    all: _('All tasks'),
-    noProject: _('Without project'),
+    title: C_('task-list', 'Tasks'),
+    empty: C_('task-list', 'No tasks found'),
+    all: C_('task-list', 'All tasks'),
+    noProject: C_('task-list', 'Without project'),
   },
 
   form: {
-    title: _('Task'),
-    titlePlaceholder: _('Task title'),
-    descriptionPlaceholder: _('Task description'),
+    title: C_('task-form', 'Task'),
+    titlePlaceholder: C_('task-form', 'Task title'),
+    descriptionPlaceholder: C_('task-form', 'Task description'),
 
-    entryRowDone: _('Mark as done'),
-    entryRowDelete: _('Mark as deleted'),
+    entryRowDone: C_('task-form', 'Mark as done'),
+    entryRowDelete: C_('task-form', 'Mark as deleted'),
 
-    buttonSave: _('Save'),
-    buttonDiscard: _('Discard'),
+    buttonSave: C_('task-form', 'Save'),
+    buttonDiscard: C_('task-form', 'Discard'),
 
-    errorEmptyTitle: _('Title cannot be empty'),
+    errorEmptyTitle: C_('task-form', 'Title cannot be empty'),
   },
 
   toast: {
-    created: _('Task created'),
-    edited: _('Task edited'),
-    updated: _('Task updated'),
-    restored: _('Task restored'),
-    softDeleted: _('Task deleted'),
-    hardDeleted: _('Tasks purged'),
-    finished: _('Task finished'),
+    created: C_('toast', 'Task created'),
+    edited: C_('toast', 'Task edited'),
+    updated: C_('toast', 'Task updated'),
+    restored: C_('toast', 'Task restored'),
+    softDeleted: C_('toast', 'Task deleted'),
+    hardDeleted: C_('toast', 'Tasks purged'),
+    finished: C_('toast', 'Task finished'),
   },
 };
 
 const AppStrings = {
   backup: {
-    export: _('Export database'),
-    import: _('Import database'),
+    export: C_('backup', 'Export database'),
+    import: C_('backup', 'Import database'),
 
-    exportSuccess: _('Database exported successfully'),
-    exportError: _('Error exporting database'),
+    exportSuccess: C_('backup', 'Database exported successfully'),
+    exportError: C_('backup', 'Error exporting database'),
 
-    importSuccess: _('Database imported successfully'),
-    importError: _('Error importing database'),
+    importSuccess: C_('backup', 'Database imported successfully'),
+    importError: C_('backup', 'Error importing database'),
   },
   about: {
-    translatorCredits: _('translators-credits'),
-    donate: _('Donate'),
+    translatorCredits: C_('about', 'translators-credits'),
+    donate: C_('about', 'Donate'),
   },
 };
 

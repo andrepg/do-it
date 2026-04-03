@@ -1,16 +1,27 @@
 #!/usr/bin/env bash
 set -euo pipefail
 
-## Generate the POT template file
+# ===========================================================================
+# update-pot-file — Gera o template POT e arquivos PO para traduções.
+#
+# Requer: meson, ninja e as dependências de build do projeto.
+#
+# Uso: scripts/update-pot-file
 # @see https://rmnvgr.gitlab.io/gtk4-gjs-book/application/translation/
 # @see https://docs.elementary.io/develop/writing-apps/our-first-app/translations
+# ===========================================================================
 
-echo "====> Generating POT template file"
-rm -rf _build_pot || true
-meson setup _build_pot
-meson compile -C _build_pot io.github.andrepg.Doit-pot
+SCRIPT_DIR="$(cd "$(dirname "$0")" && pwd)"
+PROJECT_ROOT="$(cd "$SCRIPT_DIR/.." && pwd)"
 
-echo "====> Generating PO language files"
-meson compile -C _build_pot io.github.andrepg.Doit-update-po
+BUILD_DIR="$PROJECT_ROOT/_build_pot"
 
-echo "====> Translation files generated."
+echo "====> Gerando template POT..."
+rm -rf "$BUILD_DIR" || true
+meson setup "$BUILD_DIR"
+meson compile -C "$BUILD_DIR" io.github.andrepg.Doit-pot
+
+echo "====> Gerando arquivos PO para cada idioma..."
+meson compile -C "$BUILD_DIR" io.github.andrepg.Doit-update-po
+
+echo "====> Arquivos de tradução gerados com sucesso."

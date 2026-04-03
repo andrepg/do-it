@@ -4,21 +4,64 @@
 #
 
 # Main application files
-src/app.static.js
-src/app.strings.js
+src/app.static.ts
+src/app.strings.ts
+src/app.enums.ts
+src/app.types.ts
+src/app.wrapper.ts
+src/app.entrypoint.ts
 
-# Interface handlers
-src/ui-handler/doit.js
-src/ui-handler/sidebar-button.js
-src/ui-handler/task-form.js
-src/ui-handler/task-group.js
-src/ui-handler/task-item.js
-src/ui-handler/task-list.js
-src/ui-handler/task-list-store.js
+# Core files
+src/core/persistence/file-persistence.ts
+src/core/interfaces/task-view.ts
+src/core/interfaces/settings.ts
+src/core/interfaces/persistence.ts
 
-# Interface declarations
-ui/application.ui
-ui/help-overlay.ui
-ui/popover-sort.ui
-ui/window-v2.ui
-ui/window.ui
+# Hooks files
+src/hooks/tasks.sort.ts
+src/hooks/autocomplete.ts
+src/hooks/settings.ts
+
+# Platform/GNOME - Actions
+src/platform/gnome/actions/new-task.ts
+src/platform/gnome/actions/projects.ts
+src/platform/gnome/actions/projects-sidebar.ts
+src/platform/gnome/actions/purge-deleted.ts
+src/platform/gnome/actions/sidebar.ts
+src/platform/gnome/actions/shortcuts.ts
+src/platform/gnome/actions/task-edit.ts
+src/platform/gnome/actions/toast.ts
+src/platform/gnome/actions/quit.ts
+src/platform/gnome/actions/backup.ts
+src/platform/gnome/actions/about.ts
+
+# Platform/GNOME - Views
+src/platform/gnome/views/doit.ts
+src/platform/gnome/views/popover-sort.ts
+src/platform/gnome/views/sidebar-button.ts
+src/platform/gnome/views/task-form.ts
+src/platform/gnome/views/task-item.ts
+src/platform/gnome/views/task-list.ts
+src/platform/gnome/views/task-list-store.ts
+src/platform/gnome/views/task-group.ts
+src/platform/gnome/views/index.ts
+src/platform/gnome/index.ts
+
+# Platform/GNOME - Enums
+src/platform/gnome/enums.ts
+
+# Utils
+src/utils/project-manager.ts
+src/utils/log-manager.ts
+
+# UI files
+src/platform/gnome/widgets/application.ui
+src/platform/gnome/widgets/shortcuts-dialog.ui
+src/platform/gnome/widgets/window-v2.ui
+src/platform/gnome/widgets/task.ui
+src/platform/gnome/widgets/task-list.ui
+src/platform/gnome/widgets/task-group.ui
+src/platform/gnome/widgets/task-form.ui
+src/platform/gnome/widgets/sidebar-button.ui
+src/platform/gnome/widgets/popover-sort.ui
+src/platform/gnome/widgets/empty-list.ui
