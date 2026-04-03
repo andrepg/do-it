@@ -10,6 +10,7 @@ repo/
 
 # Package manager and related
 yarn.lock
+package-lock.json
 node_modules/
 .vscode/
 
