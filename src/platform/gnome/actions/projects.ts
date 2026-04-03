@@ -19,7 +19,7 @@
 import Adw from 'gi://Adw';
 
 import { AppSignals, WidgetIds } from '../enums.js';
-import { SortingField } from '../../../app.enums.js';
+import { SortingField, SortingStrategy } from '../../../app.enums.js';
 import { useTaskSort } from '../../../hooks/tasks.sort.js';
 
 import { DoItMainWindow } from '../views/doit.js';
@@ -82,9 +82,10 @@ export default function projects(store: TaskListStore, projectManager: ProjectMa
    */
   const reorder_groups = (container: Adw.PreferencesPage) => {
     const { mode, strategy } = taskSort.retrieve_sort_preferences();
-    const comparatorOrder = mode === SortingField.byProject ? strategy : 0;
     const sortedProjects = Array.from(projectGroups.keys()).sort(
-      taskSort.sort_by_project_name(comparatorOrder),
+      mode === SortingField.byProject
+        ? taskSort.sort_by_project_name(strategy)
+        : taskSort.sort_by_project_name(SortingStrategy.ascending),
     );
 
     for (const project of sortedProjects) {

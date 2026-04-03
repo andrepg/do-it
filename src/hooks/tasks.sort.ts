@@ -114,13 +114,13 @@ export const useTaskSort = () => {
   };
 
   const persist_sort_preferences = () => {
-    settings.set_enum(SortingModeSchema.MODE, current_sort_mode);
-    settings.set_enum(SortingModeSchema.STRATEGY, current_sort_strategy);
+    settings.set_string(SortingModeSchema.MODE, current_sort_mode);
+    settings.set_string(SortingModeSchema.STRATEGY, current_sort_strategy);
   };
 
   const retrieve_sort_preferences = () => {
-    current_sort_mode = settings.get_enum(SortingModeSchema.MODE) as SortingField;
-    current_sort_strategy = settings.get_enum(SortingModeSchema.STRATEGY) as SortingStrategy;
+    current_sort_mode = settings.get_string(SortingModeSchema.MODE) as SortingField;
+    current_sort_strategy = settings.get_string(SortingModeSchema.STRATEGY) as SortingStrategy;
 
     return {
       mode: current_sort_mode,

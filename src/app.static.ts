@@ -58,7 +58,7 @@ export const TaskEntryOpacity = {
 /**
  * Styles for task entries depending on their state.
  */
-export const TaskEntryStyle = {
+export const TaskEntryStyle: Record<string, { opacity: number }> = {
   enabled: {
     opacity: TaskEntryOpacity.enabled,
   },
