@@ -50,7 +50,7 @@
                     <property name="bottom-bar">
                       <object class="AdwEntryRow" id="task_new_entry">
                         <property name="enable-emoji-completion">True</property>
-                        <property name="show-apply-button">True</property>
+                        <property name="show-apply-button">False</property>
                         <property name="title" translatable="yes">Create a new task</property>
                       </object>
                     </property>

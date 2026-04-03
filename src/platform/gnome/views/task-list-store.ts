@@ -103,10 +103,10 @@ export class TaskListStore extends Gio.ListStore<TaskItem> {
    * @param data Raw initialization data for the new task.
    */
   append_task(data: ITask) {
-    const taskId = data.id !== undefined ? String(data.id) : crypto.randomUUID();
+    const taskId = data.id !== undefined ? String(data.id) : GLib.uuid_string_random();
 
     const task = new TaskItem(
-      taskId || crypto.randomUUID(),
+      taskId,
       data.title,
       data.done,
       data.created_at,
@@ -133,6 +133,7 @@ export class TaskListStore extends Gio.ListStore<TaskItem> {
       _update_interface(AppSignals.TaskDeleted);
       this.emit(AppSignals.TaskDeleted, task);
     });
+
     task.connect(AppSignals.Activated, () => {
       const root = task.get_root() as DoItMainWindow;
       if (root && root.activate_action) {
