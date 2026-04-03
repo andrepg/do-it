@@ -5,3 +5,5 @@ declare interface Package {
 }
 
 declare const pkg: Package;
+
+declare function C_(context: string, message: string): string;
