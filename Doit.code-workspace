@@ -50,6 +50,13 @@
                 "url": "./flatpak/appstream-metainfo.xsd"
             }
         ],
+        "i18n-gettext.localesConfig.basePath": "./po",
+        "i18n-gettext.localesConfig.pattern": "${locale}.po",
+        "i18n-gettext.localesConfig.type": "flat",
+        "i18n-gettext.commands.compile": "yarn run i18n:update-pot",
+        "i18n-gettext.localesConfig.sourceLanguage": "en-US",
+        "i18n-gettext.localesConfig.defaultDomain": "",
+        "i18n-gettext.localesConfig.root": "."
     },
     "tasks": {
         "version": "2.0.0",
