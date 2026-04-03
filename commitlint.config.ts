@@ -1,0 +1,44 @@
+import { UserConfig } from '@commitlint/types';
+import { RuleConfigSeverity } from '@commitlint/types';
+import { TypeEnum, generateCommitLintTypeEnum } from './commitlint.static';
+
+enum RuleConfigExecution {
+  always = 'always',
+}
+
+enum RuleConfigName {
+  typeEnum = 'type-enum',
+  headerCase = 'header-case',
+}
+
+
+const CommitConfig: UserConfig = {
+  extends: ['@commitlint/config-conventional'],
+  helpURL: 'https://www.conventionalcommits.org/',
+  plugins: [],
+  rules: {
+    [RuleConfigName.typeEnum]: [
+      RuleConfigSeverity.Error,
+      RuleConfigExecution.always,
+      Object.values(TypeEnum)
+    ],
+
+    [RuleConfigName.headerCase]: [
+      RuleConfigSeverity.Error,
+      RuleConfigExecution.always,
+      'lower-case'
+    ],
+  },
+
+  prompt: {
+    questions: {
+      type: {
+        description: "Select the scope of change being commited",
+        emojiInHeader: true,
+        enum: generateCommitLintTypeEnum(),
+      }
+    }
+  }
+};
+
+export default CommitConfig;
