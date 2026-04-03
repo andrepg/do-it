@@ -42,6 +42,14 @@
         "mesonbuild.buildFolder": "_build",
         "mesonbuild.mesonPath": "${workspaceFolder}/.flatpak/meson.sh",
         "mesonbuild.linter.muon.enabled": true,
+        "json.schemas": [
+            {
+                "fileMatch": [
+                    "data/io.github.andrepg.Doit.metainfo.xml.in"
+                ],
+                "url": "./flatpak/appstream-metainfo.xsd"
+            }
+        ],
     },
     "tasks": {
         "version": "2.0.0",
