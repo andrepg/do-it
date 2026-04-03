@@ -4,10 +4,44 @@
             "path": ".",
         },
     ],
+    "extensions": {
+        "recommendations": [
+            "bilelmoussaoui.flatpak-vscode",
+            "mesonbuild.mesonbuild",
+            "aaron-bond.better-comments",
+            "akino.i18n-gettext",
+            "YoavBls.pretty-ts-errors",
+            "esbenp.prettier-vscode",
+            "BriteSnow.vscode-toggle-quotes",
+            "DotJoshJohnson.xml",
+            "Gruntfuggly.todo-tree",
+            "github.vscode-github-actions",
+        ]
+    },
     "settings": {
+        /**
+        * Editor customizations per project
+        */
         "editor.fontFamily": "'0xProto Nerd Font'",
         "editor.fontSize": 12,
+        "editor.fontLigatures": true,
+        "editor.formatOnPaste": true,
+        "editor.autoIndentOnPaste": true,
+        
+        /**
+        * Terminal customizations per project
+        */
         "terminal.integrated.fontSize": 12,
+        "terminal.integrated.fontLigatures.enabled": true,
+        "terminal.integrated.cursorStyle": "line",
+        "terminal.integrated.gpuAcceleration": "auto",
+        "terminal.integrated.shellIntegration.enabled": true,
+        "terminal.integrated.stickyScroll.enabled": true,
+        "terminal.integrated.suggest.enabled": true,
+
+        /**
+        * Files and Workbench related settings to hide build folders
+        */
         "files.watcherExclude": {
             "**/.git/objects/**": true,
             "**/.git/subtree-cache/**": true,
@@ -24,13 +58,10 @@
             "**/.flatpak": true,
             "**/.flatpak-**/**": true,
         },
-        "editor.formatOnPaste": true,
-        "editor.autoIndentOnPaste": true,
-        "terminal.integrated.fontLigatures.enabled": true,
-        "mesonbuild.linting.enabled": true,
-        "mesonbuild.downloadLanguageServer": true,
-        "mesonbuild.formatting.enabled": false,
-        "mesonbuild.mesonlsp.others.removeDefaultTypesInInlayHints": true,
+
+        /**
+        * Typescript and Javascript implementations
+        */
         "typescript.referencesCodeLens.showOnAllFunctions": true,
         "typescript.referencesCodeLens.enabled": true,
         "typescript.implementationsCodeLens.showOnInterfaceMethods": true,
@@ -38,10 +69,22 @@
         "typescript.implementationsCodeLens.enabled": true,
         "javascript.referencesCodeLens.showOnAllFunctions": true,
         "javascript.referencesCodeLens.enabled": true,
+
+        /**
+        * Meson Build settings
+        */
         "mesonbuild.configureOnOpen": false,
         "mesonbuild.buildFolder": "_build",
         "mesonbuild.mesonPath": "${workspaceFolder}/.flatpak/meson.sh",
         "mesonbuild.linter.muon.enabled": true,
+        "mesonbuild.linting.enabled": true,
+        "mesonbuild.downloadLanguageServer": true,
+        "mesonbuild.formatting.enabled": false,
+        "mesonbuild.mesonlsp.others.removeDefaultTypesInInlayHints": true,
+
+        /**
+        * JSON custom schemas (maybe it is not working)
+        */
         "json.schemas": [
             {
                 "fileMatch": [
@@ -50,6 +93,10 @@
                 "url": "./flatpak/appstream-metainfo.xsd"
             }
         ],
+
+        /**
+        * Localization settings, paths and matchers
+        */
         "i18n-gettext.localesConfig.basePath": "./po",
         "i18n-gettext.localesConfig.pattern": "${locale}.po",
         "i18n-gettext.localesConfig.type": "flat",
@@ -62,7 +109,7 @@
         "version": "2.0.0",
         "tasks": [
             {
-                "command": "sh ${workspaceFolder}/scripts/update-pot-file.sh",
+                "command": "${workspaceFolder}/scripts/update-pot-file",
                 "label": "Update .pot file",
                 "detail": "Updates the translation template (.pot) file",
                 "group": "build",
@@ -80,7 +127,7 @@
                 },
             },
             {
-                "command": "sh ${workspaceFolder}/scripts/compile.sh ${input:manifest}",
+                "command": "${workspaceFolder}/scripts/compile ${input:manifest}",
                 "label": "Compile app",
                 "detail": "Compiles the application using given manifest",
                 "type": "shell",
@@ -95,25 +142,6 @@
                 },
                 "icon": {
                     "id": "archive",
-                },
-            },
-            {
-                "command": "sh ${workspaceFolder}/scripts/run.sh ${input:manifest}",
-                "label": "Compile and run app",
-                "detail": "Runs the application using given manifest",
-                "type": "shell",
-                "dependsOn": ["Compile app"],
-                "group": "build",
-                "presentation": {
-                    "clear": true,
-                    "showReuseMessage": false,
-                },
-                "runOptions": {
-                    "instanceLimit": 1,
-                    "instancePolicy": "terminateNewest",
-                },
-                "icon": {
-                    "id": "play",
                 },
             },
         ],
