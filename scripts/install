@@ -52,7 +52,9 @@ fi
 # ----- exportar bundle ou instalar -----------------------------------------
 if $EXPORT_BUNDLE; then
     REPO_DIR="repo"
-    BUNDLE_FILE="${APP_ID}.flatpak"
+    
+    VERSION=$(grep -E "^[[:space:]]+version:" "$SCRIPTS_PATH/../meson.build" | head -1 | sed "s/.*version: *'\\([^']*\\)'.*/\\1/")
+    BUNDLE_FILE="${APP_ID}.${VERSION}.flatpak"
 
     echo "==> Exportando bundle $BUNDLE_FILE..."
     flatpak run --user org.flatpak.Builder \
