@@ -3,7 +3,6 @@
 # This file is distributed under the same license as the io.github.andrepg.Doit package.
 # FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
 #
-#, fuzzy
 msgid ""
 msgstr ""
 "Project-Id-Version: io.github.andrepg.Doit\n"
