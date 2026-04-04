@@ -53,6 +53,7 @@ export class DoitApplication extends Adw.Application {
     Actions.quit().setup(this);
 
     this.set_accels_for_action('app.quit', ['<Ctrl>q']);
+    this.set_accels_for_action('app.shortcuts', ['F1']);
     this.set_accels_for_action('win.new-task', ['<Ctrl>n']);
     this.set_accels_for_action('win.toggle-sidebar', ['F9']);
     this.set_accels_for_action('win.task-edit.save', ['<Ctrl>s']);
