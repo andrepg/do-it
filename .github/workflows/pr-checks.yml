@@ -1,4 +1,4 @@
-name: PR Checks
+name: '[ci] pr checks'
 
 on:
   pull_request:
@@ -8,7 +8,7 @@ permissions: {}
 
 jobs:
   format:
-    name: Check Format
+    name: '[ci] check format'
     runs-on: ubuntu-latest
     continue-on-error: true
     steps:
@@ -21,7 +21,7 @@ jobs:
         run: yarn format
 
   lint:
-    name: Check Lint
+    name: '[ci] check lint'
     runs-on: ubuntu-latest
     continue-on-error: true
     steps:
@@ -34,7 +34,7 @@ jobs:
         run: yarn lint
 
   test:
-    name: Run Tests
+    name: '[ci] run tests'
     runs-on: ubuntu-latest
     steps:
       - name: Setup Project
@@ -46,7 +46,7 @@ jobs:
         run: yarn test
 
   coverage:
-    name: Check Coverage
+    name: '[ci] check coverage'
     runs-on: ubuntu-latest
     continue-on-error: true
     steps:
@@ -58,7 +58,7 @@ jobs:
       - name: Run Coverage
         run: yarn test:coverage
 
-      - uses: qltysh/qlty-action/coverage@v2
+      - uses: qltysh/qlty-action/coverage@a19242102d17e497f437d7466aa01b528537e899
         with:
           token: ${{ secrets.QLTY_COVERAGE_TOKEN }}
           files: tests/coverage/lcov.info

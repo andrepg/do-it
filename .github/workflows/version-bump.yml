@@ -1,4 +1,4 @@
-name: 'Version Bump'
+name: '[ci] version bump'
 
 on:
   release:
@@ -23,7 +23,7 @@ permissions:
 
 jobs:
   bump-version:
-    name: 'Bump version'
+    name: '[ci] bump version'
     runs-on: ubuntu-latest
 
     steps:
