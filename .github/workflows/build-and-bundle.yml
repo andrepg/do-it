@@ -23,6 +23,7 @@ jobs:
     runs-on: ubuntu-latest
     container:
       image: ghcr.io/flathub-infra/flatpak-github-actions:gnome-49
+      options: --privileged
 
     steps:
       - name: Checkout code

@@ -37,7 +37,7 @@
             },
             "build-commands": [
                 "echo 'yarn-offline-mirror \"/run/build/Doit/flatpak-node/yarn-mirror\"' > .yarnrc",
-                "yarn install --offline --frozen-lockfile --production=false",
+                "yarn install --offline --frozen-lockfile --production=false --ignore-scripts",
                 "meson setup _flatpak_build --prefix=/app --libdir=lib -Ddevelopment=false",
                 "meson compile -C _flatpak_build",
                 "meson install -C _flatpak_build"
