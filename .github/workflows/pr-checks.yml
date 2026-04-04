@@ -44,3 +44,21 @@ jobs:
 
       - name: Run Tests
         run: yarn test
+
+  coverage:
+    name: Check Coverage
+    runs-on: ubuntu-latest
+    continue-on-error: true
+    steps:
+      - name: Setup Project
+        uses: ./.github/actions/setup-project
+        with:
+          setup-node: 'true'
+
+      - name: Run Coverage
+        run: yarn test:coverage
+
+      - uses: qltysh/qlty-action/coverage@v2
+        with:
+          token: ${{ secrets.QLTY_COVERAGE_TOKEN }}
+          files: coverage/lcov.info
