@@ -75,9 +75,6 @@ version = "10.1.0"
 package_file = "package.json"
 package_filters = ["eslint", "prettier"]
 
-[plugin.eslint.overrides]
-"src/platform/gnome/views/**" = { rules = { "max-params" = "off" } }
-
 [[plugin]]
 name = "prettier"
 version = "3.8.1"
