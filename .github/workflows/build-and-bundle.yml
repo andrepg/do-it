@@ -50,7 +50,7 @@ jobs:
         uses: ./.github/actions/setup-project
 
       - name: Check production build
-        uses: flatpak/flatpak-github-actions/flatpak-builder@5b9f431ea9d3f35c20df7e2db794b2a9e3fb32c3
+        uses: flatpak/flatpak-github-actions/flatpak-builder@20eb46c470bdf05a29dc2262108f497d2d79199b
         with:
           build-bundle: false
           manifest-path: flatpak/io.github.andrepg.Doit.json
@@ -69,7 +69,7 @@ jobs:
         uses: ./.github/actions/setup-project
 
       - name: Check development build
-        uses: flatpak/flatpak-github-actions/flatpak-builder@5b9f431ea9d3f35c20df7e2db794b2a9e3fb32c3
+        uses: flatpak/flatpak-github-actions/flatpak-builder@20eb46c470bdf05a29dc2262108f497d2d79199b
         with:
           build-bundle: false
           manifest-path: flatpak/io.github.andrepg.Doit.devel.json
