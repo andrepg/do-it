@@ -1,5 +1,8 @@
 # ✅ Do It
 
+[![Maintainability](https://qlty.sh/gh/andrepg/projects/do-it/maintainability.svg)](https://qlty.sh/gh/andrepg/projects/do-it)
+[![Code Coverage](https://qlty.sh/gh/andrepg/projects/do-it/coverage.svg)](https://qlty.sh/gh/andrepg/projects/do-it)
+
 This is a **deadly simple task manager**. Over the years I have used a lot of to-do tools: from the OG Wunderlist (later Microsoft To Do) to GNOME Tasks & Trello, Notion, etc.
 
 All of them marvelous, some of them abandoned, but none of them as simple as I wanted.

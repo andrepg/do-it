@@ -33,6 +33,7 @@
     "exclude": [
         "node_modules",
         ".flatpak",
+        ".flatpak-builder",
         "_build",
         "**/node_modules/*",
         "src/utils/application.js"

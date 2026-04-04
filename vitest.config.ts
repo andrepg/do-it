@@ -3,11 +3,26 @@ import path from 'path';
 
 export default defineConfig({
   test: {
+    coverage: {
+      provider: 'v8',
+      reporter: ['lcov', 'html-spa', 'html'],
+      include: ['src/**/*.ts'],
+      clean: true,
+      reportsDirectory: './tests/coverage',
+      htmlDir: './tests/coverage',
+    },
     globals: true,
     environment: 'node',
     setupFiles: ['./tests/setup.ts'],
     include: ['tests/**/*.test.ts'],
-    exclude: ['node_modules', '_build', 'dist', '**/.{idea,git,cache,output,temp}/**'],
+    exclude: [
+      'node_modules/**',
+      '_build/**',
+      '.flatpak/**',
+      '.flatpak-builder/**',
+      'dist/**',
+      '**/.{idea,git,cache,output,temp}/**'
+    ],
     alias: {
       'gi://GLib': path.resolve(__dirname, './tests/mocks/glib.ts'),
       'gi://Gio': path.resolve(__dirname, './tests/mocks/gio.ts'),

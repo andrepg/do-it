@@ -17,3 +17,5 @@ node_modules/
 # OS and bundle files
 .DS_Store
 *.flatpak
+
+tests/coverage/
