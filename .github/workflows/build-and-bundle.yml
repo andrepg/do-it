@@ -19,10 +19,15 @@ permissions:
 
 jobs:
   i18n-update:
-    name: 'Update translation files'
+    name: '[build] update translations'
     runs-on: ubuntu-latest
 
     steps:
+      - name: Checkout code
+        uses: actions/checkout@34e114876b0b11c390a56381ad16ebd13914f8d5
+        with:
+          fetch-depth: 1
+
       - name: Setup Project
         uses: ./.github/actions/setup-project
         with:
@@ -38,7 +43,7 @@ jobs:
           file_pattern: 'po/*.po po/*.pot'
 
   bundle-prod:
-    name: 'Validate prod bundle'
+    name: '[build] validate prod bundle'
     runs-on: ubuntu-latest
 
     container:
@@ -46,8 +51,10 @@ jobs:
       options: --privileged
 
     steps:
-      - name: Setup Project
-        uses: ./.github/actions/setup-project
+      - name: Checkout code
+        uses: actions/checkout@34e114876b0b11c390a56381ad16ebd13914f8d5
+        with:
+          fetch-depth: 1
 
       - name: Check production build
         uses: flatpak/flatpak-github-actions/flatpak-builder@20eb46c470bdf05a29dc2262108f497d2d79199b
@@ -57,7 +64,7 @@ jobs:
           cache-key: flatpak-${{ github.ref }}
 
   bundle-dev:
-    name: 'Validate dev bundle'
+    name: '[build] validate dev bundle'
     runs-on: ubuntu-latest
 
     container:
@@ -65,8 +72,10 @@ jobs:
       options: --privileged
 
     steps:
-      - name: Setup Project
-        uses: ./.github/actions/setup-project
+      - name: Checkout code
+        uses: actions/checkout@34e114876b0b11c390a56381ad16ebd13914f8d5
+        with:
+          fetch-depth: 1
 
       - name: Check development build
         uses: flatpak/flatpak-github-actions/flatpak-builder@20eb46c470bdf05a29dc2262108f497d2d79199b

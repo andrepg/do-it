@@ -12,6 +12,9 @@ jobs:
     runs-on: ubuntu-latest
     continue-on-error: true
     steps:
+      - name: Checkout code
+        uses: actions/checkout@34e114876b0b11c390a56381ad16ebd13914f8d5
+
       - name: Setup Project
         uses: ./.github/actions/setup-project
         with:
@@ -25,6 +28,9 @@ jobs:
     runs-on: ubuntu-latest
     continue-on-error: true
     steps:
+      - name: Checkout code
+        uses: actions/checkout@34e114876b0b11c390a56381ad16ebd13914f8d5
+
       - name: Setup Project
         uses: ./.github/actions/setup-project
         with:
@@ -37,6 +43,9 @@ jobs:
     name: '[ci] run tests'
     runs-on: ubuntu-latest
     steps:
+      - name: Checkout code
+        uses: actions/checkout@34e114876b0b11c390a56381ad16ebd13914f8d5
+
       - name: Setup Project
         uses: ./.github/actions/setup-project
         with:
@@ -50,6 +59,9 @@ jobs:
     runs-on: ubuntu-latest
     continue-on-error: true
     steps:
+      - name: Checkout code
+        uses: actions/checkout@34e114876b0b11c390a56381ad16ebd13914f8d5
+
       - name: Setup Project
         uses: ./.github/actions/setup-project
         with:

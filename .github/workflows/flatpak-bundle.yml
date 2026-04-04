@@ -11,6 +11,7 @@ jobs:
     uses: ./.github/workflows/build-and-bundle.yml
 
   flatpak-bundle:
+    name: '[build] create flatpak bundle'
     runs-on: ubuntu-latest
     needs: flatpak-validation
 
@@ -19,6 +20,11 @@ jobs:
       options: --privileged
 
     steps:
+      - name: Checkout code
+        uses: actions/checkout@34e114876b0b11c390a56381ad16ebd13914f8d5
+        with:
+          fetch-depth: 1
+
       - name: Setup Project
         uses: ./.github/actions/setup-project
 
@@ -32,7 +38,7 @@ jobs:
           cache-key: flatpak-release-${{ github.ref_name }}
 
       - name: Upload bundle to release
-        uses: softprops/action-gh-release@v2
+        uses: softprops/action-gh-release@e2b1d7a6fd65ebda87147ce321d4c1fb37eb1d41
         if: github.ref_type == 'tag'
         with:
           draft: false
