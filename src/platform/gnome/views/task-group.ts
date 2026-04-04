@@ -44,9 +44,6 @@ const GObjectProperties = {
  * It contains a single TaskList child that renders those filtered tasks.
  */
 export class TaskGroup extends Adw.PreferencesGroup {
-  // TODO Move to AppLocale
-  private static readonly DESCRIPTION = C_('task-group', '%s finished, %s deleted');
-
   private filter: Gtk.CustomFilter;
   private filterModel: Gtk.FilterListModel;
   private taskList: TaskList;
@@ -91,7 +88,7 @@ export class TaskGroup extends Adw.PreferencesGroup {
       if (item.deleted) deleted++;
     }
 
-    this.set_description(TaskGroup.DESCRIPTION.format(finished, deleted));
+    this.set_description(AppLocale.tasks.list.groupDescription.format(finished, deleted));
   }
 
   /**

@@ -5,7 +5,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: io.github.andrepg.Doit\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-04-03 14:31-0300\n"
+"POT-Creation-Date: 2026-04-03 22:10-0300\n"
 "PO-Revision-Date: 2025-12-28 19:44-0300\n"
 "Last-Translator: André Paul Grandsire <andrepg@users.noreply.github.com>\n"
 "Language-Team: Portuguese\n"
@@ -89,146 +89,145 @@ msgctxt "task-list"
 msgid "Without project"
 msgstr ""
 
-#: src/app.strings.ts:55
+#: src/app.strings.ts:52
+#, javascript-format
+msgctxt "task-group"
+msgid "%s finished, %s deleted"
+msgstr "%s terminadas, %s eliminadas"
+
+#: src/app.strings.ts:56
 #, fuzzy
 msgctxt "task-form"
 msgid "Task"
 msgstr "Tareas"
 
-#: src/app.strings.ts:56
+#: src/app.strings.ts:57
 #, fuzzy
 msgctxt "task-form"
 msgid "Task title"
 msgstr "Tarea %s actualizada"
 
-#: src/app.strings.ts:57
+#: src/app.strings.ts:58
 #, fuzzy
 msgctxt "task-form"
 msgid "Task description"
 msgstr "Descripción"
 
-#: src/app.strings.ts:59
+#: src/app.strings.ts:60
 #, fuzzy
 msgctxt "task-form"
 msgid "Mark as done"
 msgstr "Tarea %s excluída"
 
-#: src/app.strings.ts:60
+#: src/app.strings.ts:61
 #, fuzzy
 msgctxt "task-form"
 msgid "Mark as deleted"
 msgstr "Tarea %s excluída"
 
-#: src/app.strings.ts:62
+#: src/app.strings.ts:63
 msgctxt "task-form"
 msgid "Save"
 msgstr ""
 
-#: src/app.strings.ts:63
+#: src/app.strings.ts:64
 msgctxt "task-form"
 msgid "Discard"
 msgstr ""
 
-#: src/app.strings.ts:65
+#: src/app.strings.ts:66
 msgctxt "task-form"
 msgid "Title cannot be empty"
 msgstr ""
 
-#: src/app.strings.ts:69
+#: src/app.strings.ts:70
 #, fuzzy
 msgctxt "toast"
 msgid "Task created"
 msgstr "Tarea %s creada"
 
-#: src/app.strings.ts:70
+#: src/app.strings.ts:71
 #, fuzzy
 msgctxt "toast"
 msgid "Task edited"
 msgstr "Tarea %s actualizada"
 
-#: src/app.strings.ts:71
+#: src/app.strings.ts:72
 #, fuzzy
 msgctxt "toast"
 msgid "Task updated"
 msgstr "Tarea %s actualizada"
 
-#: src/app.strings.ts:72
+#: src/app.strings.ts:73
 #, fuzzy
 msgctxt "toast"
 msgid "Task restored"
 msgstr "Tarea %s restorada"
 
-#: src/app.strings.ts:73
+#: src/app.strings.ts:74
 #, fuzzy
 msgctxt "toast"
 msgid "Task deleted"
 msgstr "Tarea %s excluída"
 
-#: src/app.strings.ts:74
+#: src/app.strings.ts:75
 #, fuzzy
 msgctxt "toast"
 msgid "Tasks purged"
 msgstr "Tarea %s actualizada"
 
-#: src/app.strings.ts:75
+#: src/app.strings.ts:76
 #, fuzzy
 msgctxt "toast"
 msgid "Task finished"
 msgstr "Tarea %s finalizada"
 
-#: src/app.strings.ts:81
+#: src/app.strings.ts:82
 #, fuzzy
 msgctxt "backup"
 msgid "Export database"
 msgstr "Exportar banco de datos"
 
-#: src/app.strings.ts:82
+#: src/app.strings.ts:83
 #, fuzzy
 msgctxt "backup"
 msgid "Import database"
 msgstr "_Importar banco de datos"
 
-#: src/app.strings.ts:84
+#: src/app.strings.ts:85
 #, fuzzy
 msgctxt "backup"
 msgid "Database exported successfully"
 msgstr "Banco de datos exportado con suceso!"
 
-#: src/app.strings.ts:85
+#: src/app.strings.ts:86
 #, fuzzy
 msgctxt "backup"
 msgid "Error exporting database"
 msgstr "Exportar banco de datos"
 
-#: src/app.strings.ts:87
+#: src/app.strings.ts:88
 #, fuzzy
 msgctxt "backup"
 msgid "Database imported successfully"
 msgstr "Banco de datos importado con suceso"
 
-#: src/app.strings.ts:88
+#: src/app.strings.ts:89
 #, fuzzy
 msgctxt "backup"
 msgid "Error importing database"
 msgstr "Exportar banco de datos"
 
-#: src/app.strings.ts:91
+#: src/app.strings.ts:92
 #, fuzzy
 msgctxt "about"
 msgid "translators-credits"
 msgstr "André Paul Grandsire/andrepg@users.noreply.github.com"
 
-#: src/app.strings.ts:92
+#: src/app.strings.ts:93
 msgctxt "about"
 msgid "Donate"
 msgstr ""
-
-#. TODO Move to AppLocale
-#: src/platform/gnome/views/task-group.ts:48
-#, fuzzy, javascript-format
-msgctxt "task-group"
-msgid "%s finished, %s deleted"
-msgstr "Tarea %s excluída"
 
 #: src/platform/gnome/widgets/application.ui:13
 #: src/platform/gnome/widgets/window-v2.ui:200

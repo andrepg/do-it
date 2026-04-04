@@ -49,6 +49,7 @@ const TaskStrings = {
     empty: C_('task-list', 'No tasks found'),
     all: C_('task-list', 'All tasks'),
     noProject: C_('task-list', 'Without project'),
+    groupDescription: C_('task-group', '%s finished, %s deleted'),
   },
 
   form: {
