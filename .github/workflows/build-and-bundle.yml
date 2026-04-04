@@ -21,15 +21,15 @@ jobs:
   i18n-update:
     name: '[build] update translations'
     runs-on: ubuntu-latest
-    if: github.event_name == 'workflow_dispatch'
+    if: github.event_name == 'pull_request'
     steps:
       - name: Checkout code
         uses: actions/checkout@v6
         with:
           fetch-depth: 1
 
-      - name: Install Meson
-        run: pip install meson ninja
+      - name: Install system dependencies
+        run: sudo apt-get update && sudo apt-get install -y meson ninja-build gjs
 
       - name: Setup Project
         uses: ./.github/actions/setup-project
