@@ -21,15 +21,15 @@ jobs:
   i18n-update:
     name: '[build] update translations'
     runs-on: ubuntu-latest
-    container:
-      image: ghcr.io/flathub-infra/flatpak-github-actions:gnome-49
-      options: --privileged
-
+    if: github.event_name == 'workflow_dispatch'
     steps:
       - name: Checkout code
         uses: actions/checkout@v6
         with:
           fetch-depth: 1
+
+      - name: Install Meson
+        run: pip install meson ninja
 
       - name: Setup Project
         uses: ./.github/actions/setup-project

@@ -43,7 +43,7 @@
                 }
             },
             "build-commands": [
-                "yarn install --frozen-lockfile",
+                "yarn install --frozen-lockfile --ignore-scripts",
                 "meson setup _flatpak_build --prefix=/app --libdir=lib -Ddevelopment=true",
                 "meson compile -C _flatpak_build",
                 "meson install -C _flatpak_build"

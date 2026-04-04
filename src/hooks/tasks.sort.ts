@@ -19,6 +19,7 @@
 import { SortingField, SortingModeSchema, SortingStrategy } from '~/app.enums.js';
 import { useSettings } from '~/hooks/settings.js';
 import {
+  create_comparator,
   sort_by_date,
   sort_by_project,
   sort_by_project_name,
@@ -29,7 +30,10 @@ import {
 /**
  * Dictionary that maps sorting fields to their corresponding sorting functions.
  */
-const SORT_DICT: Record<SortingField, (strategy: SortingStrategy) => void> = {
+const SORT_DICT: Record<
+  SortingField,
+  (strategy: SortingStrategy) => ReturnType<typeof create_comparator>
+> = {
   [SortingField.byDate]: sort_by_date,
   [SortingField.byStatus]: sort_by_status,
   [SortingField.byTitle]: sort_by_title,
