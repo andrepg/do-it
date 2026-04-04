@@ -23,7 +23,7 @@ jobs:
         uses: ./.github/actions/setup-project
 
       - name: Build Flatpak bundle
-        uses: flatpak/flatpak-github-actions/flatpak-builder@v6
+        uses: flatpak/flatpak-github-actions/flatpak-builder@20eb46c470bdf05a29dc2262108f497d2d79199b
         with:
           build-bundle: true
           upload-artifact: true
