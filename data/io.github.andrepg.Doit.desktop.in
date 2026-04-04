@@ -1,10 +1,11 @@
 [Desktop Entry]
-Name=Doit
-Exec=io.github.andrepg.Doit
-Icon=io.github.andrepg.Doit
+Name=@APPLICATION_NAME@
+Exec=@APPLICATION_ID@
+Icon=@APPLICATION_ID@
+StartupWMClass=@APPLICATION_ID@
 Terminal=false
 Type=Application
 Categories=Utility;
-Keywords=GTK;Todo;Tasks
+Keywords=todo;work;tasks;lists;productivity
 StartupNotify=true
 DBusActivatable=true

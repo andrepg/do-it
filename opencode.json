@@ -1,0 +1,12 @@
+{
+    "$schema": "https://opencode.ai/config.json",
+
+    "default_agent": "plan",
+
+    "instructions": [
+        "CONTRIBUTING.md",
+        "docs/guidelines.md",
+        ".agent/rules/*.md",
+        ".agents/rules/*.md"
+    ]
+}

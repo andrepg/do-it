@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <component type="desktop-application">
-  <id>io.github.andrepg.Doit</id>
+  <id>@APPLICATION_ID@</id>
   <metadata_license>CC0-1.0</metadata_license>
   <project_license>GPL-3.0-or-later</project_license>
 
@@ -29,28 +29,25 @@
   </description>
 
   <developer id="io.github.andrepg">
-    <name>André Paul Grandsire</name>
+    <name translate="no">André Paul Grandsire</name>
   </developer>
-
-  <categories>
-    <category>Utility</category>
-  </categories>
-
-  <keywords>
-    <keyword>todo</keyword>
-    <keyword>work</keyword>
-    <keyword>list</keyword>
-    <keyword>productivity</keyword>
-  </keywords>
 
   <url type="homepage">https://github.com/andrepg/do-it/</url>
   <url type="vcs-browser">https://github.com/andrepg/do-it/</url>
   <url type="bugtracker">https://github.com/andrepg/do-it/issues</url>
   <url type="donation">https://github.com/sponsors/andrepg</url>
 
-  <launchable type="desktop-id">io.github.andrepg.Doit.desktop</launchable>
+  <launchable type="desktop-id">@APPLICATION_ID@.desktop</launchable>
+
+  <translation type="gettext">@APPLICATION_ID@</translation>
 
   <content_rating type="oars-1.1"/>
+
+  <supports>
+    <control>keyboard</control>
+    <control>pointing</control>
+    <control>touch</control>
+  </supports>
 
   <branding>
     <color type="primary" scheme_preference="light">#f6f5f4</color>
@@ -59,21 +56,36 @@
 
   <screenshots>
     <screenshot type="default">
-      <image>https://github.com/andrepg/do-it/blob/0.1.4/images/dark-pt-br.png?raw=true</image>
+      <image>https://github.com/andrepg/do-it/blob/2.0.5/images/dark-pt-br.png?raw=true</image>
       <caption>Dark mode</caption>
     </screenshot>
     <screenshot>
-      <image>https://github.com/andrepg/do-it/blob/0.1.4/images/light-pt-br.png?raw=true</image>
+      <image>https://github.com/andrepg/do-it/blob/2.0.5/images/light-pt-br.png?raw=true</image>
       <caption>Light mode</caption>
     </screenshot>
   </screenshots>
 
   <releases>
+    <release version="2.0.5" timestamp="1775233497">
+      <url type="details">https://github.com/andrepg/do-it/releases/tag/2.0.5</url>
+      <description translate="no">
+        <h2>A complete redesign of our app.</h2>
+
+        <p>We've introduced a few thing meaningfull things. These changes aim to make task management better.</p>
+
+        <ul>
+          <li>New layout, with vertical sidebar and project groups</li>
+          <li>Project management and automatic recognition with @ symbol</li>
+          <li>Project filtering within sidebar navigation</li>
+          <li>New sorting popover and settings</li>
+        </ul>
+      </description>
+    </release>
     <release version="0.1.4" timestamp="1761495363990">
       <url type="details">https://github.com/andrepg/do-it/releases/tag/0.1.4</url>
       <description translate="no">
         <p>Sorting your tasks is now available. We've introduced a few things only.</p>
-        
+
         <ul>
           <li>Tasks can be sorted by date, status or title</li>
           <li>This ordering setup is persisted, so you should not worry about loosing</li>

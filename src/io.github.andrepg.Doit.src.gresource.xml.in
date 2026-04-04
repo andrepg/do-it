@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<gresources>
+  <gresource prefix="@APPLICATION_RES@/js">
+    <file>app.entrypoint.js</file>
+
+
+    <file>app.wrapper.js</file>
+    <file>app.enums.js</file>
+    <file>app.static.js</file>
+    <file>app.strings.js</file>
+    <file>app.types.js</file>
+
+    <file>utils/log-manager.js</file>
+    <file>utils/project-manager.js</file>
+    <file alias="utils/application.js">application.js</file>
+
+    <file>core/interfaces/settings.js</file>
+    <file>core/interfaces/persistence.js</file>
+    <file>core/interfaces/task-view.js</file>
+    <file>core/persistence/file-persistence.js</file>
+
+    <file>platform/gnome/views/task-form.js</file>
+    <file>platform/gnome/views/doit.js</file>
+    <file>platform/gnome/views/popover-sort.js</file>
+    <file>platform/gnome/views/sidebar-button.js</file>
+    <file>platform/gnome/views/task-group.js</file>
+    <file>platform/gnome/views/task-item.js</file>
+    <file>platform/gnome/views/task-list.js</file>
+    <file>platform/gnome/views/task-list-store.js</file>
+    <file>platform/gnome/views/index.js</file>
+    <file>platform/gnome/enums.js</file>
+    <file>platform/gnome/index.js</file>
+
+    <file>hooks/autocomplete.js</file>
+    <file>hooks/settings.js</file>
+    <file>hooks/tasks.sort.js</file>
+
+    <file>platform/gnome/actions/about.js</file>
+    <file>platform/gnome/actions/new-task.js</file>
+    <file>platform/gnome/actions/quit.js</file>
+    <file>platform/gnome/actions/backup.js</file>
+    <file>platform/gnome/actions/sidebar.js</file>
+    <file>platform/gnome/actions/task-edit.js</file>
+    <file>platform/gnome/actions/toast.js</file>
+    <file>platform/gnome/actions/projects.js</file>
+    <file>platform/gnome/actions/projects-sidebar.js</file>
+    <file>platform/gnome/actions/purge-deleted.js</file>
+    <file>platform/gnome/actions/shortcuts.js</file>
+    <file>platform/gnome/actions/index.js</file>
+  </gresource>
+</gresources>

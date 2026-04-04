@@ -1,0 +1,100 @@
+name: '[ci] version bump'
+
+on:
+  release:
+    types: [published]
+  workflow_dispatch:
+    inputs:
+      increment:
+        description: 'Version increment type'
+        required: true
+        type: choice
+        options:
+          - patch
+          - minor
+      base_version:
+        description: 'Base version (optional, auto-detected if not provided)'
+        required: false
+        type: string
+
+permissions:
+  contents: write
+  pull-requests: write
+
+jobs:
+  bump-version:
+    name: '[ci] bump version'
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@34e114876b0b11c390a56381ad16ebd13914f8d5
+        with:
+          fetch-depth: 1
+          persist-credentials: false
+
+      - name: Read current version
+        id: current-version
+        run: |
+          if [ -n "${{ github.event.inputs.base_version }}" ]; then
+            echo "version=${{ github.event.inputs.base_version }}" >> $GITHUB_OUTPUT
+          else
+            VERSION=$(cat VERSION)
+            echo "version=$VERSION" >> $GITHUB_OUTPUT
+          fi
+
+      - name: Calculate new version
+        id: new-version
+        run: |
+          CURRENT="${{ steps.current-version.outputs.version }}"
+
+          IFS='.' read -r major minor patch <<< "$CURRENT"
+
+          if [ "${{ github.event.inputs.increment }}" = "minor" ]; then
+            minor=$((minor + 1))
+            patch=0
+          else
+            patch=$((patch + 1))
+          fi
+
+          NEW_VERSION="$major.$minor.$patch"
+          echo "new_version=$NEW_VERSION" >> $GITHUB_OUTPUT
+
+      - name: Update VERSION file
+        run: |
+          echo "${{ steps.new-version.outputs.new_version }}" > VERSION
+
+      - name: Create branch
+        run: |
+          BRANCH="bump/version-${{ steps.new-version.outputs.new_version }}"
+          git checkout -b "$BRANCH"
+
+      - name: Commit changes
+        run: |
+          git config --global user.name 'github-actions[bot]'
+          git config --global user.email 'github-actions[bot]@users.noreply.github.com'
+          git add VERSION
+          git commit -m "chore: bump version to ${{ steps.new-version.outputs.new_version }}"
+
+      - name: Push branch
+        run: |
+          BRANCH="bump/version-${{ steps.new-version.outputs.new_version }}"
+          git push -u origin "$BRANCH"
+
+      - name: Create Pull Request
+        uses: actions/github-script@0c9a481118c6d2733f6c4f5b1e90e50c5c4d4d5c
+        with:
+          script: |
+            const currentVersion = '${{ steps.current-version.outputs.version }}';
+            const newVersion = '${{ steps.new-version.outputs.new_version }}';
+            const branchName = 'bump/version-' + newVersion;
+
+            const { data: pr } = await github.rest.pulls.create({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              title: 'chore: bump version to ' + newVersion,
+              body: 'Version bump from ' + currentVersion + ' to ' + newVersion,
+              head: branchName,
+              base: 'main'
+            });
+            console.log('Created PR:', pr.html_url);

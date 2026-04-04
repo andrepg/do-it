@@ -1,27 +1,20 @@
 {
     "$schema": "../.vscode/schemas/flatpak-manifest.schema.json",
-    "id" : "io.github.andrepg.Doit",
-    "tags" : [
-        "tasks",
-        "todo",
-        "task management"
-    ],
-    "runtime" : "org.gnome.Platform",
-    "runtime-version" : "49",
-    "sdk" : "org.gnome.Sdk",
-    "sdk-extensions" : [
+    "id": "io.github.andrepg.Doit",
+    "tags": ["tasks", "todo", "task management"],
+    "runtime": "org.gnome.Platform",
+    "runtime-version": "49",
+    "sdk": "org.gnome.Sdk",
+    "sdk-extensions": [
         "org.freedesktop.Sdk.Extension.node24",
         "org.freedesktop.Sdk.Extension.typescript"
     ],
-    "command" : "io.github.andrepg.Doit",
-    "finish-args" : [
-        "--device=dri",
-        "--socket=wayland"
-    ],
-    "build-options" : {
-        "append-path" : "/usr/lib/sdk/typescript/bin:/usr/lib/sdk/node24/bin"
-    },    
-    "cleanup" : [
+    "command": "io.github.andrepg.Doit",
+    "finish-args": ["--device=dri", "--socket=wayland"],
+    "build-options": {
+        "append-path": "/usr/lib/sdk/typescript/bin:/usr/lib/sdk/node24/bin"
+    },
+    "cleanup": [
         "/include",
         "/lib/pkgconfig",
         "/man",
@@ -32,32 +25,43 @@
         "*.la",
         "*.a"
     ],
-    "modules" : [
+    "modules": [
         {
-            "name" : "Doit",
-            "buildsystem" : "meson",
-            "builddir" : true,            
-            "sources" : [
+            "name": "Doit",
+            "buildsystem": "simple",
+            "build-options": {
+                "append-path": "/usr/lib/sdk/typescript/bin:/usr/lib/sdk/node24/bin",
+                "env": {
+                    "YARN_CACHE_FOLDER": "/run/build/Doit/flatpak-node/yarn-mirror"
+                }
+            },
+            "build-commands": [
+                "echo 'yarn-offline-mirror \"/run/build/Doit/flatpak-node/yarn-mirror\"' > .yarnrc",
+                "yarn install --offline --frozen-lockfile --production=false",
+                "meson setup _flatpak_build --prefix=/app --libdir=lib -Ddevelopment=false",
+                "meson compile -C _flatpak_build",
+                "meson install -C _flatpak_build"
+            ],
+            "sources": [
                 {
                     "type": "git",
                     "url": "https://github.com/andrepg/do-it/",
-                    "tag": "0.1.4",
-
+                    "branch": "v2",
                     "x-checker-data": {
                         "type": "git",
                         "github-repo": "andrepg/do-it"
                     }
+                },
+                "generated-sources.json",
+                {
+                    "type": "file",
+                    "path": "../package.json"
+                },
+                {
+                    "type": "file",
+                    "path": "../yarn.lock"
                 }
-            ],
-            "config-opts" : [
-                "--libdir=lib",
-                "-Ddevelopment=false"
-            ],
-            "build-options": {
-                "config-opts": [
-                    "-Ddevelopment=false"
-                ]
-            }
+            ]
         }
     ]
 }

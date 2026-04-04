@@ -1,8 +1,21 @@
+# Auto generated and build files
 .flatpak/
-.vscode/
+repo/
 
 **/_build
 **/_build-*/**
 **/_repo-*/**
 **/*.json~
 **/.flatpak-builder/**
+
+# Package manager and related
+yarn.lock
+package-lock.json
+node_modules/
+.vscode/
+
+# OS and bundle files
+.DS_Store
+*.flatpak
+
+tests/coverage/

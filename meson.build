@@ -1,30 +1,59 @@
-#
-#
-# Meson build file for Doit application 
-# Copyright 2025 - André Paul Grandsire
-#
-#
-project('io.github.andrepg.Doit',
-          version: '0.1.4',
-    meson_version: '>= 1.0.0',
-  default_options: [ 'warning_level=2', 'werror=false', ],
+project(
+    'io.github.andrepg.Doit',
+    version: files('VERSION'),
+    meson_version: '>= 1.4.0',
+    default_options: [
+        'warning_level=2',
+        'c_std=c11',
+        'cpp_std=c++17',
+        'b_ndebug=false',
+        'b_sanitize=address',
+        'b_lto=true',
+        'b_pie=true',
+        'b_staticpic=true',
+        'buildtype=debugoptimized',
+    ],
 )
 
-## Import everything we need to build
 i18n = import('i18n')
 gnome = import('gnome')
 
-## Then we set any global variables
-application_name = meson.project_name()
-application_version = meson.project_version()
-application_suffix = get_option('development') == true ? '.Devel' : ''
-application_datadir = get_option('datadir')
+app_is_dev = get_option('development')
 
-application_resource_path = '/io/github/andrepg/Doit'
+app_codename = 'Do It'
+app_id = meson.project_name()
+app_name = meson.project_name()
+app_version = meson.project_version()
+app_res_path = '/io/github/andrepg/Doit'
+
+app_datadir = get_option('prefix') / get_option('datadir')
+
+if app_is_dev
+    app_id += '.Devel'
+    app_res_path += '/Devel'
+    app_codename += ' (Devel)'
+endif
+
+app_config = configuration_data()
+app_config.set('GJS', find_program('gjs').full_path())
+app_config.set('PACKAGE_NAME', app_name)
+app_config.set('PACKAGE_VERSION', app_version)
+app_config.set('APPLICATION_ID', app_id)
+app_config.set('APPLICATION_RES', app_res_path)
+app_config.set('APPLICATION_NAME', app_codename)
+app_config.set('is_devel', app_is_dev ? 'true' : 'false')
+app_config.set('prefix', get_option('prefix'))
+app_config.set('bindir', get_option('prefix') / get_option('bindir'))
+app_config.set('datadir', app_datadir)
+app_config.set('libdir', get_option('prefix') / get_option('libdir'))
+
+message('## Application ID: ' + app_id)
+message('## Application Resource Path: ' + app_res_path)
+message('## Application Data Dir: ' + app_datadir)
 
 # ## Process Source Code and Javascript buildable
 subdir('data')
-subdir('ui')
+subdir('src/platform/gnome/widgets')
 subdir('src')
 subdir('po')
 

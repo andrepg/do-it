@@ -1,0 +1,7 @@
+node_modules
+_build
+.flatpak-builder
+.flatpak
+flatpak/generated-sources.json
+package-lock.json
+**.code-workspace

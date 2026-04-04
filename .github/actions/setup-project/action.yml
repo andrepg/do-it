@@ -1,0 +1,28 @@
+name: 'Setup Project'
+description: 'Checks out the repository and optionally sets up Node.js with dependencies'
+
+inputs:
+  setup-node:
+    description: 'If true, sets up Node.js and installs Yarn dependencies'
+    required: false
+    default: 'false'
+
+runs:
+  using: 'composite'
+  steps:
+    - name: Checkout code
+      uses: actions/checkout@34e114876b0b11c390a56381ad16ebd13914f8d5
+      with:
+        fetch-depth: 1
+
+    - name: Setup Node.js
+      if: inputs.setup-node == 'true'
+      uses: actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020
+      with:
+        node-version: '20'
+        cache: 'yarn'
+
+    - name: Install dependencies
+      if: inputs.setup-node == 'true'
+      shell: bash
+      run: yarn install --frozen-lockfile

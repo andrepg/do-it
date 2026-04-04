@@ -1,0 +1,41 @@
+{
+    "compilerOptions": {
+        "module": "nodenext",
+        "moduleResolution": "nodenext",
+        "target": "ES2022",
+        "strict": true,
+        "esModuleInterop": true,
+        "skipLibCheck": true,
+        "forceConsistentCasingInFileNames": true,
+        "outDir": "_build",
+        "rootDir": ".",
+        "allowJs": true,
+        "pretty": true,
+        "paths": {
+            "~/*": ["./src/*"],
+            "~gnome/*": ["./src/platform/gnome/*"],
+            "~core/*": ["./src/core/*"],
+            "~actions/*": ["./src/actions/*"],
+            "~hooks/*": ["./src/hooks/*"],
+            "~utils/*": ["./src/utils/*"],
+            "~web/*": ["./src/web/*"]
+        },
+        "types": [
+            "@girs/gjs",
+            "@girs/adw-1",
+            "@girs/gtk-4.0",
+            "@girs/gio-2.0",
+            "@girs/gobject-2.0",
+            "@girs/glib-2.0"
+        ]
+    },
+    "include": ["src/**/*"],
+    "exclude": [
+        "node_modules",
+        ".flatpak",
+        ".flatpak-builder",
+        "_build",
+        "**/node_modules/*",
+        "src/utils/application.js"
+    ]
+}

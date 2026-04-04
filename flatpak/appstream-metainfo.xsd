@@ -1,0 +1,144 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema"
+  elementFormDefault="qualified"
+  xmlns:as="http://www.freedesktop.org/software/appstream/docs">
+
+  <xs:element name="component" type="as:component"/>
+  
+  <xs:complexType name="component">
+    <xs:choice minOccurs="0" maxOccurs="unbounded">
+      <xs:element name="id" type="xs:string"/>
+      <xs:element name="metadata_license" type="xs:string"/>
+      <xs:element name="project_license" type="xs:string"/>
+      <xs:element name="name" type="xs:string"/>
+      <xs:element name="summary" type="xs:string"/>
+      <xs:element name="description" type="as:description"/>
+      <xs:element name="developer" type="as:developer"/>
+      <xs:element name="url" type="as:url" minOccurs="0" maxOccurs="unbounded"/>
+      <xs:element name="launchable" type="as:launchable"/>
+      <xs:element name="translation" type="xs:string"/>
+      <xs:element name="content_rating" type="as:content_rating"/>
+      <xs:element name="supports" type="as:supports"/>
+      <xs:element name="branding" type="as:branding"/>
+      <xs:element name="screenshots" type="as:screenshots"/>
+      <xs:element name="releases" type="as:releases"/>
+    </xs:choice>
+    <xs:attribute name="type" type="xs:string" use="required"/>
+  </xs:complexType>
+
+  <xs:complexType name="description" mixed="true">
+    <xs:choice minOccurs="0" maxOccurs="unbounded">
+      <xs:element name="p" type="as:formatted"/>
+      <xs:element name="ul" type="as:ul"/>
+      <xs:element name="ol" type="as:ol"/>
+    </xs:choice>
+  </xs:complexType>
+
+  <xs:complexType name="formatted" mixed="true">
+    <xs:sequence>
+      <xs:any processContents="skip" minOccurs="0" maxOccurs="unbounded"/>
+    </xs:sequence>
+  </xs:complexType>
+
+  <xs:complexType name="ul">
+    <xs:sequence>
+      <xs:element name="li" type="as:li" minOccurs="0" maxOccurs="unbounded"/>
+    </xs:sequence>
+  </xs:complexType>
+
+  <xs:complexType name="ol">
+    <xs:sequence>
+      <xs:element name="li" type="as:li" minOccurs="0" maxOccurs="unbounded"/>
+    </xs:sequence>
+  </xs:complexType>
+
+  <xs:complexType name="li" mixed="true">
+    <xs:choice minOccurs="0" maxOccurs="unbounded">
+      <xs:element name="p" type="as:formatted"/>
+      <xs:element name="ul" type="as:ul"/>
+      <xs:element name="ol" type="as:ol"/>
+    </xs:choice>
+  </xs:complexType>
+
+  <xs:complexType name="developer">
+    <xs:sequence>
+      <xs:element name="name" type="xs:string"/>
+    </xs:sequence>
+    <xs:attribute name="id" type="xs:string" use="required"/>
+  </xs:complexType>
+
+  <xs:complexType name="url">
+    <xs:simpleContent>
+      <xs:extension base="xs:anyURI">
+        <xs:attribute name="type" type="xs:string" use="required"/>
+      </xs:extension>
+    </xs:simpleContent>
+  </xs:complexType>
+
+  <xs:complexType name="launchable">
+    <xs:simpleContent>
+      <xs:extension base="xs:string">
+        <xs:attribute name="type" type="xs:string" use="required"/>
+      </xs:extension>
+    </xs:simpleContent>
+  </xs:complexType>
+
+  <xs:complexType name="content_rating">
+    <xs:simpleContent>
+      <xs:extension base="xs:string">
+        <xs:attribute name="type" type="xs:string" use="required"/>
+      </xs:extension>
+    </xs:simpleContent>
+  </xs:complexType>
+
+  <xs:complexType name="supports">
+    <xs:sequence>
+      <xs:element name="control" type="xs:string" minOccurs="0" maxOccurs="unbounded"/>
+    </xs:sequence>
+  </xs:complexType>
+
+  <xs:complexType name="branding">
+    <xs:sequence>
+      <xs:element name="color" type="as:color" minOccurs="0" maxOccurs="unbounded"/>
+    </xs:sequence>
+  </xs:complexType>
+
+  <xs:complexType name="color">
+    <xs:simpleContent>
+      <xs:extension base="xs:string">
+        <xs:attribute name="type" type="xs:string" use="required"/>
+        <xs:attribute name="scheme_preference" type="xs:string" use="optional"/>
+      </xs:extension>
+    </xs:simpleContent>
+  </xs:complexType>
+
+  <xs:complexType name="screenshots">
+    <xs:sequence>
+      <xs:element name="screenshot" type="as:screenshot" minOccurs="0" maxOccurs="unbounded"/>
+    </xs:sequence>
+  </xs:complexType>
+
+  <xs:complexType name="screenshot">
+    <xs:choice minOccurs="0" maxOccurs="unbounded">
+      <xs:element name="image" type="xs:anyURI"/>
+      <xs:element name="caption" type="xs:string"/>
+    </xs:choice>
+    <xs:attribute name="type" type="xs:string" use="optional"/>
+  </xs:complexType>
+
+  <xs:complexType name="releases">
+    <xs:sequence>
+      <xs:element name="release" type="as:release" minOccurs="0" maxOccurs="unbounded"/>
+    </xs:sequence>
+  </xs:complexType>
+
+  <xs:complexType name="release">
+    <xs:choice minOccurs="0" maxOccurs="unbounded">
+      <xs:element name="url" type="as:url"/>
+      <xs:element name="description" type="as:description"/>
+    </xs:choice>
+    <xs:attribute name="version" type="xs:string" use="required"/>
+    <xs:attribute name="timestamp" type="xs:integer" use="optional"/>
+  </xs:complexType>
+
+</xs:schema>

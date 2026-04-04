@@ -1,0 +1,29 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<!-- Created with Cambalache 1.0 -->
+<interface>
+  <!-- interface-name sidebar-button.ui -->
+  <requires lib="Adw" version="1.7"/>
+  <requires lib="Gtk" version="4.21"/>
+  <requires lib="gtk" version="4.12"/>
+  <requires lib="libadwaita" version="1.8"/>
+  <template class="SidebarButton" parent="GtkButton">
+    <property name="child">
+      <object class="GtkBox">
+        <property name="spacing">8</property>
+        <child>
+          <object class="GtkImage" id="button_icon">
+            <property name="icon-name">task-due</property>
+            <property name="icon-size">normal</property>
+            <property name="sensitive">False</property>
+          </object>
+        </child>
+        <child>
+          <object class="GtkLabel" id="button_content">
+            <property name="label">Project button</property>
+            <property name="wrap">True</property>
+          </object>
+        </child>
+      </object>
+    </property>
+  </template>
+</interface>

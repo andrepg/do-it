@@ -3,3 +3,9 @@ option('development',
        value: false,
        description: 'Build with development features enabled'
 )
+
+option('cachedir',
+       type: 'string',
+       value: '',
+       description: 'Directory to use for caching'
+)

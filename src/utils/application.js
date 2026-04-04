@@ -1,64 +1,31 @@
-import GLib from 'gi://GLib';
-import Gio from 'gi://Gio';
-
-const APPLICATION_ID = 'io.github.andrepg.Doit'
-
-const APPLICATION_RES = '/io/github/andrepg/Doit'
+const APPLICATION_ID = '@APPLICATION_ID@';
+const APPLICATION_NAME = '@APPLICATION_NAME@';
+const APPLICATION_RES = '@APPLICATION_RES@';
+const IS_DEVEL = '@is_devel@' === 'true';
 
 function get_application_id() {
-  const prefix = APPLICATION_ID;
-  const suffix = is_development_mode() ? '.Devel' : '';
-
-  return prefix.concat(suffix)
+  return APPLICATION_ID;
 }
 
 function get_resource_path() {
-  const prefix = APPLICATION_RES;
-  const suffix = is_development_mode() ? '.Devel' : '';
+  return APPLICATION_RES;
+}
 
-  return prefix.concat(suffix)
+function get_template_path(path) {
+  return `resource://${APPLICATION_RES}/platform/gnome/widgets/${path}`;
 }
 
 function is_development_mode() {
-  return GLib.getenv('DEVELOPMENT')
-}
-
-function get_settings_container() {
-  return new Gio.Settings({ schema_id: APPLICATION_ID });
-}
-
-function get_setting_int(name) {
-  const _container = get_settings_container();
-
-  return _container.get_int(name)
-}
-
-function set_setting_int(name, value) {
-  const _container = get_settings_container();
-
-  _container.set_int(name, value)
-}
-
-function get_setting_string(name) {
-  const _container = get_settings_container();
-
-  return _container.get_string(name)
-}
-
-function set_setting_string(name, value) {
-  const _container = get_settings_container();
-
-  _container.set_string(name, value)
+  return IS_DEVEL;
 }
 
 export {
+  APPLICATION_ID,
+  APPLICATION_RES,
+  APPLICATION_NAME,
+  IS_DEVEL,
   get_resource_path,
   get_application_id,
+  get_template_path,
   is_development_mode,
-
-  set_setting_int,
-  get_setting_int,
-
-  get_setting_string,
-  set_setting_string,
-}
+};

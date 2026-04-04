@@ -1,0 +1,76 @@
+name: '[build] flatpak validation'
+
+on:
+  workflow_call:
+  workflow_dispatch:
+  pull_request:
+    types:
+      - ready_for_review
+    paths-ignore:
+      - 'po/**'
+  push:
+    branches:
+      - main
+    paths-ignore:
+      - 'po/**'
+
+permissions:
+  contents: read
+
+jobs:
+  i18n-update:
+    name: 'Update translation files'
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Setup Project
+        uses: ./.github/actions/setup-project
+        with:
+          setup-node: 'true'
+
+      - name: Update POT files
+        run: yarn i18n:update-pot
+
+      - name: Commit changes
+        uses: stefanzweifel/git-auto-commit-action@b863ae1933cb653a53c021fe36dbb774e1fb9403
+        with:
+          commit_message: 'lang: update pot files'
+          file_pattern: 'po/*.po po/*.pot'
+
+  bundle-prod:
+    name: 'Validate prod bundle'
+    runs-on: ubuntu-latest
+
+    container:
+      image: ghcr.io/flathub-infra/flatpak-github-actions:gnome-49
+      options: --privileged
+
+    steps:
+      - name: Setup Project
+        uses: ./.github/actions/setup-project
+
+      - name: Check production build
+        uses: flatpak/flatpak-github-actions/flatpak-builder@20eb46c470bdf05a29dc2262108f497d2d79199b
+        with:
+          build-bundle: false
+          manifest-path: flatpak/io.github.andrepg.Doit.json
+          cache-key: flatpak-${{ github.ref }}
+
+  bundle-dev:
+    name: 'Validate dev bundle'
+    runs-on: ubuntu-latest
+
+    container:
+      image: ghcr.io/flathub-infra/flatpak-github-actions:gnome-49
+      options: --privileged
+
+    steps:
+      - name: Setup Project
+        uses: ./.github/actions/setup-project
+
+      - name: Check development build
+        uses: flatpak/flatpak-github-actions/flatpak-builder@20eb46c470bdf05a29dc2262108f497d2d79199b
+        with:
+          build-bundle: false
+          manifest-path: flatpak/io.github.andrepg.Doit.devel.json
+          cache-key: flatpak-${{ github.ref }}
