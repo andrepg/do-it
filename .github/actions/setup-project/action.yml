@@ -11,15 +11,15 @@ runs:
   using: 'composite'
   steps:
     - name: Checkout code
-      uses: actions/checkout@34e114876b0b11c390a56381ad16ebd13914f8d5
+      uses: actions/checkout@v6
       with:
         fetch-depth: 1
 
     - name: Setup Node.js
       if: inputs.setup-node == 'true'
-      uses: actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020
+      uses: actions/setup-node@v6
       with:
-        node-version: '20'
+        node-version: '24'
         cache: 'yarn'
 
     - name: Install dependencies

@@ -46,7 +46,7 @@
                 {
                     "type": "git",
                     "url": "https://github.com/andrepg/do-it/",
-                    "branch": "v2",
+                    "branch": "main",
                     "x-checker-data": {
                         "type": "git",
                         "github-repo": "andrepg/do-it"
