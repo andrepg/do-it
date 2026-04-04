@@ -117,6 +117,7 @@ export class TaskItem extends Adw.ActionRow implements ITaskView {
   private task_done!: Gtk.CheckButton;
   private task_delete!: Gtk.Button;
 
+  /* eslint-disable @typescript-eslint/max-params */
   constructor(
     taskId = '',
     title = '',
