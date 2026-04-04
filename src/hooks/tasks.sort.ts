@@ -27,6 +27,16 @@ import {
 } from '~/core/utils/sort.js';
 
 /**
+ * Dictionary that maps sorting fields to their corresponding sorting functions.
+ */
+const SORT_DICT: Record<SortingField, (strategy: SortingStrategy) => void> = {
+  [SortingField.byDate]: sort_by_date,
+  [SortingField.byStatus]: sort_by_status,
+  [SortingField.byTitle]: sort_by_title,
+  [SortingField.byProject]: sort_by_project,
+};
+
+/**
  * React-like hook that provides task sorting capabilities and state management.
  *
  * Exposes methods to sort tasks by date, status, title, or project, and to persist
@@ -34,7 +44,6 @@ import {
  */
 export const useTaskSort = () => {
   let current_sort_mode: SortingField = SortingField.byTitle;
-
   let current_sort_strategy: SortingStrategy = SortingStrategy.ascending;
 
   const settings = useSettings();
@@ -43,18 +52,7 @@ export const useTaskSort = () => {
     current_sort_mode = field;
     current_sort_strategy = strategy;
 
-    switch (field) {
-      case SortingField.byDate:
-        return sort_by_date(strategy);
-      case SortingField.byStatus:
-        return sort_by_status(strategy);
-      case SortingField.byTitle:
-        return sort_by_title(strategy);
-      case SortingField.byProject:
-        return sort_by_project(strategy);
-      default:
-        return sort_by_date(strategy);
-    }
+    return SORT_DICT[field](strategy);
   };
 
   const persist_sort_preferences = () => {

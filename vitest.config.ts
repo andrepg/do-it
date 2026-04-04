@@ -21,7 +21,7 @@ export default defineConfig({
       '.flatpak/**',
       '.flatpak-builder/**',
       'dist/**',
-      '**/.{idea,git,cache,output,temp}/**'
+      '**/.{idea,git,cache,output,temp}/**',
     ],
     alias: {
       'gi://GLib': path.resolve(__dirname, './tests/mocks/glib.ts'),

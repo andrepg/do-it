@@ -75,6 +75,7 @@ version = "10.1.0"
 package_file = "package.json"
 package_filters = ["eslint", "prettier"]
 
+
 [[plugin]]
 name = "prettier"
 version = "3.8.1"
@@ -93,3 +94,4 @@ name = "zizmor"
 
 [[plugin]]
 name = "shellcheck"
+
