@@ -3,76 +3,74 @@
 # Copyright (C) 2025 THE io.github.andrepg.Doit'S COPYRIGHT HOLDER
 # This file is distributed under the same license as the io.github.andrepg.Doit package.
 # Automatically generated, 2025.
-# André Paul Grandsire <andrepg@users.noreply.github.com>, 2025.
+# André Paul Grandsire <andre@users.noreply.github.com>, 2025-2026.
 #
 msgid ""
 msgstr ""
 "Project-Id-Version: io.github.andrepg.Doit\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2026-04-04 17:12-0300\n"
-"PO-Revision-Date: 2025-12-28 19:37-0300\n"
-"Last-Translator: André Paul Grandsire <andrepg@users.noreply.github.com>\n"
-"Language-Team: Portuguese\n"
-"Language: pt_BR\n"
+"PO-Revision-Date: 2026-04-07 20:53-0300\n"
+"Last-Translator: André Paul Grandsire <andre@users.noreply.github.com>\n"
+"Language-Team: Portuguese <andre@users.noreply.github.com>\n"
+"Language: pt\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
-"X-Generator: Gtranslator 49.0\n"
+"X-Generator: Gtranslator 50.0\n"
 
 #: src/app.strings.ts:26
 msgctxt "sorting"
 msgid "Older to newer"
-msgstr ""
+msgstr "Mais velhas primeiro"
 
 #: src/app.strings.ts:27
 msgctxt "sorting"
 msgid "To do first"
-msgstr ""
+msgstr "Pendentes primeiro"
 
 #: src/app.strings.ts:28 src/app.strings.ts:29
 msgctxt "sorting"
 msgid "A to Z"
-msgstr ""
+msgstr "A a Z"
 
 #: src/app.strings.ts:32
 msgctxt "sorting"
 msgid "Newer to older"
-msgstr ""
+msgstr "Mais novas primeiro"
 
 #: src/app.strings.ts:33
 msgctxt "sorting"
 msgid "Done first"
-msgstr ""
+msgstr "Concluídas primeiro"
 
 #: src/app.strings.ts:34 src/app.strings.ts:35
 msgctxt "sorting"
 msgid "Z to A"
-msgstr ""
+msgstr "Z a A"
 
 #: src/app.strings.ts:39
 msgctxt "sorting-field"
 msgid "Date"
-msgstr ""
+msgstr "Data"
 
 #: src/app.strings.ts:40
-#, fuzzy
 msgctxt "sorting-field"
 msgid "Status"
-msgstr "Por status"
+msgstr "Status"
 
 #: src/app.strings.ts:41
 msgctxt "sorting-field"
 msgid "Title"
-msgstr ""
+msgstr "Título"
 
 #: src/app.strings.ts:42
 msgctxt "sorting-field"
 msgid "Project"
-msgstr ""
+msgstr "Projeto"
 
 #: src/app.strings.ts:48
-#, fuzzy
 msgctxt "task-list"
 msgid "Tasks"
 msgstr "Tarefas"
@@ -80,10 +78,9 @@ msgstr "Tarefas"
 #: src/app.strings.ts:49
 msgctxt "task-list"
 msgid "No tasks found"
-msgstr ""
+msgstr "Nenhuma tarefa encontrada"
 
 #: src/app.strings.ts:50
-#, fuzzy
 msgctxt "task-list"
 msgid "All tasks"
 msgstr "Suas tarefas"
@@ -91,7 +88,7 @@ msgstr "Suas tarefas"
 #: src/app.strings.ts:51
 msgctxt "task-list"
 msgid "Without project"
-msgstr ""
+msgstr "Sem projeto"
 
 #: src/app.strings.ts:52
 #, javascript-format
@@ -100,130 +97,111 @@ msgid "%s finished, %s deleted"
 msgstr "%s concluídas, %s excluídas"
 
 #: src/app.strings.ts:56
-#, fuzzy
 msgctxt "task-form"
 msgid "Task"
 msgstr "Tarefas"
 
 #: src/app.strings.ts:57
-#, fuzzy
 msgctxt "task-form"
 msgid "Task title"
-msgstr "Tarefa %s atualizada"
+msgstr "Título da tarefa"
 
 #: src/app.strings.ts:58
-#, fuzzy
 msgctxt "task-form"
 msgid "Task description"
-msgstr "Tarefa"
+msgstr "Descrição da tarefa"
 
 #: src/app.strings.ts:60
-#, fuzzy
 msgctxt "task-form"
 msgid "Mark as done"
-msgstr "Tarefa %s excluída"
+msgstr "Concluir"
 
 #: src/app.strings.ts:61
-#, fuzzy
 msgctxt "task-form"
 msgid "Mark as deleted"
-msgstr "Tarefa %s excluída"
+msgstr "Excluir"
 
 #: src/app.strings.ts:63
 msgctxt "task-form"
 msgid "Save"
-msgstr ""
+msgstr "Salvar"
 
 #: src/app.strings.ts:64
 msgctxt "task-form"
 msgid "Discard"
-msgstr ""
+msgstr "Descartar"
 
 #: src/app.strings.ts:66
 msgctxt "task-form"
 msgid "Title cannot be empty"
-msgstr ""
+msgstr "Título não pode ser vazio"
 
 #: src/app.strings.ts:70
-#, fuzzy
 msgctxt "toast"
 msgid "Task created"
-msgstr "Tarefa %s criada"
+msgstr "Tarefa criada"
 
 #: src/app.strings.ts:71
-#, fuzzy
 msgctxt "toast"
 msgid "Task edited"
-msgstr "Tarefa %s atualizada"
+msgstr "Tarefa modificada"
 
 #: src/app.strings.ts:72
-#, fuzzy
 msgctxt "toast"
 msgid "Task updated"
-msgstr "Tarefa %s atualizada"
+msgstr "Tarefa atualizada"
 
 #: src/app.strings.ts:73
-#, fuzzy
 msgctxt "toast"
 msgid "Task restored"
-msgstr "Tarefa %s restaurada"
+msgstr "Tarefa restaurada"
 
 #: src/app.strings.ts:74
-#, fuzzy
 msgctxt "toast"
 msgid "Task deleted"
-msgstr "Tarefa %s excluída"
+msgstr "Tarefa excluída"
 
 #: src/app.strings.ts:75
-#, fuzzy
 msgctxt "toast"
 msgid "Tasks purged"
-msgstr "Tarefa %s atualizada"
+msgstr "Tarefas excluídas descartadas"
 
 #: src/app.strings.ts:76
-#, fuzzy
 msgctxt "toast"
 msgid "Task finished"
-msgstr "Tarefa %s finalizada"
+msgstr "Tarefa finalizada"
 
 #: src/app.strings.ts:82
-#, fuzzy
 msgctxt "backup"
 msgid "Export database"
 msgstr "Exportar dados"
 
 #: src/app.strings.ts:83
-#, fuzzy
 msgctxt "backup"
 msgid "Import database"
-msgstr "_Importar tarefas"
+msgstr "_Importar dados"
 
 #: src/app.strings.ts:85
-#, fuzzy
 msgctxt "backup"
 msgid "Database exported successfully"
-msgstr "Exportação concluída com sucesso.\t"
+msgstr "Exportação concluída com sucesso."
 
 #: src/app.strings.ts:86
-#, fuzzy
 msgctxt "backup"
 msgid "Error exporting database"
-msgstr "Exportar dados"
+msgstr "Erro ao exportar dados"
 
 #: src/app.strings.ts:88
-#, fuzzy
 msgctxt "backup"
 msgid "Database imported successfully"
 msgstr "Banco de dados importado com sucesso"
 
 #: src/app.strings.ts:89
-#, fuzzy
 msgctxt "backup"
 msgid "Error importing database"
-msgstr "Exportar dados"
+msgstr "Erro ao importar dados"
 
 #: src/app.strings.ts:92
-#, fuzzy
 msgctxt "about"
 msgid "translators-credits"
 msgstr "André Paul Grandsire/andrepg@users.noreply.github.com"
@@ -231,7 +209,7 @@ msgstr "André Paul Grandsire/andrepg@users.noreply.github.com"
 #: src/app.strings.ts:93
 msgctxt "about"
 msgid "Donate"
-msgstr ""
+msgstr "Fazer uma doação"
 
 #: src/platform/gnome/widgets/application.ui:13
 #: src/platform/gnome/widgets/window-v2.ui:200
@@ -260,7 +238,7 @@ msgstr "Sobre Do It"
 
 #: src/platform/gnome/widgets/application.ui:54
 msgid "Create a new task"
-msgstr ""
+msgstr "Criar tarefa"
 
 #: src/platform/gnome/widgets/shortcuts-dialog.ui:6
 msgctxt "shortcut window"
@@ -273,15 +251,14 @@ msgid "Show Shortcuts"
 msgstr "Mostrar atalhos"
 
 #: src/platform/gnome/widgets/shortcuts-dialog.ui:16
-#, fuzzy
 msgctxt "shortcut window"
 msgid "New Task"
-msgstr "Tarefas"
+msgstr "Nova tarefa"
 
 #: src/platform/gnome/widgets/shortcuts-dialog.ui:23
 msgctxt "shortcut window"
 msgid "Toggle Sidebar"
-msgstr ""
+msgstr "Mostrar/Exibir barra lateral"
 
 #: src/platform/gnome/widgets/shortcuts-dialog.ui:30
 msgctxt "shortcut window"
@@ -291,21 +268,21 @@ msgstr "Sair"
 #: src/platform/gnome/widgets/shortcuts-dialog.ui:39
 msgctxt "shortcut window"
 msgid "Task Editing"
-msgstr ""
+msgstr "Edição de tarefa"
 
 #: src/platform/gnome/widgets/shortcuts-dialog.ui:42
 msgctxt "shortcut window"
 msgid "Save Task"
-msgstr ""
+msgstr "Salvar tarefa"
 
 #: src/platform/gnome/widgets/shortcuts-dialog.ui:49
 msgctxt "shortcut window"
 msgid "Discard Changes"
-msgstr ""
+msgstr "Descartar alterações"
 
 #: src/platform/gnome/widgets/window-v2.ui:32
 msgid "Projects"
-msgstr ""
+msgstr "Projetos"
 
 #: src/platform/gnome/widgets/window-v2.ui:68
 msgid "Tasks"
@@ -313,15 +290,15 @@ msgstr "Tarefas"
 
 #: src/platform/gnome/widgets/window-v2.ui:80
 msgid "Open sidebar"
-msgstr ""
+msgstr "Abrir sidebar"
 
 #: src/platform/gnome/widgets/window-v2.ui:86
 msgid "Add new task (Ctrl + N)"
-msgstr ""
+msgstr "Adicionar tarefa (Ctrl + N)"
 
 #: src/platform/gnome/widgets/window-v2.ui:99
 msgid "Sorting options"
-msgstr ""
+msgstr "Opções de ordenação"
 
 #: src/platform/gnome/widgets/window-v2.ui:108
 msgid "Main Menu"
@@ -333,118 +310,40 @@ msgstr "O que voce precisa fazer?"
 
 #: src/platform/gnome/widgets/task-form.ui:16
 msgid "Edit title, project, mark as completed or delete this task."
-msgstr ""
+msgstr "Edite esta tarefa, projeto, marque como concluída ou excluída."
 
 #: src/platform/gnome/widgets/task-form.ui:17
-#, fuzzy
 msgid "Edit task"
-msgstr "Finalizar tarefa"
+msgstr "Editar tarefa"
 
 #: src/platform/gnome/widgets/task-form.ui:20
 msgid "Title"
-msgstr ""
+msgstr "Título"
 
 #: src/platform/gnome/widgets/task-form.ui:25
 msgid "Project"
-msgstr ""
+msgstr "Projeto"
 
 #: src/platform/gnome/widgets/task-form.ui:34
-#, fuzzy
 msgid "Mark as completed"
-msgstr "Tarefa %s excluída"
+msgstr "Tarefa concluída"
 
 #: src/platform/gnome/widgets/task-form.ui:44
-#, fuzzy
 msgid "Mark as deleted"
-msgstr "Tarefa %s excluída"
+msgstr "Tarefa excluída"
 
 #: src/platform/gnome/widgets/task-form.ui:65
 msgid "Save"
-msgstr ""
+msgstr "Salvar"
 
 #: src/platform/gnome/widgets/task-form.ui:74
 msgid "Discard"
-msgstr ""
+msgstr "Descartar"
 
 #: src/platform/gnome/widgets/popover-sort.ui:20
-#, fuzzy
 msgid "Sort tasks by"
-msgstr "Suas tarefas"
+msgstr "Ordernar tarefas por"
 
 #: src/platform/gnome/widgets/popover-sort.ui:49
 msgid "Order strategy"
-msgstr ""
-
-# Este tooltip estará disponível apenas quando a tarefa for excluída ou finalizada.
-#~ msgid "Finished or deleted tasks can't be changed"
-#~ msgstr "Itens finalizados ou excluídos não se alteram."
-
-#~ msgid "Reopen task"
-#~ msgstr "Reabrir tarefa"
-
-#~ msgid "Restore task"
-#~ msgstr "Restaurar tarefa"
-
-#~ msgid "Delete task"
-#~ msgstr "Excluir tarefa"
-
-#, javascript-format
-#~ msgid "Task %s reopened"
-#~ msgstr "Tarefa %s reaberta"
-
-#~ msgid "Failed to export database!"
-#~ msgstr "Falha ao exportar banco de dados!"
-
-#~ msgid "Import Task Database"
-#~ msgstr "Importar banco de dados"
-
-#~ msgid "JSON Files"
-#~ msgstr "Arquivos JSON"
-
-#~ msgid "Failed to import database!"
-#~ msgstr "Falha ao importar banco de dados!"
-
-#, javascript-format
-#~ msgid "Sorting by date [order %s]"
-#~ msgstr "Ordenado por data [ordem %s]"
-
-#, javascript-format
-#~ msgid "Sorting by title [order %s]"
-#~ msgstr "Ordenado por título [ordem %s]"
-
-#~ msgid "Sorting by status [finished on bottom]"
-#~ msgstr "Ordenado por status [finalizado ao final]"
-
-#~ msgid "Sorting by status [finished on top]"
-#~ msgstr "Ordenado por status [finalizado no topo]"
-
-#~ msgid "Play your day wisely and accomplish all"
-#~ msgstr "Planeje bem seu dia para cumprir tudo"
-
-#~ msgid ""
-#~ "<small>⚠️ Deleted items will be discarded when the app closes.</small>"
-#~ msgstr ""
-#~ "<small>⚠️ Itens excluídos serão descartados ao fechar o aplicativo</small>"
-
-#~ msgid "Sort by Creation"
-#~ msgstr "Por data de criação"
-
-#~ msgid "Sort by Title"
-#~ msgstr "Por título"
-
-#, javascript-format
-#~ msgid "Finished task %s"
-#~ msgstr "Tarefa %s finalizada"
-
-#, javascript-format
-#~ msgid "%s marked as not finished"
-#~ msgstr "Tarefa %s pendente"
-
-#~ msgid "Mark task as unfinished"
-#~ msgstr "Reabrir tarefa"
-
-#~ msgid "Try to add a new task on bottom bar."
-#~ msgstr "Tente adicionar uma nova tarefa na barra inferior."
-
-#~ msgid "_Preferences"
-#~ msgstr "O_pções"
+msgstr "Estratégia de ordenação"
