@@ -1,12 +1,4 @@
 #!/bin/sh
 
-MESSAGE_FILE=$1
-COMMIT_MODE=$2
-
-if [ "$COMMIT_MODE" = "message" ]; then
-  exit 0
-fi
-
-script -q -e -c "node scripts/commit-prompt.mjs \"$MESSAGE_FILE\"" /dev/null
-
+# Interactive commit disabled - use git commit -m "type: message" instead
 exit 0
