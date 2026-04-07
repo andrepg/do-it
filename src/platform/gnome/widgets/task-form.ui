@@ -13,16 +13,16 @@
     <property name="spacing">12</property>
     <child>
       <object class="AdwPreferencesGroup">
-        <property name="description" translatable="yes">Edit title, project, mark as completed or delete this task.</property>
-        <property name="title" translatable="yes">Edit task</property>
+        <property name="description">Edit title, project, mark as completed or delete this task.</property>
+        <property name="title">Edit task</property>
         <child>
           <object class="AdwEntryRow" id="task_form_entry_title">
-            <property name="title" translatable="yes">Title</property>
+            <property name="title">Title</property>
           </object>
         </child>
         <child>
           <object class="AdwEntryRow" id="task_form_entry_project">
-            <property name="title" translatable="yes">Project</property>
+            <property name="title">Project</property>
           </object>
         </child>
       </object>
@@ -31,7 +31,7 @@
       <object class="AdwPreferencesGroup">
         <child>
           <object class="AdwActionRow">
-            <property name="title" translatable="yes">Mark as completed</property>
+            <property name="title">Mark as completed</property>
             <child type="suffix">
               <object class="GtkCheckButton" id="task_form_check_done">
                 <property name="valign">center</property>
@@ -41,7 +41,7 @@
         </child>
         <child>
           <object class="AdwActionRow">
-            <property name="title" translatable="yes">Mark as deleted</property>
+            <property name="title">Mark as deleted</property>
             <child type="suffix">
               <object class="GtkButton" id="task_form_btn_delete">
                 <property name="icon-name">user-trash-symbolic</property>
@@ -62,7 +62,7 @@
         <property name="spacing">12</property>
         <child>
           <object class="GtkButton" id="task_form_btn_save">
-            <property name="label" translatable="yes">Save</property>
+            <property name="label">Save</property>
             <style>
               <class name="suggested-action"/>
               <class name="pill"/>
@@ -71,7 +71,7 @@
         </child>
         <child>
           <object class="GtkButton" id="task_form_btn_discard">
-            <property name="label" translatable="yes">Discard</property>
+            <property name="label">Discard</property>
             <style>
               <class name="destructive-action"/>
               <class name="pill"/>

@@ -10,7 +10,7 @@ msgstr ""
 "Project-Id-Version: io.github.andrepg.Doit\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2026-04-04 17:12-0300\n"
-"PO-Revision-Date: 2026-04-07 20:53-0300\n"
+"PO-Revision-Date: 2026-04-07 20:56-0300\n"
 "Last-Translator: André Paul Grandsire <andre@users.noreply.github.com>\n"
 "Language-Team: Portuguese <andre@users.noreply.github.com>\n"
 "Language: pt\n"
@@ -23,7 +23,7 @@ msgstr ""
 #: src/app.strings.ts:26
 msgctxt "sorting"
 msgid "Older to newer"
-msgstr "Mais velhas primeiro"
+msgstr "Mais antigas primeiro"
 
 #: src/app.strings.ts:27
 msgctxt "sorting"
@@ -308,38 +308,6 @@ msgstr "Menu Principal"
 msgid "What do you need to do?"
 msgstr "O que voce precisa fazer?"
 
-#: src/platform/gnome/widgets/task-form.ui:16
-msgid "Edit title, project, mark as completed or delete this task."
-msgstr "Edite esta tarefa, projeto, marque como concluída ou excluída."
-
-#: src/platform/gnome/widgets/task-form.ui:17
-msgid "Edit task"
-msgstr "Editar tarefa"
-
-#: src/platform/gnome/widgets/task-form.ui:20
-msgid "Title"
-msgstr "Título"
-
-#: src/platform/gnome/widgets/task-form.ui:25
-msgid "Project"
-msgstr "Projeto"
-
-#: src/platform/gnome/widgets/task-form.ui:34
-msgid "Mark as completed"
-msgstr "Tarefa concluída"
-
-#: src/platform/gnome/widgets/task-form.ui:44
-msgid "Mark as deleted"
-msgstr "Tarefa excluída"
-
-#: src/platform/gnome/widgets/task-form.ui:65
-msgid "Save"
-msgstr "Salvar"
-
-#: src/platform/gnome/widgets/task-form.ui:74
-msgid "Discard"
-msgstr "Descartar"
-
 #: src/platform/gnome/widgets/popover-sort.ui:20
 msgid "Sort tasks by"
 msgstr "Ordernar tarefas por"
@@ -347,3 +315,27 @@ msgstr "Ordernar tarefas por"
 #: src/platform/gnome/widgets/popover-sort.ui:49
 msgid "Order strategy"
 msgstr "Estratégia de ordenação"
+
+#~ msgid "Edit title, project, mark as completed or delete this task."
+#~ msgstr "Edite esta tarefa, projeto, marque como concluída ou excluída."
+
+#~ msgid "Edit task"
+#~ msgstr "Editar tarefa"
+
+#~ msgid "Title"
+#~ msgstr "Título"
+
+#~ msgid "Project"
+#~ msgstr "Projeto"
+
+#~ msgid "Mark as completed"
+#~ msgstr "Tarefa concluída"
+
+#~ msgid "Mark as deleted"
+#~ msgstr "Tarefa excluída"
+
+#~ msgid "Save"
+#~ msgstr "Salvar"
+
+#~ msgid "Discard"
+#~ msgstr "Descartar"
