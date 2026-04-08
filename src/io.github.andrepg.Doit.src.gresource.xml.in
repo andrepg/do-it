@@ -31,7 +31,6 @@
     <file>platform/gnome/enums.js</file>
     <file>platform/gnome/index.js</file>
 
-    <file>hooks/autocomplete.js</file>
     <file>hooks/settings.js</file>
     <file>hooks/tasks.sort.js</file>
 
