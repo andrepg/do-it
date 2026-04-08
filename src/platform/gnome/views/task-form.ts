@@ -33,8 +33,6 @@ import { log } from '~/utils/log-manager.js';
 import { TaskItem } from './task-item.js';
 import { TaskListStore } from './task-list-store.js';
 
-import { ProjectManager } from '~/utils/project-manager.js';
-
 const TaskFormProperties = {
   GTypeName: 'TaskForm',
   Template: get_template_path('task-form.ui'),
@@ -78,7 +76,6 @@ export class TaskForm extends Gtk.Box {
    */
   private _taskId: string | null = null;
   private _store!: TaskListStore;
-  private _projectManager!: ProjectManager;
 
   constructor() {
     super();
@@ -138,9 +135,8 @@ export class TaskForm extends Gtk.Box {
     ) as Gtk.CheckButton;
   }
 
-  public setup(store: TaskListStore, projectManager: ProjectManager): this {
+  public setup(store: TaskListStore): this {
     this._store = store;
-    this._projectManager = projectManager;
 
     return this;
   }
@@ -167,8 +163,6 @@ export class TaskForm extends Gtk.Box {
     this.entry_title.set_text(data.title);
     this.entry_project.set_text(data.project || '');
     this.check_done.set_active(data.done || false);
-
-    this.setup_project_autocomplete();
   }
 
   /**
@@ -178,49 +172,6 @@ export class TaskForm extends Gtk.Box {
     if (this._taskId === null) return null;
     return this._store.find_by_id(this._taskId);
   }
-
-  /**
-   * Setup project autocomplete on project entry
-   */
-  private setup_project_autocomplete(): void {}
-
-  /*
-
-    private _setup_project_completion() {
-        const completion = new Gtk.EntryCompletion();
-        const model = new Gtk.ListStore();
-        model.set_column_types([GObject.TYPE_STRING]);
-        completion.set_model(model);
-        completion.set_text_column(0);
-        completion.set_inline_completion(true);
-        completion.set_popup_single_match(false);
-
-        this.connect("map", () => {
-            if (this._projectManager) {
-                model.clear();
-                this._projectManager.get_projects().forEach(project => {
-                    if (project) {
-                        const iter = model.append();
-                        model.set(iter, [0], [project]);
-                    }
-                });
-            }
-        });
-
-        let entry: Gtk.Entry | null = null;
-        let child = this.entry_project.get_first_child();
-        while (child) {
-            if (child instanceof Gtk.Entry) {
-                entry = child;
-                break;
-            }
-            child = child.get_next_sibling();
-        }
-
-        if (entry) {
-            entry.set_completion(completion);
-        }
-    }*/
 
   /**
    * Save current task on list and dispatch window action to close bottom sheet

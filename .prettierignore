@@ -1,5 +1,6 @@
 node_modules
 _build
+_build_pot
 .flatpak-builder
 .flatpak
 flatpak/generated-sources.json

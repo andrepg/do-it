@@ -142,7 +142,7 @@ export class DoItMainWindow extends Adw.ApplicationWindow {
       DoItMainWindow.$gtype,
       WidgetIds.TaskFormWidget,
     ) as TaskForm;
-    this.task_form.setup(this.taskListStore, this.projectManager);
+    this.task_form.setup(this.taskListStore);
 
     Actions.taskEdit(this.task_form).setup(this);
   }

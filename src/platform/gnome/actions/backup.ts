@@ -23,7 +23,7 @@ import { ActionNames, AppSignals } from '../enums.js';
 import { ITask } from '../../../app.types.js';
 import { AppLocale } from '../../../app.strings.js';
 
-import { log } from '../../../utils/log-manager.js';
+import { log, error } from '../../../utils/log-manager.js';
 import { FilePersistence } from '../../../core/persistence/file-persistence.js';
 import { showToast } from './toast.js';
 
@@ -75,8 +75,8 @@ const backup = () => {
         file?.replace_contents(data, null, false, Gio.FileCreateFlags.REPLACE_DESTINATION, null);
 
         showToast(AppLocale.app.backup.exportSuccess);
-      } catch (error) {
-        console.error(error);
+      } catch (err) {
+        error('backup-manager', String(err));
         showToast(AppLocale.app.backup.exportError);
       }
     });
@@ -101,8 +101,8 @@ const backup = () => {
         new FilePersistence().save(tasks);
 
         showToast(AppLocale.app.backup.importSuccess);
-      } catch (error) {
-        console.error(error);
+      } catch (err) {
+        error('backup-manager', String(err));
         showToast(AppLocale.app.backup.importError);
       }
     });

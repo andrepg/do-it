@@ -26,3 +26,21 @@ import { is_development_mode } from './application.js';
  */
 export const log = (component: string, message: string) =>
   is_development_mode() ? console.log(`[${component}] ${message}`) : null;
+
+/**
+ * Logs a warning message to the console.
+ *
+ * @param component The name of the component or module originating the warning.
+ * @param message The warning message to be logged.
+ */
+export const warn = (component: string, message: string) =>
+  console.warn(`[${component}] ${message}`);
+
+/**
+ * Logs an error message to the console.
+ *
+ * @param component The name of the component or module originating the error.
+ * @param message The error message to be logged.
+ */
+export const error = (component: string, message: string) =>
+  console.error(`[${component}] ${message}`);

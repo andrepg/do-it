@@ -21,6 +21,7 @@ import Gio from 'gi://Gio';
 import GLib from 'gi://GLib';
 import { ActionNames, AppSignals, WidgetIds } from '../enums.js';
 import { DoItMainWindow } from '../views/doit.js';
+import { warn } from '~/utils/log-manager.js';
 
 /**
  * Displays an overlay toast on the currently active window.
@@ -33,7 +34,7 @@ export const showToast = (message: string): void => {
   const window = app?.active_window as Adw.ApplicationWindow | null;
 
   if (!window) {
-    console.warn('[toast] no active window found, skipping toast');
+    warn('toast', 'no active window found, skipping toast');
     return;
   }
 

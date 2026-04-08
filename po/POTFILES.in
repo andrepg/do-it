@@ -57,7 +57,6 @@ src/utils/log-manager.ts
 # UI files
 src/platform/gnome/widgets/application.ui
 src/platform/gnome/widgets/shortcuts-dialog.ui
-src/platform/gnome/widgets/window-v2.ui
 src/platform/gnome/widgets/task.ui
 src/platform/gnome/widgets/task-list.ui
 src/platform/gnome/widgets/task-group.ui

@@ -53,16 +53,6 @@ const TaskStrings = {
   },
 
   form: {
-    title: C_('task-form', 'Task'),
-    titlePlaceholder: C_('task-form', 'Task title'),
-    descriptionPlaceholder: C_('task-form', 'Task description'),
-
-    entryRowDone: C_('task-form', 'Mark as done'),
-    entryRowDelete: C_('task-form', 'Mark as deleted'),
-
-    buttonSave: C_('task-form', 'Save'),
-    buttonDiscard: C_('task-form', 'Discard'),
-
     errorEmptyTitle: C_('task-form', 'Title cannot be empty'),
   },
 
@@ -79,8 +69,8 @@ const TaskStrings = {
 
 const AppStrings = {
   backup: {
-    export: C_('backup', 'Export database'),
-    import: C_('backup', 'Import database'),
+    export: C_('backup', 'Save Tasks As…'),
+    import: C_('backup', 'Import Tasks…'),
 
     exportSuccess: C_('backup', 'Database exported successfully'),
     exportError: C_('backup', 'Error exporting database'),

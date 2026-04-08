@@ -112,8 +112,6 @@ export class TaskItem extends Adw.ActionRow implements ITaskView {
 
   private _deleted = false;
 
-  private _tags: string[] = [];
-
   private task_done!: Gtk.CheckButton;
   private task_delete!: Gtk.Button;
 
@@ -135,7 +133,6 @@ export class TaskItem extends Adw.ActionRow implements ITaskView {
     this._project = project;
     this._created_at = new Date(created ?? Date.now());
     this._deleted = deleted;
-    this._tags = [];
 
     this._init_widgets();
 
@@ -278,7 +275,6 @@ export class TaskItem extends Adw.ActionRow implements ITaskView {
       done: this.done,
       created_at: this._created_at.getTime(),
       deleted: this.deleted,
-      tags: this._tags,
     };
   }
 

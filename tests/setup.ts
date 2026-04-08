@@ -1,5 +1,13 @@
 import { vi } from 'vitest';
 
+// Mock pkg (gnome-js-common)
+globalThis.pkg = {
+  initGettext: vi.fn(),
+};
+
+// Mock C_ function for gettext
+globalThis.C_ = (ctx: string, msg: string): string => msg;
+
 // Global mocks for GObject - needed because many classes extend GObject.Object
 // These must be at top level for vitest hoisting
 vi.mock('gi://GObject', () => ({

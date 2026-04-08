@@ -1,74 +1,71 @@
 #
-# André Paul Grandsire <andrepg@users.noreply.github.com>, 2025.
+# André Paul Grandsire <andrepg@users.noreply.github.com>, 2025-2026.
 #
 msgid ""
 msgstr ""
 "Project-Id-Version: io.github.andrepg.Doit\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-04-03 22:10-0300\n"
-"PO-Revision-Date: 2025-12-28 19:44-0300\n"
+"POT-Creation-Date: 2026-04-07 21:30-0300\n"
+"PO-Revision-Date: 2026-04-07 21:05-0300\n"
 "Last-Translator: André Paul Grandsire <andrepg@users.noreply.github.com>\n"
-"Language-Team: Portuguese\n"
+"Language-Team: Spanish\n"
 "Language: es\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
-"X-Generator: Gtranslator 49.0\n"
 
 #: src/app.strings.ts:26
 msgctxt "sorting"
 msgid "Older to newer"
-msgstr ""
+msgstr "Más antiguas primero"
 
 #: src/app.strings.ts:27
 msgctxt "sorting"
 msgid "To do first"
-msgstr ""
+msgstr "Pendientes primero"
 
 #: src/app.strings.ts:28 src/app.strings.ts:29
 msgctxt "sorting"
 msgid "A to Z"
-msgstr ""
+msgstr "A a Z"
 
 #: src/app.strings.ts:32
 msgctxt "sorting"
 msgid "Newer to older"
-msgstr ""
+msgstr "Más recientes primero"
 
 #: src/app.strings.ts:33
 msgctxt "sorting"
 msgid "Done first"
-msgstr ""
+msgstr "Completadas primero"
 
 #: src/app.strings.ts:34 src/app.strings.ts:35
 msgctxt "sorting"
 msgid "Z to A"
-msgstr ""
+msgstr "Z a A"
 
 #: src/app.strings.ts:39
 msgctxt "sorting-field"
 msgid "Date"
-msgstr ""
+msgstr "Fecha"
 
 #: src/app.strings.ts:40
-#, fuzzy
 msgctxt "sorting-field"
 msgid "Status"
-msgstr "Por estado"
+msgstr "Estado"
 
 #: src/app.strings.ts:41
 msgctxt "sorting-field"
 msgid "Title"
-msgstr ""
+msgstr "Título"
 
 #: src/app.strings.ts:42
 msgctxt "sorting-field"
 msgid "Project"
-msgstr ""
+msgstr "Proyecto"
 
 #: src/app.strings.ts:48
-#, fuzzy
 msgctxt "task-list"
 msgid "Tasks"
 msgstr "Tareas"
@@ -76,192 +73,132 @@ msgstr "Tareas"
 #: src/app.strings.ts:49
 msgctxt "task-list"
 msgid "No tasks found"
-msgstr ""
+msgstr "No hay tareas"
 
 #: src/app.strings.ts:50
-#, fuzzy
 msgctxt "task-list"
 msgid "All tasks"
-msgstr "Sus tareas"
+msgstr "Todas las tareas"
 
 #: src/app.strings.ts:51
 msgctxt "task-list"
 msgid "Without project"
-msgstr ""
+msgstr "Sin proyecto"
 
 #: src/app.strings.ts:52
 #, javascript-format
 msgctxt "task-group"
 msgid "%s finished, %s deleted"
-msgstr "%s terminadas, %s eliminadas"
+msgstr "%s completadas, %s eliminadas"
 
 #: src/app.strings.ts:56
-#, fuzzy
-msgctxt "task-form"
-msgid "Task"
-msgstr "Tareas"
-
-#: src/app.strings.ts:57
-#, fuzzy
-msgctxt "task-form"
-msgid "Task title"
-msgstr "Tarea %s actualizada"
-
-#: src/app.strings.ts:58
-#, fuzzy
-msgctxt "task-form"
-msgid "Task description"
-msgstr "Descripción"
-
-#: src/app.strings.ts:60
-#, fuzzy
-msgctxt "task-form"
-msgid "Mark as done"
-msgstr "Tarea %s excluída"
-
-#: src/app.strings.ts:61
-#, fuzzy
-msgctxt "task-form"
-msgid "Mark as deleted"
-msgstr "Tarea %s excluída"
-
-#: src/app.strings.ts:63
-msgctxt "task-form"
-msgid "Save"
-msgstr ""
-
-#: src/app.strings.ts:64
-msgctxt "task-form"
-msgid "Discard"
-msgstr ""
-
-#: src/app.strings.ts:66
 msgctxt "task-form"
 msgid "Title cannot be empty"
-msgstr ""
+msgstr "El título no puede estar vacío"
 
-#: src/app.strings.ts:70
-#, fuzzy
+#: src/app.strings.ts:60
 msgctxt "toast"
 msgid "Task created"
-msgstr "Tarea %s creada"
+msgstr "Tarea creada"
 
-#: src/app.strings.ts:71
-#, fuzzy
+#: src/app.strings.ts:61
 msgctxt "toast"
 msgid "Task edited"
-msgstr "Tarea %s actualizada"
+msgstr "Tarea editada"
 
-#: src/app.strings.ts:72
-#, fuzzy
+#: src/app.strings.ts:62
 msgctxt "toast"
 msgid "Task updated"
-msgstr "Tarea %s actualizada"
+msgstr "Tarea actualizada"
 
-#: src/app.strings.ts:73
-#, fuzzy
+#: src/app.strings.ts:63
 msgctxt "toast"
 msgid "Task restored"
-msgstr "Tarea %s restorada"
+msgstr "Tarea restaurada"
 
-#: src/app.strings.ts:74
-#, fuzzy
+#: src/app.strings.ts:64
 msgctxt "toast"
 msgid "Task deleted"
-msgstr "Tarea %s excluída"
+msgstr "Tarea eliminada"
 
-#: src/app.strings.ts:75
-#, fuzzy
+#: src/app.strings.ts:65
 msgctxt "toast"
 msgid "Tasks purged"
-msgstr "Tarea %s actualizada"
+msgstr "Tareas eliminadas"
 
-#: src/app.strings.ts:76
-#, fuzzy
+#: src/app.strings.ts:66
 msgctxt "toast"
 msgid "Task finished"
-msgstr "Tarea %s finalizada"
+msgstr "Tarea completada"
 
-#: src/app.strings.ts:82
-#, fuzzy
+#: src/app.strings.ts:72
 msgctxt "backup"
-msgid "Export database"
-msgstr "Exportar banco de datos"
+msgid "Save Tasks As…"
+msgstr "Guardar Tareas Como…"
 
-#: src/app.strings.ts:83
-#, fuzzy
+#: src/app.strings.ts:73
 msgctxt "backup"
-msgid "Import database"
-msgstr "_Importar banco de datos"
+msgid "Import Tasks…"
+msgstr "Importar Tareas…"
 
-#: src/app.strings.ts:85
-#, fuzzy
+#: src/app.strings.ts:75
 msgctxt "backup"
 msgid "Database exported successfully"
-msgstr "Banco de datos exportado con suceso!"
+msgstr "Exportación completada con éxito"
 
-#: src/app.strings.ts:86
-#, fuzzy
+#: src/app.strings.ts:76
 msgctxt "backup"
 msgid "Error exporting database"
-msgstr "Exportar banco de datos"
+msgstr "Error al exportar datos"
 
-#: src/app.strings.ts:88
-#, fuzzy
+#: src/app.strings.ts:78
 msgctxt "backup"
 msgid "Database imported successfully"
-msgstr "Banco de datos importado con suceso"
+msgstr "Importación completada con éxito"
 
-#: src/app.strings.ts:89
-#, fuzzy
+#: src/app.strings.ts:79
 msgctxt "backup"
 msgid "Error importing database"
-msgstr "Exportar banco de datos"
+msgstr "Error al importar datos"
 
-#: src/app.strings.ts:92
-#, fuzzy
+#: src/app.strings.ts:82
 msgctxt "about"
 msgid "translators-credits"
 msgstr "André Paul Grandsire/andrepg@users.noreply.github.com"
 
-#: src/app.strings.ts:93
+#: src/app.strings.ts:83
 msgctxt "about"
 msgid "Donate"
-msgstr ""
+msgstr "Donar"
 
 #: src/platform/gnome/widgets/application.ui:13
-#: src/platform/gnome/widgets/window-v2.ui:200
 msgid "Purge deleted tasks"
 msgstr "Eliminar tareas excluídas"
 
 #: src/platform/gnome/widgets/application.ui:21
-#: src/platform/gnome/widgets/window-v2.ui:208
-msgid "_Export Database"
-msgstr "_Exportar banco de datos"
+msgid "Export Tasks…"
+msgstr "Exportar Tareas…"
 
 #: src/platform/gnome/widgets/application.ui:26
-#: src/platform/gnome/widgets/window-v2.ui:213
-msgid "_Import Database"
-msgstr "_Importar banco de datos"
+msgid "Import Tasks…"
+msgstr "Importar Tareas…"
 
 #: src/platform/gnome/widgets/application.ui:33
-#: src/platform/gnome/widgets/window-v2.ui:220
-msgid "_Keyboard Shortcuts"
-msgstr "_Atajos de Teclado"
+msgid "Keyboard Shortcuts"
+msgstr "Atajos de teclado"
 
 #: src/platform/gnome/widgets/application.ui:37
-#: src/platform/gnome/widgets/window-v2.ui:224
-msgid "_About Do It"
-msgstr "_Sobre Do It"
+msgid "About Do It"
+msgstr "Acerca de Do It"
 
 #: src/platform/gnome/widgets/application.ui:54
 msgid "Create a new task"
-msgstr ""
+msgstr "Crear nueva tarea"
 
 #: src/platform/gnome/widgets/shortcuts-dialog.ui:6
 msgctxt "shortcut window"
 msgid "General"
-msgstr "General\t"
+msgstr "General"
 
 #: src/platform/gnome/widgets/shortcuts-dialog.ui:9
 msgctxt "shortcut window"
@@ -269,15 +206,14 @@ msgid "Show Shortcuts"
 msgstr "Mostrar atajos"
 
 #: src/platform/gnome/widgets/shortcuts-dialog.ui:16
-#, fuzzy
 msgctxt "shortcut window"
 msgid "New Task"
-msgstr "Tareas"
+msgstr "Nueva tarea"
 
 #: src/platform/gnome/widgets/shortcuts-dialog.ui:23
 msgctxt "shortcut window"
 msgid "Toggle Sidebar"
-msgstr ""
+msgstr "Mostrar/ocultar barra lateral"
 
 #: src/platform/gnome/widgets/shortcuts-dialog.ui:30
 msgctxt "shortcut window"
@@ -287,152 +223,93 @@ msgstr "Salir"
 #: src/platform/gnome/widgets/shortcuts-dialog.ui:39
 msgctxt "shortcut window"
 msgid "Task Editing"
-msgstr ""
+msgstr "Editar tarea"
 
 #: src/platform/gnome/widgets/shortcuts-dialog.ui:42
 msgctxt "shortcut window"
 msgid "Save Task"
-msgstr ""
+msgstr "Guardar tarea"
 
 #: src/platform/gnome/widgets/shortcuts-dialog.ui:49
 msgctxt "shortcut window"
 msgid "Discard Changes"
-msgstr ""
-
-#: src/platform/gnome/widgets/window-v2.ui:32
-msgid "Projects"
-msgstr ""
-
-#: src/platform/gnome/widgets/window-v2.ui:68
-msgid "Tasks"
-msgstr "Tareas"
-
-#: src/platform/gnome/widgets/window-v2.ui:80
-msgid "Open sidebar"
-msgstr ""
-
-#: src/platform/gnome/widgets/window-v2.ui:86
-msgid "Add new task (Ctrl + N)"
-msgstr ""
-
-#: src/platform/gnome/widgets/window-v2.ui:99
-msgid "Sorting options"
-msgstr ""
-
-#: src/platform/gnome/widgets/window-v2.ui:108
-msgid "Main Menu"
-msgstr "Menu principal"
-
-#: src/platform/gnome/widgets/window-v2.ui:149
-msgid "What do you need to do?"
-msgstr "¿Que hay para hacer?"
+msgstr "Descartar cambios"
 
 #: src/platform/gnome/widgets/task-form.ui:16
+msgctxt "task-form"
 msgid "Edit title, project, mark as completed or delete this task."
-msgstr ""
+msgstr "Edita el título, proyecto, marca como completada o elimina esta tarea."
 
 #: src/platform/gnome/widgets/task-form.ui:17
-#, fuzzy
+msgctxt "task-form"
 msgid "Edit task"
-msgstr "Cerrar tarea"
+msgstr "Editar tarea"
 
 #: src/platform/gnome/widgets/task-form.ui:20
+msgctxt "task-form"
 msgid "Title"
-msgstr ""
+msgstr "Título"
 
 #: src/platform/gnome/widgets/task-form.ui:25
+msgctxt "task-form"
 msgid "Project"
-msgstr ""
+msgstr "Proyecto"
 
 #: src/platform/gnome/widgets/task-form.ui:34
-#, fuzzy
+msgctxt "task-form"
 msgid "Mark as completed"
-msgstr "Tarea %s excluída"
+msgstr "Marcar como completada"
 
 #: src/platform/gnome/widgets/task-form.ui:44
-#, fuzzy
+msgctxt "task-form"
 msgid "Mark as deleted"
-msgstr "Tarea %s excluída"
+msgstr "Marcar como eliminada"
 
 #: src/platform/gnome/widgets/task-form.ui:65
+msgctxt "task-form"
 msgid "Save"
-msgstr ""
+msgstr "Guardar"
 
 #: src/platform/gnome/widgets/task-form.ui:74
+msgctxt "task-form"
 msgid "Discard"
-msgstr ""
+msgstr "Descartar"
 
 #: src/platform/gnome/widgets/popover-sort.ui:20
-#, fuzzy
 msgid "Sort tasks by"
-msgstr "Sus tareas"
+msgstr "Ordenar tareas por"
 
 #: src/platform/gnome/widgets/popover-sort.ui:49
 msgid "Order strategy"
-msgstr ""
+msgstr "Estrategia de ordenación"
 
-#~ msgid "Finished or deleted tasks can't be changed"
-#~ msgstr "No se puede cambiar tareas finalizadas u excluídas."
+#~ msgid "Projects"
+#~ msgstr "Proyectos"
 
-#~ msgid "Reopen task"
-#~ msgstr "Reabrir tarea"
+#~ msgid "Tasks"
+#~ msgstr "Tareas"
 
-#~ msgid "Restore task"
-#~ msgstr "Restaurar tarea"
+#~ msgid "Open sidebar"
+#~ msgstr "Abrir barra lateral"
 
-#~ msgid "Delete task"
-#~ msgstr "Excluir tarea"
+#~ msgid "Add new task (Ctrl + N)"
+#~ msgstr "Añadir tarea (Ctrl + N)"
 
-#, javascript-format
-#~ msgid "Task %s reopened"
-#~ msgstr "Tarea %s reabierta"
+#~ msgid "Sorting options"
+#~ msgstr "Opciones de ordenación"
 
-#~ msgid "Failed to export database!"
-#~ msgstr "Falla mientras exportaba banco de datos"
+#~ msgid "Main Menu"
+#~ msgstr "Menú principal"
 
-#~ msgid "Import Task Database"
-#~ msgstr "Importar banco de tareas"
+#~ msgid "What do you need to do?"
+#~ msgstr "¿Qué necesitas hacer?"
 
-#~ msgid "JSON Files"
-#~ msgstr "Ficheros JSON"
+#~ msgctxt "backup"
+#~ msgid "Export database"
+#~ msgstr "Exportar datos"
 
-#~ msgid "Failed to import database!"
-#~ msgstr "Falla mientras importaba banco de datos"
+#~ msgid "_Export Database"
+#~ msgstr "_Exportar datos"
 
-#, javascript-format
-#~ msgid "Sorting by date [order %s]"
-#~ msgstr "Ordenado por data [orden %s]"
-
-#, javascript-format
-#~ msgid "Sorting by title [order %s]"
-#~ msgstr "Ordenado por título [orden %s]"
-
-#~ msgid "Sorting by status [finished on bottom]"
-#~ msgstr "Ordenado por estado [cerrados al final]"
-
-#~ msgid "Sorting by status [finished on top]"
-#~ msgstr "Ordenado por estado [cerrados primero]"
-
-#~ msgid "Play your day wisely and accomplish all"
-#~ msgstr "Haga tus planes con inteligencia para cumplir todo"
-
-#~ msgid ""
-#~ "<small>⚠️ Deleted items will be discarded when the app closes.</small>"
-#~ msgstr "<small>Tareas excluídas se descartan cuándo cierre la app</small>"
-
-#~ msgid "Sort by Creation"
-#~ msgstr "Por creación"
-
-#~ msgid "Sort by Title"
-#~ msgstr "Por título"
-
-#, javascript-format
-#~ msgid "%s marked as not finished"
-#~ msgstr "Tarea %s abierta"
-
-#, fuzzy
-#~ msgid "Mark task as unfinished"
-#~ msgstr "Tarea %s finalizada"
-
-#~ msgid "_Preferences"
-#~ msgstr "_Preferéncias"
+#~ msgid "_Import Database"
+#~ msgstr "_Importar datos"
