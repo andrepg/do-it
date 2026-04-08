@@ -53,4 +53,4 @@ jobs:
         with:
           draft: false
           tag_name: ${{ env.RELEASE_TAG }}
-          files: io.github.andrepg.Doit-${{ env.RELEASE_TAG }}-x86_64.flatpak
+          files: io.github.andrepg.Doit-${{ env.RELEASE_TAG }}.flatpak
