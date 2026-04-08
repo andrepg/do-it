@@ -3,12 +3,23 @@ name: '[build] flatpak bundle'
 on:
   push:
     tags: ['*']
+  workflow_dispatch:
+    inputs:
+      tag:
+        description: 'Git tag to build and release'
+        required: true
+        type: string
 
-permissions: {}
+permissions:
+  contents: write
+  pull-requests: read
+
+env:
+  RELEASE_TAG: ${{ github.event.inputs.tag || github.ref_name }}
 
 jobs:
   flatpak-validation:
-    uses: ./.github/workflows/build-and-bundle.yml
+    uses: ./.github/workflows/build-test.yml
 
   flatpak-bundle:
     name: '[build] create flatpak bundle'
@@ -34,13 +45,12 @@ jobs:
           build-bundle: true
           upload-artifact: true
           manifest-path: flatpak/io.github.andrepg.Doit.json
-          bundle: io.github.andrepg.Doit.${{ github.ref_name }}.flatpak
-          cache-key: flatpak-release-${{ github.ref_name }}
+          bundle: io.github.andrepg.Doit.${{ env.RELEASE_TAG }}.flatpak
+          cache-key: flatpak-prod-${{ hashFiles('flatpak/io.github.andrepg.Doit.json') }}
 
       - name: Upload bundle to release
         uses: softprops/action-gh-release@e2b1d7a6fd65ebda87147ce321d4c1fb37eb1d41
-        if: github.ref_type == 'tag'
         with:
           draft: false
-          tag_name: ${{ github.ref_name }}
-          files: io.github.andrepg.Doit-${{ github.ref_name }}.flatpak
+          tag_name: ${{ env.RELEASE_TAG }}
+          files: io.github.andrepg.Doit-${{ env.RELEASE_TAG }}.flatpak
