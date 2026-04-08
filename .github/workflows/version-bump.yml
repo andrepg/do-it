@@ -82,7 +82,7 @@ jobs:
           git push -u origin "$BRANCH"
 
       - name: Create Pull Request
-        uses: actions/github-script@0c9a481118c6d2733f6c4f5b1e90e50c5c4d4d5c
+        uses: actions/github-script@v8
         with:
           script: |
             const currentVersion = '${{ steps.current-version.outputs.version }}';
