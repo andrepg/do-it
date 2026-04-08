@@ -49,7 +49,7 @@ jobs:
           cache-key: flatpak-prod-${{ hashFiles('flatpak/io.github.andrepg.Doit.json') }}
 
       - name: Upload bundle to release
-        uses: softprops/action-gh-release@e2b1d7a6fd65ebda87147ce321d4c1fb37eb1d41
+        uses: softprops/action-gh-release@v2
         with:
           draft: false
           tag_name: ${{ env.RELEASE_TAG }}
