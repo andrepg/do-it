@@ -5,7 +5,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: io.github.andrepg.Doit\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-04-04 17:12-0300\n"
+"POT-Creation-Date: 2026-04-07 20:58-0300\n"
 "PO-Revision-Date: 2025-12-28 19:44-0300\n"
 "Last-Translator: André Paul Grandsire <andrepg@users.noreply.github.com>\n"
 "Language-Team: Portuguese\n"
@@ -96,135 +96,95 @@ msgid "%s finished, %s deleted"
 msgstr "%s terminadas, %s eliminadas"
 
 #: src/app.strings.ts:56
-#, fuzzy
-msgctxt "task-form"
-msgid "Task"
-msgstr "Tareas"
-
-#: src/app.strings.ts:57
-#, fuzzy
-msgctxt "task-form"
-msgid "Task title"
-msgstr "Tarea %s actualizada"
-
-#: src/app.strings.ts:58
-#, fuzzy
-msgctxt "task-form"
-msgid "Task description"
-msgstr "Descripción"
-
-#: src/app.strings.ts:60
-#, fuzzy
-msgctxt "task-form"
-msgid "Mark as done"
-msgstr "Tarea %s excluída"
-
-#: src/app.strings.ts:61
-#, fuzzy
-msgctxt "task-form"
-msgid "Mark as deleted"
-msgstr "Tarea %s excluída"
-
-#: src/app.strings.ts:63
-msgctxt "task-form"
-msgid "Save"
-msgstr ""
-
-#: src/app.strings.ts:64
-msgctxt "task-form"
-msgid "Discard"
-msgstr ""
-
-#: src/app.strings.ts:66
 msgctxt "task-form"
 msgid "Title cannot be empty"
 msgstr ""
 
-#: src/app.strings.ts:70
+#: src/app.strings.ts:60
 #, fuzzy
 msgctxt "toast"
 msgid "Task created"
 msgstr "Tarea %s creada"
 
-#: src/app.strings.ts:71
+#: src/app.strings.ts:61
 #, fuzzy
 msgctxt "toast"
 msgid "Task edited"
 msgstr "Tarea %s actualizada"
 
-#: src/app.strings.ts:72
+#: src/app.strings.ts:62
 #, fuzzy
 msgctxt "toast"
 msgid "Task updated"
 msgstr "Tarea %s actualizada"
 
-#: src/app.strings.ts:73
+#: src/app.strings.ts:63
 #, fuzzy
 msgctxt "toast"
 msgid "Task restored"
 msgstr "Tarea %s restorada"
 
-#: src/app.strings.ts:74
+#: src/app.strings.ts:64
 #, fuzzy
 msgctxt "toast"
 msgid "Task deleted"
 msgstr "Tarea %s excluída"
 
-#: src/app.strings.ts:75
+#: src/app.strings.ts:65
 #, fuzzy
 msgctxt "toast"
 msgid "Tasks purged"
 msgstr "Tarea %s actualizada"
 
-#: src/app.strings.ts:76
+#: src/app.strings.ts:66
 #, fuzzy
 msgctxt "toast"
 msgid "Task finished"
 msgstr "Tarea %s finalizada"
 
-#: src/app.strings.ts:82
+#: src/app.strings.ts:72
 #, fuzzy
 msgctxt "backup"
 msgid "Export database"
 msgstr "Exportar banco de datos"
 
-#: src/app.strings.ts:83
+#: src/app.strings.ts:73
 #, fuzzy
 msgctxt "backup"
 msgid "Import database"
 msgstr "_Importar banco de datos"
 
-#: src/app.strings.ts:85
+#: src/app.strings.ts:75
 #, fuzzy
 msgctxt "backup"
 msgid "Database exported successfully"
 msgstr "Banco de datos exportado con suceso!"
 
-#: src/app.strings.ts:86
+#: src/app.strings.ts:76
 #, fuzzy
 msgctxt "backup"
 msgid "Error exporting database"
 msgstr "Exportar banco de datos"
 
-#: src/app.strings.ts:88
+#: src/app.strings.ts:78
 #, fuzzy
 msgctxt "backup"
 msgid "Database imported successfully"
 msgstr "Banco de datos importado con suceso"
 
-#: src/app.strings.ts:89
+#: src/app.strings.ts:79
 #, fuzzy
 msgctxt "backup"
 msgid "Error importing database"
 msgstr "Exportar banco de datos"
 
-#: src/app.strings.ts:92
+#: src/app.strings.ts:82
 #, fuzzy
 msgctxt "about"
 msgid "translators-credits"
 msgstr "André Paul Grandsire/andrepg@users.noreply.github.com"
 
-#: src/app.strings.ts:93
+#: src/app.strings.ts:83
 msgctxt "about"
 msgid "Donate"
 msgstr ""
@@ -327,6 +287,50 @@ msgstr "Menu principal"
 msgid "What do you need to do?"
 msgstr "¿Que hay para hacer?"
 
+#: src/platform/gnome/widgets/task-form.ui:16
+msgctxt "task-form"
+msgid "Edit title, project, mark as completed or delete this task."
+msgstr ""
+
+#: src/platform/gnome/widgets/task-form.ui:17
+#, fuzzy
+msgctxt "task-form"
+msgid "Edit task"
+msgstr "Cerrar tarea"
+
+#: src/platform/gnome/widgets/task-form.ui:20
+#, fuzzy
+msgctxt "task-form"
+msgid "Title"
+msgstr "Tarea %s actualizada"
+
+#: src/platform/gnome/widgets/task-form.ui:25
+msgctxt "task-form"
+msgid "Project"
+msgstr ""
+
+#: src/platform/gnome/widgets/task-form.ui:34
+#, fuzzy
+msgctxt "task-form"
+msgid "Mark as completed"
+msgstr "Tarea %s excluída"
+
+#: src/platform/gnome/widgets/task-form.ui:44
+#, fuzzy
+msgctxt "task-form"
+msgid "Mark as deleted"
+msgstr "Tarea %s excluída"
+
+#: src/platform/gnome/widgets/task-form.ui:65
+msgctxt "task-form"
+msgid "Save"
+msgstr ""
+
+#: src/platform/gnome/widgets/task-form.ui:74
+msgctxt "task-form"
+msgid "Discard"
+msgstr ""
+
 #: src/platform/gnome/widgets/popover-sort.ui:20
 #, fuzzy
 msgid "Sort tasks by"
@@ -337,11 +341,23 @@ msgid "Order strategy"
 msgstr ""
 
 #, fuzzy
-#~ msgid "Edit task"
-#~ msgstr "Cerrar tarea"
+#~ msgctxt "task-form"
+#~ msgid "Task"
+#~ msgstr "Tareas"
 
 #, fuzzy
-#~ msgid "Mark as completed"
+#~ msgctxt "task-form"
+#~ msgid "Task title"
+#~ msgstr "Tarea %s actualizada"
+
+#, fuzzy
+#~ msgctxt "task-form"
+#~ msgid "Task description"
+#~ msgstr "Descripción"
+
+#, fuzzy
+#~ msgctxt "task-form"
+#~ msgid "Mark as done"
 #~ msgstr "Tarea %s excluída"
 
 #, fuzzy

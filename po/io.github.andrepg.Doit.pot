@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: io.github.andrepg.Doit\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-04-04 17:12-0300\n"
+"POT-Creation-Date: 2026-04-07 20:58-0300\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -95,115 +95,80 @@ msgstr ""
 
 #: src/app.strings.ts:56
 msgctxt "task-form"
-msgid "Task"
-msgstr ""
-
-#: src/app.strings.ts:57
-msgctxt "task-form"
-msgid "Task title"
-msgstr ""
-
-#: src/app.strings.ts:58
-msgctxt "task-form"
-msgid "Task description"
-msgstr ""
-
-#: src/app.strings.ts:60
-msgctxt "task-form"
-msgid "Mark as done"
-msgstr ""
-
-#: src/app.strings.ts:61
-msgctxt "task-form"
-msgid "Mark as deleted"
-msgstr ""
-
-#: src/app.strings.ts:63
-msgctxt "task-form"
-msgid "Save"
-msgstr ""
-
-#: src/app.strings.ts:64
-msgctxt "task-form"
-msgid "Discard"
-msgstr ""
-
-#: src/app.strings.ts:66
-msgctxt "task-form"
 msgid "Title cannot be empty"
 msgstr ""
 
-#: src/app.strings.ts:70
+#: src/app.strings.ts:60
 msgctxt "toast"
 msgid "Task created"
 msgstr ""
 
-#: src/app.strings.ts:71
+#: src/app.strings.ts:61
 msgctxt "toast"
 msgid "Task edited"
 msgstr ""
 
-#: src/app.strings.ts:72
+#: src/app.strings.ts:62
 msgctxt "toast"
 msgid "Task updated"
 msgstr ""
 
-#: src/app.strings.ts:73
+#: src/app.strings.ts:63
 msgctxt "toast"
 msgid "Task restored"
 msgstr ""
 
-#: src/app.strings.ts:74
+#: src/app.strings.ts:64
 msgctxt "toast"
 msgid "Task deleted"
 msgstr ""
 
-#: src/app.strings.ts:75
+#: src/app.strings.ts:65
 msgctxt "toast"
 msgid "Tasks purged"
 msgstr ""
 
-#: src/app.strings.ts:76
+#: src/app.strings.ts:66
 msgctxt "toast"
 msgid "Task finished"
 msgstr ""
 
-#: src/app.strings.ts:82
+#: src/app.strings.ts:72
 msgctxt "backup"
 msgid "Export database"
 msgstr ""
 
-#: src/app.strings.ts:83
+#: src/app.strings.ts:73
 msgctxt "backup"
 msgid "Import database"
 msgstr ""
 
-#: src/app.strings.ts:85
+#: src/app.strings.ts:75
 msgctxt "backup"
 msgid "Database exported successfully"
 msgstr ""
 
-#: src/app.strings.ts:86
+#: src/app.strings.ts:76
 msgctxt "backup"
 msgid "Error exporting database"
 msgstr ""
 
-#: src/app.strings.ts:88
+#: src/app.strings.ts:78
 msgctxt "backup"
 msgid "Database imported successfully"
 msgstr ""
 
-#: src/app.strings.ts:89
+#: src/app.strings.ts:79
 msgctxt "backup"
 msgid "Error importing database"
 msgstr ""
 
-#: src/app.strings.ts:92
+#: src/app.strings.ts:82
 msgctxt "about"
 msgid "translators-credits"
 msgstr ""
 
-#: src/app.strings.ts:93
+#: src/app.strings.ts:83
 msgctxt "about"
 msgid "Donate"
 msgstr ""
@@ -303,6 +268,46 @@ msgstr ""
 
 #: src/platform/gnome/widgets/window-v2.ui:149
 msgid "What do you need to do?"
+msgstr ""
+
+#: src/platform/gnome/widgets/task-form.ui:16
+msgctxt "task-form"
+msgid "Edit title, project, mark as completed or delete this task."
+msgstr ""
+
+#: src/platform/gnome/widgets/task-form.ui:17
+msgctxt "task-form"
+msgid "Edit task"
+msgstr ""
+
+#: src/platform/gnome/widgets/task-form.ui:20
+msgctxt "task-form"
+msgid "Title"
+msgstr ""
+
+#: src/platform/gnome/widgets/task-form.ui:25
+msgctxt "task-form"
+msgid "Project"
+msgstr ""
+
+#: src/platform/gnome/widgets/task-form.ui:34
+msgctxt "task-form"
+msgid "Mark as completed"
+msgstr ""
+
+#: src/platform/gnome/widgets/task-form.ui:44
+msgctxt "task-form"
+msgid "Mark as deleted"
+msgstr ""
+
+#: src/platform/gnome/widgets/task-form.ui:65
+msgctxt "task-form"
+msgid "Save"
+msgstr ""
+
+#: src/platform/gnome/widgets/task-form.ui:74
+msgctxt "task-form"
+msgid "Discard"
 msgstr ""
 
 #: src/platform/gnome/widgets/popover-sort.ui:20
