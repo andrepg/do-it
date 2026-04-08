@@ -21,6 +21,7 @@ import Gio from 'gi://Gio';
 
 import { ActionNames, AppSignals, WidgetIds } from '../enums.js';
 import { DoItMainWindow } from '../views/doit.js';
+import { error } from '~/utils/log-manager.js';
 
 /**
  * Retrieves the split_view template child from the window.
@@ -33,7 +34,7 @@ const getSplitView = (window: DoItMainWindow): Adw.OverlaySplitView | null => {
   ) as Adw.OverlaySplitView;
 
   if (!splitView) {
-    console.error('[action] sidebar: failed to get split_view object');
+    error('sidebar', 'failed to get split_view object');
     return null;
   }
 
