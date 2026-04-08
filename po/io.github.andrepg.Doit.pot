@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: io.github.andrepg.Doit\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-04-07 21:01-0300\n"
+"POT-Creation-Date: 2026-04-07 21:30-0300\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -174,27 +174,22 @@ msgid "Donate"
 msgstr ""
 
 #: src/platform/gnome/widgets/application.ui:13
-#: src/platform/gnome/widgets/window-v2.ui:200
 msgid "Purge deleted tasks"
 msgstr ""
 
 #: src/platform/gnome/widgets/application.ui:21
-#: src/platform/gnome/widgets/window-v2.ui:208
 msgid "Export Tasks…"
 msgstr ""
 
 #: src/platform/gnome/widgets/application.ui:26
-#: src/platform/gnome/widgets/window-v2.ui:213
 msgid "Import Tasks…"
 msgstr ""
 
 #: src/platform/gnome/widgets/application.ui:33
-#: src/platform/gnome/widgets/window-v2.ui:220
 msgid "Keyboard Shortcuts"
 msgstr ""
 
 #: src/platform/gnome/widgets/application.ui:37
-#: src/platform/gnome/widgets/window-v2.ui:224
 msgid "About Do It"
 msgstr ""
 
@@ -240,34 +235,6 @@ msgstr ""
 #: src/platform/gnome/widgets/shortcuts-dialog.ui:49
 msgctxt "shortcut window"
 msgid "Discard Changes"
-msgstr ""
-
-#: src/platform/gnome/widgets/window-v2.ui:32
-msgid "Projects"
-msgstr ""
-
-#: src/platform/gnome/widgets/window-v2.ui:68
-msgid "Tasks"
-msgstr ""
-
-#: src/platform/gnome/widgets/window-v2.ui:80
-msgid "Open sidebar"
-msgstr ""
-
-#: src/platform/gnome/widgets/window-v2.ui:86
-msgid "Add new task (Ctrl + N)"
-msgstr ""
-
-#: src/platform/gnome/widgets/window-v2.ui:99
-msgid "Sorting options"
-msgstr ""
-
-#: src/platform/gnome/widgets/window-v2.ui:108
-msgid "Main Menu"
-msgstr ""
-
-#: src/platform/gnome/widgets/window-v2.ui:149
-msgid "What do you need to do?"
 msgstr ""
 
 #: src/platform/gnome/widgets/task-form.ui:16

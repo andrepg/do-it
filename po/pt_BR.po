@@ -9,7 +9,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: io.github.andrepg.Doit\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-04-07 21:01-0300\n"
+"POT-Creation-Date: 2026-04-07 21:30-0300\n"
 "PO-Revision-Date: 2026-04-07 21:15-0300\n"
 "Last-Translator: André Paul Grandsire <andre@users.noreply.github.com>\n"
 "Language-Team: Portuguese <andre@users.noreply.github.com>\n"
@@ -178,27 +178,22 @@ msgid "Donate"
 msgstr "Fazer uma doação"
 
 #: src/platform/gnome/widgets/application.ui:13
-#: src/platform/gnome/widgets/window-v2.ui:200
 msgid "Purge deleted tasks"
 msgstr "Descartar tarefas excluídas"
 
 #: src/platform/gnome/widgets/application.ui:21
-#: src/platform/gnome/widgets/window-v2.ui:208
 msgid "Export Tasks…"
 msgstr "Exportar Tarefas…"
 
 #: src/platform/gnome/widgets/application.ui:26
-#: src/platform/gnome/widgets/window-v2.ui:213
 msgid "Import Tasks…"
 msgstr "Importar Tarefas…"
 
 #: src/platform/gnome/widgets/application.ui:33
-#: src/platform/gnome/widgets/window-v2.ui:220
 msgid "Keyboard Shortcuts"
 msgstr "Atalhos de Teclado"
 
 #: src/platform/gnome/widgets/application.ui:37
-#: src/platform/gnome/widgets/window-v2.ui:224
 msgid "About Do It"
 msgstr "Sobre Do It"
 
@@ -245,34 +240,6 @@ msgstr "Salvar tarefa"
 msgctxt "shortcut window"
 msgid "Discard Changes"
 msgstr "Descartar alterações"
-
-#: src/platform/gnome/widgets/window-v2.ui:32
-msgid "Projects"
-msgstr "Projetos"
-
-#: src/platform/gnome/widgets/window-v2.ui:68
-msgid "Tasks"
-msgstr "Tarefas"
-
-#: src/platform/gnome/widgets/window-v2.ui:80
-msgid "Open sidebar"
-msgstr "Abrir barra lateral"
-
-#: src/platform/gnome/widgets/window-v2.ui:86
-msgid "Add new task (Ctrl + N)"
-msgstr "Adicionar tarefa (Ctrl + N)"
-
-#: src/platform/gnome/widgets/window-v2.ui:99
-msgid "Sorting options"
-msgstr "Opções de ordenação"
-
-#: src/platform/gnome/widgets/window-v2.ui:108
-msgid "Main Menu"
-msgstr "Menu Principal"
-
-#: src/platform/gnome/widgets/window-v2.ui:149
-msgid "What do you need to do?"
-msgstr "O que você precisa fazer?"
 
 #: src/platform/gnome/widgets/task-form.ui:16
 msgctxt "task-form"
@@ -322,6 +289,27 @@ msgstr "Ordenar tarefas por"
 #: src/platform/gnome/widgets/popover-sort.ui:49
 msgid "Order strategy"
 msgstr "Estratégia de ordenação"
+
+#~ msgid "Projects"
+#~ msgstr "Projetos"
+
+#~ msgid "Tasks"
+#~ msgstr "Tarefas"
+
+#~ msgid "Open sidebar"
+#~ msgstr "Abrir barra lateral"
+
+#~ msgid "Add new task (Ctrl + N)"
+#~ msgstr "Adicionar tarefa (Ctrl + N)"
+
+#~ msgid "Sorting options"
+#~ msgstr "Opções de ordenação"
+
+#~ msgid "Main Menu"
+#~ msgstr "Menu Principal"
+
+#~ msgid "What do you need to do?"
+#~ msgstr "O que você precisa fazer?"
 
 #~ msgctxt "backup"
 #~ msgid "Export database"
