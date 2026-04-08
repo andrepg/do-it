@@ -45,7 +45,7 @@ jobs:
           build-bundle: true
           upload-artifact: true
           manifest-path: flatpak/io.github.andrepg.Doit.json
-          bundle: io.github.andrepg.Doit.${{ env.RELEASE_TAG }}.flatpak
+          bundle: io.github.andrepg.Doit-${{ env.RELEASE_TAG }}.flatpak
           cache-key: flatpak-prod-${{ hashFiles('flatpak/io.github.andrepg.Doit.json') }}
 
       - name: Upload bundle to release
@@ -53,4 +53,4 @@ jobs:
         with:
           draft: false
           tag_name: ${{ env.RELEASE_TAG }}
-          files: io.github.andrepg.Doit.*.flatpak
+          files: io.github.andrepg.Doit-${{ env.RELEASE_TAG }}-x86_64.flatpak
