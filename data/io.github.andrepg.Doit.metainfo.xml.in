@@ -81,7 +81,7 @@
         </ul>
       </description>
     </release>
-    <release version="0.1.4" timestamp="1761495363990">
+    <release version="0.1.4" timestamp="1775233300">
       <url type="details">https://github.com/andrepg/do-it/releases/tag/0.1.4</url>
       <description translate="no">
         <p>Sorting your tasks is now available. We've introduced a few things only.</p>
