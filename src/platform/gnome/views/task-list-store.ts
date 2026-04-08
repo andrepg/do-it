@@ -118,7 +118,8 @@ export class TaskListStore extends Gio.ListStore<TaskItem> {
       log('list-store', `Received ${signal} signal.`);
 
       GLib.idle_add(GLib.PRIORITY_DEFAULT_IDLE, () => {
-        this.task_sort.persist_sort_preferences();
+        const prefs = this.task_sort.retrieve_sort_preferences();
+        this.task_sort.persist_sort_preferences(prefs.mode, prefs.strategy);
         this.sort_list();
         this.persist_store();
         return GLib.SOURCE_REMOVE;

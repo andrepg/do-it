@@ -47,31 +47,25 @@ const SORT_DICT: Record<
  * and retrieve sorting preferences from system settings.
  */
 export const useTaskSort = () => {
-  let current_sort_mode: SortingField = SortingField.byTitle;
-  let current_sort_strategy: SortingStrategy = SortingStrategy.ascending;
-
   const settings = useSettings();
 
-  const sort_by = (field: SortingField, strategy: SortingStrategy) => {
-    current_sort_mode = field;
-    current_sort_strategy = strategy;
+  const retrieve_sort_preferences = () => {
+    const mode = settings.get_string(SortingModeSchema.MODE) as SortingField;
+    const strategy = settings.get_string(SortingModeSchema.STRATEGY) as SortingStrategy;
 
+    return {
+      mode: mode || SortingField.byTitle,
+      strategy: strategy || SortingStrategy.ascending,
+    };
+  };
+
+  const sort_by = (field: SortingField, strategy: SortingStrategy) => {
     return SORT_DICT[field](strategy);
   };
 
-  const persist_sort_preferences = () => {
-    settings.set_string(SortingModeSchema.MODE, current_sort_mode);
-    settings.set_string(SortingModeSchema.STRATEGY, current_sort_strategy);
-  };
-
-  const retrieve_sort_preferences = () => {
-    current_sort_mode = settings.get_string(SortingModeSchema.MODE) as SortingField;
-    current_sort_strategy = settings.get_string(SortingModeSchema.STRATEGY) as SortingStrategy;
-
-    return {
-      mode: current_sort_mode,
-      strategy: current_sort_strategy,
-    };
+  const persist_sort_preferences = (mode: SortingField, strategy: SortingStrategy) => {
+    settings.set_string(SortingModeSchema.MODE, mode);
+    settings.set_string(SortingModeSchema.STRATEGY, strategy);
   };
 
   return {

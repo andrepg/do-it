@@ -124,7 +124,7 @@ export class PopoverSort extends Gtk.Popover {
     const strategy = strategyToggle?.get_name() as SortingStrategy;
 
     this._task_sort.sort_by(fieldName, strategy);
-    this._task_sort.persist_sort_preferences();
+    this._task_sort.persist_sort_preferences(fieldName, strategy);
 
     this.update_label();
 
