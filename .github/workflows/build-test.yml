@@ -21,7 +21,7 @@ jobs:
   i18n-update:
     name: '[build] update translations'
     runs-on: ubuntu-latest
-    if: github.event_name == 'pull_request'
+    if: github.event_name == 'pull_request' && github.event_name != 'workflow_call'
     steps:
       - name: Checkout code
         uses: actions/checkout@v6
@@ -48,6 +48,7 @@ jobs:
   bundle-prod:
     name: '[build] validate prod bundle'
     runs-on: ubuntu-latest
+    if: github.event_name != 'workflow_call'
 
     container:
       image: ghcr.io/flathub-infra/flatpak-github-actions:gnome-49
@@ -69,6 +70,7 @@ jobs:
   bundle-dev:
     name: '[build] validate dev bundle'
     runs-on: ubuntu-latest
+    if: github.event_name != 'workflow_call'
 
     container:
       image: ghcr.io/flathub-infra/flatpak-github-actions:gnome-49
