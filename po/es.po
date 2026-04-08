@@ -133,13 +133,13 @@ msgstr "Tarea completada"
 
 #: src/app.strings.ts:72
 msgctxt "backup"
-msgid "Export database"
-msgstr "Exportar datos"
+msgid "Save Tasks As…"
+msgstr "Guardar Tareas Como…"
 
 #: src/app.strings.ts:73
 msgctxt "backup"
-msgid "Import database"
-msgstr "Importar datos"
+msgid "Import Tasks…"
+msgstr "Importar Tareas…"
 
 #: src/app.strings.ts:75
 msgctxt "backup"
@@ -178,23 +178,23 @@ msgstr "Eliminar tareas excluídas"
 
 #: src/platform/gnome/widgets/application.ui:21
 #: src/platform/gnome/widgets/window-v2.ui:208
-msgid "_Export Database"
-msgstr "_Exportar datos"
+msgid "Export Tasks…"
+msgstr "Exportar Tareas…"
 
 #: src/platform/gnome/widgets/application.ui:26
 #: src/platform/gnome/widgets/window-v2.ui:213
-msgid "_Import Database"
-msgstr "_Importar datos"
+msgid "Import Tasks…"
+msgstr "Importar Tareas…"
 
 #: src/platform/gnome/widgets/application.ui:33
 #: src/platform/gnome/widgets/window-v2.ui:220
-msgid "_Keyboard Shortcuts"
-msgstr "_Atajos de teclado"
+msgid "Keyboard Shortcuts"
+msgstr "Atajos de teclado"
 
 #: src/platform/gnome/widgets/application.ui:37
 #: src/platform/gnome/widgets/window-v2.ui:224
-msgid "_About Do It"
-msgstr "_Acerca de Do It"
+msgid "About Do It"
+msgstr "Acerca de Do It"
 
 #: src/platform/gnome/widgets/application.ui:54
 msgid "Create a new task"
@@ -315,3 +315,13 @@ msgstr "Ordenar tareas por"
 #: src/platform/gnome/widgets/popover-sort.ui:49
 msgid "Order strategy"
 msgstr "Estrategia de ordenación"
+
+#~ msgctxt "backup"
+#~ msgid "Export database"
+#~ msgstr "Exportar datos"
+
+#~ msgid "_Export Database"
+#~ msgstr "_Exportar datos"
+
+#~ msgid "_Import Database"
+#~ msgstr "_Importar datos"

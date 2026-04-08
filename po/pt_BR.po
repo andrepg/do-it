@@ -10,7 +10,7 @@ msgstr ""
 "Project-Id-Version: io.github.andrepg.Doit\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2026-04-07 21:01-0300\n"
-"PO-Revision-Date: 2026-04-07 21:05-0300\n"
+"PO-Revision-Date: 2026-04-07 21:15-0300\n"
 "Last-Translator: André Paul Grandsire <andre@users.noreply.github.com>\n"
 "Language-Team: Portuguese <andre@users.noreply.github.com>\n"
 "Language: pt\n"
@@ -18,6 +18,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
+"X-Generator: Gtranslator 50.0\n"
 
 #: src/app.strings.ts:26
 msgctxt "sorting"
@@ -59,6 +60,7 @@ msgctxt "sorting-field"
 msgid "Status"
 msgstr "Status"
 
+# I think that this string can be merged with the previous one (from src/platform/gnome/widgets/task-form.ui:20).
 #: src/app.strings.ts:41
 msgctxt "sorting-field"
 msgid "Title"
@@ -137,13 +139,13 @@ msgstr "Tarefa finalizada"
 
 #: src/app.strings.ts:72
 msgctxt "backup"
-msgid "Export database"
-msgstr "Exportar dados"
+msgid "Save Tasks As…"
+msgstr "Salvar Tarefas Como…"
 
 #: src/app.strings.ts:73
 msgctxt "backup"
-msgid "Import database"
-msgstr "Importar dados"
+msgid "Import Tasks…"
+msgstr "Importar Tarefas…"
 
 #: src/app.strings.ts:75
 msgctxt "backup"
@@ -182,22 +184,22 @@ msgstr "Descartar tarefas excluídas"
 
 #: src/platform/gnome/widgets/application.ui:21
 #: src/platform/gnome/widgets/window-v2.ui:208
-msgid "_Export Database"
-msgstr "_Exportar tarefas"
+msgid "Export Tasks…"
+msgstr "Exportar Tarefas…"
 
 #: src/platform/gnome/widgets/application.ui:26
 #: src/platform/gnome/widgets/window-v2.ui:213
-msgid "_Import Database"
-msgstr "_Importar tarefas"
+msgid "Import Tasks…"
+msgstr "Importar Tarefas…"
 
 #: src/platform/gnome/widgets/application.ui:33
 #: src/platform/gnome/widgets/window-v2.ui:220
-msgid "_Keyboard Shortcuts"
-msgstr "Atalhos de _Teclado"
+msgid "Keyboard Shortcuts"
+msgstr "Atalhos de Teclado"
 
 #: src/platform/gnome/widgets/application.ui:37
 #: src/platform/gnome/widgets/window-v2.ui:224
-msgid "_About Do It"
+msgid "About Do It"
 msgstr "Sobre Do It"
 
 #: src/platform/gnome/widgets/application.ui:54
@@ -282,6 +284,7 @@ msgctxt "task-form"
 msgid "Edit task"
 msgstr "Editar tarefa"
 
+# I think that this string can be merged with the previous one (from src/app.strings.ts:41).
 #: src/platform/gnome/widgets/task-form.ui:20
 msgctxt "task-form"
 msgid "Title"
@@ -319,3 +322,13 @@ msgstr "Ordenar tarefas por"
 #: src/platform/gnome/widgets/popover-sort.ui:49
 msgid "Order strategy"
 msgstr "Estratégia de ordenação"
+
+#~ msgctxt "backup"
+#~ msgid "Export database"
+#~ msgstr "Exportar dados"
+
+#~ msgid "_Export Database"
+#~ msgstr "_Exportar tarefas"
+
+#~ msgid "_Import Database"
+#~ msgstr "_Importar tarefas"

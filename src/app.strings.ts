@@ -69,8 +69,8 @@ const TaskStrings = {
 
 const AppStrings = {
   backup: {
-    export: C_('backup', 'Export database'),
-    import: C_('backup', 'Import database'),
+    export: C_('backup', 'Save Tasks As…'),
+    import: C_('backup', 'Import Tasks…'),
 
     exportSuccess: C_('backup', 'Database exported successfully'),
     exportError: C_('backup', 'Error exporting database'),
