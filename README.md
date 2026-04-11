@@ -72,6 +72,28 @@ The current roadmap to this application is available in the [GitHub Project](htt
 
 The issues and bugs can be reported in the [Issues section](https://github.com/andrepg/do-it/issues).
 
+## 🛠️ Build & Development
+
+### Prerequisites
+
+- Node.js 18+
+- Yarn
+- Flatpak and flatpak-builder
+- GNOME SDK
+
+### Development Commands
+
+| Command            | Description                       |
+| ------------------ | --------------------------------- |
+| `yarn dev`         | Run app with watch mode           |
+| `yarn dev:install` | Compile and install locally       |
+| `yarn dev:export`  | Compile and export Flatpak bundle |
+| `yarn lint`        | Run ESLint                        |
+| `yarn format`      | Check Prettier formatting         |
+| `yarn test`        | Run tests                         |
+
+For full scripts and flags, see [CONTRIBUTING.md](CONTRIBUTING.md).
+
 ## 💰 Sponsored by
 
 This repo uses a third-party ads-service. And you can sponsor this project using [GitHub Sponsors](https://github.com/sponsors/andrepg).

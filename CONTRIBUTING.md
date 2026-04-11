@@ -66,16 +66,48 @@ docs/                 # Detailed documentation
 
 ## Development Commands
 
-| Command            | Description                       |
-| ------------------ | --------------------------------- |
-| `yarn dev`         | Run app with watch mode           |
-| `yarn dev:install` | Compile and install               |
-| `yarn dev:export`  | Compile and export Flatpak bundle |
-| `yarn lint`        | Run ESLint                        |
-| `yarn format`      | Check Prettier formatting         |
-| `yarn test`        | Run tests                         |
+### Bash Scripts (scripts/)
 
-For full scripts and flags, see [`.agent/rules/code-guide.md`](.agent/rules/code-guide.md).
+| Script               | Description                                   |
+| -------------------- | --------------------------------------------- |
+| `run`                | Runs the app locally with optional watch mode |
+| `compile`            | Compiles Flatpak via flatpak-builder          |
+| `install`            | Installs or exports the Flatpak bundle        |
+| `flatpak-validation` | Runs flatpak-builder-lint validation          |
+| `generate-sources`   | Generates flatpak/generated-sources.json      |
+| `update-pot-file`    | Updates gettext translation files             |
+
+### Development Commands (yarn/npm run)
+
+| Command                         | Description                              |
+| ------------------------------- | ---------------------------------------- |
+| `yarn dev`                      | Run app with watch mode (`run -w -c`)    |
+| `yarn dev:install`              | Compile and install (`install -c`)       |
+| `yarn dev:export`               | Compile and export Flatpak bundle        |
+| `yarn dev:validate`             | Run flatpak-builder-lint validation      |
+| `yarn prod`                     | Compile only (`run -c`)                  |
+| `yarn prod:install`             | Install (`install -c`)                   |
+| `yarn prod:export`              | Export Flatpak bundle                    |
+| `yarn prod:validate`            | Run flatpak-builder-lint validation      |
+| `yarn flatpak:generate-sources` | Generates flatpak/generated-sources.json |
+| `yarn lint`                     | Run ESLint                               |
+| `yarn lint:fix`                 | ESLint auto-fix                          |
+| `yarn format`                   | Check Prettier formatting                |
+| `yarn format:fix`               | Prettier write                           |
+| `yarn test`                     | Run tests                                |
+| `yarn test:coverage`            | Run tests with coverage                  |
+
+### Script Flags
+
+- `-c` or `--compile`: Invokes compile before running/installing
+- `-w` or `--watch`: Interactive mode - press [R] to recompile and run again
+- `-C` or `--clean`: Clears build cache before compiling
+- `-e` or `--export`: Generates a .flatpak bundle instead of installing
+
+### Manifests
+
+- Development: `io.github.andrepg.Doit.Devel.json`
+- Production: `io.github.andrepg.Doit.json`
 
 ## Code Guidelines
 
