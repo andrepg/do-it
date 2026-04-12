@@ -55,10 +55,10 @@ jobs:
       options: --privileged
 
     steps:
-      - name: Checkout code
-        uses: actions/checkout@v6
+      - name: Setup Project
+        uses: ./.github/actions/setup-project
         with:
-          fetch-depth: 1
+          setup-node: 'true'
 
       - name: Check production build
         uses: flatpak/flatpak-github-actions/flatpak-builder@v6.6
@@ -77,13 +77,10 @@ jobs:
       options: --privileged
 
     steps:
-      - name: Checkout code
-        uses: actions/checkout@v6
+      - name: Setup Project
+        uses: ./.github/actions/setup-project
         with:
-          fetch-depth: 1
-
-      - name: Install system dependencies
-        run: yarn install
+          setup-node: 'true'
 
       - name: Check development build
         uses: flatpak/flatpak-github-actions/flatpak-builder@v6.6
