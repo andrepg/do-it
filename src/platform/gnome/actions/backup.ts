@@ -21,7 +21,7 @@ import Gio from 'gi://Gio';
 import Gtk from 'gi://Gtk';
 import { ITask } from '~/app.types.js';
 import { AppLocale } from '~/app.strings.js';
-import { log, error } from '~/utils/log-manager.js';
+import { error } from '~/utils/log-manager.js';
 
 import { GioFilePersistence } from '~/platform/gnome/persistence/gio-persistence.js';
 import { ActionNames, AppSignals } from '~/platform/gnome/enums.js';
