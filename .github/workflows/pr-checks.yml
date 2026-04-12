@@ -41,4 +41,4 @@ jobs:
 
   test-and-coverage:
     name: '[ci] test and coverage'
-    uses: ./.github/workflows/test-coverage.yml@v2.0.8
+    uses: ./.github/workflows/test-coverage.yml

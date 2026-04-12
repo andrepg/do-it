@@ -101,6 +101,5 @@ jobs:
 
   test-and-coverage:
     name: '[build] test and coverage'
-    runs-on: ubuntu-latest
     if: github.event_name != 'workflow_call'
-    uses: ./.github/workflows/test-coverage.yml@v2.0.8
+    uses: ./.github/workflows/test-coverage.yml
