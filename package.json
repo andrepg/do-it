@@ -4,8 +4,6 @@
     "author": "",
     "homepage": "https://github.com/andrepg/do-it#readme",
     "scripts": {
-        "postinstall": "yarn run flatpak:build-sources",
-
         "lint": "eslint .",
         "lint:fix": "eslint . --fix",
         "format": "prettier . --check",
@@ -14,19 +12,18 @@
         "test": "vitest run",
         "test:coverage": "vitest run --coverage",
 
-        "watch": "yarn run-dev -w",
-        "dev": "yarn run-dev",
-        "dev:install": "yarn flatpak:export-bundle --install",
-        "dev:export": "yarn flatpak:export-bundle",
-        "dev:validate": "yarn flatpak:validate-bundle Devel.json",
-
-        "build": "yarn flatpak:export-bundle",
-        "prod": "yarn run-dev io.github.andrepg.Doit.json",
-        "prod:install": "yarn flatpak:export-bundle --install io.github.andrepg.Doit.json",
-        "prod:export": "yarn flatpak:export-bundle io.github.andrepg.Doit.json",
+        "watch": "./scripts/run-dev -w -c",
+        "dev": "./scripts/run-dev -c",
+        "dev:install": "./scripts/compile && yarn flatpak:export-bundle --install",
+        "dev:export": "./scripts/compile && yarn flatpak:export-bundle",
+        "dev:validate": "yarn flatpak:validate-bundle io.github.andrepg.Doit.Devel.json",
         "prod:validate": "yarn flatpak:validate-bundle io.github.andrepg.Doit.json",
+        "build": "yarn pot-generator && yarn flatpak:prebuild && yarn flatpak:export-bundle",
+        "prod": "yarn flatpak:prebuild && ./scripts/run-dev -c io.github.andrepg.Doit.json",
+        "prod:install": "yarn flatpak:prebuild && ./scripts/compile && yarn flatpak:export-bundle --install io.github.andrepg.Doit.json",
+        "prod:export": "yarn flatpak:prebuild && ./scripts/compile && yarn flatpak:export-bundle io.github.andrepg.Doit.json",
 
-        "flatpak:build-sources": "scripts/flatpak-prebuild",
+        "flatpak:prebuild": "scripts/flatpak-prebuild",
         "flatpak:export-bundle": "scripts/flatpak-export-bundle",
         "flatpak:validate-bundle": "scripts/validate-flatpak-bundle",
 

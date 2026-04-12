@@ -66,46 +66,54 @@ trigger: always_on
 
 ### Bash Scripts (scripts/)
 
-| Script               | Description                                   |
-| -------------------- | --------------------------------------------- |
-| `run`                | Runs the app locally with optional watch mode |
-| `compile`            | Compiles Flatpak via flatpak-builder          |
-| `install`            | Installs or exports the Flatpak bundle        |
-| `flatpak-validation` | Runs flatpak-builder-lint validation          |
-| `generate-sources`   | Generates flatpak/generated-sources.json      |
-| `update-pot-file`    | Updates gettext translation files             |
+| Script                    | Description                                |
+| ------------------------- | ------------------------------------------ |
+| `run-dev`                 | Runs the app locally via flatpak-builder   |
+| `compile`                 | Compiles Flatpak via flatpak-builder       |
+| `flatpak-export-bundle`   | Builds and exports/installs Flatpak bundle |
+| `flatpak-prebuild`        | Generates flatpak/generated-sources.json   |
+| `pot-generator`           | Updates gettext translation files          |
+| `validate-flatpak-bundle` | Runs flatpak-builder-lint validation       |
 
 ### Development Commands (yarn/npm run)
 
-| Command                    | Bash Script (with flags)                  |
-| -------------------------- | ----------------------------------------- |
-| `dev`                      | `run -w -c` (watch + compile)             |
-| `dev:install`              | `install -c` (compile + install)          |
-| `dev:export`               | `install -e -c` (compile + export bundle) |
-| `dev:validate`             | `flatpak-validation`                      |
-| `prod`                     | `run -c` (compile only)                   |
-| `prod:install`             | `install -c`                              |
-| `prod:export`              | `install -e -c`                           |
-| `prod:validate`            | `flatpak-validation`                      |
-| `flatpak:generate-sources` | `generate-sources`                        |
-| `lint`                     | ESLint                                    |
-| `lint:fix`                 | ESLint auto-fix                           |
-| `format`                   | Prettier check                            |
-| `format:fix`               | Prettier write                            |
-| `test`                     | Vitest                                    |
-| `test:coverage`            | Vitest coverage                           |
+| Command            | Description                                 |
+| ------------------ | ------------------------------------------- |
+| `dev`              | Compiles and runs dev version once          |
+| `watch`            | Compiles and runs dev version in watch mode |
+| `dev:install`      | Compiles and installs dev flatpak to user   |
+| `dev:export`       | Compiles and exports dev flatpak bundle     |
+| `dev:validate`     | Validates dev flatpak bundle                |
+| `build`            | Generates POT and exports prod bundle       |
+| `prod`             | Compiles and runs prod version once         |
+| `prod:install`     | Compiles and installs prod flatpak to user  |
+| `prod:export`      | Compiles and exports prod flatpak bundle    |
+| `prod:validate`    | Validates prod flatpak bundle               |
+| `pot-generator`    | Generates POT template and PO files         |
+| `flatpak:prebuild` | Runs flatpak-prebuild script                |
+| `lint`             | ESLint                                      |
+| `lint:fix`         | ESLint auto-fix                             |
+| `format`           | Prettier check                              |
+| `format:fix`       | Prettier write                              |
+| `test`             | Vitest                                      |
+| `test:coverage`    | Vitest coverage                             |
 
 ### Script Flags
 
 - `-c` or `--compile`: Invokes compile before running/installing
-- `-w` or `--watch`: Interactive mode - press [R] to recompile and run again
-- `-C` or `--clean`: Clears build cache before compiling
-- `-e` or `--export`: Generates a .flatpak bundle instead of installing
+- `-w` or `--watch`: Runs app in watch mode (restarts on exit)
+- `-C` or `--clean`: Full clean of cache before compiling
+- `-i` or `--install`: Install bundle to user after export
 
 ### Manifests
 
 - Development: `io.github.andrepg.Doit.Devel.json`
 - Production: `io.github.andrepg.Doit.json`
+
+### Build Workflow
+
+- **Development** (`dev`, `watch`, `dev:install`, `dev:export`): No need to generate offline sources - uses network
+- **Production** (`prod`, `prod:install`, `prod:export`, `build`): Uses offline sources from `flatpak/generated-sources.json` for Flatpak compliance
 
 ## Antigravity integration
 
