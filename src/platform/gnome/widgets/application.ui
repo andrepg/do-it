@@ -86,7 +86,7 @@
                 </child>
                 <child type="end">
                   <object class="GtkMenuButton" id="button_sorting">
-                    <property name="icon-name">view-sort-descending-symbolic-rtl</property>
+                    <property name="icon-name">view-sort-descending-symbolic</property>
                   </object>
                 </child>
                 <child>

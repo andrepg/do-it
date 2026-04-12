@@ -11,7 +11,13 @@
         "org.freedesktop.Sdk.Extension.node24",
         "org.freedesktop.Sdk.Extension.typescript"
     ],
-    "finish-args": ["--device=dri", "--socket=wayland", "--filesystem=host"],
+    "finish-args": [
+        "--device=dri",
+        "--socket=wayland",
+        "--filesystem=host",
+        "--filesystem=home/.local/share/icons:ro",
+        "--bind-mount=/usr/share/icons=/usr/share/icons"
+    ],
     "build-options": {
         "prepend-path": "/usr/lib/sdk/node24/bin:/usr/lib/sdk/typescript/bin",
         "prepend-ld-library-path": "/usr/lib/sdk/node24/lib:/usr/lib/sdk/typescript/lib"
