@@ -55,6 +55,11 @@ jobs:
       options: --privileged
 
     steps:
+      - name: Checkout code
+        uses: actions/checkout@v6
+        with:
+          fetch-depth: 1
+
       - name: Setup Project
         uses: ./.github/actions/setup-project
         with:
@@ -77,6 +82,11 @@ jobs:
       options: --privileged
 
     steps:
+      - name: Checkout code
+        uses: actions/checkout@v6
+        with:
+          fetch-depth: 1
+
       - name: Setup Project
         uses: ./.github/actions/setup-project
         with:
