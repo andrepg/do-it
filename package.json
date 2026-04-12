@@ -25,7 +25,7 @@
 
         "flatpak:prebuild": "scripts/flatpak-prebuild",
         "flatpak:export-bundle": "scripts/flatpak-export-bundle",
-        "flatpak:validate-bundle": "scripts/validate-flatpak-bundle",
+        "flatpak:validate-bundle": "scripts/flatpak-validate-bundle",
 
         "pot-generator": "scripts/pot-generator",
 
