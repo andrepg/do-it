@@ -76,7 +76,7 @@ class ProjectManager {
 
 Legacy persistence utilities.
 
-> ⚠️ **Note**: Should migrate to use `core/persistence/file-persistence.ts`
+> ⚠️ **Note**: Should migrate to use `core/persistence/gio-persistence.ts`
 
 ### log-manager.ts
 

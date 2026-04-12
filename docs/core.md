@@ -11,7 +11,7 @@ src/core/
 │   ├── persistence.ts   # Data persistence abstraction
 │   └── task-view.ts     # Task view abstraction
 └── persistence/
-    └── file-persistence.ts  # File-based persistence implementation
+    └── gio-persistence.ts  # File-based persistence implementation
 ```
 
 ## Interfaces
@@ -50,7 +50,7 @@ export interface IPersistence {
 
 **Implementations:**
 
-- GNOME: `src/core/persistence/file-persistence.ts` (file-based JSON)
+- GNOME: `src/core/persistence/gio-persistence.ts` (file-based JSON)
 - Web (planned): IndexedDB
 
 ### ITaskView (`interfaces/task-view.ts`)
@@ -81,7 +81,7 @@ export interface ITaskView {
 
 ## Implementations
 
-### FilePersistence (`persistence/file-persistence.ts`)
+### FilePersistence (`persistence/gio-persistence.ts`)
 
 File-based JSON persistence implementation for GNOME.
 

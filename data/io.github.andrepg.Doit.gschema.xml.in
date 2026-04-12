@@ -16,7 +16,7 @@
 
   <schema id="@APPLICATION_ID@" path="@APPLICATION_RES@/">
     <key name="window-width" type="i">
-      <default>800</default>      
+      <default>800</default>
       <summary>Last known window width</summary>
     </key>
 

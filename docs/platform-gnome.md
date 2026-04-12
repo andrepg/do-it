@@ -110,7 +110,7 @@ Uses `Gio.Settings` for persistent key-value storage:
 Uses file-based JSON storage:
 
 ```typescript
-// src/core/persistence/file-persistence.ts
+// src/core/persistence/gio-persistence.ts
 ```
 
 ### ITaskView
