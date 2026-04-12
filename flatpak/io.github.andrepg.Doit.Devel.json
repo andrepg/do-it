@@ -14,9 +14,8 @@
     "finish-args": [
         "--device=dri",
         "--socket=wayland",
-        "--filesystem=host",
-        "--filesystem=home/.local/share/icons:ro",
-        "--bind-mount=/usr/share/icons=/usr/share/icons"
+        "--filesystem=~/.local/share/icons:ro",
+        "--filesystem=~/.icons:ro"
     ],
     "build-options": {
         "prepend-path": "/usr/lib/sdk/node24/bin:/usr/lib/sdk/typescript/bin",
