@@ -1,0 +1,59 @@
+#!/usr/bin/env bash
+# ===========================================================================
+# generate-sources — Generates offline sources JSON from yarn.lock.
+#
+# Requires: pipx or pip3 with flatpak-node-generator installed
+#
+# Usage: scripts/generate-sources
+#   Output: flatpak/generated-sources.json
+# ===========================================================================
+
+SCRIPT_DIR="$(cd "$(dirname "$0")" && pwd)"
+source "$SCRIPT_DIR/lib-common.sh"
+
+PROJECT_ROOT="$(get_project_root)"
+
+LOCKFILE="$PROJECT_ROOT/yarn.lock"
+OUTPUT="$PROJECT_ROOT/flatpak/generated-sources.json"
+
+check_binary() {
+    if ! command -v $1 &>/dev/null; then
+        return 1
+    else
+        return 0
+    fi
+}
+
+install_with_pip() {
+    pip3 install --user git+https://github.com/flatpak/flatpak-builder-tools.git#subdirectory=node
+}
+
+install_with_pipx() {
+    pipx install git+https://github.com/flatpak/flatpak-builder-tools.git#subdirectory=node
+}
+
+install_dependencies() {
+    if command -v flatpak-node-generator &>/dev/null; then
+        log_action "flatpak-node-generator is already installed."
+        return 0
+    fi
+
+    log_section "Installing dependencies..."
+
+    if check_binary pipx; then
+        install_with_pipx
+    elif check_binary pip3; then
+        install_with_pip
+    else
+        log_error "pip3 or pipx is required to install flatpak-node-generator"
+        exit 1
+    fi
+}
+
+install_dependencies
+
+log_section "Generating offline sources from $LOCKFILE..."
+flatpak-node-generator --output "$OUTPUT" yarn "$LOCKFILE"
+
+log_action "Sources generated at: $OUTPUT"
+log_action "Add to version control: git add flatpak/generated-sources.json"

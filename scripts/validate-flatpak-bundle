@@ -1,0 +1,50 @@
+#!/usr/bin/env bash
+# ===========================================================================
+# flatpak-validation — Validates the flatpak structure, metainfo and manifest.
+#
+# Usage: scripts/flatpak-validation [manifest.json] [build-dir]
+#   manifest.json  Flatpak manifest to validate (default: io.github.andrepg.Doit.json)
+#   build-dir     Build directory (default: _build)
+#
+# Options:
+#   --skip-build  Skip compilation and use existing build
+# ===========================================================================
+
+SCRIPT_DIR="$(cd "$(dirname "$0")" && pwd)"
+source "$SCRIPT_DIR/lib-common.sh"
+
+MANIFEST="${1:-io.github.andrepg.Doit.json}"
+BUILD_DIR="${2:-_build}"
+SKIP_BUILD=false
+SCRIPTS_PATH="$(get_scripts_dir)"
+
+for arg in "$@"; do
+    case "$arg" in
+        --skip-build) SKIP_BUILD=true ;;
+    esac
+done
+
+log_section "Validating Flatpak layout"
+
+if [[ -d "$BUILD_DIR/files" ]] && $SKIP_BUILD; then
+    log_action "Using existing build at $BUILD_DIR"
+else
+    log_action "Compiling $MANIFEST..."
+    "$SCRIPTS_PATH/compile" "$MANIFEST" "$BUILD_DIR"
+fi
+
+log_section "Validating Metainfo"
+if flatpak run --command=flatpak-builder-lint org.flatpak.Builder appstream "$BUILD_DIR/files/share/metainfo/"*.metainfo.xml; then
+    log_action "Metainfo validation passed"
+else
+    log_warning "Metainfo validation failed"
+fi
+
+log_section "Validating Manifest"
+if flatpak run --command=flatpak-builder-lint org.flatpak.Builder manifest "flatpak/$MANIFEST"; then
+    log_action "Manifest validation passed"
+else
+    log_warning "Manifest validation failed"
+fi
+
+log_section "Validation complete"

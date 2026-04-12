@@ -1,0 +1,70 @@
+#!/usr/bin/env bash
+# ===========================================================================
+# flatpak-export-bundle — Builds and exports or installs a Flatpak bundle.
+#
+# Usage: scripts/flatpak-export-bundle [-c|--compile] [-C|--clean] [-i|--install] [manifest.json]
+#   -c, --compile    Compile before exporting/installing
+#   -C, --clean      Full cache clean before compiling (implies -c)
+#   -i, --install    Install bundle to user after building
+#   manifest.json   Flatpak manifest to use (default: io.github.andrepg.Doit.json)
+# ===========================================================================
+
+SCRIPT_DIR="$(cd "$(dirname "$0")" && pwd)"
+source "$SCRIPT_DIR/lib-common.sh"
+
+PROJECT_ROOT="$(get_project_root)"
+
+COMPILE=false
+CLEAN=false
+INSTALL=false
+
+while getopts "cCi-:" opt; do
+    case $opt in
+        c) COMPILE=true ;;
+        C) COMPILE=true; CLEAN=true ;;
+        i) INSTALL=true ;;
+        -) case "${OPTARG}" in
+               compile) COMPILE=true ;;
+               clean)   COMPILE=true; CLEAN=true ;;
+               install) INSTALL=true ;;
+               *) log_error "Invalid option: --${OPTARG}"; exit 1 ;;
+           esac ;;
+        *) echo "Usage: $0 [-c|--compile] [-C|--clean] [-i|--install] [manifest.json]" >&2; exit 1 ;;
+    esac
+done
+shift $((OPTIND-1))
+
+MANIFEST="${1:-io.github.andrepg.Doit.json}"
+BUILD_DIR="_build"
+SCRIPTS_PATH="$(get_scripts_dir)"
+APP_ID="$(get_app_id_from_manifest "$MANIFEST")"
+
+# Compile step
+if $COMPILE; then
+    log_section "Compiling $MANIFEST..."
+    CLEAN_FLAG=""
+    $CLEAN && CLEAN_FLAG="--clean"
+    "$SCRIPTS_PATH/compile" $CLEAN_FLAG "$MANIFEST" "$BUILD_DIR"
+fi
+
+# Export bundle or install
+REPO_DIR="repo"
+VERSION="$(get_version_from_meson "$PROJECT_ROOT")"
+BUNDLE_FILE="${APP_ID}.${VERSION}.flatpak"
+
+log_section "Building Flatpak bundle..."
+flatpak run --user org.flatpak.Builder \
+    --repo="$REPO_DIR" \
+    --force-clean \
+    "$BUILD_DIR" \
+    "flatpak/$MANIFEST"
+
+flatpak build-bundle "$REPO_DIR" "$BUNDLE_FILE" "$APP_ID"
+log_action "Bundle generated: $BUNDLE_FILE"
+
+# Install if requested
+if $INSTALL; then
+    log_section "Installing $BUNDLE_FILE to user..."
+    flatpak install --user --reinstall "$BUNDLE_FILE"
+    log_action "Installed successfully."
+fi

@@ -1,16 +1,17 @@
 #!/usr/bin/env bash
-set -euo pipefail
+# ===========================================================================
+# compile — Compiles the application via flatpak-builder.
+#
+# Usage: scripts/compile [manifest.json] [build-dir]
+#   manifest.json  Flatpak manifest to use (default: io.github.andrepg.Doit.json)
+#   build-dir     Build directory (default: _build)
+#
+# Flags:
+#   --clean, -C   Full clean of cache before compiling
+# ===========================================================================
 
-# ===========================================================================
-# compile — Compila a aplicação Flatpak localmente via flatpak-builder.
-#
-# Uso: scripts/compile [manifest.json] [build-dir]
-#   manifest.json  Manifesto Flatpak a usar (default: io.github.andrepg.Doit.json)
-#   build-dir      Diretório de build a usar (default: _build)
-#
-# Flags de limpeza:
-#   --clean, -C    Limpa COMPLETAMENTE o cache (.flatpak-builder) antes de compilar
-# ===========================================================================
+SCRIPT_DIR="$(cd "$(dirname "$0")" && pwd)"
+source "$SCRIPT_DIR/lib-common.sh"
 
 MANIFEST="io.github.andrepg.Doit.json"
 BUILD_DIR="_build"
@@ -24,22 +25,18 @@ for arg in "$@"; do
     esac
 done
 
-echo "====> Compilando manifesto: $MANIFEST → $BUILD_DIR"
+log_section "Compiling manifest: $MANIFEST → $BUILD_DIR"
 
 if $CLEAN; then
-    echo "====> Limpeza completa do cache de build..."
-    rm -rf .flatpak-builder/build/* 2>/dev/null || true
-    rm -rf .flatpak-builder/rofiles/*-lock 2>/dev/null || true
-    rm -rf "$BUILD_DIR" 2>/dev/null || true
+    log_section "Full cache cleaning..."
+    clean_build_dir "$BUILD_DIR"
+    clean_flatpak_builder_cache
 else
-    echo "====> Limpando artefatos antigos (mantendo cache)..."
-    rm -rf "$BUILD_DIR" 2>/dev/null || true
+    log_action "Cleaning old artifacts (keeping cache)..."
+    clean_build_dir "$BUILD_DIR"
 fi
 
-echo "====> Iniciando build do Flatpak..."
-flatpak run --user org.flatpak.Builder \
-    --force-clean \
-    "$BUILD_DIR" \
-    "flatpak/$MANIFEST"
+log_section "Starting Flatpak build..."
+run_flatpak_builder "$BUILD_DIR" "$MANIFEST"
 
-echo "====> Build concluída: $BUILD_DIR"
+log_section "Build completed: $BUILD_DIR"

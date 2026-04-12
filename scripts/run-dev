@@ -1,0 +1,58 @@
+#!/usr/bin/env bash
+# ===========================================================================
+# run-dev — Runs the app locally via flatpak-builder.
+#
+# Usage: scripts/run-dev [-c|--compile] [-w|--watch] [manifest.json]
+#   -c, --compile    Compile before running
+#   -w, --watch       Run in watch mode (press R to rebuild)
+#   manifest.json     Flatpak manifest to use (default: io.github.andrepg.Doit.Devel.json)
+# ===========================================================================
+
+SCRIPT_DIR="$(cd "$(dirname "$0")" && pwd)"
+source "$SCRIPT_DIR/lib-common.sh"
+
+# Parse options
+COMPILE=false
+WATCH=false
+while getopts "cw-:" opt; do
+    case $opt in
+        c) COMPILE=true ;;
+        w) WATCH=true ;;
+        -) case "${OPTARG}" in
+               compile) COMPILE=true ;;
+               watch)   WATCH=true ;;
+               *) log_error "Invalid option: --${OPTARG}"; exit 1 ;;
+           esac ;;
+        *) echo "Usage: $0 [-c|--compile] [-w|--watch] [manifest.json]" >&2; exit 1 ;;
+    esac
+done
+shift $((OPTIND-1))
+
+MANIFEST="${1:-io.github.andrepg.Doit.Devel.json}"
+BUILD_DIR="_build"
+SCRIPTS_PATH="$(get_scripts_dir)"
+
+function build_and_run() {
+    clear
+    if $COMPILE; then
+        log_action "Invoking compilation script"
+        "$SCRIPTS_PATH/compile" "$MANIFEST" "$BUILD_DIR"
+    fi
+
+    log_action "Running application (without installing)"
+    flatpak run --user org.flatpak.Builder \
+        --run "$BUILD_DIR" \
+        "flatpak/$MANIFEST" \
+        "${MANIFEST%.json}" \
+        --development=true
+}
+
+if $WATCH; then
+    while true; do
+        build_and_run || true
+        log_action "App exited. Restarting in 2 seconds..."
+        sleep 2
+    done
+else
+    build_and_run
+fi

@@ -4,23 +4,34 @@
     "author": "",
     "homepage": "https://github.com/andrepg/do-it#readme",
     "scripts": {
-        "postinstall": "yarn run flatpak:generate-sources",
+        "postinstall": "yarn run flatpak:build-sources",
+
         "lint": "eslint .",
         "lint:fix": "eslint . --fix",
         "format": "prettier . --check",
         "format:fix": "prettier . --write",
+
         "test": "vitest run",
         "test:coverage": "vitest run --coverage",
-        "dev": "scripts/run -w -c io.github.andrepg.Doit.Devel.json",
-        "dev:install": "scripts/install -c io.github.andrepg.Doit.Devel.json",
-        "dev:export": "scripts/install -e -c io.github.andrepg.Doit.Devel.json",
-        "dev:validate": "scripts/flatpak-validation io.github.andrepg.Doit.Devel.json",
-        "prod": "yarn i18n:update-pot && scripts/run -c io.github.andrepg.Doit.json",
-        "prod:install": "yarn i18n:update-pot && scripts/install -c io.github.andrepg.Doit.json",
-        "prod:export": "yarn i18n:update-pot && scripts/install -e -c io.github.andrepg.Doit.json",
-        "prod:validate": "scripts/flatpak-validation io.github.andrepg.Doit.json",
-        "flatpak:generate-sources": "scripts/generate-sources",
-        "i18n:update-pot": "scripts/update-pot-file",
+
+        "watch": "yarn run-dev -w",
+        "dev": "yarn run-dev",
+        "dev:install": "yarn flatpak:export-bundle --install",
+        "dev:export": "yarn flatpak:export-bundle",
+        "dev:validate": "yarn flatpak:validate-bundle Devel.json",
+
+        "build": "yarn flatpak:export-bundle",
+        "prod": "yarn run-dev io.github.andrepg.Doit.json",
+        "prod:install": "yarn flatpak:export-bundle --install io.github.andrepg.Doit.json",
+        "prod:export": "yarn flatpak:export-bundle io.github.andrepg.Doit.json",
+        "prod:validate": "yarn flatpak:validate-bundle io.github.andrepg.Doit.json",
+
+        "flatpak:build-sources": "scripts/flatpak-prebuild",
+        "flatpak:export-bundle": "scripts/flatpak-export-bundle",
+        "flatpak:validate-bundle": "scripts/validate-flatpak-bundle",
+
+        "pot-generator": "scripts/pot-generator",
+
         "prepare": "husky"
     },
     "scripts-info": {
@@ -30,16 +41,21 @@
         "format:fix": "Aplica a formatação padronizada do Prettier",
         "test": "Roda a suíte de testes do projeto via Vitest",
         "test:coverage": "Gera um relatório de cobertura de testes do projeto",
-        "dev": "Compila e roda a versão de Desenvolvimento em modo watch",
+        "prebuild": "Gera o flatpak/generated-sources.json offline",
+        "build": "Gera traduções e compila/exporta o bundle flatpak de Produção",
+        "dev": "Executa a versão de Desenvolvimento uma vez",
+        "watch": "Executa a versão de Desenvolvimento em modo watch",
         "dev:install": "Compila e instala a versão de Desenvolvimento flatpak no sistema",
         "dev:export": "Exporta o bundle flatpak da versão de Desenvolvimento",
         "dev:validate": "Roda o validador de empacotamento flatpak na versão de Desenvolvimento",
-        "prod": "Compila e roda a versão de Produção do aplicativo",
+        "prod": "Executa a versão de Produção do aplicativo",
         "prod:install": "Compila e instala a versão de Produção como flatpak no sistema",
         "prod:export": "Exporta o bundle flatpak da versão de Produção",
         "prod:validate": "Roda o validador de empacotamento flatpak na versão de Produção",
-        "flatpak:generate-sources": "Gera o flatpak/generated-sources.json offline com flatpak-node-generator (rodar após mudanças no yarn.lock)",
-        "i18n:update-pot": "Gera/atualiza os arquivos de template POT e arquivos PO para traduções"
+        "flatpak:prebuild": "Gera o flatpak/generated-sources.json (após mudanças no yarn.lock)",
+        "flatpak:export-bundle": "Compila e exporta o bundle flatpak",
+        "flatpak:validate-bundle": "Valida a estrutura do flatpak",
+        "pot-generator": "Gera/atualiza os arquivos de template POT e arquivos PO para traduções"
     },
     "repository": {
         "type": "git",

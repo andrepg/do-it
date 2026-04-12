@@ -1,0 +1,45 @@
+#!/usr/bin/env bash
+# ===========================================================================
+# pot-generator — Generates the POT template and PO files for translations.
+#
+# Requires: meson, ninja and project build dependencies.
+#
+# Usage: scripts/pot-generator [-i|--install]
+#   -i, --install    Install compiled translations to user locale
+# ===========================================================================
+
+SCRIPT_DIR="$(cd "$(dirname "$0")" && pwd)"
+source "$SCRIPT_DIR/lib-common.sh"
+
+PROJECT_ROOT="$(get_project_root)"
+BUILD_DIR="$PROJECT_ROOT/_build_pot"
+
+INSTALL=false
+
+while getopts "i-:" opt; do
+    case $opt in
+        i) INSTALL=true ;;
+        -) case "${OPTARG}" in
+               install) INSTALL=true ;;
+               *) log_error "Invalid option: --${OPTARG}"; exit 1 ;;
+           esac ;;
+        *) echo "Usage: $0 [-i|--install]" >&2; exit 1 ;;
+    esac
+done
+
+log_section "Generating POT template..."
+rm -rf "$BUILD_DIR" || true
+meson setup "$BUILD_DIR"
+meson compile -C "$BUILD_DIR" io.github.andrepg.Doit-pot
+
+log_section "Generating PO files for each language..."
+meson compile -C "$BUILD_DIR" io.github.andrepg.Doit-update-po
+
+log_action "Translation files generated successfully."
+
+# Install if requested
+if $INSTALL; then
+    log_section "Installing translations to user locale..."
+    DESTDIR="" meson install -C "$BUILD_DIR" --no-rebuild
+    log_action "Translations installed successfully."
+fi
