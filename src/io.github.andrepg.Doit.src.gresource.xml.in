@@ -17,8 +17,9 @@
     <file>core/interfaces/settings.js</file>
     <file>core/interfaces/persistence.js</file>
     <file>core/interfaces/task-view.js</file>
-    <file>core/persistence/file-persistence.js</file>
+    <file>core/utils/sort.js</file>
 
+    <file>platform/gnome/persistence/gio-persistence.js</file>
     <file>platform/gnome/views/task-form.js</file>
     <file>platform/gnome/views/doit.js</file>
     <file>platform/gnome/views/popover-sort.js</file>
@@ -42,6 +43,7 @@
     <file>platform/gnome/actions/task-edit.js</file>
     <file>platform/gnome/actions/toast.js</file>
     <file>platform/gnome/actions/projects.js</file>
+    <file>platform/gnome/actions/projects-utils.js</file>
     <file>platform/gnome/actions/projects-sidebar.js</file>
     <file>platform/gnome/actions/purge-deleted.js</file>
     <file>platform/gnome/actions/shortcuts.js</file>

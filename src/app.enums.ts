@@ -18,10 +18,10 @@
  */
 
 export enum SortingField {
-  byDate = 'byDate',
-  byStatus = 'byStatus',
-  byTitle = 'byTitle',
-  byProject = 'byProject',
+  byDate = 'by_date',
+  byStatus = 'by_status',
+  byTitle = 'by_title',
+  byProject = 'by_project',
 }
 
 export enum SortingStrategy {
