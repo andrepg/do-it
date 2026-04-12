@@ -19,18 +19,21 @@
 import Adw from 'gi://Adw';
 import Gio from 'gi://Gio';
 import Gtk from 'gi://Gtk';
-import { ActionNames, AppSignals } from '../enums.js';
-import { ITask } from '../../../app.types.js';
-import { AppLocale } from '../../../app.strings.js';
+import { ITask } from '~/app.types.js';
+import { AppLocale } from '~/app.strings.js';
+import { log, error } from '~/utils/log-manager.js';
 
-import { log, error } from '../../../utils/log-manager.js';
-import { FilePersistence } from '../../../core/persistence/file-persistence.js';
+import { GioFilePersistence } from '~/platform/gnome/persistence/gio-persistence.js';
+import { ActionNames, AppSignals } from '~/platform/gnome/enums.js';
+
 import { showToast } from './toast.js';
 
 /**
  * Provides actions for exporting and importing the task database.
  */
 const backup = () => {
+  const LogClass = 'backup-manager';
+
   /**
    * Initializes the "export_database" and "import_database" actions.
    *
@@ -61,12 +64,11 @@ const backup = () => {
    * Handles the export process by opening a file dialog and saving the DB contents.
    */
   const exportJson = (parent: Adw.ApplicationWindow) => {
-    log('backup-manager', 'Exporting database');
 
     const dialog = createFileChooser(AppLocale.app.backup.export);
 
     dialog.save(parent, null, (dialog, result) => {
-      const tasks = new FilePersistence().load();
+      const tasks = new GioFilePersistence().load();
       const file = dialog?.save_finish(result);
 
       try {
@@ -76,7 +78,7 @@ const backup = () => {
 
         showToast(AppLocale.app.backup.exportSuccess);
       } catch (err) {
-        error('backup-manager', String(err));
+        error(LogClass, String(err));
         showToast(AppLocale.app.backup.exportError);
       }
     });
@@ -86,7 +88,6 @@ const backup = () => {
    * Handles the import process by opening an existing JSON file and overriding the DB.
    */
   const importJson = (parent: Adw.ApplicationWindow) => {
-    log('backup-manager', 'Importing database');
 
     const dialog = createFileChooser(AppLocale.app.backup.import);
 
@@ -98,11 +99,11 @@ const backup = () => {
         const [ok, content] = file?.load_contents(null) || [false, null];
         if (!ok || !content) return;
         const tasks = JSON.parse(decoder.decode(content)) as ITask[];
-        new FilePersistence().save(tasks);
+        new GioFilePersistence().save(tasks);
 
         showToast(AppLocale.app.backup.importSuccess);
       } catch (err) {
-        error('backup-manager', String(err));
+        error(LogClass, String(err));
         showToast(AppLocale.app.backup.importError);
       }
     });
