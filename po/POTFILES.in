@@ -19,7 +19,6 @@ src/core/interfaces/persistence.ts
 
 # Hooks files
 src/hooks/tasks.sort.ts
-src/hooks/autocomplete.ts
 src/hooks/settings.ts
 
 # Platform/GNOME - Actions
