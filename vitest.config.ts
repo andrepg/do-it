@@ -1,6 +1,15 @@
 import { defineConfig } from 'vitest/config';
 import path from 'path';
 
+const IGNORED_FILES = [
+  'node_modules/**',
+  '_build/**',
+  '.flatpak/**',
+  '.flatpak-builder/**',
+  'dist/**',
+  '**/.{idea,git,cache,output,temp}/**',
+];
+
 export default defineConfig({
   test: {
     coverage: {
@@ -15,14 +24,7 @@ export default defineConfig({
     environment: 'node',
     setupFiles: ['./tests/setup.ts'],
     include: ['tests/**/*.test.ts'],
-    exclude: [
-      'node_modules/**',
-      '_build/**',
-      '.flatpak/**',
-      '.flatpak-builder/**',
-      'dist/**',
-      '**/.{idea,git,cache,output,temp}/**',
-    ],
+    exclude: IGNORED_FILES,
     alias: {
       'gi://GLib': path.resolve(__dirname, './tests/mocks/glib.ts'),
       'gi://Gio': path.resolve(__dirname, './tests/mocks/gio.ts'),
@@ -32,7 +34,7 @@ export default defineConfig({
   },
   server: {
     watch: {
-      ignored: ['**/_build/**'],
+      ignored: IGNORED_FILES,
     },
   },
   resolve: {
