@@ -24,22 +24,22 @@ docs/                 # Detailed documentation
 
 ## Finding Things
 
-| What you're looking for           | Where it is                                |
-| --------------------------------- | ------------------------------------------ |
-| Main task type (`ITask`)          | `src/app.types.ts`                         |
-| Shared enums (SortingField, etc.) | `src/app.enums.ts`                         |
-| Platform-specific enums           | `src/platform/{platform}/enums.ts`         |
-| Translatable strings              | `src/app.strings.ts`                       |
-| Static config                     | `src/app.static.ts`                        |
-| App entry point                   | `src/app.entrypoint.ts`                    |
-| Core interfaces                   | `src/core/interfaces/`                     |
-| Settings hook                     | `src/hooks/settings.ts`                    |
-| Task sorting logic                | `src/hooks/tasks.sort.ts`                  |
-| UI components (`.ui` files)       | `src/platform/{platform}/widgets/`         |
-| View code counterparts            | `src/platform/{platform}/views/`           |
-| Action handlers                   | `src/platform/{platform}/actions/`         |
-| Persistence implementation        | `src/core/persistence/file-persistence.ts` |
-| Localization files                | `po/`                                      |
+| What you're looking for           | Where it is                               |
+| --------------------------------- | ----------------------------------------- |
+| Main task type (`ITask`)          | `src/app.types.ts`                        |
+| Shared enums (SortingField, etc.) | `src/app.enums.ts`                        |
+| Platform-specific enums           | `src/platform/{platform}/enums.ts`        |
+| Translatable strings              | `src/app.strings.ts`                      |
+| Static config                     | `src/app.static.ts`                       |
+| App entry point                   | `src/app.entrypoint.ts`                   |
+| Core interfaces                   | `src/core/interfaces/`                    |
+| Settings hook                     | `src/hooks/settings.ts`                   |
+| Task sorting logic                | `src/hooks/tasks.sort.ts`                 |
+| UI components (`.ui` files)       | `src/platform/{platform}/widgets/`        |
+| View code counterparts            | `src/platform/{platform}/views/`          |
+| Action handlers                   | `src/platform/{platform}/actions/`        |
+| Persistence implementation        | `src/core/persistence/gio-persistence.ts` |
+| Localization files                | `po/`                                     |
 
 ### Typical Workflow
 
