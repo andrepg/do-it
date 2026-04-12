@@ -82,6 +82,9 @@ jobs:
         with:
           fetch-depth: 1
 
+      - name: Install system dependencies
+        run: yarn install
+
       - name: Check development build
         uses: flatpak/flatpak-github-actions/flatpak-builder@v6.6
         with:
