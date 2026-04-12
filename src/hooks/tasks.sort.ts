@@ -30,7 +30,7 @@ import {
 /**
  * Dictionary that maps sorting fields to their corresponding sorting functions.
  */
-const SORT_DICT: Record<
+const SortingStrategiesDict: Record<
   SortingField,
   (strategy: SortingStrategy) => ReturnType<typeof create_comparator>
 > = {
@@ -59,13 +59,18 @@ export const useTaskSort = () => {
     };
   };
 
-  const sort_by = (field: SortingField, strategy: SortingStrategy) => {
-    return SORT_DICT[field](strategy);
+  const sort_by = (sortingField: SortingField, sortingStrategy: SortingStrategy) => {
+    const sortFunction = SortingStrategiesDict[sortingField];
+
+    return sortFunction(sortingStrategy);
   };
 
-  const persist_sort_preferences = (mode: SortingField, strategy: SortingStrategy) => {
-    settings.set_string(SortingModeSchema.MODE, mode);
-    settings.set_string(SortingModeSchema.STRATEGY, strategy);
+  const persist_sort_preferences = (
+    sortingField: SortingField,
+    sortingStrategy: SortingStrategy,
+  ) => {
+    settings.set_string(SortingModeSchema.MODE, sortingField);
+    settings.set_string(SortingModeSchema.STRATEGY, sortingStrategy);
   };
 
   return {
