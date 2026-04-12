@@ -12,7 +12,7 @@ src/app.wrapper.ts
 src/app.entrypoint.ts
 
 # Core files
-src/core/persistence/file-persistence.ts
+src/core/persistence/gio-persistence.ts
 src/core/interfaces/task-view.ts
 src/core/interfaces/settings.ts
 src/core/interfaces/persistence.ts
