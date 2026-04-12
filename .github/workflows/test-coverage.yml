@@ -1,0 +1,25 @@
+name: '[reuse] test and coverage'
+
+on: workflow_call
+
+jobs:
+  test-and-coverage:
+    name: '[ci] test and coverage'
+    runs-on: ubuntu-latest
+    continue-on-error: true
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v6
+
+      - name: Setup Project
+        uses: ./.github/actions/setup-project
+        with:
+          setup-node: 'true'
+
+      - name: Run Coverage
+        run: yarn test:coverage
+
+      - uses: qltysh/qlty-action/coverage@v2.0.7
+        with:
+          token: ${{ secrets.QLTY_COVERAGE_TOKEN }}
+          files: tests/coverage/lcov.info

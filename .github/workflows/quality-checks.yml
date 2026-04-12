@@ -1,0 +1,12 @@
+name: '[ci] quality checks'
+
+on:
+  workflow_dispatch:
+  schedule:
+    - cron: '0 0 */15 * *'
+
+permissions: {}
+
+jobs:
+  test-and-coverage:
+    uses: ./.github/workflows/test-coverage.yml@v2.0.8
