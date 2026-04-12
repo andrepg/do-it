@@ -56,16 +56,30 @@
 
   <screenshots>
     <screenshot type="default">
-      <image>https://github.com/andrepg/do-it/blob/2.0.5/images/dark-pt-br.png?raw=true</image>
-      <caption>Dark mode</caption>
+      <image>https://github.com/andrepg/do-it/blob/v2.0.6/images/light-pt-br.png?raw=true</image>
+      <caption>Light mode</caption>
     </screenshot>
     <screenshot>
-      <image>https://github.com/andrepg/do-it/blob/2.0.5/images/light-pt-br.png?raw=true</image>
-      <caption>Light mode</caption>
+      <image>https://github.com/andrepg/do-it/blob/v2.0.6/images/dark-pt-br.png?raw=true</image>
+      <caption>Dark mode</caption>
     </screenshot>
   </screenshots>
 
   <releases>
+    <release version="2.0.7" timestamp="1776111000">
+      <url type="details">https://github.com/andrepg/do-it/releases/tag/2.0.7</url>
+      <description translate="no">
+        <h2>Just some bugfixes to our CI, infra and codebase.</h2>
+
+        <p>This is just a maintenance release. Nothing much to see here.</p>
+
+        <ul>
+          <li>Fixes to our CI/CD pipeline</li>
+          <li>Fixes to our codebase</li>
+          <li>Fixes to our infra</li>
+        </ul>
+      </description>
+    </release>
     <release version="2.0.5" timestamp="1775233497">
       <url type="details">https://github.com/andrepg/do-it/releases/tag/2.0.5</url>
       <description translate="no">
