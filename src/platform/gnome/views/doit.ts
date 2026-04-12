@@ -20,20 +20,20 @@ import Adw from 'gi://Adw';
 import GObject from 'gi://GObject';
 import Gtk from 'gi://Gtk';
 
-import { AppSignals, WidgetIds } from '../enums.js';
-import { DoItSettings } from '../../../app.enums.js';
+import { DoItSettings } from '~/app.enums.js';
 
-import * as Actions from '../actions/index.js';
+import { useSettings } from '~/hooks/settings.js';
 
-import { APPLICATION_NAME, get_template_path } from '../../../utils/application.js';
-import { log } from '../../../utils/log-manager.js';
+import { log } from '~/utils/log-manager.js';
+import { ProjectManager } from '~/utils/project-manager.js';
+import { APPLICATION_NAME, get_template_path } from '~/utils/application.js';
 
-import { useSettings } from '../../../hooks/settings.js';
-import { ProjectManager } from '../../../utils/project-manager.js';
+import { AppSignals, WidgetIds } from '~gnome/enums.js';
+import { TaskListStore } from '~gnome/views/task-list-store.js';
+import { TaskForm } from '~gnome/views/task-form.js';
+import { PopoverSort } from '~gnome/views/popover-sort.js';
 
-import { TaskListStore } from './task-list-store.js';
-import { TaskForm } from './task-form.js';
-import { PopoverSort } from './popover-sort.js';
+import * as Actions from '~gnome/actions/index.js';
 
 const settings = useSettings();
 

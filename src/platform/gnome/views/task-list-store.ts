@@ -20,13 +20,12 @@ import GObject from 'gi://GObject';
 import Gio from 'gi://Gio';
 import GLib from 'gi://GLib';
 
+import { ITask } from '~/app.types.js';
+import { log } from '~/utils/log-manager.js';
+
 import { useTaskSort } from '~/hooks/tasks.sort.js';
-
-import { ActionNames, AppSignals } from '../enums.js';
-import { ITask } from '../../../app.types.js';
-
-import { log } from '../../../utils/log-manager.js';
-import { FilePersistence } from '../../../core/persistence/file-persistence.js';
+import { ActionNames, AppSignals } from '~/platform/gnome/enums.js';
+import { GioFilePersistence } from '~/platform/gnome/persistence/gio-persistence.js';
 
 import { TaskItem } from './task-item.js';
 import { DoItMainWindow } from './doit.js';
@@ -54,7 +53,7 @@ export class TaskListStore extends Gio.ListStore<TaskItem> {
     GObject.registerClass(TaskListStoreType, this);
   }
 
-  private persistence = new FilePersistence();
+  private persistence = new GioFilePersistence();
   private task_sort = useTaskSort();
 
   /**
@@ -115,7 +114,7 @@ export class TaskListStore extends Gio.ListStore<TaskItem> {
     );
 
     const _update_interface = (signal: string) => {
-      log('list-store', `Received ${signal} signal.`);
+      log(TaskListStore.$gtype.name, `Received ${signal} signal.`);
 
       GLib.idle_add(GLib.PRIORITY_DEFAULT_IDLE, () => {
         const prefs = this.task_sort.retrieve_sort_preferences();
@@ -162,7 +161,7 @@ export class TaskListStore extends Gio.ListStore<TaskItem> {
    * Erases all logically soft-deleted entries from the database, reloading the state afterwards.
    */
   purge_deleted() {
-    log('list-store', 'Purging deleted entries');
+    log(TaskListStore.$gtype.name, 'Purging deleted entries');
 
     this.persist_store(false);
     this.remove_all();
@@ -175,7 +174,7 @@ export class TaskListStore extends Gio.ListStore<TaskItem> {
    * @param keep_deleted If false, soft-deleted elements will not be saved (causing removal).
    */
   persist_store(keep_deleted = true) {
-    log('list-store', 'Saving tasks to database');
+    log(TaskListStore.$gtype.name, 'Saving tasks to database');
     const tasks = this.get_all().filter((item) => (keep_deleted ? true : !item.deleted));
 
     this.persistence.save(tasks);
@@ -201,13 +200,12 @@ export class TaskListStore extends Gio.ListStore<TaskItem> {
    * Initializes the application state, reading tasks from the disk and appending them to the store.
    */
   async load() {
-    log('list-store', 'Loading tasks from database');
+    log(TaskListStore.$gtype.name, 'Loading tasks from database');
 
-    const tasks = await this.persistence.load();
+    (await this.persistence.load()).forEach(
+      (item) => this.append_task(item)
+    );
 
-    tasks.forEach((item) => {
-      log('list-store', `Loading task ${item.title}`);
-      this.append_task(item);
-    });
+    log(TaskListStore.$gtype.name, `Loaded ${this.get_count()} tasks from database`);
   }
 }
