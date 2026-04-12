@@ -98,3 +98,9 @@ jobs:
           build-bundle: false
           manifest-path: flatpak/io.github.andrepg.Doit.Devel.json
           cache-key: flatpak-dev-${{ hashFiles('flatpak/io.github.andrepg.Doit.Devel.json') }}
+
+  test-and-coverage:
+    name: '[build] test and coverage'
+    runs-on: ubuntu-latest
+    if: github.event_name != 'workflow_call'
+    uses: ./.github/workflows/test-coverage.yml@v2.0.8

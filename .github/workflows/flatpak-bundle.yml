@@ -19,7 +19,7 @@ env:
 
 jobs:
   flatpak-validation:
-    uses: ./.github/workflows/build-test.yml
+    uses: ./.github/workflows/flatpak-bundle-validation.yml
 
   flatpak-bundle:
     name: '[build] create flatpak bundle'
