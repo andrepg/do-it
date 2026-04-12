@@ -1,25 +1,20 @@
 {
     "$schema": "../.vscode/schemas/flatpak-manifest.schema.json",
     "id": "io.github.andrepg.Doit.Devel",
-    "tags": ["tasks", "todo", "task management"],
+    "branch": "main",
+    "command": "io.github.andrepg.Doit.Devel",
+    "tags": ["tasks", "todo", "productivity"],
     "runtime": "org.gnome.Platform",
-    "runtime-version": "49",
+    "runtime-version": "50",
     "sdk": "org.gnome.Sdk",
     "sdk-extensions": [
         "org.freedesktop.Sdk.Extension.node24",
         "org.freedesktop.Sdk.Extension.typescript"
     ],
-    "command": "io.github.andrepg.Doit.Devel",
-    "finish-args": [
-        "--device=dri",
-        "--socket=wayland",
-        "--filesystem=host",
-        "--env=LC_ALL=pt_BR.UTF-8"
-    ],
+    "finish-args": ["--device=dri", "--socket=wayland", "--filesystem=host"],
     "build-options": {
         "prepend-path": "/usr/lib/sdk/node24/bin:/usr/lib/sdk/typescript/bin",
-        "prepend-ld-library-path": "/usr/lib/sdk/node24/lib:/usr/lib/sdk/typescript/lib",
-        "build-args": ["--share=network"]
+        "prepend-ld-library-path": "/usr/lib/sdk/node24/lib:/usr/lib/sdk/typescript/lib"
     },
     "cleanup": [
         "/include",
@@ -43,10 +38,9 @@
                 }
             },
             "build-commands": [
-                "yarn install --frozen-lockfile --ignore-scripts",
-                "meson setup _flatpak_build --prefix=/app --libdir=lib -Ddevelopment=true",
-                "meson compile -C _flatpak_build",
-                "meson install -C _flatpak_build"
+                "meson setup --reconfigure _build --prefix=/app --libdir=lib -Ddevelopment=true",
+                "meson compile -C _build",
+                "meson install -C _build"
             ],
             "sources": [
                 {

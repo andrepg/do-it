@@ -26,7 +26,9 @@ app_name = meson.project_name()
 app_version = meson.project_version()
 app_res_path = '/io/github/andrepg/Doit'
 
-app_datadir = get_option('prefix') / get_option('datadir')
+prefix_path = get_option('prefix')
+
+app_datadir = prefix_path / get_option('datadir')
 
 if app_is_dev
     app_id += '.Devel'
@@ -36,16 +38,20 @@ endif
 
 app_config = configuration_data()
 app_config.set('GJS', find_program('gjs').full_path())
+
+# ## Application Info
 app_config.set('PACKAGE_NAME', app_name)
 app_config.set('PACKAGE_VERSION', app_version)
 app_config.set('APPLICATION_ID', app_id)
 app_config.set('APPLICATION_RES', app_res_path)
 app_config.set('APPLICATION_NAME', app_codename)
+
+# ## Build Info
 app_config.set('is_devel', app_is_dev ? 'true' : 'false')
-app_config.set('prefix', get_option('prefix'))
-app_config.set('bindir', get_option('prefix') / get_option('bindir'))
 app_config.set('datadir', app_datadir)
-app_config.set('libdir', get_option('prefix') / get_option('libdir'))
+app_config.set('prefix', prefix_path)
+app_config.set('bindir', prefix_path / get_option('bindir'))
+app_config.set('libdir', prefix_path / get_option('libdir'))
 
 message('## Application ID: ' + app_id)
 message('## Application Resource Path: ' + app_res_path)
@@ -58,7 +64,7 @@ subdir('src')
 subdir('po')
 
 gnome.post_install(
-  glib_compile_schemas: true, 
-  gtk_update_icon_cache: true,
-  update_desktop_database: true,
+    glib_compile_schemas: true,
+    gtk_update_icon_cache: true,
+    update_desktop_database: true,
 )

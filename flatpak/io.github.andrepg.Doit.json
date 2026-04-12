@@ -1,9 +1,9 @@
 {
     "$schema": "../.vscode/schemas/flatpak-manifest.schema.json",
     "id": "io.github.andrepg.Doit",
-    "tags": ["tasks", "todo", "task management"],
+    "tags": ["tasks", "todo", "productivity"],
     "runtime": "org.gnome.Platform",
-    "runtime-version": "49",
+    "runtime-version": "50",
     "sdk": "org.gnome.Sdk",
     "sdk-extensions": [
         "org.freedesktop.Sdk.Extension.node24",
@@ -38,9 +38,9 @@
             "build-commands": [
                 "echo 'yarn-offline-mirror \"/run/build/Doit/flatpak-node/yarn-mirror\"' > .yarnrc",
                 "yarn install --offline --frozen-lockfile --production=false --ignore-scripts",
-                "meson setup _flatpak_build --prefix=/app --libdir=lib -Ddevelopment=false",
-                "meson compile -C _flatpak_build",
-                "meson install -C _flatpak_build"
+                "meson setup _build --prefix=/app --libdir=lib -Ddevelopment=false",
+                "meson compile -C _build",
+                "meson install -C _build"
             ],
             "sources": [
                 {
