@@ -1,4 +1,4 @@
-/* file-persistence.ts
+/* gio-persistence.ts
  * Copyright 2025 André Paul Grandsire
  *
  * This program is free software: you can redistribute it and/or modify
@@ -19,11 +19,11 @@
 import GLib from 'gi://GLib';
 import Gio from 'gi://Gio';
 
-import type { ITask } from '../../app.types.js';
-import type { IPersistence } from '../interfaces/persistence.js';
+import type { ITask } from '../../../app.types.js';
+import type { IPersistence } from '../../../core/interfaces/persistence.js';
 import { log } from '~/utils/log-manager.js';
 
-export class FilePersistence implements IPersistence {
+export class GioFilePersistence implements IPersistence {
   private databaseFileName = 'data.json';
 
   private encoder = new TextEncoder();
@@ -42,17 +42,15 @@ export class FilePersistence implements IPersistence {
     this.check_database_existence();
   }
 
-  check_database_existence() {
-    if (this.databaseLocation.query_exists(null) || this.databaseFileHandler.query_exists(null)) {
-      log(this.toString(), 'Database exists. Nothing to do.');
-      return;
-    }
+  private check_database_existence() {
+    if (this.databaseFileHandler.query_exists(null)) return;
 
     try {
+      log(GioFilePersistence.name, 'First app execution. Creating database');
       this.databaseLocation.make_directory_with_parents(null);
       this.databaseFileHandler.create(Gio.FileCreateFlags.PRIVATE, null);
     } catch {
-      log(this.toString(), 'Error creating database');
+      log(GioFilePersistence.name, 'Error creating database');
     }
   }
 
