@@ -22,7 +22,10 @@ jobs:
           fetch-depth: 1
 
       - name: Install system dependencies
-        run: sudo apt-get update && sudo apt-get install -y meson ninja-build gjs
+        run: sudo apt-get update && sudo apt-get install -y ninja-build gjs python3-pip
+
+      - name: Install Meson
+        run: pip3 install --break-system-packages meson==1.4.0
 
       - name: Setup Project
         uses: ./.github/actions/setup-project
