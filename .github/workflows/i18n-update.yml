@@ -24,6 +24,9 @@ jobs:
       - name: Install system dependencies
         run: sudo apt-get update && sudo apt-get install -y ninja-build gjs python3-pip desktop-file-utils appstream libglib2.0-dev libgjs0g gettext
 
+      - name: Clean up stale build directories
+        run: rm -rf _build _build_pot
+
       - name: Install Meson
         run: pip3 install --break-system-packages meson==1.4.0
 
