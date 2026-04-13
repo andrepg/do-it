@@ -54,7 +54,7 @@ jobs:
           manifest-path: flatpak/io.github.andrepg.Doit.json
           bundle: ${{ env.FLATPAK_NAME }}-latest.flatpak
           cache-key: flatpak-prod-${{ hashFiles('flatpak/io.github.andrepg.Doit.json') }}
-          gpg-sign: ${{ env.GPG_KEY_ID }}
+          gpg-sign: ${{ secrets.FLATPAK_GPG_KEY }}
 
       - name: Generate GPG detached signature
         run: |

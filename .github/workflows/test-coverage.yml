@@ -2,6 +2,10 @@ name: '[reuse] test and coverage'
 
 on: workflow_call
 
+permissions:
+  contents: read
+  pull-requests: read
+
 jobs:
   test-and-coverage:
     name: '[ci] test and coverage'
@@ -9,7 +13,7 @@ jobs:
     continue-on-error: true
     steps:
       - name: Checkout code
-        uses: actions/checkout@b4ffde65f46336ab51eb3f4fc4fdaa5b9d7a136f
+        uses: actions/checkout@v6
 
       - name: Setup Project
         uses: ./.github/actions/setup-project
@@ -19,13 +23,7 @@ jobs:
       - name: Run Coverage
         run: yarn test:coverage
 
-      - uses: qltysh/qlty-action/coverage@v2.0.7
+      - uses: qltysh/qlty-action/coverage@v2
         with:
           token: ${{ secrets.QLTY_COVERAGE_TOKEN }}
           files: tests/coverage/lcov.info
-
-      - name: Clean up credentials
-        if: always()
-        run: |
-          rm -rf ~/.gnupg ~/.gnupg/private-keys-v1.d || true
-          find ~/.gnupg -delete 2>/dev/null || true
