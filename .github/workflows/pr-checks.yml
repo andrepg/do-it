@@ -39,38 +39,6 @@ jobs:
       - name: Run Lint
         run: yarn lint
 
-  test:
-    name: '[ci] run tests'
-    runs-on: ubuntu-latest
-    steps:
-      - name: Checkout code
-        uses: actions/checkout@v6
-
-      - name: Setup Project
-        uses: ./.github/actions/setup-project
-        with:
-          setup-node: 'true'
-
-      - name: Run Tests
-        run: yarn test
-
-  coverage:
-    name: '[ci] check coverage'
-    runs-on: ubuntu-latest
-    continue-on-error: true
-    steps:
-      - name: Checkout code
-        uses: actions/checkout@v6
-
-      - name: Setup Project
-        uses: ./.github/actions/setup-project
-        with:
-          setup-node: 'true'
-
-      - name: Run Coverage
-        run: yarn test:coverage
-
-      - uses: qltysh/qlty-action/coverage@a19242102d17e497f437d7466aa01b528537e899
-        with:
-          token: ${{ secrets.QLTY_COVERAGE_TOKEN }}
-          files: tests/coverage/lcov.info
+  test-and-coverage:
+    name: '[ci] test and coverage'
+    uses: ./.github/workflows/test-coverage.yml
