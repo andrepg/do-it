@@ -47,7 +47,7 @@ jobs:
           echo "GPG_KEY_ID=$GPG_KEY_ID" >> $GITHUB_ENV
 
       - name: Build Flatpak bundle
-        uses: flatpak/flatpak-github-actions/flatpak-builder@e66e3cb095d8b83a88b1165358c8198505ecc927
+        uses: flatpak/flatpak-github-actions/flatpak-builder@v6.6
         with:
           build-bundle: true
           upload-artifact: false
@@ -83,7 +83,7 @@ jobs:
           FLATPAKREF
 
       - name: Upload bundle to release
-        uses: softprops/action-gh-release@3bb12739c298aeb8a4eeaf626c5b8d85266b0e65
+        uses: softprops/action-gh-release@v2
         with:
           draft: false
           tag_name: ${{ env.RELEASE_TAG }}
