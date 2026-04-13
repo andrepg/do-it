@@ -37,9 +37,3 @@ jobs:
         with:
           commit_message: 'lang: update pot files'
           file_pattern: 'po/*.po po/*.pot'
-
-      - name: Clean up credentials
-        if: always()
-        run: |
-          rm -rf ~/.gnupg ~/.gnupg/private-keys-v1.d || true
-          find ~/.gnupg -delete 2>/dev/null || true

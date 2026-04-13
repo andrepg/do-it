@@ -6,3 +6,4 @@ _build_pot
 flatpak/generated-sources.json
 package-lock.json
 **.code-workspace
+build

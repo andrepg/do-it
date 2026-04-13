@@ -29,7 +29,7 @@ export const AllowedPrefixes = [
  * @see https://commitlint.js.org/reference/configuration#rules
  */
 export enum RuleConfigExecution {
-  always = 'always'
+  always = 'always',
 }
 
 /**
@@ -38,6 +38,5 @@ export enum RuleConfigExecution {
  */
 export enum RuleConfigName {
   typeEnum = 'type-enum',
-  headerCase = 'header-case'
+  headerCase = 'header-case',
 }
-

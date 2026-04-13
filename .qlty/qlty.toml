@@ -45,7 +45,7 @@ exclude_patterns = [
   "**/.flatpak-builder/**",
   "flatpak/generated-sources.json",
   ".github/workflows/version-bump.yml",
-  ".github/workflows/pr-checks.yml",
+  ".github/workflows/quality-checks.yml",
 ]
 
 test_patterns = [
