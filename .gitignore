@@ -3,6 +3,7 @@
 repo/
 
 **/_build
+**/build
 **/_build-*/**
 **/_repo-*/**
 **/*.json~
