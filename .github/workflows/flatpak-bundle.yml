@@ -41,8 +41,10 @@ jobs:
         uses: ./.github/actions/setup-project
 
       - name: Setup GPG
+        env:
+          FLATPAK_GPG_KEY: ${{ secrets.FLATPAK_GPG_KEY }}
         run: |
-          echo '${{ secrets.FLATPAK_GPG_KEY }}' | gpg --batch --yes --import
+          echo "$FLATPAK_GPG_KEY" | gpg --batch --yes --import
           GPG_KEY_ID=$(gpg --list-secret-keys --keyid-format LONG | grep -oP 'sec\s+\w+/\K\w+' | head -1)
           echo "GPG_KEY_ID=$GPG_KEY_ID" >> $GITHUB_ENV
 
@@ -57,13 +59,16 @@ jobs:
           gpg-sign: ${{ env.GPG_KEY_ID }}
 
       - name: Generate GPG detached signature
+        env:
+          FLATPAK_GPG_KEY: ${{ secrets.FLATPAK_GPG_KEY }}
         run: |
-          echo '${{ secrets.FLATPAK_GPG_KEY }}' | gpg --batch --yes --import --allow-secret-key-import
+          echo "$FLATPAK_GPG_KEY" | gpg --batch --yes --import --allow-secret-key-import
           gpg --batch --yes --armor --detach-sign \
             --local-user ${{ env.GPG_KEY_ID }} \
             ${{ env.FLATPAK_NAME }}-latest.flatpak
 
       - name: Clean up GPG keys
+        if: always()
         run: |
           gpg --batch --yes --delete-secret-keys ${{ env.GPG_KEY_ID }} || true
           gpg --batch --yes --delete-keys ${{ env.GPG_KEY_ID }} || true
@@ -71,7 +76,6 @@ jobs:
 
       - name: Generate flatpakref
         run: |
-          PUBLIC_KEY=$(cat flatpak/${{ env.FLATPAK_NAME }}-latest.pub)
           cat << 'FLATPAKREF' > ${{ env.FLATPAK_NAME }}-latest.flatpakref
           [Flatpak Ref]
           Title=Do It
