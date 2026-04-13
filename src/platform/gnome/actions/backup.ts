@@ -64,7 +64,6 @@ const backup = () => {
    * Handles the export process by opening a file dialog and saving the DB contents.
    */
   const exportJson = (parent: Adw.ApplicationWindow) => {
-
     const dialog = createFileChooser(AppLocale.app.backup.export);
 
     dialog.save(parent, null, (dialog, result) => {
@@ -88,7 +87,6 @@ const backup = () => {
    * Handles the import process by opening an existing JSON file and overriding the DB.
    */
   const importJson = (parent: Adw.ApplicationWindow) => {
-
     const dialog = createFileChooser(AppLocale.app.backup.import);
 
     dialog.open(parent, null, (dialog, result) => {

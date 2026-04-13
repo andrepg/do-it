@@ -1,0 +1,48 @@
+name: '[build] i18n update'
+
+on:
+  pull_request:
+    branches: ['main']
+    paths:
+      - 'src/**'
+      - 'package.json'
+      - 'yarn.lock'
+
+permissions:
+  contents: write
+
+jobs:
+  i18n-update:
+    name: '[build] update translations'
+    runs-on: ubuntu-latest
+    steps:
+      - name: Setup Project
+        uses: andrepg/do-it/.github/actions/setup-project
+        with:
+          setup-node: 'true'
+          setup-system-deps: 'true'
+          meson-version: '1.4.0'
+
+      - name: Update POT files
+        run: yarn pot-generator
+
+      - name: Create new branch for translations
+        run: |
+          git checkout -b "i18n-update/$(git rev-parse --short HEAD)"
+
+      - name: Commit changes
+        uses: stefanzweifel/git-auto-commit-action@b863ae1933cb653a53c021fe36dbb774e1fb9403
+        with:
+          commit_message: 'lang: update pot files'
+          file_pattern: 'po/*.po po/*.pot'
+
+      - name: Create PR
+        if: github.event_name == 'pull_request'
+        run: |
+          BRANCH_NAME="i18n-update/$(git rev-parse --short HEAD)"
+          git push -u origin "$BRANCH_NAME"
+          gh pr create --base "$GITHUB_REF_NAME" --head "$BRANCH_NAME" \
+            --title "lang: update pot files" \
+            --body "Automated POT file update from i18n-update workflow"
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}

@@ -202,9 +202,7 @@ export class TaskListStore extends Gio.ListStore<TaskItem> {
   async load() {
     log(TaskListStore.$gtype.name, 'Loading tasks from database');
 
-    (await this.persistence.load()).forEach(
-      (item) => this.append_task(item)
-    );
+    (await this.persistence.load()).forEach((item) => this.append_task(item));
 
     log(TaskListStore.$gtype.name, `Loaded ${this.get_count()} tasks from database`);
   }

@@ -20,7 +20,7 @@ env:
 
 jobs:
   flatpak-validation:
-    uses: ./.github/workflows/flatpak-bundle-validation.yml
+    uses: ./.github/workflows/bundle-validation.yml
 
   flatpak-bundle:
     name: '[build] create flatpak bundle'
@@ -37,8 +37,15 @@ jobs:
         with:
           fetch-depth: 1
 
+      - name: Checkout flatpak keys
+        uses: actions/checkout@v6
+        with:
+          sparse-checkout: |
+            flatpak/io.github.andrepg.Doit-latest.pub
+          sparse-checkout-cone-mode: false
+
       - name: Setup Project
-        uses: ./.github/actions/setup-project
+        uses: andrepg/do-it/.github/actions/setup-project
 
       - name: Setup GPG
         run: |
@@ -72,15 +79,47 @@ jobs:
 
       - name: Generate flatpakref
         run: |
-          cat << 'FLATPAKREF' > "${{ env.FLATPAK_NAME }}-latest.flatpakref"
+          # Import separate public key for distribution (not the signing key)
+          gpg --batch --yes --import flatpak/io.github.andrepg.Doit-latest.pub
+
+          # Filter by email to get specific key fingerprint
+          DIST_KEY_FP=$(gpg --list-public-keys --with-colons "andrepg@protonmail.com" 2>/dev/null | grep "^fpr" | cut -d: -f10)
+
+          # Validate fingerprint was extracted
+          if [ -z "$DIST_KEY_FP" ]; then
+            echo "ERROR: No key found for andrepg@protonmail.com"
+            exit 1
+          fi
+
+          # Export as BINARY (no --armor!), then base64 encode
+          GPG_PUB_KEY=$(gpg --export "$DIST_KEY_FP" | base64 -w0)
+
+          # Validate base64 output is not empty
+          if [ -z "$GPG_PUB_KEY" ]; then
+            echo "ERROR: Failed to export or encode GPG key"
+            exit 1
+          fi
+
+          # Generate flatpakref with base64-encoded key
+          cat << FLATPAKREF > "${{ env.FLATPAK_NAME }}-latest.flatpakref"
           [Flatpak Ref]
           Title=Do It
           Name=${{ env.FLATPAK_NAME }}
           Branch=main
           Url=https://github.com/${{ github.repository }}/releases/download/${{ env.RELEASE_TAG }}/${{ env.FLATPAK_NAME }}-latest.flatpak
           IsRuntime=False
-          GPGKey=${{ secrets.FLATPAK_GPG_KEY }}
+          GPGKey=$GPG_PUB_KEY
           FLATPAKREF
+
+      - name: Verify flatpakref GPGKey format
+        run: |
+          # Use robust grep without anchor for INI file format
+          GPG_KEY_VAL=$(grep "GPGKey=" "${{ env.FLATPAK_NAME }}-latest.flatpakref" | cut -d= -f2)
+          if ! echo "$GPG_KEY_VAL" | base64 -d >/dev/null 2>&1; then
+            echo "ERROR: GPGKey is not valid base64"
+            exit 1
+          fi
+          echo "Verified: GPGKey is valid base64"
 
       - name: Upload bundle to release
         uses: softprops/action-gh-release@v2

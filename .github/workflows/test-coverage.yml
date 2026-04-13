@@ -12,11 +12,8 @@ jobs:
     runs-on: ubuntu-latest
     continue-on-error: true
     steps:
-      - name: Checkout code
-        uses: actions/checkout@v6
-
       - name: Setup Project
-        uses: ./.github/actions/setup-project
+        uses: andrepg/do-it/.github/actions/setup-project
         with:
           setup-node: 'true'
 
