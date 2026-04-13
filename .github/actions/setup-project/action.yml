@@ -6,6 +6,14 @@ inputs:
     description: 'If true, sets up Node.js and installs Yarn dependencies'
     required: false
     default: 'false'
+  setup-system-deps:
+    description: 'If true, installs system dependencies for GNOME/Flatpak builds'
+    required: false
+    default: 'false'
+  meson-version:
+    description: 'Meson version to install via pip (optional)'
+    required: false
+    default: ''
 
 runs:
   using: 'composite'
@@ -21,6 +29,18 @@ runs:
       with:
         node-version: '24'
         cache: 'yarn'
+
+    - name: Install system dependencies
+      if: inputs.setup-system-deps == 'true'
+      shell: bash
+      run: |
+        sudo apt-get update
+        sudo apt-get install -y ninja-build gjs python3-pip desktop-file-utils appstream libglib2.0-dev libgjs0g gettext
+
+    - name: Install Meson
+      if: inputs.meson-version != ''
+      shell: bash
+      run: pip3 install --break-system-packages "meson==${{ inputs.meson-version }}"
 
     - name: Install dependencies
       if: inputs.setup-node == 'true'
