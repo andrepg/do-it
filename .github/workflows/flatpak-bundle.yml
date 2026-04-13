@@ -42,7 +42,7 @@ jobs:
 
       - name: Setup GPG
         run: |
-          echo "${{ secrets.FLATPAK_GPG_KEY }}" | gpg --batch --yes --import
+          echo '${{ secrets.FLATPAK_GPG_KEY }}' | gpg --batch --yes --import
           GPG_KEY_ID=$(gpg --list-secret-keys --keyid-format LONG | grep -oP 'sec\s+\w+/\K\w+' | head -1)
           echo "GPG_KEY_ID=$GPG_KEY_ID" >> $GITHUB_ENV
 
@@ -58,13 +58,21 @@ jobs:
 
       - name: Generate GPG detached signature
         run: |
+          echo '${{ secrets.FLATPAK_GPG_KEY }}' | gpg --batch --yes --import --allow-secret-key-import
           gpg --batch --yes --armor --detach-sign \
             --local-user ${{ env.GPG_KEY_ID }} \
             ${{ env.FLATPAK_NAME }}-latest.flatpak
 
+      - name: Clean up GPG keys
+        run: |
+          gpg --batch --yes --delete-secret-keys ${{ env.GPG_KEY_ID }} || true
+          gpg --batch --yes --delete-keys ${{ env.GPG_KEY_ID }} || true
+          rm -rf ~/.gnupg
+
       - name: Generate flatpakref
         run: |
-          cat << 'EOF' > ${{ env.FLATPAK_NAME }}-latest.flatpakref
+          PUBLIC_KEY=$(cat flatpak/${{ env.FLATPAK_NAME }}-latest.pub)
+          cat << 'FLATPAKREF' > ${{ env.FLATPAK_NAME }}-latest.flatpakref
           [Flatpak Ref]
           Title=Do It
           Name=${{ env.FLATPAK_NAME }}
@@ -72,7 +80,7 @@ jobs:
           Url=https://github.com/${{ github.repository }}/releases/download/${{ env.RELEASE_TAG }}/${{ env.FLATPAK_NAME }}-latest.flatpak
           IsRuntime=False
           GPGKey=${{ secrets.FLATPAK_GPG_KEY }}
-          EOF
+          FLATPAKREF
 
       - name: Upload bundle to release
         uses: softprops/action-gh-release@v2
