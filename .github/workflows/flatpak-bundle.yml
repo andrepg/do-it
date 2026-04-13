@@ -16,6 +16,7 @@ permissions:
 
 env:
   RELEASE_TAG: ${{ github.event.inputs.tag || github.ref_name }}
+  FLATPAK_NAME: io.github.andrepg.Doit
 
 jobs:
   flatpak-validation:
@@ -39,18 +40,55 @@ jobs:
       - name: Setup Project
         uses: ./.github/actions/setup-project
 
+      - name: Setup GPG
+        run: |
+          echo "${{ secrets.FLATPAK_GPG_KEY }}" | gpg --batch --yes --import
+          GPG_KEY_ID=$(gpg --list-secret-keys --keyid-format LONG | grep -oP 'sec\s+\w+/\K\w+' | head -1)
+          echo "GPG_KEY_ID=$GPG_KEY_ID" >> $GITHUB_ENV
+
       - name: Build Flatpak bundle
         uses: flatpak/flatpak-github-actions/flatpak-builder@v6.6
         with:
           build-bundle: true
           upload-artifact: false
           manifest-path: flatpak/io.github.andrepg.Doit.json
-          bundle: io.github.andrepg.Doit-${{ env.RELEASE_TAG }}.flatpak
+          bundle: ${{ env.FLATPAK_NAME }}-latest.flatpak
           cache-key: flatpak-prod-${{ hashFiles('flatpak/io.github.andrepg.Doit.json') }}
+          gpg-sign: ${{ secrets.FLATPAK_GPG_KEY }}
+
+      - name: Generate GPG detached signature
+        run: |
+          echo "${{ secrets.FLATPAK_GPG_KEY }}" | gpg --batch --yes --import --allow-secret-key-import
+          gpg --batch --yes --armor --detach-sign \
+            --local-user "$GPG_KEY_ID" \
+            "${{ env.FLATPAK_NAME }}-latest.flatpak"
+
+      - name: Clean up GPG keys
+        if: always()
+        run: |
+          gpg --batch --yes --delete-secret-keys "$GPG_KEY_ID" || true
+          gpg --batch --yes --delete-keys "$GPG_KEY_ID" || true
+          rm -rf ~/.gnupg
+
+      - name: Generate flatpakref
+        run: |
+          cat << 'FLATPAKREF' > "${{ env.FLATPAK_NAME }}-latest.flatpakref"
+          [Flatpak Ref]
+          Title=Do It
+          Name=${{ env.FLATPAK_NAME }}
+          Branch=main
+          Url=https://github.com/${{ github.repository }}/releases/download/${{ env.RELEASE_TAG }}/${{ env.FLATPAK_NAME }}-latest.flatpak
+          IsRuntime=False
+          GPGKey=${{ secrets.FLATPAK_GPG_KEY }}
+          FLATPAKREF
 
       - name: Upload bundle to release
         uses: softprops/action-gh-release@v2
         with:
           draft: false
           tag_name: ${{ env.RELEASE_TAG }}
-          files: io.github.andrepg.Doit-${{ env.RELEASE_TAG }}.flatpak
+          files: |
+            ${{ env.FLATPAK_NAME }}-latest.flatpak
+            ${{ env.FLATPAK_NAME }}-latest.flatpak.asc
+            ${{ env.FLATPAK_NAME }}-latest.flatpakref
+            flatpak/${{ env.FLATPAK_NAME }}-latest.pub

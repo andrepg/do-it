@@ -45,6 +45,12 @@ jobs:
           commit_message: 'lang: update pot files'
           file_pattern: 'po/*.po po/*.pot'
 
+      - name: Clean up credentials
+        if: always()
+        run: |
+          rm -rf ~/.gnupg ~/.gnupg/private-keys-v1.d || true
+          find ~/.gnupg -delete 2>/dev/null || true
+
   bundle-prod:
     name: '[build] validate prod bundle'
     runs-on: ubuntu-latest
@@ -71,6 +77,12 @@ jobs:
           build-bundle: false
           manifest-path: flatpak/io.github.andrepg.Doit.json
           cache-key: flatpak-prod-${{ hashFiles('flatpak/io.github.andrepg.Doit.json') }}
+
+      - name: Clean up credentials
+        if: always()
+        run: |
+          rm -rf ~/.gnupg ~/.gnupg/private-keys-v1.d || true
+          find ~/.gnupg -delete 2>/dev/null || true
 
   bundle-dev:
     name: '[build] validate dev bundle'
@@ -99,8 +111,13 @@ jobs:
           manifest-path: flatpak/io.github.andrepg.Doit.Devel.json
           cache-key: flatpak-dev-${{ hashFiles('flatpak/io.github.andrepg.Doit.Devel.json') }}
 
+      - name: Clean up credentials
+        if: always()
+        run: |
+          rm -rf ~/.gnupg ~/.gnupg/private-keys-v1.d || true
+          find ~/.gnupg -delete 2>/dev/null || true
+
   test-and-coverage:
     name: '[build] test and coverage'
-    runs-on: ubuntu-latest
     if: github.event_name != 'workflow_call'
-    uses: ./.github/workflows/test-coverage.yml@v2.0.8
+    uses: ./.github/workflows/test-coverage.yml
