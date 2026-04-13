@@ -41,15 +41,13 @@ jobs:
         uses: ./.github/actions/setup-project
 
       - name: Setup GPG
-        env:
-          FLATPAK_GPG_KEY: ${{ secrets.FLATPAK_GPG_KEY }}
         run: |
-          echo "$FLATPAK_GPG_KEY" | gpg --batch --yes --import
+          echo "${{ secrets.FLATPAK_GPG_KEY }}" | gpg --batch --yes --import
           GPG_KEY_ID=$(gpg --list-secret-keys --keyid-format LONG | grep -oP 'sec\s+\w+/\K\w+' | head -1)
           echo "GPG_KEY_ID=$GPG_KEY_ID" >> $GITHUB_ENV
 
       - name: Build Flatpak bundle
-        uses: flatpak/flatpak-github-actions/flatpak-builder@v6.6
+        uses: flatpak/flatpak-github-actions/flatpak-builder@e66e3cb095d8b83a88b1165358c8198505ecc927
         with:
           build-bundle: true
           upload-artifact: false
@@ -59,13 +57,11 @@ jobs:
           gpg-sign: ${{ env.GPG_KEY_ID }}
 
       - name: Generate GPG detached signature
-        env:
-          FLATPAK_GPG_KEY: ${{ secrets.FLATPAK_GPG_KEY }}
         run: |
-          echo "$FLATPAK_GPG_KEY" | gpg --batch --yes --import --allow-secret-key-import
+          echo "${{ secrets.FLATPAK_GPG_KEY }}" | gpg --batch --yes --import --allow-secret-key-import
           gpg --batch --yes --armor --detach-sign \
             --local-user "$GPG_KEY_ID" \
-            "$FLATPAK_NAME-latest.flatpak"
+            "${{ env.FLATPAK_NAME }}-latest.flatpak"
 
       - name: Clean up GPG keys
         if: always()
@@ -76,7 +72,7 @@ jobs:
 
       - name: Generate flatpakref
         run: |
-          cat << 'FLATPAKREF' > ${{ env.FLATPAK_NAME }}-latest.flatpakref
+          cat << 'FLATPAKREF' > "${{ env.FLATPAK_NAME }}-latest.flatpakref"
           [Flatpak Ref]
           Title=Do It
           Name=${{ env.FLATPAK_NAME }}
@@ -87,7 +83,7 @@ jobs:
           FLATPAKREF
 
       - name: Upload bundle to release
-        uses: softprops/action-gh-release@v2
+        uses: softprops/action-gh-release@3bb12739c298aeb8a4eeaf626c5b8d85266b0e65
         with:
           draft: false
           tag_name: ${{ env.RELEASE_TAG }}
