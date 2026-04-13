@@ -9,7 +9,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: io.github.andrepg.Doit\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-04-12 08:48-0300\n"
+"POT-Creation-Date: 2026-04-13 16:23+0000\n"
 "PO-Revision-Date: 2026-04-07 21:15-0300\n"
 "Last-Translator: André Paul Grandsire <andre@users.noreply.github.com>\n"
 "Language-Team: Portuguese <andre@users.noreply.github.com>\n"
@@ -19,163 +19,6 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 "X-Generator: Gtranslator 50.0\n"
-
-#: src/app.strings.ts:26
-msgctxt "sorting"
-msgid "Older to newer"
-msgstr "Mais antigas primeiro"
-
-#: src/app.strings.ts:27
-msgctxt "sorting"
-msgid "To do first"
-msgstr "Pendentes primeiro"
-
-#: src/app.strings.ts:28 src/app.strings.ts:29
-msgctxt "sorting"
-msgid "A to Z"
-msgstr "A a Z"
-
-#: src/app.strings.ts:32
-msgctxt "sorting"
-msgid "Newer to older"
-msgstr "Mais novas primeiro"
-
-#: src/app.strings.ts:33
-msgctxt "sorting"
-msgid "Done first"
-msgstr "Concluídas primeiro"
-
-#: src/app.strings.ts:34 src/app.strings.ts:35
-msgctxt "sorting"
-msgid "Z to A"
-msgstr "Z a A"
-
-#: src/app.strings.ts:39
-msgctxt "sorting-field"
-msgid "Date"
-msgstr "Data"
-
-#: src/app.strings.ts:40
-msgctxt "sorting-field"
-msgid "Status"
-msgstr "Status"
-
-# I think that this string can be merged with the previous one (from src/platform/gnome/widgets/task-form.ui:20).
-#: src/app.strings.ts:41
-msgctxt "sorting-field"
-msgid "Title"
-msgstr "Título"
-
-#: src/app.strings.ts:42
-msgctxt "sorting-field"
-msgid "Project"
-msgstr "Projeto"
-
-#: src/app.strings.ts:48
-msgctxt "task-list"
-msgid "Tasks"
-msgstr "Tarefas"
-
-#: src/app.strings.ts:49
-msgctxt "task-list"
-msgid "No tasks found"
-msgstr "Nenhuma tarefa encontrada"
-
-#: src/app.strings.ts:50
-msgctxt "task-list"
-msgid "All tasks"
-msgstr "Suas tarefas"
-
-#: src/app.strings.ts:51
-msgctxt "task-list"
-msgid "Without project"
-msgstr "Sem projeto"
-
-#: src/app.strings.ts:52
-#, javascript-format
-msgctxt "task-group"
-msgid "%s finished, %s deleted"
-msgstr "%s concluídas, %s excluídas"
-
-#: src/app.strings.ts:56
-msgctxt "task-form"
-msgid "Title cannot be empty"
-msgstr "Título não pode ser vazio"
-
-#: src/app.strings.ts:60
-msgctxt "toast"
-msgid "Task created"
-msgstr "Tarefa criada"
-
-#: src/app.strings.ts:61
-msgctxt "toast"
-msgid "Task edited"
-msgstr "Tarefa modificada"
-
-#: src/app.strings.ts:62
-msgctxt "toast"
-msgid "Task updated"
-msgstr "Tarefa atualizada"
-
-#: src/app.strings.ts:63
-msgctxt "toast"
-msgid "Task restored"
-msgstr "Tarefa restaurada"
-
-#: src/app.strings.ts:64
-msgctxt "toast"
-msgid "Task deleted"
-msgstr "Tarefa excluída"
-
-#: src/app.strings.ts:65
-msgctxt "toast"
-msgid "Tasks purged"
-msgstr "Tarefas excluídas descartadas"
-
-#: src/app.strings.ts:66
-msgctxt "toast"
-msgid "Task finished"
-msgstr "Tarefa finalizada"
-
-#: src/app.strings.ts:72
-msgctxt "backup"
-msgid "Save Tasks As…"
-msgstr "Salvar Tarefas Como…"
-
-#: src/app.strings.ts:73
-msgctxt "backup"
-msgid "Import Tasks…"
-msgstr "Importar Tarefas…"
-
-#: src/app.strings.ts:75
-msgctxt "backup"
-msgid "Database exported successfully"
-msgstr "Exportação concluída com sucesso."
-
-#: src/app.strings.ts:76
-msgctxt "backup"
-msgid "Error exporting database"
-msgstr "Erro ao exportar dados"
-
-#: src/app.strings.ts:78
-msgctxt "backup"
-msgid "Database imported successfully"
-msgstr "Banco de dados importado com sucesso"
-
-#: src/app.strings.ts:79
-msgctxt "backup"
-msgid "Error importing database"
-msgstr "Erro ao importar dados"
-
-#: src/app.strings.ts:82
-msgctxt "about"
-msgid "translators-credits"
-msgstr "André Paul Grandsire/andrepg@users.noreply.github.com"
-
-#: src/app.strings.ts:83
-msgctxt "about"
-msgid "Donate"
-msgstr "Fazer uma doação"
 
 #: src/platform/gnome/widgets/application.ui:13
 msgid "Purge deleted tasks"
@@ -289,6 +132,132 @@ msgstr "Ordenar tarefas por"
 #: src/platform/gnome/widgets/popover-sort.ui:49
 msgid "Order strategy"
 msgstr "Estratégia de ordenação"
+
+#~ msgctxt "sorting"
+#~ msgid "Older to newer"
+#~ msgstr "Mais antigas primeiro"
+
+#~ msgctxt "sorting"
+#~ msgid "To do first"
+#~ msgstr "Pendentes primeiro"
+
+#~ msgctxt "sorting"
+#~ msgid "A to Z"
+#~ msgstr "A a Z"
+
+#~ msgctxt "sorting"
+#~ msgid "Newer to older"
+#~ msgstr "Mais novas primeiro"
+
+#~ msgctxt "sorting"
+#~ msgid "Done first"
+#~ msgstr "Concluídas primeiro"
+
+#~ msgctxt "sorting"
+#~ msgid "Z to A"
+#~ msgstr "Z a A"
+
+#~ msgctxt "sorting-field"
+#~ msgid "Date"
+#~ msgstr "Data"
+
+#~ msgctxt "sorting-field"
+#~ msgid "Status"
+#~ msgstr "Status"
+
+# I think that this string can be merged with the previous one (from src/platform/gnome/widgets/task-form.ui:20).
+#~ msgctxt "sorting-field"
+#~ msgid "Title"
+#~ msgstr "Título"
+
+#~ msgctxt "sorting-field"
+#~ msgid "Project"
+#~ msgstr "Projeto"
+
+#~ msgctxt "task-list"
+#~ msgid "Tasks"
+#~ msgstr "Tarefas"
+
+#~ msgctxt "task-list"
+#~ msgid "No tasks found"
+#~ msgstr "Nenhuma tarefa encontrada"
+
+#~ msgctxt "task-list"
+#~ msgid "All tasks"
+#~ msgstr "Suas tarefas"
+
+#~ msgctxt "task-list"
+#~ msgid "Without project"
+#~ msgstr "Sem projeto"
+
+#, javascript-format
+#~ msgctxt "task-group"
+#~ msgid "%s finished, %s deleted"
+#~ msgstr "%s concluídas, %s excluídas"
+
+#~ msgctxt "task-form"
+#~ msgid "Title cannot be empty"
+#~ msgstr "Título não pode ser vazio"
+
+#~ msgctxt "toast"
+#~ msgid "Task created"
+#~ msgstr "Tarefa criada"
+
+#~ msgctxt "toast"
+#~ msgid "Task edited"
+#~ msgstr "Tarefa modificada"
+
+#~ msgctxt "toast"
+#~ msgid "Task updated"
+#~ msgstr "Tarefa atualizada"
+
+#~ msgctxt "toast"
+#~ msgid "Task restored"
+#~ msgstr "Tarefa restaurada"
+
+#~ msgctxt "toast"
+#~ msgid "Task deleted"
+#~ msgstr "Tarefa excluída"
+
+#~ msgctxt "toast"
+#~ msgid "Tasks purged"
+#~ msgstr "Tarefas excluídas descartadas"
+
+#~ msgctxt "toast"
+#~ msgid "Task finished"
+#~ msgstr "Tarefa finalizada"
+
+#~ msgctxt "backup"
+#~ msgid "Save Tasks As…"
+#~ msgstr "Salvar Tarefas Como…"
+
+#~ msgctxt "backup"
+#~ msgid "Import Tasks…"
+#~ msgstr "Importar Tarefas…"
+
+#~ msgctxt "backup"
+#~ msgid "Database exported successfully"
+#~ msgstr "Exportação concluída com sucesso."
+
+#~ msgctxt "backup"
+#~ msgid "Error exporting database"
+#~ msgstr "Erro ao exportar dados"
+
+#~ msgctxt "backup"
+#~ msgid "Database imported successfully"
+#~ msgstr "Banco de dados importado com sucesso"
+
+#~ msgctxt "backup"
+#~ msgid "Error importing database"
+#~ msgstr "Erro ao importar dados"
+
+#~ msgctxt "about"
+#~ msgid "translators-credits"
+#~ msgstr "André Paul Grandsire/andrepg@users.noreply.github.com"
+
+#~ msgctxt "about"
+#~ msgid "Donate"
+#~ msgstr "Fazer uma doação"
 
 #~ msgid "Projects"
 #~ msgstr "Projetos"
