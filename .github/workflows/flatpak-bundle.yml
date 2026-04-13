@@ -64,14 +64,14 @@ jobs:
         run: |
           echo "$FLATPAK_GPG_KEY" | gpg --batch --yes --import --allow-secret-key-import
           gpg --batch --yes --armor --detach-sign \
-            --local-user ${{ env.GPG_KEY_ID }} \
-            ${{ env.FLATPAK_NAME }}-latest.flatpak
+            --local-user "$GPG_KEY_ID" \
+            "$FLATPAK_NAME-latest.flatpak"
 
       - name: Clean up GPG keys
         if: always()
         run: |
-          gpg --batch --yes --delete-secret-keys ${{ env.GPG_KEY_ID }} || true
-          gpg --batch --yes --delete-keys ${{ env.GPG_KEY_ID }} || true
+          gpg --batch --yes --delete-secret-keys "$GPG_KEY_ID" || true
+          gpg --batch --yes --delete-keys "$GPG_KEY_ID" || true
           rm -rf ~/.gnupg
 
       - name: Generate flatpakref
