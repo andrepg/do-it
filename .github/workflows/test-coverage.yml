@@ -23,3 +23,9 @@ jobs:
         with:
           token: ${{ secrets.QLTY_COVERAGE_TOKEN }}
           files: tests/coverage/lcov.info
+
+      - name: Clean up credentials
+        if: always()
+        run: |
+          rm -rf ~/.gnupg ~/.gnupg/private-keys-v1.d || true
+          find ~/.gnupg -delete 2>/dev/null || true
