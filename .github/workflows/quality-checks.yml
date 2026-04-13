@@ -13,7 +13,7 @@ jobs:
     continue-on-error: true
     steps:
       - name: Setup Project
-        uses: andrepg/do-it/.github/actions/setup-project
+        uses: andrepg/do-it/.github/actions/setup-project@v2.0.9
         with:
           setup-node: 'true'
 
@@ -26,7 +26,7 @@ jobs:
     continue-on-error: true
     steps:
       - name: Setup Project
-        uses: andrepg/do-it/.github/actions/setup-project
+        uses: andrepg/do-it/.github/actions/setup-project@v2.0.9
         with:
           setup-node: 'true'
 

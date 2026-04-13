@@ -45,7 +45,7 @@ jobs:
           sparse-checkout-cone-mode: false
 
       - name: Setup Project
-        uses: andrepg/do-it/.github/actions/setup-project
+        uses: andrepg/do-it/.github/actions/setup-project@v2.0.9
 
       - name: Setup GPG
         run: |

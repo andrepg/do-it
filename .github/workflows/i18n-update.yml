@@ -17,7 +17,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Setup Project
-        uses: andrepg/do-it/.github/actions/setup-project
+        uses: andrepg/do-it/.github/actions/setup-project@v2.0.9
         with:
           setup-node: 'true'
           setup-system-deps: 'true'
