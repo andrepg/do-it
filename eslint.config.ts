@@ -13,6 +13,7 @@ export default defineConfig([
       '.github/**',
 
       '.vscode/**',
+      '.opencode/**',
 
       'flatpak/**',
       'tests/**',
