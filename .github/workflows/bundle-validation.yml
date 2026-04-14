@@ -28,13 +28,8 @@ jobs:
       options: --privileged
 
     steps:
-      - name: Checkout code
-        uses: actions/checkout@v6
-        with:
-          fetch-depth: 1
-
       - name: Setup Project
-        uses: andrepg/do-it/.github/actions/setup-project@v2.0.9
+        uses: andrepg/do-it/.github/actions/setup-project@main
         with:
           setup-node: 'true'
 
@@ -61,13 +56,8 @@ jobs:
       options: --privileged
 
     steps:
-      - name: Checkout code
-        uses: actions/checkout@v6
-        with:
-          fetch-depth: 1
-
       - name: Setup Project
-        uses: andrepg/do-it/.github/actions/setup-project@v2.0.9
+        uses: andrepg/do-it/.github/actions/setup-project@main
         with:
           setup-node: 'true'
 
