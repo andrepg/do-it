@@ -32,18 +32,6 @@ jobs:
       options: --privileged
 
     steps:
-      - name: Checkout code
-        uses: actions/checkout@v6
-        with:
-          fetch-depth: 1
-
-      - name: Checkout flatpak keys
-        uses: actions/checkout@v6
-        with:
-          sparse-checkout: |
-            flatpak/io.github.andrepg.Doit-latest.pub
-          sparse-checkout-cone-mode: false
-
       - name: Setup Project
         uses: andrepg/do-it/.github/actions/setup-project@v2.0.9
 
@@ -60,7 +48,7 @@ jobs:
           upload-artifact: false
           manifest-path: flatpak/io.github.andrepg.Doit.json
           bundle: ${{ env.FLATPAK_NAME }}-latest.flatpak
-          cache-key: flatpak-prod-${{ hashFiles('flatpak/io.github.andrepg.Doit.json') }}
+          cache-key: flatpak-prod-${{ hashFiles('flatpak/generated-sources.json') }}
           gpg-sign: ${{ env.GPG_KEY_ID }}
 
       - name: Generate GPG detached signature
