@@ -9,8 +9,6 @@ on:
     paths-ignore:
       - 'po/**'
   push:
-    tags:
-      - 'v*'
     branches:
       - main
     paths-ignore:
