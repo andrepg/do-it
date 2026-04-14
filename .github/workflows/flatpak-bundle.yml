@@ -71,11 +71,11 @@ jobs:
           gpg --batch --yes --import flatpak/io.github.andrepg.Doit-latest.pub
 
           # Filter by email to get specific key fingerprint
-          DIST_KEY_FP=$(gpg --list-public-keys --with-colons "andrepg@protonmail.com" 2>/dev/null | grep "^fpr" | cut -d: -f10)
+          DIST_KEY_FP=$(gpg --list-public-keys --with-colons "andrepg@users.noreply.github.com" 2>/dev/null | grep "^fpr" | cut -d: -f10)
 
           # Validate fingerprint was extracted
           if [ -z "$DIST_KEY_FP" ]; then
-            echo "ERROR: No key found for andrepg@protonmail.com"
+            echo "ERROR: No key found for andrepg@users.noreply.github.com"
             exit 1
           fi
 
