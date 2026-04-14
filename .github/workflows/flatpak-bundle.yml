@@ -70,18 +70,18 @@ jobs:
           # Import separate public key for distribution (not the signing key)
           gpg --batch --yes --import flatpak/io.github.andrepg.Doit-latest.pub
 
-          # Filter by email to get specific key fingerprint
-          DIST_KEY_FP=$(gpg --list-public-keys --with-colons "andrepg@users.noreply.github.com" 2>/dev/null | grep "^fpr" | cut -d: -f10)
+          # Filter by email to get specific key ID (short form for reliable export)
+          DIST_KEY_ID=$(gpg --list-public-keys --with-colons "andrepg@users.noreply.github.com" 2>/dev/null | grep "^pub" | cut -d: -f5)
 
-          # Validate fingerprint was extracted
-          if [ -z "$DIST_KEY_FP" ]; then
+          # Validate key ID was extracted
+          if [ -z "$DIST_KEY_ID" ]; then
             echo "ERROR: No key found for andrepg@users.noreply.github.com"
             exit 1
           fi
 
           # Export as BINARY (no --armor!), then base64 encode
-          GPG_PUB_KEY=$(gpg --export "$DIST_KEY_FP" | base64 -w0)
-
+          GPG_PUB_KEY=$(gpg --export "$DIST_KEY_ID" | base64 -w0)
+                    
           # Validate base64 output is not empty
           if [ -z "$GPG_PUB_KEY" ]; then
             echo "ERROR: Failed to export or encode GPG key"
