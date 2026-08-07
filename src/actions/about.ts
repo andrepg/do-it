@@ -20,7 +20,8 @@ import Gio from 'gi://Gio';
 import Adw from 'gi://Adw';
 import Gtk from 'gi://Gtk';
 
-import { ActionNames, AppSignals } from '~/app.enums.js';
+import { AppSignals } from '~/app.enums.js';
+import { ActionNames } from "~/static/actions.js";
 import { AppLocale } from '~/app.strings.js';
 
 import { APPLICATION_ID, APPLICATION_NAME } from '~/utils/application.js';

@@ -19,7 +19,8 @@
 import Gtk from 'gi://Gtk';
 import Gio from 'gi://Gio';
 
-import { ActionNames, AppSignals, WidgetIds } from '~/app.enums.js';
+import { AppSignals, WidgetIds } from '~/app.enums.js';
+import { ActionNames } from "~/static/actions.js";
 import { AppLocale } from '~/app.strings.js';
 
 import { DoItMainWindow } from '../views/doit.js';

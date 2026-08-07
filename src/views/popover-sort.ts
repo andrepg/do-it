@@ -21,7 +21,8 @@ import GObject from 'gi://GObject';
 
 import Adw from 'gi://Adw';
 
-import { AppSignals, SortingField, SortingStrategy, WidgetIds } from '~/app.enums.js';
+import { AppSignals, WidgetIds } from '~/app.enums.js';
+import { SortingField, SortingStrategy } from "~/static/sorting.js";
 import { ISortingFieldOption, ISortingStrategyOption } from '~/app.types.js';
 
 import { get_template_path } from '~/utils/application.js';

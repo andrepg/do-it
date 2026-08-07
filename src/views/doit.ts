@@ -20,7 +20,7 @@ import Adw from 'gi://Adw';
 import GObject from 'gi://GObject';
 import Gtk from 'gi://Gtk';
 
-import { DoItSettings } from '~/app.enums.js';
+import { DoItSettings } from "~/static/settings.js";
 
 import { log } from '~/utils/log-manager.js';
 import { ProjectManager } from '~/managers/project-manager.js';

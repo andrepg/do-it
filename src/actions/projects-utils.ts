@@ -18,7 +18,7 @@
  */
 import Adw from 'gi://Adw';
 
-import { SortingField, SortingStrategy } from '~/app.enums.js';
+import { SortingField, SortingStrategy } from "~/static/sorting.js";
 import { TaskGroup } from '~/views/task-group.js';
 import { TaskListStore } from '~/views/task-list-store.js';
 import { retrieve_sort_preferences } from '~/utils/tasks.sort.js';

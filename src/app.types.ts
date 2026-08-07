@@ -16,7 +16,7 @@
  *
  * SPDX-License-Identifier: GPL-3.0-or-later
  */
-import { SortingField, SortingStrategy } from './app.enums.js';
+import { SortingField, SortingStrategy } from "./static/sorting.js";
 
 /**
  * Represents a single task entity in the application.

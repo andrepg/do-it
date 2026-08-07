@@ -24,7 +24,8 @@ import { AppLocale } from '~/app.strings.js';
 import { error } from '~/utils/log-manager.js';
 
 import { GioFilePersistence } from '~/persistence/gio-persistence.js';
-import { ActionNames, AppSignals } from '~/app.enums.js';
+import { AppSignals } from '~/app.enums.js';
+import { ActionNames } from "~/static/actions.js";
 
 import { showToast } from './toast.js';
 

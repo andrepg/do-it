@@ -10,6 +10,11 @@
     <file>app.strings.js</file>
     <file>app.types.js</file>
 
+    <file>static/actions.js</file>
+    <file>static/messages.js</file>
+    <file>static/settings.js</file>
+    <file>static/sorting.js</file>
+
     <file>managers/project-manager.js</file>
 
     <file>utils/log-manager.js</file>

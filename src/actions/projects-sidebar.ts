@@ -18,7 +18,8 @@
  */
 import Gtk from 'gi://Gtk';
 
-import { AppSignals, SortingStrategy, WidgetIds } from '~/app.enums.js';
+import { AppSignals, WidgetIds } from '~/app.enums.js';
+import { SortingStrategy } from "~/static/sorting.js";
 import { AppLocale } from '~/app.strings.js';
 
 import { DoItMainWindow } from '../views/doit.js';

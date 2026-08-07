@@ -19,7 +19,8 @@
 import Adw from 'gi://Adw';
 import Gio from 'gi://Gio';
 
-import { ActionNames, AppSignals } from '~/app.enums.js';
+import { AppSignals } from '~/app.enums.js';
+import { ActionNames } from "~/static/actions.js";
 
 import { TaskListStore } from '../views/task-list-store.js';
 

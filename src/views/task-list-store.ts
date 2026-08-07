@@ -28,7 +28,8 @@ import {
   retrieve_sort_preferences,
   sort_by,
 } from '~/utils/tasks.sort.js';
-import { ActionNames, AppSignals } from '~/app.enums.js';
+import { AppSignals } from '~/app.enums.js';
+import { ActionNames } from "~/static/actions.js";
 import { GioFilePersistence } from '~/persistence/gio-persistence.js';
 
 import { TaskItem } from './task-item.js';
