@@ -30,6 +30,12 @@ vi.mock('gi://GLib', () => ({
   default: {
     get_user_data_dir: () => '/tmp/doit-test',
     build_filenamev: (args: string[]) => args.join('/'),
+    idle_add: (_priority: number, callback: () => number) => {
+      callback();
+      return 0;
+    },
+    PRIORITY_DEFAULT_IDLE: 0,
+    SOURCE_REMOVE: 0,
   },
 }));
 

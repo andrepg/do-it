@@ -10,8 +10,9 @@
     <file>app.strings.js</file>
     <file>app.types.js</file>
 
+    <file>managers/project-manager.js</file>
+
     <file>utils/log-manager.js</file>
-    <file>utils/project-manager.js</file>
     <file>utils/settings.js</file>
     <file>utils/sort.js</file>
     <file>utils/tasks.sort.js</file>

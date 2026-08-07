@@ -23,7 +23,7 @@ import Gtk from 'gi://Gtk';
 import { DoItSettings } from '~/app.enums.js';
 
 import { log } from '~/utils/log-manager.js';
-import { ProjectManager } from '~/utils/project-manager.js';
+import { ProjectManager } from '~/managers/project-manager.js';
 import { APPLICATION_NAME, get_template_path } from '~/utils/application.js';
 import { get_settings } from '~/utils/settings.js';
 
@@ -124,8 +124,6 @@ export class DoItMainWindow extends Adw.ApplicationWindow {
 
     Actions.projects(this.taskListStore, this.projectManager).setup(this);
     Actions.projectSidebar(this.projectManager).setup(this);
-
-    this.projectManager.refresh_items();
   }
 
   private initialize_actions() {

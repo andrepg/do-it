@@ -24,7 +24,7 @@ import { AppLocale } from '~/app.strings.js';
 import { DoItMainWindow } from '../views/doit.js';
 import { SidebarButton } from '../views/sidebar-button.js';
 
-import { ProjectManager } from '~/utils/project-manager.js';
+import { ProjectManager } from '~/managers/project-manager.js';
 import { sort_by_project_name } from '~/utils/sort.js';
 
 /**

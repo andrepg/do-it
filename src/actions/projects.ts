@@ -22,7 +22,7 @@ import { AppSignals, WidgetIds } from '~/app.enums.js';
 import { DoItMainWindow } from '../views/doit.js';
 import { TaskGroup } from '../views/task-group.js';
 import { TaskListStore } from '../views/task-list-store.js';
-import { ProjectManager } from '~/utils/project-manager.js';
+import { ProjectManager } from '~/managers/project-manager.js';
 import {
   add_project_group,
   applyFilter,

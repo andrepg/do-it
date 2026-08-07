@@ -36,8 +36,10 @@ src/views/task-list-store.ts
 src/views/task-group.ts
 src/views/index.ts
 
+# Managers
+src/managers/project-manager.ts
+
 # Utils
-src/utils/project-manager.ts
 src/utils/log-manager.ts
 src/utils/tasks.sort.ts
 src/utils/settings.ts

@@ -51,7 +51,6 @@ export class ProjectManager extends GObject.Object {
   }
 
   private _store: TaskListStore;
-  private _projects_set: Set<string> = new Set();
   private _projects_ordered: string[] = [];
   private _update_queued = false;
   private _handler_ids: number[] = [];
@@ -66,13 +65,6 @@ export class ProjectManager extends GObject.Object {
       this._store.connect(AppSignals.TaskUpdated, () => this._update_projects()),
       this._store.connect(AppSignals.TaskDeleted, () => this._update_projects()),
     ];
-  }
-
-  /**
-   * Retrieves the current ordered list of discovered projects.
-   */
-  public get_projects(): string[] {
-    return this._projects_ordered;
   }
 
   /**
@@ -94,13 +86,6 @@ export class ProjectManager extends GObject.Object {
     return this._current_filter;
   }
 
-  /**
-   * Forces a refresh of the discovered projects by rescanning the store.
-   */
-  public refresh_items() {
-    this._update_projects();
-  }
-
   private _update_projects() {
     if (this._update_queued) return;
     this._update_queued = true;
@@ -113,8 +98,8 @@ export class ProjectManager extends GObject.Object {
   }
 
   private _do_update_projects() {
-    const currentProjectsSet = new Set<string>();
     const currentProjectsOrdered: string[] = [];
+    const currentProjectsSet = new Set<string>();
     const n_items = this._store.get_n_items();
 
     for (let i = 0; i < n_items; i++) {
@@ -128,17 +113,16 @@ export class ProjectManager extends GObject.Object {
       }
     }
 
-    // 1. Find projects to remove (exist in cache but not in current)
-    const projectsToRemove = [...this._projects_set].filter((p) => !currentProjectsSet.has(p));
-    for (const project of projectsToRemove) {
-      this._projects_set.delete(project);
-      this.emit(AppSignals.ProjectRemoved, project);
+    // Find projects to remove (previously discovered but no longer present)
+    for (const project of this._projects_ordered) {
+      if (!currentProjectsSet.has(project)) {
+        this.emit(AppSignals.ProjectRemoved, project);
+      }
     }
 
-    // 2. Find projects to add (exist in current but not in cache)
+    // Find projects to add (present now but not yet discovered)
     for (const project of currentProjectsOrdered) {
-      if (!this._projects_set.has(project)) {
-        this._projects_set.add(project);
+      if (!this._projects_ordered.includes(project)) {
         this.emit(AppSignals.ProjectAdded, project);
       }
     }
@@ -151,7 +135,6 @@ export class ProjectManager extends GObject.Object {
       this._store.disconnect(handlerId);
     }
     this._handler_ids = [];
-    this._projects_set.clear();
     this._projects_ordered = [];
   }
 }
