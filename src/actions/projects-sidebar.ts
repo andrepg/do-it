@@ -17,16 +17,13 @@
  * SPDX-License-Identifier: GPL-3.0-or-later
  */
 import Gtk from 'gi://Gtk';
+import Adw from 'gi://Adw';
 
 import { AppSignals, WidgetIds } from '~/app.enums.js';
-import { SortingStrategy } from "~/static/sorting.js";
-import { AppLocale } from '~/app.strings.js';
 
 import { DoItMainWindow } from '../views/doit.js';
-import { SidebarButton } from '../views/sidebar-button.js';
 
 import { ProjectManager } from '~/managers/project-manager.js';
-import { sort_by_project_name } from '~/utils/sort.js';
 
 /**
  * Initializes and manages the sidebar list of discovered projects.
@@ -35,71 +32,6 @@ import { sort_by_project_name } from '~/utils/sort.js';
  */
 export default function projectSidebar(projectManager: ProjectManager) {
   const ALL_TASKS = '__all__';
-
-  const projectSidebarItems: Map<string, SidebarButton> = new Map();
-
-  const create_sidebar_button = (project: string): SidebarButton => new SidebarButton(project);
-
-  /**
-   * Appends a new project to the sidebar list and binds its click event.
-   *
-   * @param section The container where the item will be appended.
-   * @param project The name of the project.
-   */
-  const add_sidebar_item = (section: Gtk.Box, project: string) => {
-    if (projectSidebarItems.has(project)) return;
-
-    const sidebarItem = create_sidebar_button(project);
-
-    section.append(sidebarItem);
-    projectSidebarItems.set(project, sidebarItem);
-
-    sidebarItem.connect(AppSignals.Clicked, () => {
-      projectManager.set_filter(project);
-    });
-  };
-
-  /**
-   * Removes a project from the sidebar list.
-   *
-   * @param section The container from which the item will be removed.
-   * @param project The name of the project to remove.
-   */
-  const remove_sidebar_item = (section: Gtk.Box, project: string) => {
-    const item = projectSidebarItems.get(project);
-
-    if (item) {
-      section.remove(item);
-      projectSidebarItems.delete(project);
-    }
-  };
-
-  /**
-   * Reorders the sidebar items alphabetically to maintain a stable layout.
-   *
-   * @param section The container whose children should be reordered.
-   */
-  const reorder_sidebar = (section: Gtk.Box) => {
-    const sortedProjects = Array.from(projectSidebarItems.keys())
-      .filter((p) => p !== ALL_TASKS)
-      .sort(sort_by_project_name(SortingStrategy.ascending));
-
-    // Re-append items in order
-    // Note: "__all__" is handled differently or we can just keep it at the top
-    const allTasksBtn = projectSidebarItems.get(ALL_TASKS);
-    if (allTasksBtn) {
-      section.remove(allTasksBtn);
-      section.append(allTasksBtn);
-    }
-
-    for (const project of sortedProjects) {
-      const sidebarItem = projectSidebarItems.get(project);
-      if (sidebarItem) {
-        section.remove(sidebarItem);
-        section.append(sidebarItem);
-      }
-    }
-  };
 
   /**
    * Bootstraps the sidebar tracking by connecting it to the project manager signals.
@@ -110,43 +42,20 @@ export default function projectSidebar(projectManager: ProjectManager) {
       WidgetIds.WindowSidebarProjectList,
     ) as Gtk.Box;
 
-    setup_all_tasks_button(sidebarProjectList);
+    projectManager.connect(AppSignals.ProjectAdded, watch_changes);
+    projectManager.connect(AppSignals.ProjectRemoved, watch_changes);
+    projectManager.connect(AppSignals.FilterChanged, set_active_state);
 
-    projectManager.connect(AppSignals.ProjectAdded, (_: unknown, project: string) => {
-      add_sidebar_item(sidebarProjectList, project);
-      reorder_sidebar(sidebarProjectList);
-      update_active_states(projectManager.get_filter());
-    });
-
-    projectManager.connect(AppSignals.ProjectRemoved, (_: unknown, project: string) => {
-      remove_sidebar_item(sidebarProjectList, project);
-    });
-
-    projectManager.connect(AppSignals.FilterChanged, (_: unknown, filter: string | null) => {
-      update_active_states(filter);
-    });
-
-    // Set initial state
-    update_active_states(projectManager.get_filter());
+    const sidebar = new Adw.Sidebar()
+    
   };
 
-  function update_active_states(currentFilter: string | null) {
-    projectSidebarItems.forEach((button, project) => {
-      const isAllTasksButton = project === ALL_TASKS;
+  const watch_changes = () => {
+    console.log(`[action] Projects changed`);
+  };
 
-      button.set_active((isAllTasksButton && currentFilter === null) || project === currentFilter);
-    });
-  }
-
-  function setup_all_tasks_button(sidebarProjectList: Gtk.Box): void {
-    const sidebarBtnAll = create_sidebar_button(AppLocale.tasks.list.all);
-
-    sidebarBtnAll.connect(AppSignals.Clicked, () => {
-      projectManager.set_filter(null);
-    });
-
-    sidebarProjectList.append(sidebarBtnAll);
-    projectSidebarItems.set(ALL_TASKS, sidebarBtnAll);
+  const set_active_state = () => {
+    
   }
 
   return { setup };

@@ -28,11 +28,11 @@ import { APPLICATION_NAME, get_template_path } from '~/utils/application.js';
 import { get_settings } from '~/utils/settings.js';
 
 import { AppSignals, WidgetIds } from '~/app.enums.js';
-import { TaskListStore } from './task-list-store.js';
 import { TaskForm } from './task-form.js';
 import { PopoverSort } from './popover-sort.js';
 
 import * as Actions from '../actions/index.js';
+import { TaskListStore } from '~/persistence/list-store.js';
 
 const settings = get_settings();
 
@@ -97,13 +97,13 @@ export class DoItMainWindow extends Adw.ApplicationWindow {
 
     log(DoItMainWindow.LogClass, 'Initializing task store');
     this.taskListStore = new TaskListStore();
-    this.taskListStore.load();
+    this.taskListStore.load_tasks();
 
     this.initialize_widgets();
     this.initialize_actions();
     this.initialize_project_manager();
 
-    this.connect(AppSignals.SortingChanged, () => this.taskListStore.sort_list());
+    this.connect(AppSignals.SortingChanged, () => this.taskListStore.sort_tasks());
   }
 
   private initialize_widgets() {
@@ -154,7 +154,7 @@ export class DoItMainWindow extends Adw.ApplicationWindow {
     this.settings.set_int(DoItSettings.windowHeight, height);
 
     log(DoItMainWindow.LogClass, 'Persisting tasks');
-    this.taskListStore.persist_store();
+    this.taskListStore.persist_tasks();
 
     return super.vfunc_close_request();
   }

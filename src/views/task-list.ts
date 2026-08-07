@@ -16,45 +16,240 @@
  *
  * SPDX-License-Identifier: GPL-3.0-or-later
  */
-import GObject from 'gi://GObject';
-import Gtk from 'gi://Gtk';
-import Gio from 'gi://Gio';
+import Adw from 'gi://Adw';
+import GLib from 'gi://GLib';
 
 import { AppSignals } from '~/app.enums.js';
-import { get_template_path } from '~/utils/application.js';
-import { TaskItem } from './task-item.js';
+import { AppLocale } from '~/app.strings.js';
+import { SortingField, SortingStrategy } from '~/static/sorting.js';
+import { retrieve_sort_preferences } from '~/utils/tasks.sort.js';
 
-const GObjectProperties = {
-  GTypeName: 'TaskList',
-  Template: get_template_path('task-list.ui'),
-  Signals: {
-    [AppSignals.ItemsChanged]: {
-      param_types: [],
-    },
-  },
-};
+import { TaskItem } from './task-item.js';
+import { TaskListStore } from '../persistence/list-store.js';
+import { sort_by_project } from '~/utils/sort.js';
 
 /**
- * A ListBox container that renders a filtered set of TaskItems.
- *
- * Hierarchy: TaskGroup -> TaskList -> TaskItem(s)
- *
- * This class inherits from Gtk.ListBox and is responsible for binding
- * a GTK ListModel (typically a Gtk.FilterListModel containing Tasks
- * for a specific project) to create and render individual TaskItem widgets.
+ * A single project's collected tasks and their status counters.
  */
-export class TaskList extends Gtk.ListBox {
-  static {
-    GObject.registerClass(GObjectProperties, this);
-  }
+interface ProjectGroupEntry {
+  tasks: TaskItem[];
+  finished: number;
+  deleted: number;
+}
+
+/**
+ * Dynamically renders the global task list as one Adw.PreferencesGroup per project.
+ *
+ * Hierarchy: DoItMainWindow (Main view list_container) -> PreferencesGroup(s) -> TaskItem(s)
+ *
+ * Instead of binding a filtered model per project, it walks the TaskListStore
+ * in a single pass, groups tasks by their project and builds one
+ * Adw.PreferencesGroup per project directly into the given PreferencesPage.
+ * TaskItem rows are added straight to the groups, so no Gtk.ListBox or
+ * Gtk.CustomFilter is needed.
+ */
+export class TaskList {
+  private store: TaskListStore;
+  private container: Adw.PreferencesPage;
+  private projectGroups: Map<string, Adw.PreferencesGroup> = new Map();
+  private currentFilter: string | null = null;
+  private lastGroupOrder: string[] = [];
+  private _rebuild_queued = false;
 
   /**
    * @constructor
-   * @param {Gio.ListModel} model - The list model containing ITask objects (often filtered)
+   * @param {TaskListStore} store - The global state store containing all tasks
+   * @param {Adw.PreferencesPage} container - The page that will hold the generated groups
    */
-  constructor(model: Gio.ListModel) {
-    super();
+  constructor(store: TaskListStore, container: Adw.PreferencesPage) {
+    this.store = store;
+    this.container = container;
 
-    this.bind_model(model, (item: GObject.Object) => (item as TaskItem).to_widget());
+    store.connect(AppSignals.ItemsChanged, () => this.schedule_rebuild());
+    store.connect(AppSignals.TaskUpdated, () => this.schedule_rebuild());
+    store.connect(AppSignals.TaskDeleted, () => this.schedule_rebuild());
+
+    this.rebuild();
+  }
+
+  /**
+   * Sets the active project filter, showing only the matching group.
+   * @param project The project name to show, or null to show all groups.
+   */
+  public set_filter(project: string | null): void {
+    this.currentFilter = project;
+
+    for (const [projectName, preferencesGroup] of this.projectGroups) {
+      preferencesGroup.set_visible(project === null || projectName === project);
+    }
+  }
+
+  /**
+   * Queues a rebuild on the next idle cycle, collapsing bursts of store signals.
+   */
+  private schedule_rebuild(): void {
+    if (this._rebuild_queued) return;
+    this._rebuild_queued = true;
+
+    GLib.idle_add(GLib.PRIORITY_DEFAULT_IDLE, () => {
+      this.rebuild();
+      this._rebuild_queued = false;
+      return GLib.SOURCE_REMOVE;
+    });
+  }
+
+  /**
+   * Rebuilds the project groups from the current store state in a single pass.
+   */
+  private rebuild(): void {
+    const projectGroupList = this.collect_project_groups();
+    const orderedProjects = this.order_projects(projectGroupList);
+
+    this.reconcile_groups(orderedProjects, projectGroupList);
+  }
+
+  /**
+   * Groups all store tasks by project, counting finished/deleted per project.
+   * @returns A map of project name to its collected tasks and counters.
+   */
+  private collect_project_groups(): Map<string, ProjectGroupEntry> {
+    const projectGroupList = new Map<string, ProjectGroupEntry>();
+
+    for (let i = 0; i < this.store.get_n_items(); i++) {
+      const item = this.store.get_item(i);
+      if (!(item instanceof TaskItem)) continue;
+
+      let projectGroup = projectGroupList.get(item.project);
+      if (!projectGroup) {
+        projectGroup = { tasks: [], finished: 0, deleted: 0 };
+        projectGroupList.set(item.project, projectGroup);
+      }
+
+      projectGroup.tasks.push(item);
+      if (item.done) projectGroup.finished++;
+      if (item.deleted) projectGroup.deleted++;
+    }
+
+    return projectGroupList;
+  }
+
+  /**
+   * Orders the project names according to the current sorting preferences.
+   * @param projectGroupList The collected project groups.
+   * @returns The ordered list of project names.
+   */
+  private order_projects(projectGroupList: Map<string, ProjectGroupEntry>): string[] {
+    const { strategy } = retrieve_sort_preferences();
+
+    return Array.from(projectGroupList.keys()).sort((a, b) => {
+      if (a > b) return 1;
+      if (a < b) return -1;
+      return 0;
+    });
+
+    // return Array.from(projectGroupList.keys()).sort(
+    //   mode === SortingField.byProject
+    //     ? sort_by_project(strategy)
+    //     : sort_by_project(SortingStrategy.ascending),
+    // );
+  }
+
+  /**
+   * Ensures one PreferencesGroup exists per ordered project, refreshing its
+   * rows and description, then prunes groups with no remaining tasks.
+   * @param orderedProjects The ordered project names.
+   * @param projectGroupList The collected project groups.
+   */
+  private reconcile_groups(
+    orderedProjects: string[],
+    projectGroupList: Map<string, ProjectGroupEntry>,
+  ): void {
+    const visibleProjects = new Set<string>();
+
+    for (const projectName of orderedProjects) {
+      const projectGroup = projectGroupList.get(projectName);
+      if (!projectGroup) continue;
+
+      const preferencesGroup = this.ensure_preferences_group(projectName);
+      visibleProjects.add(projectName);
+
+      this.refresh_preferences_group(preferencesGroup, projectGroup);
+
+      preferencesGroup.set_visible(
+        this.currentFilter === null || projectName === this.currentFilter,
+      );
+    }
+
+    this.reorder_groups(orderedProjects);
+    this.prune_missing_groups(visibleProjects);
+  }
+
+  /**
+   * Creates or retrieves the cached PreferencesGroup for the given project.
+   * @param projectName The project name.
+   * @returns The matching PreferencesGroup widget.
+   */
+  private ensure_preferences_group(projectName: string): Adw.PreferencesGroup {
+    let preferencesGroup = this.projectGroups.get(projectName);
+
+    if (!preferencesGroup) {
+      preferencesGroup = new Adw.PreferencesGroup({
+        title: projectName === '' ? AppLocale.tasks.list.noProject : projectName,
+      });
+
+      this.projectGroups.set(projectName, preferencesGroup);
+      this.container.add(preferencesGroup);
+    }
+
+    return preferencesGroup;
+  }
+
+  /**
+   * Refreshes a group's rows (re-adding tasks in store order) and its description.
+   * @param preferencesGroup The group widget to refresh.
+   * @param projectGroup The collected tasks and counters for the group.
+   */
+  private refresh_preferences_group(
+    preferencesGroup: Adw.PreferencesGroup,
+    projectGroup: ProjectGroupEntry,
+  ): void {
+    for (const task of projectGroup.tasks) {
+      preferencesGroup.add(task);
+    }
+
+    preferencesGroup.set_description(
+      AppLocale.tasks.list.groupDescription.format(projectGroup.finished, projectGroup.deleted),
+    );
+  }
+
+  /**
+   * Re-appends the groups in the desired order, but only when that order changed.
+   * @param orderedProjects The desired project order.
+   */
+  private reorder_groups(orderedProjects: string[]): void {
+    if (orderedProjects.join('|') === this.lastGroupOrder.join('|')) return;
+
+    this.lastGroupOrder = [...orderedProjects];
+
+    for (const projectName of orderedProjects) {
+      const preferencesGroup = this.projectGroups.get(projectName);
+      if (preferencesGroup) {
+        this.container.remove(preferencesGroup);
+        this.container.add(preferencesGroup);
+      }
+    }
+  }
+
+  /**
+   * Removes cached groups whose project no longer has any tasks.
+   * @param visibleProjects The projects that survived this rebuild.
+   */
+  private prune_missing_groups(visibleProjects: Set<string>): void {
+    for (const [projectName, preferencesGroup] of this.projectGroups) {
+      if (!visibleProjects.has(projectName)) {
+        this.container.remove(preferencesGroup);
+        this.projectGroups.delete(projectName);
+      }
+    }
   }
 }

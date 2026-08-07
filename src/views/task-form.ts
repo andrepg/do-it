@@ -31,7 +31,7 @@ import { get_template_path } from '~/utils/application.js';
 import { log } from '~/utils/log-manager.js';
 
 import { TaskItem } from './task-item.js';
-import { TaskListStore } from './task-list-store.js';
+import { TaskListStore } from '~/persistence/list-store.js';
 
 const TaskFormProperties = {
   GTypeName: 'TaskForm',
@@ -168,8 +168,9 @@ export class TaskForm extends Gtk.Box {
   /**
    * Finds the task currently loaded in the form.
    */
-  private find_task(): TaskItem | null {
-    if (this._taskId === null) return null;
+  private find_task(): TaskItem | undefined {
+    if (this._taskId === null) return;
+
     return this._store.find_by_id(this._taskId);
   }
 

@@ -20,50 +20,31 @@ import Adw from 'gi://Adw';
 
 import { AppSignals, WidgetIds } from '~/app.enums.js';
 import { DoItMainWindow } from '../views/doit.js';
-import { TaskGroup } from '../views/task-group.js';
-import { TaskListStore } from '../views/task-list-store.js';
+import { TaskList } from '../views/task-list.js';
+import { TaskListStore } from '~/persistence/list-store.js';
 import { ProjectManager } from '~/managers/project-manager.js';
-import {
-  add_project_group,
-  applyFilter,
-  remove_project_group,
-  reorder_groups,
-} from './projects-utils.js';
 
 /**
- * Initializes and manages the grouping of tasks by project in the main view.
+ * Initializes the project-grouped task list in the main view.
+ *
+ * A single TaskList renders one PreferencesGroup per project dynamically,
+ * listening to the store directly. This action only wires it to the container
+ * and forwards the active project filter.
  *
  * @param store The global TaskListStore.
  * @param projectManager The global ProjectManager instance.
  */
 export default function projects(store: TaskListStore, projectManager: ProjectManager) {
-  const projectGroups: Map<string, TaskGroup> = new Map();
-
   const setup = (window: DoItMainWindow) => {
     const listContainer = window.get_template_child(
       DoItMainWindow.$gtype,
       WidgetIds.WindowListContainer,
     ) as Adw.PreferencesPage;
 
-    projectManager.connect(AppSignals.ProjectAdded, (_: unknown, project: string) => {
-      add_project_group(listContainer, project, projectGroups, store);
-      const filter = projectManager.get_filter();
-      if (filter !== null) {
-        projectGroups.get(project)?.set_visible(project === filter);
-      }
-      reorder_groups(listContainer, projectGroups);
-    });
-
-    projectManager.connect(AppSignals.ProjectRemoved, (_: unknown, project: string) => {
-      remove_project_group(listContainer, project, projectGroups);
-    });
+    const taskList = new TaskList(store, listContainer);
 
     projectManager.connect(AppSignals.FilterChanged, (_: unknown, filter: string | null) => {
-      applyFilter(projectGroups, filter);
-    });
-
-    window.connect(AppSignals.SortingChanged, () => {
-      reorder_groups(listContainer, projectGroups);
+      taskList.set_filter(filter);
     });
   };
 

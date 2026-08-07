@@ -24,15 +24,13 @@
     <file alias="utils/application.js">application.js</file>
 
     <file>persistence/gio-persistence.js</file>
+    <file>persistence/list-store.js</file>
 
     <file>views/task-form.js</file>
     <file>views/doit.js</file>
     <file>views/popover-sort.js</file>
-    <file>views/sidebar-button.js</file>
-    <file>views/task-group.js</file>
     <file>views/task-item.js</file>
     <file>views/task-list.js</file>
-    <file>views/task-list-store.js</file>
     <file>views/index.js</file>
 
     <file>actions/about.js</file>
@@ -43,7 +41,6 @@
     <file>actions/task-edit.js</file>
     <file>actions/toast.js</file>
     <file>actions/projects.js</file>
-    <file>actions/projects-utils.js</file>
     <file>actions/projects-sidebar.js</file>
     <file>actions/purge-deleted.js</file>
     <file>actions/shortcuts.js</file>

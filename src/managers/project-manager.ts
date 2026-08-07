@@ -22,7 +22,7 @@ import GLib from 'gi://GLib';
 import { AppSignals } from '~/app.enums.js';
 
 import { TaskItem } from '~/views/task-item.js';
-import { TaskListStore } from '~/views/task-list-store.js';
+import { TaskListStore } from '~/persistence/list-store.js';
 
 /**
  * Manages the dynamic discovery of task groups based on projects in the store.

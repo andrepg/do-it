@@ -23,8 +23,8 @@ import { AppSignals, WidgetIds } from '~/app.enums.js';
 import { ActionNames } from "~/static/actions.js";
 import { AppLocale } from '~/app.strings.js';
 
-import { DoItMainWindow } from '../views/doit.js';
-import { TaskListStore } from '../views/task-list-store.js';
+import { DoItMainWindow } from '~/views/doit.js';
+import { TaskListStore } from '~/persistence/list-store.js';
 
 import { showToast } from './toast.js';
 
@@ -76,7 +76,7 @@ export const newTask = (store: TaskListStore) => {
       project,
     });
 
-    store.persist_store();
+    store.persist_tasks();
   };
 
   /**

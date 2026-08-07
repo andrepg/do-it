@@ -18,9 +18,6 @@
  */
 export { DoItMainWindow } from './doit.js';
 export { PopoverSort } from './popover-sort.js';
-export { SidebarButton } from './sidebar-button.js';
 export { TaskForm } from './task-form.js';
-export { TaskGroup } from './task-group.js';
 export { TaskItem } from './task-item.js';
 export { TaskList } from './task-list.js';
-export { TaskListStore } from './task-list-store.js';

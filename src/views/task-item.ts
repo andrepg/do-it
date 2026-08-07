@@ -90,7 +90,7 @@ const TaskItemProperties = {
 /**
  * Represents a single task row in the UI.
  *
- * Hierarchy: TaskGroup -> TaskList -> TaskItem
+ * Hierarchy: TaskList -> TaskItem
  *
  * Inherits from Adw.ActionRow. This widget displays the task's title,
  * creation date as a subtitle, and provides interactions such as a checkbox
