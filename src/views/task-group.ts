@@ -20,7 +20,7 @@ import Adw from 'gi://Adw';
 import GObject from 'gi://GObject';
 import Gtk from 'gi://Gtk';
 
-import { AppSignals } from '../enums.js';
+import { AppSignals } from '~/app.enums.js';
 import { AppLocale } from '~/app.strings.js';
 
 import { get_template_path } from '~/utils/application.js';
@@ -69,7 +69,10 @@ export class TaskGroup extends Adw.PreferencesGroup {
     this.add(this.taskList);
 
     this.filterModel.connect(AppSignals.ItemsChanged, () => this.set_group_description());
-    store.connect(AppSignals.TaskUpdated, () => this.set_group_description());
+    store.connect(AppSignals.TaskUpdated, () => {
+      this.set_group_description();
+      this.filter.changed(Gtk.FilterChange.DIFFERENT);
+    });
     store.connect(AppSignals.TaskDeleted, () => this.set_group_description());
 
     this.set_group_description();

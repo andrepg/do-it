@@ -23,7 +23,7 @@ import Gdk from 'gi://Gdk';
 
 import { showToast } from '../actions/toast.js';
 
-import { AppSignals, WidgetIds } from '../enums.js';
+import { AppSignals, WidgetIds } from '~/app.enums.js';
 import { AppLocale } from '~/app.strings.js';
 import { ITask } from '~/app.types.js';
 
@@ -212,7 +212,6 @@ export class TaskForm extends Gtk.Box {
     if (!taskItem) return;
 
     taskItem.update(task);
-    this._store.persist_store();
   }
 
   /**

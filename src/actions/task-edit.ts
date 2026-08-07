@@ -20,7 +20,7 @@ import Gio from 'gi://Gio';
 import GLib from 'gi://GLib';
 import Adw from 'gi://Adw';
 
-import { ActionNames, AppSignals, WidgetIds } from '../enums.js';
+import { ActionNames, AppSignals, WidgetIds } from '~/app.enums.js';
 import { DoItMainWindow } from '../views/doit.js';
 import { TaskForm } from '../views/task-form.js';
 import { log } from '~/utils/log-manager.js';

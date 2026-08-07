@@ -1,7 +1,7 @@
 import { describe, it, expect, vi, beforeEach } from 'vitest';
 
 // Use vi.mock factory to avoid hoisting issues
-vi.mock('../../src/platform/gnome/views/task-item.js', () => {
+vi.mock('../../src/views/task-item.js', () => {
   return {
     TaskItem: class MockTaskItem {
       project = '';
@@ -9,14 +9,14 @@ vi.mock('../../src/platform/gnome/views/task-item.js', () => {
   };
 });
 
-vi.mock('../../src/platform/gnome/views/task-list-store.js', () => {
+vi.mock('../../src/views/task-list-store.js', () => {
   return {
     TaskListStore: class {},
   };
 });
 
 import { ProjectManager } from '../../src/utils/project-manager.js';
-import { TaskItem } from '../../src/platform/gnome/views/task-item.js';
+import { TaskItem } from '../../src/views/task-item.js';
 
 // Note: This test is skipped because GObject.registerClass cannot be properly
 // mocked in Node.js environment. The ProjectManager class extends GObject.Object

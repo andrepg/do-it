@@ -18,15 +18,14 @@
  */
 import Gtk from 'gi://Gtk';
 
-import { AppSignals, WidgetIds } from '../enums.js';
-import { SortingStrategy } from '../../../app.enums.js';
-import { AppLocale } from '../../../app.strings.js';
+import { AppSignals, SortingStrategy, WidgetIds } from '~/app.enums.js';
+import { AppLocale } from '~/app.strings.js';
 
 import { DoItMainWindow } from '../views/doit.js';
 import { SidebarButton } from '../views/sidebar-button.js';
 
-import { ProjectManager } from '../../../utils/project-manager.js';
-import { useTaskSort } from '../../../hooks/tasks.sort.js';
+import { ProjectManager } from '~/utils/project-manager.js';
+import { sort_by_project_name } from '~/utils/sort.js';
 
 /**
  * Initializes and manages the sidebar list of discovered projects.
@@ -37,8 +36,6 @@ export default function projectSidebar(projectManager: ProjectManager) {
   const ALL_TASKS = '__all__';
 
   const projectSidebarItems: Map<string, SidebarButton> = new Map();
-
-  const taskSort = useTaskSort();
 
   const create_sidebar_button = (project: string): SidebarButton => new SidebarButton(project);
 
@@ -84,7 +81,7 @@ export default function projectSidebar(projectManager: ProjectManager) {
   const reorder_sidebar = (section: Gtk.Box) => {
     const sortedProjects = Array.from(projectSidebarItems.keys())
       .filter((p) => p !== ALL_TASKS)
-      .sort(taskSort.sort_by_project_name(SortingStrategy.ascending));
+      .sort(sort_by_project_name(SortingStrategy.ascending));
 
     // Re-append items in order
     // Note: "__all__" is handled differently or we can just keep it at the top

@@ -22,11 +22,10 @@ import Gtk from 'gi://Gtk';
 
 import { showToast } from '../actions/toast.js';
 
-import { AppSignals, WidgetIds } from '../enums.js';
+import { AppSignals, WidgetIds } from '~/app.enums.js';
 import { AppLocale } from '~/app.strings.js';
 import { TaskDeleteButtonIcon, TaskEntryStyle } from '~/app.static.js';
-import { ITask } from '~/app.types.js';
-import type { ITaskView } from '~/core/interfaces/task-view.js';
+import { ITask, ITaskView } from '~/app.types.js';
 
 import { get_template_path } from '~/utils/application.js';
 
@@ -286,6 +285,7 @@ export class TaskItem extends Adw.ActionRow implements ITaskView {
     this.project = task.project ?? '';
     this.created = new Date(task.created_at).toISOString();
     this._update_interface();
+    this.emit(AppSignals.TaskUpdated, this);
   }
 
   public onTaskUpdated(callback: (task: ITask) => void): void {

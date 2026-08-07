@@ -20,7 +20,7 @@ import Gio from 'gi://Gio';
 import Adw from 'gi://Adw';
 import Gtk from 'gi://Gtk';
 
-import { ActionNames, AppSignals } from '../enums.js';
+import { ActionNames, AppSignals } from '~/app.enums.js';
 import { APPLICATION_RES } from '~/utils/application.js';
 
 /**
@@ -35,7 +35,7 @@ const shortcuts = () => {
     shortcutsAction.connect(AppSignals.Activate, () => {
       const activeWindow = window.get_active_window() as Adw.Window;
       const builder = Gtk.Builder.new_from_resource(
-        `${APPLICATION_RES}/platform/gnome/widgets/shortcuts-dialog.ui`,
+        `${APPLICATION_RES}/widgets/shortcuts-dialog.ui`,
       );
       const dialog = builder.get_object('shortcuts_dialog') as Adw.ShortcutsDialog;
 

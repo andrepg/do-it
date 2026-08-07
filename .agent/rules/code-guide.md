@@ -13,12 +13,11 @@ trigger: always_on
 ## Path and architecture
 
 - Code is located inside `src`
-  - Inside `src/platform/gnome/actions` we have Gio SimpleActions "hooks"
-  - Inside `src/platform/gnome/views` we have the UI's code counterpart (e.g., doit.ts)
-  - Inside `src/platform/gnome/widgets` we have `.ui` files
-  - Inside `src/core/interfaces` we have TypeScript interfaces
-  - Inside `src/hooks` we have custom hooks
-  - Inside `src/utils` are helpers functions
+  - Inside `src/actions` we have Gio SimpleActions "hooks"
+  - Inside `src/views` we have the UI's code counterpart (e.g., doit.ts)
+  - Inside `src/widgets` we have `.ui` files
+  - Inside `src/persistence` we have data persistence implementations
+  - Inside `src/utils` are helper functions
 - Root-level app files: `app.entrypoint.ts`, `app.wrapper.ts`, `app.enums.ts`, `app.types.ts`, `app.strings.ts`, `app.static.ts`
 - Localization is located inside `po`
 - Some useful scripts are in `scripts`
@@ -28,7 +27,7 @@ trigger: always_on
 ## GResource XML files
 
 - TS files: `src/io.github.andrepg.Doit.src.gresource.xml.in`
-- UI files: `src/platform/gnome/widgets/io.github.andrepg.Doit.data.gresource.xml.in`
+- UI files: `src/widgets/io.github.andrepg.Doit.data.gresource.xml.in`
 
 ## Code guidelines
 

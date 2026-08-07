@@ -22,20 +22,19 @@ import Gtk from 'gi://Gtk';
 
 import { DoItSettings } from '~/app.enums.js';
 
-import { useSettings } from '~/hooks/settings.js';
-
 import { log } from '~/utils/log-manager.js';
 import { ProjectManager } from '~/utils/project-manager.js';
 import { APPLICATION_NAME, get_template_path } from '~/utils/application.js';
+import { get_settings } from '~/utils/settings.js';
 
-import { AppSignals, WidgetIds } from '~gnome/enums.js';
-import { TaskListStore } from '~gnome/views/task-list-store.js';
-import { TaskForm } from '~gnome/views/task-form.js';
-import { PopoverSort } from '~gnome/views/popover-sort.js';
+import { AppSignals, WidgetIds } from '~/app.enums.js';
+import { TaskListStore } from './task-list-store.js';
+import { TaskForm } from './task-form.js';
+import { PopoverSort } from './popover-sort.js';
 
-import * as Actions from '~gnome/actions/index.js';
+import * as Actions from '../actions/index.js';
 
-const settings = useSettings();
+const settings = get_settings();
 
 const options = {
   GTypeName: 'DoItMainWindow',
@@ -81,7 +80,7 @@ export class DoItMainWindow extends Adw.ApplicationWindow {
 
   private task_form!: TaskForm;
 
-  private settings = useSettings();
+  private settings = get_settings();
 
   static {
     GObject.type_ensure(TaskForm.$gtype);

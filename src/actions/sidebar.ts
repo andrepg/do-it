@@ -19,7 +19,7 @@
 import Adw from 'gi://Adw';
 import Gio from 'gi://Gio';
 
-import { ActionNames, AppSignals, WidgetIds } from '../enums.js';
+import { ActionNames, AppSignals, WidgetIds } from '~/app.enums.js';
 import { DoItMainWindow } from '../views/doit.js';
 import { error } from '~/utils/log-manager.js';
 

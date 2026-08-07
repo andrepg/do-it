@@ -19,9 +19,13 @@
 import GLib from 'gi://GLib';
 import Gio from 'gi://Gio';
 
-import type { ITask } from '../../../app.types.js';
-import type { IPersistence } from '../../../core/interfaces/persistence.js';
+import type { ITask } from '../app.types.js';
 import { log } from '~/utils/log-manager.js';
+
+interface IPersistence {
+  load(): Promise<ITask[]>;
+  save(tasks: ITask[]): Promise<void>;
+}
 
 export class GioFilePersistence implements IPersistence {
   private databaseFileName = 'data.json';

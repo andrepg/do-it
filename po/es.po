@@ -171,115 +171,115 @@ msgctxt "about"
 msgid "Donate"
 msgstr "Donar"
 
-#: src/platform/gnome/widgets/application.ui:13
+#: src/widgets/application.ui:13
 msgid "Purge deleted tasks"
 msgstr "Eliminar tareas excluídas"
 
-#: src/platform/gnome/widgets/application.ui:21
+#: src/widgets/application.ui:21
 msgid "Export Tasks…"
 msgstr "Exportar Tareas…"
 
-#: src/platform/gnome/widgets/application.ui:26
+#: src/widgets/application.ui:26
 msgid "Import Tasks…"
 msgstr "Importar Tareas…"
 
-#: src/platform/gnome/widgets/application.ui:33
+#: src/widgets/application.ui:33
 msgid "Keyboard Shortcuts"
 msgstr "Atajos de teclado"
 
-#: src/platform/gnome/widgets/application.ui:37
+#: src/widgets/application.ui:37
 msgid "About Do It"
 msgstr "Acerca de Do It"
 
-#: src/platform/gnome/widgets/application.ui:54
+#: src/widgets/application.ui:54
 msgid "Create a new task"
 msgstr "Crear nueva tarea"
 
-#: src/platform/gnome/widgets/shortcuts-dialog.ui:6
+#: src/widgets/shortcuts-dialog.ui:6
 msgctxt "shortcut window"
 msgid "General"
 msgstr "General"
 
-#: src/platform/gnome/widgets/shortcuts-dialog.ui:9
+#: src/widgets/shortcuts-dialog.ui:9
 msgctxt "shortcut window"
 msgid "Show Shortcuts"
 msgstr "Mostrar atajos"
 
-#: src/platform/gnome/widgets/shortcuts-dialog.ui:16
+#: src/widgets/shortcuts-dialog.ui:16
 msgctxt "shortcut window"
 msgid "New Task"
 msgstr "Nueva tarea"
 
-#: src/platform/gnome/widgets/shortcuts-dialog.ui:23
+#: src/widgets/shortcuts-dialog.ui:23
 msgctxt "shortcut window"
 msgid "Toggle Sidebar"
 msgstr "Mostrar/ocultar barra lateral"
 
-#: src/platform/gnome/widgets/shortcuts-dialog.ui:30
+#: src/widgets/shortcuts-dialog.ui:30
 msgctxt "shortcut window"
 msgid "Quit"
 msgstr "Salir"
 
-#: src/platform/gnome/widgets/shortcuts-dialog.ui:39
+#: src/widgets/shortcuts-dialog.ui:39
 msgctxt "shortcut window"
 msgid "Task Editing"
 msgstr "Editar tarea"
 
-#: src/platform/gnome/widgets/shortcuts-dialog.ui:42
+#: src/widgets/shortcuts-dialog.ui:42
 msgctxt "shortcut window"
 msgid "Save Task"
 msgstr "Guardar tarea"
 
-#: src/platform/gnome/widgets/shortcuts-dialog.ui:49
+#: src/widgets/shortcuts-dialog.ui:49
 msgctxt "shortcut window"
 msgid "Discard Changes"
 msgstr "Descartar cambios"
 
-#: src/platform/gnome/widgets/task-form.ui:16
+#: src/widgets/task-form.ui:16
 msgctxt "task-form"
 msgid "Edit title, project, mark as completed or delete this task."
 msgstr "Edita el título, proyecto, marca como completada o elimina esta tarea."
 
-#: src/platform/gnome/widgets/task-form.ui:17
+#: src/widgets/task-form.ui:17
 msgctxt "task-form"
 msgid "Edit task"
 msgstr "Editar tarea"
 
-#: src/platform/gnome/widgets/task-form.ui:20
+#: src/widgets/task-form.ui:20
 msgctxt "task-form"
 msgid "Title"
 msgstr "Título"
 
-#: src/platform/gnome/widgets/task-form.ui:25
+#: src/widgets/task-form.ui:25
 msgctxt "task-form"
 msgid "Project"
 msgstr "Proyecto"
 
-#: src/platform/gnome/widgets/task-form.ui:34
+#: src/widgets/task-form.ui:34
 msgctxt "task-form"
 msgid "Mark as completed"
 msgstr "Marcar como completada"
 
-#: src/platform/gnome/widgets/task-form.ui:44
+#: src/widgets/task-form.ui:44
 msgctxt "task-form"
 msgid "Mark as deleted"
 msgstr "Marcar como eliminada"
 
-#: src/platform/gnome/widgets/task-form.ui:65
+#: src/widgets/task-form.ui:65
 msgctxt "task-form"
 msgid "Save"
 msgstr "Guardar"
 
-#: src/platform/gnome/widgets/task-form.ui:74
+#: src/widgets/task-form.ui:74
 msgctxt "task-form"
 msgid "Discard"
 msgstr "Descartar"
 
-#: src/platform/gnome/widgets/popover-sort.ui:20
+#: src/widgets/popover-sort.ui:20
 msgid "Sort tasks by"
 msgstr "Ordenar tareas por"
 
-#: src/platform/gnome/widgets/popover-sort.ui:49
+#: src/widgets/popover-sort.ui:49
 msgid "Order strategy"
 msgstr "Estrategia de ordenación"
 

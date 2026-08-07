@@ -8,10 +8,8 @@
         "lint:fix": "eslint . --fix",
         "format": "prettier . --check",
         "format:fix": "prettier . --write",
-
         "test": "vitest run",
         "test:coverage": "vitest run --coverage",
-
         "watch": "./scripts/run-dev -w -c",
         "dev": "./scripts/run-dev -c",
         "dev:install": "./scripts/compile && yarn flatpak:export-bundle --install",
@@ -22,13 +20,10 @@
         "prod": "yarn flatpak:prebuild && ./scripts/run-dev -c io.github.andrepg.Doit.json",
         "prod:install": "yarn flatpak:prebuild && ./scripts/compile && yarn flatpak:export-bundle --install io.github.andrepg.Doit.json",
         "prod:export": "yarn flatpak:prebuild && ./scripts/compile && yarn flatpak:export-bundle io.github.andrepg.Doit.json",
-
         "flatpak:prebuild": "scripts/flatpak-prebuild",
         "flatpak:export-bundle": "scripts/flatpak-export-bundle",
         "flatpak:validate-bundle": "scripts/flatpak-validate-bundle",
-
         "pot-generator": "scripts/pot-generator",
-
         "prepare": "husky"
     },
     "scripts-info": {

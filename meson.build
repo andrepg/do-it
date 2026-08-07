@@ -59,7 +59,7 @@ message('## Application Data Dir: ' + app_datadir)
 
 # ## Process Source Code and Javascript buildable
 subdir('data')
-subdir('src/platform/gnome/widgets')
+subdir('src/widgets')
 subdir('src')
 subdir('po')
 

@@ -60,7 +60,7 @@ msgctxt "sorting-field"
 msgid "Status"
 msgstr "Status"
 
-# I think that this string can be merged with the previous one (from src/platform/gnome/widgets/task-form.ui:20).
+# I think that this string can be merged with the previous one (from src/widgets/task-form.ui:20).
 #: src/app.strings.ts:41
 msgctxt "sorting-field"
 msgid "Title"
@@ -177,116 +177,116 @@ msgctxt "about"
 msgid "Donate"
 msgstr "Fazer uma doação"
 
-#: src/platform/gnome/widgets/application.ui:13
+#: src/widgets/application.ui:13
 msgid "Purge deleted tasks"
 msgstr "Descartar tarefas excluídas"
 
-#: src/platform/gnome/widgets/application.ui:21
+#: src/widgets/application.ui:21
 msgid "Export Tasks…"
 msgstr "Exportar Tarefas…"
 
-#: src/platform/gnome/widgets/application.ui:26
+#: src/widgets/application.ui:26
 msgid "Import Tasks…"
 msgstr "Importar Tarefas…"
 
-#: src/platform/gnome/widgets/application.ui:33
+#: src/widgets/application.ui:33
 msgid "Keyboard Shortcuts"
 msgstr "Atalhos de Teclado"
 
-#: src/platform/gnome/widgets/application.ui:37
+#: src/widgets/application.ui:37
 msgid "About Do It"
 msgstr "Sobre Do It"
 
-#: src/platform/gnome/widgets/application.ui:54
+#: src/widgets/application.ui:54
 msgid "Create a new task"
 msgstr "Criar tarefa"
 
-#: src/platform/gnome/widgets/shortcuts-dialog.ui:6
+#: src/widgets/shortcuts-dialog.ui:6
 msgctxt "shortcut window"
 msgid "General"
 msgstr "Geral"
 
-#: src/platform/gnome/widgets/shortcuts-dialog.ui:9
+#: src/widgets/shortcuts-dialog.ui:9
 msgctxt "shortcut window"
 msgid "Show Shortcuts"
 msgstr "Mostrar atalhos"
 
-#: src/platform/gnome/widgets/shortcuts-dialog.ui:16
+#: src/widgets/shortcuts-dialog.ui:16
 msgctxt "shortcut window"
 msgid "New Task"
 msgstr "Nova tarefa"
 
-#: src/platform/gnome/widgets/shortcuts-dialog.ui:23
+#: src/widgets/shortcuts-dialog.ui:23
 msgctxt "shortcut window"
 msgid "Toggle Sidebar"
 msgstr "Mostrar/Exibir barra lateral"
 
-#: src/platform/gnome/widgets/shortcuts-dialog.ui:30
+#: src/widgets/shortcuts-dialog.ui:30
 msgctxt "shortcut window"
 msgid "Quit"
 msgstr "Sair"
 
-#: src/platform/gnome/widgets/shortcuts-dialog.ui:39
+#: src/widgets/shortcuts-dialog.ui:39
 msgctxt "shortcut window"
 msgid "Task Editing"
 msgstr "Edição de tarefa"
 
-#: src/platform/gnome/widgets/shortcuts-dialog.ui:42
+#: src/widgets/shortcuts-dialog.ui:42
 msgctxt "shortcut window"
 msgid "Save Task"
 msgstr "Salvar tarefa"
 
-#: src/platform/gnome/widgets/shortcuts-dialog.ui:49
+#: src/widgets/shortcuts-dialog.ui:49
 msgctxt "shortcut window"
 msgid "Discard Changes"
 msgstr "Descartar alterações"
 
-#: src/platform/gnome/widgets/task-form.ui:16
+#: src/widgets/task-form.ui:16
 msgctxt "task-form"
 msgid "Edit title, project, mark as completed or delete this task."
 msgstr "Edite o título, projeto, marque como concluída ou exclua esta tarefa."
 
-#: src/platform/gnome/widgets/task-form.ui:17
+#: src/widgets/task-form.ui:17
 msgctxt "task-form"
 msgid "Edit task"
 msgstr "Editar tarefa"
 
 # I think that this string can be merged with the previous one (from src/app.strings.ts:41).
-#: src/platform/gnome/widgets/task-form.ui:20
+#: src/widgets/task-form.ui:20
 msgctxt "task-form"
 msgid "Title"
 msgstr "Título"
 
-#: src/platform/gnome/widgets/task-form.ui:25
+#: src/widgets/task-form.ui:25
 msgctxt "task-form"
 msgid "Project"
 msgstr "Projeto"
 
-#: src/platform/gnome/widgets/task-form.ui:34
+#: src/widgets/task-form.ui:34
 msgctxt "task-form"
 msgid "Mark as completed"
 msgstr "Marcar como concluída"
 
-#: src/platform/gnome/widgets/task-form.ui:44
+#: src/widgets/task-form.ui:44
 msgctxt "task-form"
 msgid "Mark as deleted"
 msgstr "Marcar como excluída"
 
-#: src/platform/gnome/widgets/task-form.ui:65
+#: src/widgets/task-form.ui:65
 msgctxt "task-form"
 msgid "Save"
 msgstr "Salvar"
 
-#: src/platform/gnome/widgets/task-form.ui:74
+#: src/widgets/task-form.ui:74
 msgctxt "task-form"
 msgid "Discard"
 msgstr "Descartar"
 
-#: src/platform/gnome/widgets/popover-sort.ui:20
+#: src/widgets/popover-sort.ui:20
 msgid "Sort tasks by"
 msgstr "Ordenar tarefas por"
 
-#: src/platform/gnome/widgets/popover-sort.ui:49
+#: src/widgets/popover-sort.ui:49
 msgid "Order strategy"
 msgstr "Estratégia de ordenação"
 

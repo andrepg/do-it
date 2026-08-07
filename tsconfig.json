@@ -12,13 +12,7 @@
         "allowJs": true,
         "pretty": true,
         "paths": {
-            "~/*": ["./src/*"],
-            "~gnome/*": ["./src/platform/gnome/*"],
-            "~core/*": ["./src/core/*"],
-            "~actions/*": ["./src/actions/*"],
-            "~hooks/*": ["./src/hooks/*"],
-            "~utils/*": ["./src/utils/*"],
-            "~web/*": ["./src/web/*"]
+            "~/*": ["./src/*"]
         },
         "types": [
             "@girs/gjs",

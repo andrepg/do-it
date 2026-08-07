@@ -1,10 +1,10 @@
-import { describe, it, expect, vi, beforeEach } from 'vitest';
-import { useTaskSort } from '../../src/hooks/tasks.sort.js';
+import { describe, it, expect, vi } from 'vitest';
+import { sort_by } from '../../src/utils/tasks.sort.js';
 import { SortingField, SortingStrategy } from '../../src/app.enums.js';
 
-// Mock settings hook
-vi.mock('../../src/hooks/settings.js', () => ({
-  useSettings: () => ({
+// Mock settings module
+vi.mock('../../src/utils/settings.js', () => ({
+  get_settings: () => ({
     get_int: vi.fn(),
     get_string: vi.fn(),
     set_int: vi.fn(),
@@ -39,9 +39,7 @@ const createMockTask = (overrides: any) => ({
   },
 });
 
-describe('useTaskSort', () => {
-  const { sort_by } = useTaskSort();
-
+describe('sort_by', () => {
   it('should sort by title ascending', () => {
     const taskA = createMockTask({ title: 'B' });
     const taskB = createMockTask({ title: 'A' });

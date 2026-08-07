@@ -22,7 +22,7 @@ import { APPLICATION_ID } from '~/utils/application.js';
 
 let settingsInstance: Gio.Settings | null = null;
 
-export const useSettings = () => {
+export const get_settings = () => {
   if (!settingsInstance) {
     settingsInstance = new Gio.Settings({ schemaId: APPLICATION_ID });
   }

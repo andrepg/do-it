@@ -19,7 +19,7 @@
 import Adw from 'gi://Adw';
 import Gio from 'gi://Gio';
 
-import { ActionNames, AppSignals } from '../enums.js';
+import { ActionNames, AppSignals } from '~/app.enums.js';
 
 import { TaskListStore } from '../views/task-list-store.js';
 

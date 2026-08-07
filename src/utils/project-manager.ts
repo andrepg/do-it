@@ -19,10 +19,10 @@
 import GObject from 'gi://GObject';
 import GLib from 'gi://GLib';
 
-import { AppSignals } from '~/platform/gnome/enums.js';
+import { AppSignals } from '~/app.enums.js';
 
-import { TaskItem } from '~/platform/gnome/views/task-item.js';
-import { TaskListStore } from '~/platform/gnome/views/task-list-store.js';
+import { TaskItem } from '~/views/task-item.js';
+import { TaskListStore } from '~/views/task-list-store.js';
 
 /**
  * Manages the dynamic discovery of task groups based on projects in the store.
@@ -54,14 +54,18 @@ export class ProjectManager extends GObject.Object {
   private _projects_set: Set<string> = new Set();
   private _projects_ordered: string[] = [];
   private _update_queued = false;
-  private _handler_id: number;
+  private _handler_ids: number[] = [];
   private _current_filter: string | null = null;
 
   constructor(store: TaskListStore) {
     super();
     this._store = store;
 
-    this._handler_id = this._store.connect(AppSignals.ItemsChanged, () => this._update_projects());
+    this._handler_ids = [
+      this._store.connect(AppSignals.ItemsChanged, () => this._update_projects()),
+      this._store.connect(AppSignals.TaskUpdated, () => this._update_projects()),
+      this._store.connect(AppSignals.TaskDeleted, () => this._update_projects()),
+    ];
   }
 
   /**
@@ -143,7 +147,10 @@ export class ProjectManager extends GObject.Object {
   }
 
   public destroy() {
-    this._store.disconnect(this._handler_id);
+    for (const handlerId of this._handler_ids) {
+      this._store.disconnect(handlerId);
+    }
+    this._handler_ids = [];
     this._projects_set.clear();
     this._projects_ordered = [];
   }

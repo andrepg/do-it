@@ -16,7 +16,7 @@
  *
  * SPDX-License-Identifier: GPL-3.0-or-later
  */
-import type { ITaskView } from '~/core/interfaces/task-view.js';
+import type { ITaskView } from '~/app.types.js';
 import { SortingStrategy } from '~/app.enums.js';
 
 type ExtractorFunction = (item: ITaskView) => unknown;

@@ -21,15 +21,18 @@ import GObject from 'gi://GObject';
 
 import Adw from 'gi://Adw';
 
-import { AppSignals, WidgetIds } from '../enums.js';
-import { SortingField, SortingStrategy } from '../../../app.enums.js';
+import { AppSignals, SortingField, SortingStrategy, WidgetIds } from '~/app.enums.js';
 import { ISortingFieldOption, ISortingStrategyOption } from '~/app.types.js';
 
 import { get_template_path } from '~/utils/application.js';
 
 import { SortingFieldOptions, SortingModeOptions } from '~/app.static.js';
 
-import { useTaskSort } from '../../../hooks/tasks.sort.js';
+import {
+  persist_sort_preferences,
+  retrieve_sort_preferences,
+  sort_by,
+} from '~/utils/tasks.sort.js';
 import { AppLocale } from '~/app.strings.js';
 
 const GObjectProperties = {
@@ -47,8 +50,6 @@ const GObjectProperties = {
  * Populates sorting fields and strategies dynamically from app.static.ts.
  */
 export class PopoverSort extends Gtk.Popover {
-  private _task_sort = useTaskSort();
-
   private toggle_group_sort_field!: Adw.ToggleGroup;
 
   private toggle_group_sort_strategy!: Adw.ToggleGroup;
@@ -113,8 +114,8 @@ export class PopoverSort extends Gtk.Popover {
 
   /**
    * Callback activated when any toggle button changes its state.
-   * Reads the current selections, applies sorting to the taskStore via useTaskSort hook,
-   * persists the settings, and emits a signal to update the main window's task list.
+   * Reads the current selections, applies sorting, persists the settings,
+   * and emits a signal to update the main window's task list.
    */
   private notify_active() {
     const fieldToggle = this.get_current_field_toggle();
@@ -123,8 +124,8 @@ export class PopoverSort extends Gtk.Popover {
     const fieldName = fieldToggle?.get_name() as SortingField;
     const strategy = strategyToggle?.get_name() as SortingStrategy;
 
-    this._task_sort.sort_by(fieldName, strategy);
-    this._task_sort.persist_sort_preferences(fieldName, strategy);
+    sort_by(fieldName, strategy);
+    persist_sort_preferences(fieldName, strategy);
 
     this.update_label();
 
@@ -135,7 +136,7 @@ export class PopoverSort extends Gtk.Popover {
    * Initialises the popover by populating the toggle groups with sorting options.
    */
   private initialise() {
-    const prefs = this._task_sort.retrieve_sort_preferences();
+    const prefs = retrieve_sort_preferences();
 
     SortingFieldOptions.forEach((option: ISortingFieldOption, index: number) => {
       const toggle = new Adw.Toggle({

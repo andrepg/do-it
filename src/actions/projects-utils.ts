@@ -19,9 +19,10 @@
 import Adw from 'gi://Adw';
 
 import { SortingField, SortingStrategy } from '~/app.enums.js';
-import { TaskGroup } from '~/platform/gnome/views/task-group.js';
-import { TaskListStore } from '~/platform/gnome/views/task-list-store.js';
-import { useTaskSort } from '~/hooks/tasks.sort.js';
+import { TaskGroup } from '~/views/task-group.js';
+import { TaskListStore } from '~/views/task-list-store.js';
+import { retrieve_sort_preferences } from '~/utils/tasks.sort.js';
+import { sort_by_project_name } from '~/utils/sort.js';
 
 export const create_task_group = (project: string, store: TaskListStore) => {
   return new TaskGroup(project, store);
@@ -68,12 +69,11 @@ export const reorder_groups = (
   container: Adw.PreferencesPage,
   projectGroups: Map<string, TaskGroup>,
 ) => {
-  const taskSort = useTaskSort();
-  const { mode, strategy } = taskSort.retrieve_sort_preferences();
+  const { mode, strategy } = retrieve_sort_preferences();
   const sortedProjects = Array.from(projectGroups.keys()).sort(
     mode === SortingField.byProject
-      ? taskSort.sort_by_project_name(strategy)
-      : taskSort.sort_by_project_name(SortingStrategy.ascending),
+      ? sort_by_project_name(strategy)
+      : sort_by_project_name(SortingStrategy.ascending),
   );
 
   for (const project of sortedProjects) {

@@ -23,9 +23,13 @@ import GLib from 'gi://GLib';
 import { ITask } from '~/app.types.js';
 import { log } from '~/utils/log-manager.js';
 
-import { useTaskSort } from '~/hooks/tasks.sort.js';
-import { ActionNames, AppSignals } from '~/platform/gnome/enums.js';
-import { GioFilePersistence } from '~/platform/gnome/persistence/gio-persistence.js';
+import {
+  persist_sort_preferences,
+  retrieve_sort_preferences,
+  sort_by,
+} from '~/utils/tasks.sort.js';
+import { ActionNames, AppSignals } from '~/app.enums.js';
+import { GioFilePersistence } from '~/persistence/gio-persistence.js';
 
 import { TaskItem } from './task-item.js';
 import { DoItMainWindow } from './doit.js';
@@ -54,7 +58,6 @@ export class TaskListStore extends Gio.ListStore<TaskItem> {
   }
 
   private persistence = new GioFilePersistence();
-  private task_sort = useTaskSort();
 
   /**
    * Retrieves all tasks current loaded in the internal store as plain serializable objects.
@@ -117,8 +120,8 @@ export class TaskListStore extends Gio.ListStore<TaskItem> {
       log(TaskListStore.$gtype.name, `Received ${signal} signal.`);
 
       GLib.idle_add(GLib.PRIORITY_DEFAULT_IDLE, () => {
-        const prefs = this.task_sort.retrieve_sort_preferences();
-        this.task_sort.persist_sort_preferences(prefs.mode, prefs.strategy);
+        const prefs = retrieve_sort_preferences();
+        persist_sort_preferences(prefs.mode, prefs.strategy);
         this.sort_list();
         this.persist_store();
         return GLib.SOURCE_REMOVE;
@@ -144,17 +147,17 @@ export class TaskListStore extends Gio.ListStore<TaskItem> {
       }
     });
 
-    const { mode, strategy } = this.task_sort.retrieve_sort_preferences();
-    this.insert_sorted(task, this.task_sort.sort_by(mode, strategy));
+    const { mode, strategy } = retrieve_sort_preferences();
+    this.insert_sorted(task, sort_by(mode, strategy));
   }
 
   /**
    * Forces the list store to perform an internal sort based on global preferences.
    */
   sort_list() {
-    const { mode, strategy } = this.task_sort.retrieve_sort_preferences();
+    const { mode, strategy } = retrieve_sort_preferences();
 
-    this.sort(this.task_sort.sort_by(mode, strategy));
+    this.sort(sort_by(mode, strategy));
   }
 
   /**

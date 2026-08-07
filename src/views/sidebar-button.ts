@@ -19,7 +19,7 @@
 import Gtk from 'gi://Gtk';
 import GObject from 'gi://GObject';
 
-import { CssClasses, WidgetIds } from '../enums.js';
+import { CssClasses, WidgetIds } from '~/app.enums.js';
 import { AppLocale } from '~/app.strings.js';
 import { SymbolicIcons } from '~/app.static.js';
 

@@ -56,7 +56,7 @@ vi.mock('gi://Gdk', () => ({
   },
 }));
 
-vi.mock('../../src/platform/gnome/actions/toast.js', () => ({
+vi.mock('../../src/actions/toast.js', () => ({
   showToast: vi.fn(),
 }));
 

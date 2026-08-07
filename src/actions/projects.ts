@@ -18,7 +18,7 @@
  */
 import Adw from 'gi://Adw';
 
-import { AppSignals, WidgetIds } from '../enums.js';
+import { AppSignals, WidgetIds } from '~/app.enums.js';
 import { DoItMainWindow } from '../views/doit.js';
 import { TaskGroup } from '../views/task-group.js';
 import { TaskListStore } from '../views/task-list-store.js';

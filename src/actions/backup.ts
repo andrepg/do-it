@@ -23,8 +23,8 @@ import { ITask } from '~/app.types.js';
 import { AppLocale } from '~/app.strings.js';
 import { error } from '~/utils/log-manager.js';
 
-import { GioFilePersistence } from '~/platform/gnome/persistence/gio-persistence.js';
-import { ActionNames, AppSignals } from '~/platform/gnome/enums.js';
+import { GioFilePersistence } from '~/persistence/gio-persistence.js';
+import { ActionNames, AppSignals } from '~/app.enums.js';
 
 import { showToast } from './toast.js';
 
