@@ -55,6 +55,6 @@ export enum SortingField {
 }
 
 export enum SortingStrategy {
-  ascending = 'ascending',
-  descending = 'descending',
+  ascending = 1,
+  descending = -1,
 }

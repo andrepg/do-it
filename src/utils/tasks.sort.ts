@@ -46,7 +46,7 @@ const SortingStrategiesDict: Record<
 export const retrieve_sort_preferences = () => {
   const settings = get_settings();
   const mode = settings.get_string(SortingModeSchema.MODE) as SortingField;
-  const strategy = settings.get_string(SortingModeSchema.STRATEGY) as SortingStrategy;
+  const strategy = settings.get_enum(SortingModeSchema.STRATEGY) as SortingStrategy;
 
   return {
     mode: mode || SortingField.byTitle,
@@ -72,5 +72,5 @@ export const persist_sort_preferences = (
 ) => {
   const settings = get_settings();
   settings.set_string(SortingModeSchema.MODE, sortingField);
-  settings.set_string(SortingModeSchema.STRATEGY, sortingStrategy);
+  settings.set_enum(SortingModeSchema.STRATEGY, sortingStrategy);
 };

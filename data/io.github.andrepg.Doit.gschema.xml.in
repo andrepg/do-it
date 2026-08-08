@@ -10,8 +10,8 @@
   </enum>
 
   <enum id="@APPLICATION_ID@.SortingStrategy">
-    <value nick="ascending" value="0"/>
-    <value nick="descending" value="1"/>
+    <value nick="ascending" value="1"/>
+    <value nick="descending" value="-1"/>
   </enum>
 
   <schema id="@APPLICATION_ID@" path="@APPLICATION_RES@/">

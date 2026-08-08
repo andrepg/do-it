@@ -35,7 +35,7 @@ export const create_comparator = (
   extractors: ExtractorFunction[],
   strategy: SortingStrategy,
 ): GLib.CompareFunc => {
-  const isAscending = strategy === SortingStrategy.ascending;
+  const direction = strategy;
 
   const compare_numeric = (a: number, b: number) => a - b;
   const compare_string = (a: string, b: string) => a.localeCompare(b);
@@ -48,8 +48,6 @@ export const create_comparator = (
       const value_of_b = extractor(b);
 
       if (value_of_a === value_of_b) continue;
-
-      const direction = isAscending ? 1 : -1;
 
       const ordering =
         typeof value_of_a === 'string' && typeof value_of_b === 'string'
