@@ -32,7 +32,7 @@ import { TaskForm } from './task-form.js';
 import { PopoverSort } from './popover-sort.js';
 
 import * as Actions from '../actions/index.js';
-import { TaskListStore } from '~/persistence/list-store.js';
+import { TaskListStore } from '~/store/list-store.js';
 
 const settings = get_settings();
 
@@ -73,8 +73,7 @@ const options = {
 export class DoItMainWindow extends Adw.ApplicationWindow {
   static readonly LogClass = 'window';
 
-  taskListStore!: TaskListStore;
-  projectManager!: ProjectManager;
+  private projectManager!: ProjectManager;
 
   private button_sorting!: Gtk.MenuButton;
 
@@ -96,14 +95,13 @@ export class DoItMainWindow extends Adw.ApplicationWindow {
     });
 
     log(DoItMainWindow.LogClass, 'Initializing task store');
-    this.taskListStore = new TaskListStore();
-    this.taskListStore.load_tasks();
+    TaskListStore.get_default().load_tasks();
 
     this.initialize_widgets();
     this.initialize_actions();
     this.initialize_project_manager();
 
-    this.connect(AppSignals.SortingChanged, () => this.taskListStore.sort_tasks());
+    this.connect(AppSignals.SortingChanged, () => TaskListStore.get_default().sort_tasks());
   }
 
   private initialize_widgets() {
@@ -120,9 +118,9 @@ export class DoItMainWindow extends Adw.ApplicationWindow {
   private initialize_project_manager(): void {
     log(DoItMainWindow.LogClass, 'Initializing project manager');
 
-    this.projectManager = new ProjectManager(this.taskListStore);
+    this.projectManager = new ProjectManager(TaskListStore.get_default());
 
-    Actions.projects(this.taskListStore, this.projectManager).setup(this);
+    Actions.projects(this.projectManager).setup(this);
     Actions.projectSidebar(this.projectManager).setup(this);
   }
 
@@ -131,15 +129,15 @@ export class DoItMainWindow extends Adw.ApplicationWindow {
 
     Actions.backup().setup(this);
     Actions.toast().setup(this);
-    Actions.newTask(this.taskListStore).setup(this);
-    Actions.purgeDeleted(this.taskListStore).setup(this);
+    Actions.newTask().setup(this);
+    Actions.purgeDeleted().setup(this);
     Actions.sidebar().setup(this);
 
     this.task_form = this.get_template_child(
       DoItMainWindow.$gtype,
       WidgetIds.TaskFormWidget,
     ) as TaskForm;
-    this.task_form.setup(this.taskListStore);
+    this.task_form.setup();
 
     Actions.taskEdit(this.task_form).setup(this);
   }
@@ -154,7 +152,7 @@ export class DoItMainWindow extends Adw.ApplicationWindow {
     this.settings.set_int(DoItSettings.windowHeight, height);
 
     log(DoItMainWindow.LogClass, 'Persisting tasks');
-    this.taskListStore.persist_tasks();
+    TaskListStore.get_default().persist_tasks();
 
     return super.vfunc_close_request();
   }

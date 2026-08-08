@@ -24,7 +24,7 @@
     <file alias="utils/application.js">application.js</file>
 
     <file>persistence/gio-persistence.js</file>
-    <file>persistence/list-store.js</file>
+    <file>store/list-store.js</file>
 
     <file>views/task-form.js</file>
     <file>views/doit.js</file>

@@ -31,7 +31,7 @@ import { get_template_path } from '~/utils/application.js';
 import { log } from '~/utils/log-manager.js';
 
 import { TaskItem } from './task-item.js';
-import { TaskListStore } from '~/persistence/list-store.js';
+import { TaskListStore } from '~/store/list-store.js';
 
 const TaskFormProperties = {
   GTypeName: 'TaskForm',
@@ -75,7 +75,7 @@ export class TaskForm extends Gtk.Box {
    * Instance and internal property handling
    */
   private _taskId: string | null = null;
-  private _store!: TaskListStore;
+  private _store = TaskListStore.get_default();
 
   constructor() {
     super();
@@ -135,9 +135,7 @@ export class TaskForm extends Gtk.Box {
     ) as Gtk.CheckButton;
   }
 
-  public setup(store: TaskListStore): this {
-    this._store = store;
-
+  public setup(): this {
     return this;
   }
 

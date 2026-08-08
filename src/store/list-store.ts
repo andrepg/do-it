@@ -1,7 +1,7 @@
 import GObject from "gi://GObject";
 import Gio from "gi://Gio";
 
-import { GioFilePersistence } from "./gio-persistence.js";
+import { GioFilePersistence } from "../persistence/gio-persistence.js";
 
 import { log } from '~/utils/log-manager.js';
 
@@ -33,6 +33,15 @@ const messages = {
 export class TaskListStore extends Gio.ListStore<TaskItem> {
     static { GObject.registerClass(TaskListStoreType, this); }
     public static LogClass = messages.log_class;
+
+    private static instance: TaskListStore | null = null;
+
+    /**
+     * Returns the app-wide TaskListStore singleton.
+     */
+    static get_default(): TaskListStore {
+        return (this.instance ??= new TaskListStore());
+    }
 
     private persistence: GioFilePersistence;
 

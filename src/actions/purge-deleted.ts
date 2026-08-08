@@ -22,14 +22,12 @@ import Gio from 'gi://Gio';
 import { AppSignals } from '~/app.enums.js';
 import { ActionNames } from "~/static/actions.js";
 
-import { TaskListStore } from '~/persistence/list-store.js';
+import { TaskListStore } from '~/store/list-store.js';
 
 /**
  * Provides an action to permanently remove soft-deleted tasks from the database.
- *
- * @param taskListStore The global TaskListStore.
  */
-const purgeDeleted = (taskListStore: TaskListStore) => {
+const purgeDeleted = () => {
   /**
    * Initializes the "purge_deleted_tasks" action and binds it to the main window.
    *
@@ -38,7 +36,7 @@ const purgeDeleted = (taskListStore: TaskListStore) => {
   const setup = (window: Adw.ApplicationWindow) => {
     const action = new Gio.SimpleAction({ name: ActionNames.PurgeDeletedTasks });
 
-    action.connect(AppSignals.Activate, () => taskListStore.persist_tasks(true));
+    action.connect(AppSignals.Activate, () => TaskListStore.get_default().persist_tasks(true));
 
     window.add_action(action);
   };

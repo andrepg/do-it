@@ -1,6 +1,6 @@
 import { describe, it, expect, vi } from 'vitest';
 import { sort_by } from '../../src/utils/tasks.sort.js';
-import { SortingField, SortingStrategy } from '../../src/app.enums.js';
+import { SortingField, SortingStrategy } from '../../src/static/sorting.js';
 
 // Mock settings module
 vi.mock('../../src/utils/settings.js', () => ({

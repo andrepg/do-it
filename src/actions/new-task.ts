@@ -24,16 +24,15 @@ import { ActionNames } from "~/static/actions.js";
 import { AppLocale } from '~/app.strings.js';
 
 import { DoItMainWindow } from '~/views/doit.js';
-import { TaskListStore } from '~/persistence/list-store.js';
+import { TaskListStore } from '~/store/list-store.js';
 
 import { showToast } from './toast.js';
 
 /**
  * Handles the creation of new tasks from the main entry field.
- *
- * @param store The global TaskListStore.
  */
-export const newTask = (store: TaskListStore) => {
+export const newTask = () => {
+  const store = TaskListStore.get_default();
   const buttonNewTaskId = WidgetIds.WindowButtonNewTask;
   const fieldNewTaskId = WidgetIds.WindowTaskNewEntry;
 

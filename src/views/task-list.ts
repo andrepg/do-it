@@ -25,7 +25,7 @@ import { SortingField, SortingStrategy } from '~/static/sorting.js';
 import { retrieve_sort_preferences } from '~/utils/tasks.sort.js';
 
 import { TaskItem } from './task-item.js';
-import { TaskListStore } from '../persistence/list-store.js';
+import { TaskListStore } from '../store/list-store.js';
 import { sort_by_project } from '~/utils/sort.js';
 
 /**
@@ -49,7 +49,7 @@ interface ProjectGroupEntry {
  * Gtk.CustomFilter is needed.
  */
 export class TaskList {
-  private store: TaskListStore;
+  private store = TaskListStore.get_default();
   private container: Adw.PreferencesPage;
   private projectGroups: Map<string, Adw.PreferencesGroup> = new Map();
   private currentFilter: string | null = null;
@@ -58,16 +58,14 @@ export class TaskList {
 
   /**
    * @constructor
-   * @param {TaskListStore} store - The global state store containing all tasks
    * @param {Adw.PreferencesPage} container - The page that will hold the generated groups
    */
-  constructor(store: TaskListStore, container: Adw.PreferencesPage) {
-    this.store = store;
+  constructor(container: Adw.PreferencesPage) {
     this.container = container;
 
-    store.connect(AppSignals.ItemsChanged, () => this.schedule_rebuild());
-    store.connect(AppSignals.TaskUpdated, () => this.schedule_rebuild());
-    store.connect(AppSignals.TaskDeleted, () => this.schedule_rebuild());
+    this.store.connect(AppSignals.ItemsChanged, () => this.schedule_rebuild());
+    this.store.connect(AppSignals.TaskUpdated, () => this.schedule_rebuild());
+    this.store.connect(AppSignals.TaskDeleted, () => this.schedule_rebuild());
 
     this.rebuild();
   }
