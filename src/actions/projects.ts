@@ -21,7 +21,7 @@ import Adw from 'gi://Adw';
 import { AppSignals, WidgetIds } from '~/app.enums.js';
 import { DoItMainWindow } from '../views/doit.js';
 import { TaskList } from '../views/task-list.js';
-import { ProjectManager } from '~/managers/project-manager.js';
+import { ProjectStore } from '~/store/project-store.js';
 
 /**
  * Initializes the project-grouped task list in the main view.
@@ -30,9 +30,9 @@ import { ProjectManager } from '~/managers/project-manager.js';
  * listening to the store directly. This action only wires it to the container
  * and forwards the active project filter.
  *
- * @param projectManager The global ProjectManager instance.
+ * @param projectStore The global ProjectStore instance.
  */
-export default function projects(projectManager: ProjectManager) {
+export default function projects(projectStore: ProjectStore) {
   const setup = (window: DoItMainWindow) => {
     const listContainer = window.get_template_child(
       DoItMainWindow.$gtype,
@@ -41,7 +41,7 @@ export default function projects(projectManager: ProjectManager) {
 
     const taskList = new TaskList(listContainer);
 
-    projectManager.connect(AppSignals.FilterChanged, (_: unknown, filter: string | null) => {
+    projectStore.connect(AppSignals.FilterChanged, (_: unknown, filter: string | null) => {
       taskList.set_filter(filter);
     });
   };

@@ -1,4 +1,4 @@
-/* project-manager.ts
+/* project-store.ts
  * Copyright 2025 André Paul Grandsire
  *
  * This program is free software: you can redistribute it and/or modify
@@ -18,6 +18,7 @@
  */
 import GObject from 'gi://GObject';
 import GLib from 'gi://GLib';
+import Gtk from 'gi://Gtk';
 
 import { AppSignals } from '~/app.enums.js';
 
@@ -25,15 +26,16 @@ import { TaskItem } from '~/views/task-item.js';
 import { TaskListStore } from '~/store/list-store.js';
 
 /**
- * Manages the dynamic discovery of task groups based on projects in the store.
+ * Stores the list of projects discovered from the task store.
  *
- * Emits signals when a new project is found or an existing project no longer has any tasks.
+ * Keeps a Gtk.StringList with the discovered project names and emits
+ * signals when a project is added, removed or the active filter changes.
  */
-export class ProjectManager extends GObject.Object {
+export class ProjectStore extends GObject.Object {
   static {
     GObject.registerClass(
       {
-        GTypeName: 'ProjectManager',
+        GTypeName: 'ProjectStore',
         Signals: {
           [AppSignals.ProjectAdded]: {
             param_types: [GObject.TYPE_STRING],
@@ -50,21 +52,31 @@ export class ProjectManager extends GObject.Object {
     );
   }
 
-  private _store: TaskListStore;
+  /**
+   * The list of discovered project names, kept in sync with the task store.
+   */
+  public readonly projects: Gtk.StringList = new Gtk.StringList();
+
+  private static instance: ProjectStore | null = null;
+
+  private _store = TaskListStore.get_default();
   private _projects_ordered: string[] = [];
   private _update_queued = false;
-  private _handler_ids: number[] = [];
   private _current_filter: string | null = null;
 
-  constructor(store: TaskListStore) {
-    super();
-    this._store = store;
+  /**
+   * Returns the app-wide ProjectStore singleton.
+   */
+  static get_default(): ProjectStore {
+    return (this.instance ??= new ProjectStore());
+  }
 
-    this._handler_ids = [
-      this._store.connect(AppSignals.ItemsChanged, () => this._update_projects()),
-      this._store.connect(AppSignals.TaskUpdated, () => this._update_projects()),
-      this._store.connect(AppSignals.TaskDeleted, () => this._update_projects()),
-    ];
+  constructor() {
+    super();
+
+    this._store.connect(AppSignals.ItemsChanged, () => this._update_projects());
+    this._store.connect(AppSignals.TaskUpdated, () => this._update_projects());
+    this._store.connect(AppSignals.TaskDeleted, () => this._update_projects());
   }
 
   /**
@@ -84,6 +96,20 @@ export class ProjectManager extends GObject.Object {
    */
   public get_filter(): string | null {
     return this._current_filter;
+  }
+
+  /**
+   * Retrieves all discovered project names.
+   */
+  public get_projects(): string[] {
+    const projects: string[] = [];
+
+    for (let i = 0; i < this.projects.get_n_items(); i++) {
+      const project = this.projects.get_string(i);
+      if (project !== null) projects.push(project);
+    }
+
+    return projects;
   }
 
   private _update_projects() {
@@ -127,14 +153,14 @@ export class ProjectManager extends GObject.Object {
       }
     }
 
-    this._projects_ordered = currentProjectsOrdered;
-  }
+    // Mirror the named projects into the string list, excluding the
+    // 'without project' entry which is handled separately by the UI
+    this.projects.splice(
+      0,
+      this.projects.get_n_items(),
+      currentProjectsOrdered.filter((project) => project !== ''),
+    );
 
-  public destroy() {
-    for (const handlerId of this._handler_ids) {
-      this._store.disconnect(handlerId);
-    }
-    this._handler_ids = [];
-    this._projects_ordered = [];
+    this._projects_ordered = currentProjectsOrdered;
   }
 }

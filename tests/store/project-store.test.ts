@@ -1,5 +1,29 @@
 import { describe, it, expect, vi, beforeEach } from 'vitest';
 
+const { mockStoreRef } = vi.hoisted(() => ({
+  mockStoreRef: { current: null as MockStore | null },
+}));
+
+vi.mock('gi://Gtk', () => ({
+  default: {
+    StringList: class MockStringList {
+      private items: string[] = [];
+
+      get_n_items() {
+        return this.items.length;
+      }
+
+      get_string(position: number) {
+        return this.items[position] ?? null;
+      }
+
+      splice(position: number, n_removals: number, additions: string[] = []) {
+        this.items.splice(position, n_removals, ...additions);
+      }
+    },
+  },
+}));
+
 vi.mock('../../src/views/task-item.js', () => {
   return {
     TaskItem: class MockTaskItem {
@@ -8,25 +32,26 @@ vi.mock('../../src/views/task-item.js', () => {
   };
 });
 
-vi.mock('../../src/views/task-list-store.js', () => {
-  return {
-    TaskListStore: class {},
-  };
-});
+vi.mock('../../src/store/list-store.js', () => ({
+  TaskListStore: {
+    get_default: () => mockStoreRef.current,
+  },
+}));
 
-import { ProjectManager } from '../../src/managers/project-manager.js';
+import { ProjectStore } from '../../src/store/project-store.js';
 import { TaskItem } from '../../src/views/task-item.js';
-import { TaskListStore } from '../../src/views/task-list-store.js';
 
-describe('ProjectManager', () => {
-  let mockStore: {
-    connect: ReturnType<typeof vi.fn>;
-    disconnect: ReturnType<typeof vi.fn>;
-    get_n_items: ReturnType<typeof vi.fn>;
-    get_item: ReturnType<typeof vi.fn>;
-  };
+type MockStore = {
+  connect: ReturnType<typeof vi.fn>;
+  disconnect: ReturnType<typeof vi.fn>;
+  get_n_items: ReturnType<typeof vi.fn>;
+  get_item: ReturnType<typeof vi.fn>;
+};
+
+describe('ProjectStore', () => {
+  let mockStore: MockStore;
   let handlers: Record<string, () => void>;
-  let projectManager: ProjectManager;
+  let projectStore: ProjectStore;
 
   beforeEach(() => {
     vi.clearAllMocks();
@@ -43,7 +68,9 @@ describe('ProjectManager', () => {
       get_item: vi.fn(),
     };
 
-    projectManager = new ProjectManager(mockStore as unknown as TaskListStore);
+    mockStoreRef.current = mockStore;
+
+    projectStore = new ProjectStore();
   });
 
   const mock_tasks_with_projects = (projects: string[]) => {
@@ -64,7 +91,7 @@ describe('ProjectManager', () => {
   });
 
   it('should identify new projects and emit project-added in order', () => {
-    const emitSpy = vi.spyOn(projectManager, 'emit');
+    const emitSpy = vi.spyOn(projectStore, 'emit');
 
     mock_tasks_with_projects(['Work', 'Home']);
 
@@ -75,7 +102,7 @@ describe('ProjectManager', () => {
   });
 
   it('should identify removed projects and emit project-removed', () => {
-    const emitSpy = vi.spyOn(projectManager, 'emit');
+    const emitSpy = vi.spyOn(projectStore, 'emit');
 
     mock_tasks_with_projects(['Work']);
     trigger_store_signal('items-changed');
@@ -89,7 +116,7 @@ describe('ProjectManager', () => {
   });
 
   it('should rescan projects when a task is updated', () => {
-    const emitSpy = vi.spyOn(projectManager, 'emit');
+    const emitSpy = vi.spyOn(projectStore, 'emit');
 
     mock_tasks_with_projects(['Work']);
     trigger_store_signal('task-updated');
@@ -98,7 +125,7 @@ describe('ProjectManager', () => {
   });
 
   it('should rescan projects when a task is deleted', () => {
-    const emitSpy = vi.spyOn(projectManager, 'emit');
+    const emitSpy = vi.spyOn(projectStore, 'emit');
 
     mock_tasks_with_projects(['Home']);
     trigger_store_signal('task-deleted');
@@ -107,10 +134,17 @@ describe('ProjectManager', () => {
   });
 
   it('should set and get filters correctly', () => {
-    const emitSpy = vi.spyOn(projectManager, 'emit');
+    const emitSpy = vi.spyOn(projectStore, 'emit');
 
-    projectManager.set_filter('Work');
-    expect(projectManager.get_filter()).toBe('Work');
+    projectStore.set_filter('Work');
+    expect(projectStore.get_filter()).toBe('Work');
     expect(emitSpy).toHaveBeenCalledWith('filter-changed', 'Work');
+  });
+
+  it('should expose discovered projects, excluding empty names', () => {
+    mock_tasks_with_projects(['Work', '', 'Home']);
+    trigger_store_signal('items-changed');
+
+    expect(projectStore.get_projects()).toEqual(['Work', 'Home']);
   });
 });

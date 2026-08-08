@@ -15,8 +15,6 @@
     <file>static/settings.js</file>
     <file>static/sorting.js</file>
 
-    <file>managers/project-manager.js</file>
-
     <file>utils/log-manager.js</file>
     <file>utils/settings.js</file>
     <file>utils/sort.js</file>
@@ -25,6 +23,7 @@
 
     <file>persistence/gio-persistence.js</file>
     <file>store/list-store.js</file>
+    <file>store/project-store.js</file>
 
     <file>views/task-form.js</file>
     <file>views/doit.js</file>

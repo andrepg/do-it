@@ -4,7 +4,7 @@
   <!-- interface-name window-v2.ui -->
   <requires lib="gio" version="2.0"/>
   <requires lib="gtk" version="4.0"/>
-  <requires lib="libadwaita" version="1.8"/>
+  <requires lib="libadwaita" version="1.9"/>
   <menu id="primary_menu">
     <section>
       <item>
@@ -125,19 +125,7 @@
               </object>
             </child>
             <child>
-              <object class="GtkScrolledWindow">
-                <child>
-                  <object class="GtkBox" id="sidebar_project_list">
-                    <property name="margin-bottom">8</property>
-                    <property name="margin-end">8</property>
-                    <property name="margin-start">8</property>
-                    <property name="margin-top">8</property>
-                    <property name="orientation">vertical</property>
-                    <property name="spacing">4</property>
-                    <property name="valign">start</property>
-                  </object>
-                </child>
-              </object>
+              <object class="AdwSidebar" id="sidebar_project_list"/>
             </child>
           </object>
         </property>

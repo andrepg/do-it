@@ -23,7 +23,7 @@ import Gtk from 'gi://Gtk';
 import { DoItSettings } from "~/static/settings.js";
 
 import { log } from '~/utils/log-manager.js';
-import { ProjectManager } from '~/managers/project-manager.js';
+import { ProjectStore } from '~/store/project-store.js';
 import { APPLICATION_NAME, get_template_path } from '~/utils/application.js';
 import { get_settings } from '~/utils/settings.js';
 
@@ -68,12 +68,10 @@ const options = {
  * The main application window for Do It.
  *
  * Manages the top-level UI components, including the sidebar and the main content area.
- * Also initializes global actions and connects to the global task store and project manager.
+ * Also initializes global actions and connects to the global task and project stores.
  */
 export class DoItMainWindow extends Adw.ApplicationWindow {
   static readonly LogClass = 'window';
-
-  private projectManager!: ProjectManager;
 
   private button_sorting!: Gtk.MenuButton;
 
@@ -99,7 +97,7 @@ export class DoItMainWindow extends Adw.ApplicationWindow {
 
     this.initialize_widgets();
     this.initialize_actions();
-    this.initialize_project_manager();
+    this.initialize_project_store();
 
     this.connect(AppSignals.SortingChanged, () => TaskListStore.get_default().sort_tasks());
   }
@@ -115,13 +113,13 @@ export class DoItMainWindow extends Adw.ApplicationWindow {
     this.button_sorting.set_popover(new PopoverSort(this));
   }
 
-  private initialize_project_manager(): void {
-    log(DoItMainWindow.LogClass, 'Initializing project manager');
+  private initialize_project_store(): void {
+    log(DoItMainWindow.LogClass, 'Initializing project store');
 
-    this.projectManager = new ProjectManager(TaskListStore.get_default());
+    const projectStore = ProjectStore.get_default();
 
-    Actions.projects(this.projectManager).setup(this);
-    Actions.projectSidebar(this.projectManager).setup(this);
+    Actions.projects(projectStore).setup(this);
+    Actions.projectSidebar(projectStore).setup(this);
   }
 
   private initialize_actions() {
