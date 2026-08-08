@@ -21,10 +21,11 @@ import GLib from 'gi://GLib';
 import Adw from 'gi://Adw';
 
 import { AppSignals, WidgetIds } from '~/app.enums.js';
-import { ActionNames } from "~/static/actions.js";
+import { ActionNames } from '~/static/actions.js';
 import { DoItMainWindow } from '../views/doit.js';
 import { TaskForm } from '../views/task-form.js';
 import { log } from '~/utils/log-manager.js';
+import { AppDebug } from '~/static/messages.js';
 
 /**
  * Action to handle task editing via the bottom sheet.
@@ -72,13 +73,13 @@ export default function taskEdit(taskForm: TaskForm) {
 
   const task_edit_close_action = () => {
     taskForm.connect(AppSignals.TaskFormClosed, () => {
-      log(DoItMainWindow.LogClass, 'Task form closed signal received, Closing bottom sheet');
+      log(DoItMainWindow.LogClass, AppDebug.TASK_EDIT_CLOSE);
       close_bottom_sheet();
     });
   };
 
   const task_save_action = (window: DoItMainWindow) => {
-    const action = new Gio.SimpleAction({ name: 'task-edit.save' });
+    const action = new Gio.SimpleAction({ name: ActionNames.TaskEditSave });
 
     action.connect(AppSignals.Activate, () => {
       if (taskForm) {
@@ -90,7 +91,7 @@ export default function taskEdit(taskForm: TaskForm) {
   };
 
   const task_close_action = (window: DoItMainWindow) => {
-    const action = new Gio.SimpleAction({ name: 'task-edit.close' });
+    const action = new Gio.SimpleAction({ name: ActionNames.TaskEditClose });
 
     action.connect(AppSignals.Activate, () => {
       if (taskForm && taskForm.has_task_loaded()) {
@@ -102,9 +103,6 @@ export default function taskEdit(taskForm: TaskForm) {
   };
 
   return {
-    name: ActionNames.TaskEdit,
-    parameter_type: new GLib.VariantType('s'),
-
     setup,
   };
 }

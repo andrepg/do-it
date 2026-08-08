@@ -20,9 +20,10 @@ import Adw from 'gi://Adw';
 import Gio from 'gi://Gio';
 import GLib from 'gi://GLib';
 import { AppSignals, WidgetIds } from '~/app.enums.js';
-import { ActionNames } from "~/static/actions.js";
+import { ActionNames } from '~/static/actions.js';
 import { DoItMainWindow } from '../views/doit.js';
 import { warn } from '~/utils/log-manager.js';
+import { AppDebug } from '~/static/messages.js';
 
 /**
  * Displays an overlay toast on the currently active window.
@@ -35,7 +36,7 @@ export const showToast = (message: string): void => {
   const window = app?.active_window as Adw.ApplicationWindow | null;
 
   if (!window) {
-    warn('toast', 'no active window found, skipping toast');
+    warn('toast', AppDebug.TOAST_NO_WINDOW);
     return;
   }
 

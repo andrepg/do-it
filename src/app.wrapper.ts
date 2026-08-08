@@ -23,6 +23,9 @@ import Adw from 'gi://Adw';
 import { is_development_mode, APPLICATION_ID, APPLICATION_RES } from './utils/application.js';
 import { log } from './utils/log-manager.js';
 import * as Actions from './actions/index.js';
+import { ActionNames } from './static/actions.js';
+import { CssClasses } from './app.enums.js';
+import { AppDebug } from './static/messages.js';
 
 import { DoItMainWindow } from './views/doit.js';
 
@@ -46,38 +49,38 @@ export class DoitApplication extends Adw.Application {
       flags: Gio.ApplicationFlags.DEFAULT_FLAGS,
     });
 
-    log(DoitApplication.LogClass, 'Initializing application actions');
+    log(DoitApplication.LogClass, AppDebug.APPLICATION_INIT);
 
     Actions.about().setup(this);
     Actions.shortcuts().setup(this);
     Actions.quit().setup(this);
 
-    this.set_accels_for_action('app.quit', ['<Ctrl>q']);
-    this.set_accels_for_action('app.shortcuts', ['F1']);
-    this.set_accels_for_action('win.new-task', ['<Ctrl>n']);
-    this.set_accels_for_action('win.toggle-sidebar', ['F9']);
-    this.set_accels_for_action('win.task-edit.save', ['<Ctrl>s']);
-    this.set_accels_for_action('win.task-edit.close', ['Escape']);
+    this.set_accels_for_action(`app.${ActionNames.Quit}`, ['<Ctrl>q']);
+    this.set_accels_for_action(`app.${ActionNames.Shortcuts}`, ['F1']);
+    this.set_accels_for_action(`win.${ActionNames.NewTask}`, ['<Ctrl>n']);
+    this.set_accels_for_action(`win.${ActionNames.ToggleSidebar}`, ['F9']);
+    this.set_accels_for_action(`win.${ActionNames.TaskEditSave}`, ['<Ctrl>s']);
+    this.set_accels_for_action(`win.${ActionNames.TaskEditClose}`, ['Escape']);
   }
 
   public override vfunc_activate(): void {
     let { active_window } = this;
 
     if (!active_window) {
-      log(DoitApplication.LogClass, 'Creating main window');
+      log(DoitApplication.LogClass, AppDebug.WINDOW_CREATE);
       active_window = new DoItMainWindow(this);
     }
 
     if (is_development_mode()) {
-      log(DoitApplication.LogClass, 'Development mode enabled');
-      active_window.add_css_class('devel');
+      log(DoitApplication.LogClass, AppDebug.DEV_MODE);
+      active_window.add_css_class(CssClasses.Devel);
     }
 
     active_window.present();
   }
 
   public override vfunc_shutdown(): void {
-    log(DoitApplication.LogClass, 'Shutting down application');
+    log(DoitApplication.LogClass, AppDebug.APP_SHUTDOWN);
     super.vfunc_shutdown();
   }
 }

@@ -25,6 +25,7 @@ import { showToast } from '../actions/toast.js';
 
 import { AppSignals, WidgetIds } from '~/app.enums.js';
 import { AppLocale } from '~/app.strings.js';
+import { AppDebug } from '~/static/messages.js';
 import { ITask } from '~/app.types.js';
 
 import { get_template_path } from '~/utils/application.js';
@@ -98,7 +99,7 @@ export class TaskForm extends Gtk.Box {
   }
 
   private connect_signals() {
-    log(TaskForm.LogClass, 'Connecting form signals and reactions');
+    log(TaskForm.LogClass, AppDebug.TASK_FORM_CONNECT);
 
     this.btn_save.connect(AppSignals.Clicked, this.dispatch_save.bind(this));
     this.btn_discard.connect(AppSignals.Clicked, this.dispatch_cancel.bind(this));
@@ -106,7 +107,7 @@ export class TaskForm extends Gtk.Box {
   }
 
   private init_widgets() {
-    log(TaskForm.LogClass, 'Initializing widget instances');
+    log(TaskForm.LogClass, AppDebug.TASK_FORM_INIT);
 
     this.btn_save = this.get_template_child(
       TaskForm.$gtype,
@@ -135,10 +136,6 @@ export class TaskForm extends Gtk.Box {
     ) as Gtk.CheckButton;
   }
 
-  public setup(): this {
-    return this;
-  }
-
   public has_task_loaded(): boolean {
     return this._taskId !== null;
   }
@@ -147,13 +144,13 @@ export class TaskForm extends Gtk.Box {
    * Loads a task into the form by its ID.
    */
   public load_task(taskId: string) {
-    log(TaskForm.LogClass, `Loading task: ${taskId}`);
+    log(TaskForm.LogClass, `${AppDebug.TASK_FORM_LOAD}${taskId}`);
     this._taskId = taskId;
 
     const taskItem = this.find_task();
 
     if (!taskItem) {
-      log(TaskForm.LogClass, `Failed to find task: ${taskId}`);
+      log(TaskForm.LogClass, `${AppDebug.TASK_FORM_LOAD_FAILED}${taskId}`);
       return;
     }
 
@@ -176,7 +173,7 @@ export class TaskForm extends Gtk.Box {
    * Save current task on list and dispatch window action to close bottom sheet
    */
   public dispatch_save(): void {
-    log(TaskForm.LogClass, 'Dispatching save action');
+    log(TaskForm.LogClass, AppDebug.TASK_FORM_SAVE);
     const task = this.find_task()?.to_object();
     const title = this.entry_title.get_text().trim();
 
@@ -186,11 +183,11 @@ export class TaskForm extends Gtk.Box {
     }
 
     if (!task || !task.id) {
-      log(TaskForm.LogClass, 'No task loaded to save');
+      log(TaskForm.LogClass, AppDebug.TASK_FORM_NO_TASK);
       return;
     }
 
-    log(TaskForm.LogClass, `Updating task in store: ${task.id}`);
+    log(TaskForm.LogClass, `${AppDebug.TASK_FORM_UPDATE}${task.id}`);
 
     // Update existing task data
     // We recreate it by removing and re-appending, which is the pattern in TaskListStore
@@ -217,7 +214,7 @@ export class TaskForm extends Gtk.Box {
    * Clean the form state and call window action to close bottom sheet
    */
   public dispatch_cancel(): void {
-    log(TaskForm.LogClass, 'Dispatching cancel/close action');
+    log(TaskForm.LogClass, AppDebug.TASK_FORM_CANCEL);
 
     this._taskId = null;
     this.entry_title.set_text('');
@@ -231,7 +228,7 @@ export class TaskForm extends Gtk.Box {
    * Update deleted status and save
    */
   private dispatch_delete() {
-    log(TaskForm.LogClass, 'Dispatching delete action');
+    log(TaskForm.LogClass, AppDebug.TASK_FORM_DELETE);
 
     if (this._taskId === null) return;
 

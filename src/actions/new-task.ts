@@ -20,7 +20,7 @@ import Gtk from 'gi://Gtk';
 import Gio from 'gi://Gio';
 
 import { AppSignals, WidgetIds } from '~/app.enums.js';
-import { ActionNames } from "~/static/actions.js";
+import { ActionNames } from '~/static/actions.js';
 import { AppLocale } from '~/app.strings.js';
 
 import { DoItMainWindow } from '~/views/doit.js';
@@ -64,11 +64,10 @@ export const newTask = () => {
   /**
    * Creates and appends a new task to the store.
    *
-   * @param text The complete raw input from the entry field.
+   * @param title The clean task title.
+   * @param project The parsed project name.
    */
-  const create_task = (text: string) => {
-    const { project, parsedText: title } = parseProject(text);
-
+  const create_task = (title: string, project: string) => {
     store.append_task({
       title,
       created_at: new Date().getTime(),
@@ -100,10 +99,10 @@ export const newTask = () => {
 
     if (text.length == 0) return;
 
-    const { parsedText: title } = parseProject(text);
+    const { project, parsedText: title } = parseProject(text);
     if (title.length == 0) return;
 
-    create_task(text);
+    create_task(title, project);
 
     fieldNewTask.set_text('');
 

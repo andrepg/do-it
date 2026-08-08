@@ -20,9 +20,10 @@ import Adw from 'gi://Adw';
 import Gio from 'gi://Gio';
 
 import { AppSignals, WidgetIds } from '~/app.enums.js';
-import { ActionNames } from "~/static/actions.js";
+import { ActionNames } from '~/static/actions.js';
 import { DoItMainWindow } from '../views/doit.js';
 import { error } from '~/utils/log-manager.js';
+import { AppDebug } from '~/static/messages.js';
 
 /**
  * Retrieves the split_view template child from the window.
@@ -35,7 +36,7 @@ const getSplitView = (window: DoItMainWindow): Adw.OverlaySplitView | null => {
   ) as Adw.OverlaySplitView;
 
   if (!splitView) {
-    error('sidebar', 'failed to get split_view object');
+    error('sidebar', AppDebug.SIDEBAR_SPLIT_VIEW_MISSING);
     return null;
   }
 
