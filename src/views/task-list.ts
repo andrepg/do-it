@@ -19,9 +19,11 @@
 import Adw from 'gi://Adw';
 import GLib from 'gi://GLib';
 
-import { AppSignals } from '~/app.enums.js';
+import { AppSignals, SortingField } from '~/app.enums.js';
 import { AppLocale } from '~/app.strings.js';
 import { MagicFilters } from '~/static/sidebar.js';
+
+import { retrieve_sort_preferences } from '~/utils/tasks.sort.js';
 
 import { TaskItem } from './task-item.js';
 import { TaskListStore } from '../store/list-store.js';
@@ -165,16 +167,36 @@ export class TaskList {
   }
 
   /**
-   * Orders the project names alphabetically.
+   * Orders the project names based on the current sorting preference.
+   *
+   * The group without a project always stays at the top, regardless of the
+   * sort field or strategy. When sorting by project, the remaining groups
+   * follow the project name and the active strategy. Otherwise the groups
+   * stay alphabetically ordered, as the sort only applies to the tasks
+   * inside each group.
+   *
    * @param projectGroupList The collected project groups.
    * @returns The ordered list of project names.
    */
   private order_projects(projectGroupList: Map<string, ProjectGroupEntry>): string[] {
-    return Array.from(projectGroupList.keys()).sort((a, b) => {
-      if (a > b) return 1;
-      if (a < b) return -1;
+    const prefs = retrieve_sort_preferences();
+    const projects = Array.from(projectGroupList.keys());
+
+    // The no-project group is pinned to the top; it must not move with the sort
+    const by_name = (a: string, b: string) => a.localeCompare(b);
+    const no_project_first = (a: string, b: string) => {
+      if (a === '') return -1;
+      if (b === '') return 1;
       return 0;
-    });
+    };
+
+    if (prefs.mode !== SortingField.byProject) {
+      return projects.sort((a, b) => no_project_first(a, b) || by_name(a, b));
+    }
+
+    const direction = prefs.strategy;
+
+    return projects.sort((a, b) => no_project_first(a, b) || by_name(a, b) * direction);
   }
 
   /**
