@@ -1,4 +1,4 @@
-/* app.static.ts
+/* tasks.ts
  * Copyright 2025 André Paul Grandsire
  *
  * This program is free software: you can redistribute it and/or modify
@@ -16,14 +16,9 @@
  *
  * SPDX-License-Identifier: GPL-3.0-or-later
  */
-import { SortingField, SortingStrategy } from "./static/sorting.js";
-import { ISortingFieldOption, ISortingStrategyOption } from './app.types.js';
-import { AppLocale } from './app.strings.js';
-
-pkg.initGettext();
 
 /**
- * Symbolic icons used in the application
+ * Symbolic icons used in the application.
  */
 export const SymbolicIcons = {
   none: '',
@@ -77,43 +72,3 @@ export const TaskDeleteButtonIcon = {
   default: SymbolicIcons.tasks.trash_bin,
   deleted: SymbolicIcons.tasks.undo,
 };
-
-/**
- * Predefined options for sorting fields available in the UI.
- */
-export const SortingFieldOptions: ISortingFieldOption[] = [
-  {
-    label: AppLocale.sorting.fields[SortingField.byDate],
-    icon: SymbolicIcons.none,
-    mode: SortingField.byDate,
-  },
-  {
-    label: AppLocale.sorting.fields[SortingField.byProject],
-    icon: SymbolicIcons.none,
-    mode: SortingField.byProject,
-  },
-  {
-    label: AppLocale.sorting.fields[SortingField.byStatus],
-    icon: SymbolicIcons.none,
-    mode: SortingField.byStatus,
-  },
-  {
-    label: AppLocale.sorting.fields[SortingField.byTitle],
-    icon: SymbolicIcons.none,
-    mode: SortingField.byTitle,
-  },
-];
-
-/**
- * Predefined options for sorting strategies available in the UI.
- */
-export const SortingModeOptions: ISortingStrategyOption[] = [
-  {
-    icon: SymbolicIcons.sorting.sort_ascending,
-    strategy: SortingStrategy.ascending,
-  },
-  {
-    icon: SymbolicIcons.sorting.sort_descending,
-    strategy: SortingStrategy.descending,
-  },
-];

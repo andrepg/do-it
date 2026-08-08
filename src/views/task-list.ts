@@ -21,12 +21,10 @@ import GLib from 'gi://GLib';
 
 import { AppSignals } from '~/app.enums.js';
 import { AppLocale } from '~/app.strings.js';
-import { SortingField, SortingStrategy } from '~/static/sorting.js';
-import { retrieve_sort_preferences } from '~/utils/tasks.sort.js';
+import { MagicFilters } from '~/static/sidebar.js';
 
 import { TaskItem } from './task-item.js';
 import { TaskListStore } from '../store/list-store.js';
-import { sort_by_project } from '~/utils/sort.js';
 
 /**
  * A single project's collected tasks and their status counters.
@@ -79,8 +77,22 @@ export class TaskList {
     this.currentFilter = project;
 
     for (const [projectName, preferencesGroup] of this.projectGroups) {
-      preferencesGroup.set_visible(project === null || projectName === project);
+      preferencesGroup.set_visible(this.is_group_visible(projectName, project));
     }
+  }
+
+  /**
+   * Returns whether the given project group should be visible under the
+   * current filter, honoring the magic filters for all and none.
+   *
+   * @param projectName The project name of the group.
+   * @param filter The active project filter.
+   */
+  private is_group_visible(projectName: string, filter: string | null): boolean {
+    if (filter === MagicFilters.all || filter === null) return true;
+    if (filter === MagicFilters.none) return projectName === '';
+
+    return projectName === filter;
   }
 
   /**
@@ -134,7 +146,7 @@ export class TaskList {
   private collect_project_groups(): Map<string, ProjectGroupEntry> {
     const projectGroupList = new Map<string, ProjectGroupEntry>();
 
-    for (let i = 0; i < this.store.get_n_items(); i++) {
+    for (let i = 0; i < this.store.get_count(); i++) {
       const item = this.store.get_item(i);
       if (!(item instanceof TaskItem)) continue;
 
@@ -153,24 +165,16 @@ export class TaskList {
   }
 
   /**
-   * Orders the project names according to the current sorting preferences.
+   * Orders the project names alphabetically.
    * @param projectGroupList The collected project groups.
    * @returns The ordered list of project names.
    */
   private order_projects(projectGroupList: Map<string, ProjectGroupEntry>): string[] {
-    const { strategy } = retrieve_sort_preferences();
-
     return Array.from(projectGroupList.keys()).sort((a, b) => {
       if (a > b) return 1;
       if (a < b) return -1;
       return 0;
     });
-
-    // return Array.from(projectGroupList.keys()).sort(
-    //   mode === SortingField.byProject
-    //     ? sort_by_project(strategy)
-    //     : sort_by_project(SortingStrategy.ascending),
-    // );
   }
 
   /**
@@ -194,9 +198,7 @@ export class TaskList {
 
       this.refresh_preferences_group(preferencesGroup, projectGroup);
 
-      preferencesGroup.set_visible(
-        this.currentFilter === null || projectName === this.currentFilter,
-      );
+      preferencesGroup.set_visible(this.is_group_visible(projectName, this.currentFilter));
     }
 
     this.reorder_groups(orderedProjects);

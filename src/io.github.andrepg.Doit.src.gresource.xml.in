@@ -6,7 +6,6 @@
 
     <file>app.wrapper.js</file>
     <file>app.enums.js</file>
-    <file>app.static.js</file>
     <file>app.strings.js</file>
     <file>app.types.js</file>
 
@@ -14,6 +13,8 @@
     <file>static/messages.js</file>
     <file>static/settings.js</file>
     <file>static/sorting.js</file>
+    <file>static/sidebar.js</file>
+    <file>static/tasks.js</file>
 
     <file>utils/log-manager.js</file>
     <file>utils/settings.js</file>
@@ -30,7 +31,6 @@
     <file>views/popover-sort.js</file>
     <file>views/task-item.js</file>
     <file>views/task-list.js</file>
-    <file>views/index.js</file>
 
     <file>actions/about.js</file>
     <file>actions/new-task.js</file>

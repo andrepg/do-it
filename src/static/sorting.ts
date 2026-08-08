@@ -1,5 +1,4 @@
-
-/* app.enums.ts
+/* sorting.ts
  * Copyright 2025 André Paul Grandsire
  *
  * This program is free software: you can redistribute it and/or modify
@@ -17,15 +16,47 @@
  *
  * SPDX-License-Identifier: GPL-3.0-or-later
  */
+import { AppLocale } from '~/app.strings.js';
+import { ISortingFieldOption, ISortingStrategyOption } from '~/app.types.js';
+import { SortingField, SortingStrategy } from '~/app.enums.js';
+import { SymbolicIcons } from '~/static/tasks.js';
 
-export enum SortingField {
-  byDate = 'by_date',
-  byStatus = 'by_status',
-  byTitle = 'by_title',
-  byProject = 'by_project'
-}
+/**
+ * Predefined options for sorting fields available in the UI.
+ */
+export const SortingFieldOptions: ISortingFieldOption[] = [
+  {
+    label: AppLocale.sorting.fields[SortingField.byDate],
+    icon: SymbolicIcons.none,
+    mode: SortingField.byDate,
+  },
+  {
+    label: AppLocale.sorting.fields[SortingField.byProject],
+    icon: SymbolicIcons.none,
+    mode: SortingField.byProject,
+  },
+  {
+    label: AppLocale.sorting.fields[SortingField.byStatus],
+    icon: SymbolicIcons.none,
+    mode: SortingField.byStatus,
+  },
+  {
+    label: AppLocale.sorting.fields[SortingField.byTitle],
+    icon: SymbolicIcons.none,
+    mode: SortingField.byTitle,
+  },
+];
 
-export enum SortingStrategy {
-  ascending = 'ascending',
-  descending = 'descending'
-}
+/**
+ * Predefined options for sorting strategies available in the UI.
+ */
+export const SortingModeOptions: ISortingStrategyOption[] = [
+  {
+    icon: SymbolicIcons.sorting.sort_ascending,
+    strategy: SortingStrategy.ascending,
+  },
+  {
+    icon: SymbolicIcons.sorting.sort_descending,
+    strategy: SortingStrategy.descending,
+  },
+];

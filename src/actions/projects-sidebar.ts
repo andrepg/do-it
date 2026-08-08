@@ -21,11 +21,11 @@ import GObject from 'gi://GObject';
 import Gtk from 'gi://Gtk';
 
 import { AppSignals, WidgetIds } from '~/app.enums.js';
-import { AppLocale } from '~/app.strings.js';
 
 import { DoItMainWindow } from '../views/doit.js';
 
 import { ProjectStore } from '~/store/project-store.js';
+import { GeneralSectionItems, SidebarFilterDataKey } from '~/static/sidebar.js';
 
 /**
  * Initializes the sidebar with the list of projects.
@@ -36,64 +36,82 @@ import { ProjectStore } from '~/store/project-store.js';
  * @param projectStore The global ProjectStore instance used to list projects and filter tasks.
  */
 export default function projectSidebar(projectStore: ProjectStore) {
+  let sidebar!: Adw.Sidebar;
+
+  /**
+   *
+   * @returns
+   */
+  const setup_general_section = () => {
+    const section = new Adw.SidebarSection();
+
+    GeneralSectionItems.forEach((item) => {
+      const sidebarItem = new Adw.SidebarItem({
+        icon_name: item.icon,
+        title: item.title,
+      });
+
+      section.append(sidebarItem);
+
+      sidebarItem.set_data(SidebarFilterDataKey, item.filter);
+    });
+
+    sidebar.append(section);
+
+    return section;
+  };
+
+  const setup_projects_section = () => {
+    const section = new Adw.SidebarSection();
+
+    section.bind_model(projectStore.projects, (item: GObject.Object) => {
+      const project = (item as Gtk.StringObject).string;
+      const sidebarItem = new Adw.SidebarItem({ title: project });
+
+      sidebarItem.set_data(SidebarFilterDataKey, project);
+
+      return sidebarItem;
+    });
+
+    sidebar.append(section);
+
+    return section;
+  };
+
+  /**
+   * Updates the selected sidebar item based on the current filter.
+   *
+   * @param filter The current filter to update the selection based on.
+   */
+  const update_selection = (filter: string | null) => {
+    const items = sidebar.get_items();
+
+    for (let i = 0; i < items.get_n_items(); i++) {
+      const item = sidebar.get_item(i);
+
+      if (item && item.get_data(SidebarFilterDataKey) === filter) {
+        sidebar.set_selected(i);
+        return;
+      }
+    }
+
+    sidebar.set_selected(Gtk.INVALID_LIST_POSITION);
+  };
+
   const setup = (window: DoItMainWindow) => {
-    const sidebar = window.get_template_child(
+    sidebar = window.get_template_child(
       DoItMainWindow.$gtype,
       WidgetIds.WindowSidebarProjectList,
     ) as Adw.Sidebar;
 
-    // Maps each sidebar item to the project filter it represents
-    const filterByItem = new Map<Adw.SidebarItem, string | null>();
-
-    // Fixed section: all tasks and tasks without a project
-    const generalSection = new Adw.SidebarSection();
-
-    const allTasksItem = new Adw.SidebarItem({
-      title: AppLocale.tasks.list.all,
-    });
-    filterByItem.set(allTasksItem, null);
-
-    const noProjectItem = new Adw.SidebarItem({
-      title: AppLocale.tasks.list.noProject,
-    });
-    filterByItem.set(noProjectItem, '');
-
-    generalSection.append(allTasksItem);
-    generalSection.append(noProjectItem);
-    sidebar.append(generalSection);
-
-    // Dynamic section: one item per discovered project, kept in sync with the store
-    const projectsSection = new Adw.SidebarSection();
-
-    projectsSection.bind_model(projectStore.projects, (item: GObject.Object) => {
-      const project = (item as Gtk.StringObject).string;
-      const sidebarItem = new Adw.SidebarItem({ title: project });
-
-      filterByItem.set(sidebarItem, project);
-      return sidebarItem;
-    });
-
-    sidebar.append(projectsSection);
-
-    const update_selection = (filter: string | null) => {
-      const items = sidebar.get_items();
-
-      for (let i = 0; i < items.get_n_items(); i++) {
-        const item = sidebar.get_item(i);
-
-        if (item && filterByItem.get(item) === filter) {
-          sidebar.set_selected(i);
-          return;
-        }
-      }
-
-      sidebar.set_selected(Gtk.INVALID_LIST_POSITION);
-    };
+    sidebar.remove_all();
+    sidebar.append(setup_general_section());
+    sidebar.append(setup_projects_section());
 
     // Forward activated items to the project store
     sidebar.connect(AppSignals.Activated, (_: Adw.Sidebar, index: number) => {
       const item = sidebar.get_item(index);
-      const filter = item !== null ? filterByItem.get(item) : undefined;
+      const filter = item !== null ? (item.get_data(SidebarFilterDataKey) as string) : undefined;
 
       if (filter !== undefined) projectStore.set_filter(filter);
     });

@@ -20,7 +20,7 @@ import Adw from 'gi://Adw';
 import GObject from 'gi://GObject';
 import Gtk from 'gi://Gtk';
 
-import { DoItSettings } from "~/static/settings.js";
+import { DoItSettings } from '~/static/settings.js';
 
 import { log } from '~/utils/log-manager.js';
 import { ProjectStore } from '~/store/project-store.js';
@@ -33,6 +33,7 @@ import { PopoverSort } from './popover-sort.js';
 
 import * as Actions from '../actions/index.js';
 import { TaskListStore } from '~/store/list-store.js';
+import { AppDebug } from '~/static/messages.js';
 
 const settings = get_settings();
 
@@ -92,8 +93,8 @@ export class DoItMainWindow extends Adw.ApplicationWindow {
       defaultHeight: settings.get_int(DoItSettings.windowHeight),
     });
 
-    log(DoItMainWindow.LogClass, 'Initializing task store');
     TaskListStore.get_default().load_tasks();
+    log(DoItMainWindow.LogClass, AppDebug.TASK_STORE_INIT);
 
     this.initialize_widgets();
     this.initialize_actions();
@@ -103,18 +104,23 @@ export class DoItMainWindow extends Adw.ApplicationWindow {
   }
 
   private initialize_widgets() {
-    log(DoItMainWindow.LogClass, 'Initializing widgets');
+    log(DoItMainWindow.LogClass, AppDebug.WIDGET_INIT);
+
+    this.task_form = this.get_template_child(
+      DoItMainWindow.$gtype,
+      WidgetIds.TaskFormWidget,
+    ) as TaskForm;
+    this.task_form.setup();
 
     this.button_sorting = this.get_template_child(
       DoItMainWindow.$gtype,
       WidgetIds.WindowButtonSorting,
     ) as Gtk.MenuButton;
-
     this.button_sorting.set_popover(new PopoverSort(this));
   }
 
   private initialize_project_store(): void {
-    log(DoItMainWindow.LogClass, 'Initializing project store');
+    log(DoItMainWindow.LogClass, AppDebug.PROJECT_STORE_INIT);
 
     const projectStore = ProjectStore.get_default();
 
@@ -123,34 +129,36 @@ export class DoItMainWindow extends Adw.ApplicationWindow {
   }
 
   private initialize_actions() {
-    log(DoItMainWindow.LogClass, 'Initializing window actions');
+    log(DoItMainWindow.LogClass, AppDebug.ACTION_INIT);
 
     Actions.backup().setup(this);
     Actions.toast().setup(this);
     Actions.newTask().setup(this);
     Actions.purgeDeleted().setup(this);
     Actions.sidebar().setup(this);
-
-    this.task_form = this.get_template_child(
-      DoItMainWindow.$gtype,
-      WidgetIds.TaskFormWidget,
-    ) as TaskForm;
-    this.task_form.setup();
-
     Actions.taskEdit(this.task_form).setup(this);
   }
 
-  public override vfunc_close_request(): boolean {
-    log(DoItMainWindow.LogClass, 'Disposing main window');
+  private persist_window_size() {
+    log(DoItMainWindow.LogClass, AppDebug.WINDOW_PERSIST_SIZE);
 
     const [width, height] = this.get_default_size();
 
-    log(DoItMainWindow.LogClass, 'Saving window size before closing');
     this.settings.set_int(DoItSettings.windowWidth, width);
     this.settings.set_int(DoItSettings.windowHeight, height);
+  }
 
-    log(DoItMainWindow.LogClass, 'Persisting tasks');
+  private persist_task_store() {
+    log(DoItMainWindow.LogClass, AppDebug.TASK_STORE_PERSIST);
+
     TaskListStore.get_default().persist_tasks();
+  }
+
+  public override vfunc_close_request(): boolean {
+    log(DoItMainWindow.LogClass, AppDebug.WINDOW_CLOSE_REQUEST);
+
+    this.persist_window_size();
+    this.persist_task_store();
 
     return super.vfunc_close_request();
   }

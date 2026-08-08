@@ -1,8 +1,3 @@
-export const SortingModeSchema = {
-  MODE: 'sorting-mode',
-  STRATEGY: 'sorting-strategy',
-};
-
 export enum AppSignals {
   Apply = 'apply',
   Clicked = 'clicked',
@@ -29,18 +24,16 @@ export enum CssClasses {
 export enum WidgetIds {
   WindowSplitView = 'split_view',
   WindowListContainer = 'list_container',
+  WindowListEmpty = 'list_empty',
+  WindowListStack = 'list_stack',
   WindowToastOverlay = 'toast_overlay',
   WindowSidebarProjectList = 'sidebar_project_list',
-  WindowButtonOpenSidebar = 'button_open_sidebar',
-  WindowButtonToggleSidebar = 'button_toggle_sidebar',
   WindowButtonNewTask = 'button_new_task',
   WindowTaskNewEntry = 'task_new_entry',
   WindowButtonSorting = 'button_sorting',
   PopoverSortToggleGroupSortField = 'toggle-group-sort-field',
   PopoverSortToggleGroupSortStrategy = 'toggle-group-sort-strategy',
   PopoverSortLabelStrategy = 'label_strategy',
-  SidebarButtonContent = 'button_content',
-  SidebarButtonIcon = 'button_icon',
   TaskItemTaskDone = 'task_done',
   TaskItemTaskDelete = 'task_delete',
   TaskFormEntryTitle = 'task_form_entry_title',
@@ -52,4 +45,16 @@ export enum WidgetIds {
   WindowBottomSheet = 'window_bottom_sheet',
   WindowBottomSheetContent = 'window_bottom_sheet_content',
   TaskFormWidget = 'task_form',
+}
+
+export enum SortingField {
+  byDate = 'by_date',
+  byStatus = 'by_status',
+  byTitle = 'by_title',
+  byProject = 'by_project',
+}
+
+export enum SortingStrategy {
+  ascending = 'ascending',
+  descending = 'descending',
 }

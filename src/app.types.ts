@@ -16,7 +16,7 @@
  *
  * SPDX-License-Identifier: GPL-3.0-or-later
  */
-import { SortingField, SortingStrategy } from "./static/sorting.js";
+import { SortingField, SortingStrategy } from './app.enums.js';
 
 /**
  * Represents a single task entity in the application.
@@ -45,21 +45,4 @@ export interface ISortingFieldOption {
 export interface ISortingStrategyOption {
   icon: string;
   strategy: SortingStrategy;
-}
-
-/**
- * Contract for task display widgets in the UI.
- */
-export interface ITaskView {
-  taskId: string;
-  title: string;
-  done: boolean;
-  deleted: boolean;
-  project: string;
-  created: string;
-
-  update(task: ITask): void;
-  onTaskUpdated(callback: (task: ITask) => void): void;
-  onTaskDeleted(callback: (task: ITask) => void): void;
-  to_object(): ITask;
 }

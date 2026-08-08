@@ -17,7 +17,7 @@
  * SPDX-License-Identifier: GPL-3.0-or-later
  */
 
-import { SortingField, SortingStrategy } from "./static/sorting.js";
+import { SortingField, SortingStrategy } from './app.enums.js';
 
 pkg.initGettext();
 
@@ -46,7 +46,6 @@ const SortingStrings = {
 const TaskStrings = {
   list: {
     title: C_('task-list', 'Tasks'),
-    empty: C_('task-list', 'No tasks found'),
     all: C_('task-list', 'All tasks'),
     noProject: C_('task-list', 'Without project'),
     groupDescription: C_('task-group', '%s finished, %s deleted'),

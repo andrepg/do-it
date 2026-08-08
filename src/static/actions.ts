@@ -1,4 +1,6 @@
-
+/**
+ * Names of all Gio SimpleActions registered by the application.
+ */
 export enum ActionNames {
   About = 'about',
   Quit = 'quit',
@@ -10,6 +12,7 @@ export enum ActionNames {
   CollapseSidebar = 'collapse-sidebar',
   ShowToast = 'show-toast',
   TaskEdit = 'task-edit',
-  TaskEditClose = 'task-edit-close',
-  NewTask = 'new-task'
+  TaskEditSave = 'task-edit.save',
+  TaskEditClose = 'task-edit.close',
+  NewTask = 'new-task',
 }

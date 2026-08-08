@@ -17,18 +17,30 @@
  * SPDX-License-Identifier: GPL-3.0-or-later
  */
 import GLib from 'gi://GLib';
-import type { ITaskView } from '~/app.types.js';
-import { SortingStrategy } from "~/static/sorting.js";
+import { SortingStrategy } from '~/app.enums.js';
 
-type ExtractorFunction = (item: ITaskView) => unknown;
+/**
+ * Minimal task view used by the sorting comparators.
+ */
+interface SortableTask {
+  title: string;
+  done: boolean;
+  project?: string;
+  created: string;
+}
 
-export const create_comparator = (extractors: ExtractorFunction[], strategy: SortingStrategy): GLib.CompareFunc => {
+type ExtractorFunction = (item: SortableTask) => unknown;
+
+export const create_comparator = (
+  extractors: ExtractorFunction[],
+  strategy: SortingStrategy,
+): GLib.CompareFunc => {
   const isAscending = strategy === SortingStrategy.ascending;
 
   const compare_numeric = (a: number, b: number) => a - b;
   const compare_string = (a: string, b: string) => a.localeCompare(b);
 
-  return (a: ITaskView | null, b: ITaskView | null) => {
+  return (a: SortableTask | null, b: SortableTask | null) => {
     if (a === null || b === null) return 0;
 
     for (const extractor of extractors) {
@@ -52,17 +64,17 @@ export const create_comparator = (extractors: ExtractorFunction[], strategy: Sor
 };
 
 export const sort_by_date = (strategy: SortingStrategy) => {
-  return create_comparator([(item: ITaskView) => new Date(item.created).getTime()], strategy);
+  return create_comparator([(item: SortableTask) => new Date(item.created).getTime()], strategy);
 };
 
 export const sort_by_status = (strategy: SortingStrategy) => {
-  return create_comparator([(item: ITaskView) => (item.done ? 1 : 0)], strategy);
+  return create_comparator([(item: SortableTask) => (item.done ? 1 : 0)], strategy);
 };
 
 export const sort_by_title = (strategy: SortingStrategy) => {
-  return create_comparator([(item: ITaskView) => item.title], strategy);
+  return create_comparator([(item: SortableTask) => item.title], strategy);
 };
 
 export const sort_by_project = (strategy: SortingStrategy) => {
-  return create_comparator([(item: ITaskView) => item.project || ''], strategy);
+  return create_comparator([(item: SortableTask) => item.project || ''], strategy);
 };
