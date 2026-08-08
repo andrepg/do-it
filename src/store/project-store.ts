@@ -21,6 +21,7 @@ import GLib from 'gi://GLib';
 import Gtk from 'gi://Gtk';
 
 import { AppSignals } from '~/app.enums.js';
+import { MagicFilters } from '~/static/sidebar.js';
 
 import { TaskItem } from '~/views/task-item.js';
 import { TaskListStore } from '~/store/list-store.js';
@@ -62,7 +63,7 @@ export class ProjectStore extends GObject.Object {
   private _store = TaskListStore.get_default();
   private _projects_ordered: string[] = [];
   private _update_queued = false;
-  private _current_filter: string | null = null;
+  private _current_filter: string = MagicFilters.all;
 
   /**
    * Returns the app-wide ProjectStore singleton.

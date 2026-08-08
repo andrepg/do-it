@@ -133,6 +133,10 @@ describe('ProjectStore', () => {
     expect(emitSpy).toHaveBeenCalledWith('project-added', 'Home');
   });
 
+  it('should default to the all-projects filter', () => {
+    expect(projectStore.get_filter()).toBe('__ALL__');
+  });
+
   it('should set and get filters correctly', () => {
     const emitSpy = vi.spyOn(projectStore, 'emit');
 
