@@ -47,9 +47,3 @@ export const GeneralSectionItems = [
     filter: MagicFilters.none,
   },
 ];
-
-/**
- * GObject data key used to store each item's filter value directly on its
- * widget, avoiding an external lookup structure.
- */
-export const SidebarFilterDataKey = 'doit-filter';

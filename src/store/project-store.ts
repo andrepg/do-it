@@ -77,6 +77,10 @@ export class ProjectStore extends GObject.Object {
     this._store.connect(AppSignals.ItemsChanged, () => this._update_projects());
     this._store.connect(AppSignals.TaskUpdated, () => this._update_projects());
     this._store.connect(AppSignals.TaskDeleted, () => this._update_projects());
+
+    // Synchronize with tasks already loaded before this store was created,
+    // so the sidebar renders the projects on the first paint.
+    this._update_projects();
   }
 
   /**
