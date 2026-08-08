@@ -52,6 +52,7 @@ export class TaskList {
   private store = TaskListStore.get_default();
   private container: Adw.PreferencesPage;
   private projectGroups: Map<string, Adw.PreferencesGroup> = new Map();
+  private groupRows: Map<Adw.PreferencesGroup, TaskItem[]> = new Map();
   private currentFilter: string | null = null;
   private lastGroupOrder: string[] = [];
   private _rebuild_queued = false;
@@ -103,7 +104,27 @@ export class TaskList {
     const projectGroupList = this.collect_project_groups();
     const orderedProjects = this.order_projects(projectGroupList);
 
+    this.detach_all_rows();
+
     this.reconcile_groups(orderedProjects, projectGroupList);
+  }
+
+  /**
+   * Detaches every cached row from its group before rows are re-added.
+   *
+   * Rows live in the group's internal GtkListBox and cannot be enumerated
+   * from the group itself, so previously added rows are tracked and removed
+   * through the group API. This also unparents tasks that moved to another
+   * project regardless of the order in which groups are rebuilt.
+   */
+  private detach_all_rows(): void {
+    for (const [preferencesGroup, rows] of this.groupRows) {
+      for (const row of rows) {
+        preferencesGroup.remove(row);
+      }
+    }
+
+    this.groupRows.clear();
   }
 
   /**
@@ -215,6 +236,8 @@ export class TaskList {
       preferencesGroup.add(task);
     }
 
+    this.groupRows.set(preferencesGroup, [...projectGroup.tasks]);
+
     preferencesGroup.set_description(
       AppLocale.tasks.list.groupDescription.format(projectGroup.finished, projectGroup.deleted),
     );
@@ -246,6 +269,7 @@ export class TaskList {
     for (const [projectName, preferencesGroup] of this.projectGroups) {
       if (!visibleProjects.has(projectName)) {
         this.container.remove(preferencesGroup);
+        this.groupRows.delete(preferencesGroup);
         this.projectGroups.delete(projectName);
       }
     }
