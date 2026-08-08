@@ -10,6 +10,8 @@ For a full project description and features, see the [README](README.md).
 src/
 ├── actions/           # Gio SimpleAction handlers
 ├── persistence/       # Data storage implementation (gio-persistence.ts)
+├── static/            # Static configuration grouped by domain (actions, settings, sorting, sidebar, tasks, messages)
+├── store/             # Stateful stores (list-store.ts, project-store.ts)
 ├── views/             # UI code counterparts (e.g., doit.ts)
 ├── widgets/           # UI components (`.ui` files)
 ├── utils/             # Utility functions and settings
@@ -22,20 +24,20 @@ docs/                 # Detailed documentation
 
 ## Finding Things
 
-| What you're looking for           | Where it is                         |
-| --------------------------------- | ----------------------------------- |
-| Main task type (`ITask`)          | `src/app.types.ts`                  |
-| Enums (SortingField, AppSignals)  | `src/app.enums.ts`                  |
-| Translatable strings              | `src/app.strings.ts`                |
-| Static config                     | `src/app.static.ts`                 |
-| App entry point                   | `src/app.entrypoint.ts`             |
-| Settings                          | `src/utils/settings.ts`             |
-| Task sorting logic                | `src/utils/tasks.sort.ts`           |
-| UI components (`.ui` files)       | `src/widgets/`                      |
-| View code counterparts            | `src/views/`                        |
-| Action handlers                   | `src/actions/`                      |
-| Persistence implementation        | `src/persistence/gio-persistence.ts` |
-| Localization files                | `po/`                               |
+| What you're looking for          | Where it is                          |
+| -------------------------------- | ------------------------------------ |
+| Main task type (`ITask`)         | `src/app.types.ts`                   |
+| Enums (SortingField, AppSignals) | `src/app.enums.ts`                   |
+| Translatable strings             | `src/app.strings.ts`                 |
+| Static config by domain          | `src/static/`                        |
+| App entry point                  | `src/app.entrypoint.ts`              |
+| Settings                         | `src/utils/settings.ts`              |
+| Task sorting logic               | `src/utils/tasks.sort.ts`            |
+| UI components (`.ui` files)      | `src/widgets/`                       |
+| View code counterparts           | `src/views/`                         |
+| Action handlers                  | `src/actions/`                       |
+| Persistence implementation       | `src/persistence/gio-persistence.ts` |
+| Localization files               | `po/`                                |
 
 ### Typical Workflow
 
