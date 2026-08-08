@@ -58,19 +58,29 @@
                       <object class="GtkStack" id="list_stack">
                         <property name="transition-type">crossfade</property>
                         <child>
-                          <object class="AdwPreferencesPage" id="list_container">
-                            <property name="margin-bottom">32</property>
-                            <property name="margin-end">0</property>
-                            <property name="margin-start">0</property>
-                            <property name="margin-top">0</property>
+                          <object class="GtkStackPage">
+                            <property name="name">list_container</property>
+                            <property name="child">
+                              <object class="AdwPreferencesPage" id="list_container">
+                                <property name="margin-bottom">32</property>
+                                <property name="margin-end">0</property>
+                                <property name="margin-start">0</property>
+                                <property name="margin-top">0</property>
+                              </object>
+                            </property>
                           </object>
                         </child>
                         <child>
-                          <object class="AdwStatusPage" id="list_empty">
-                            <property name="can-focus">False</property>
-                            <property name="description" translatable="yes">Try to add a new task on bottom bar or with Ctrl + N</property>
-                            <property name="icon-name">text-editor-symbolic</property>
-                            <property name="title" translatable="yes">No tasks (yet)</property>
+                          <object class="GtkStackPage">
+                            <property name="name">list_empty</property>
+                            <property name="child">
+                              <object class="AdwStatusPage" id="list_empty">
+                                <property name="can-focus">False</property>
+                                <property name="description" translatable="yes">Try to add a new task on bottom bar or with Ctrl + N</property>
+                                <property name="icon-name">text-editor-symbolic</property>
+                                <property name="title" translatable="yes">No tasks (yet)</property>
+                              </object>
+                            </property>
                           </object>
                         </child>
                       </object>
