@@ -44,7 +44,7 @@ import { TaskItem } from '../../src/views/task-item.js';
 type MockStore = {
   connect: ReturnType<typeof vi.fn>;
   disconnect: ReturnType<typeof vi.fn>;
-  get_n_items: ReturnType<typeof vi.fn>;
+  get_count: ReturnType<typeof vi.fn>;
   get_item: ReturnType<typeof vi.fn>;
 };
 
@@ -64,7 +64,7 @@ describe('ProjectStore', () => {
         return 1;
       }),
       disconnect: vi.fn(),
-      get_n_items: vi.fn().mockReturnValue(0),
+      get_count: vi.fn().mockReturnValue(0),
       get_item: vi.fn(),
     };
 
@@ -74,7 +74,7 @@ describe('ProjectStore', () => {
   });
 
   const mock_tasks_with_projects = (projects: string[]) => {
-    mockStore.get_n_items.mockReturnValue(projects.length);
+    mockStore.get_count.mockReturnValue(projects.length);
     mockStore.get_item.mockImplementation((index: number) => {
       const task = new TaskItem();
       task.project = projects[index] ?? '';

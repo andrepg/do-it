@@ -126,7 +126,7 @@ export class ProjectStore extends GObject.Object {
   private _do_update_projects() {
     const currentProjectsOrdered: string[] = [];
     const currentProjectsSet = new Set<string>();
-    const n_items = this._store.get_n_items();
+    const n_items = this._store.get_count();
 
     for (let i = 0; i < n_items; i++) {
       const item = this._store.get_item(i);
