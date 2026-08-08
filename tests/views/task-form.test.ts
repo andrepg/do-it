@@ -1,18 +1,78 @@
 import { describe, it, expect, vi, beforeEach } from 'vitest';
-import { ITask } from '../../src/app.types.js';
 
-// Mock GTK/Box before importing TaskForm
+import { WidgetIds } from '../../src/app.enums.js';
+
+const { gtk, store, taskStore } = vi.hoisted(() => {
+  const keyHandlers: Record<string, (...args: unknown[]) => boolean | void> = {};
+  const emittedSignals: string[] = [];
+  const addController = vi.fn();
+
+  const makeEntry = () => {
+    let text = '';
+    return {
+      set_text: vi.fn((value: string) => {
+        text = value;
+      }),
+      get_text: vi.fn(() => text),
+    };
+  };
+
+  const makeCheck = () => {
+    let active = false;
+    return {
+      set_active: vi.fn((value: boolean) => {
+        active = value;
+      }),
+      get_active: vi.fn(() => active),
+    };
+  };
+
+  const makeButton = () => ({
+    connect: vi.fn(),
+  });
+
+  const children: Record<string, unknown> = {
+    task_form_entry_title: makeEntry(),
+    task_form_entry_project: makeEntry(),
+    task_form_check_done: makeCheck(),
+    task_form_btn_delete: makeButton(),
+    task_form_btn_save: makeButton(),
+    task_form_btn_discard: makeButton(),
+  };
+
+  const gtk = {
+    children,
+    keyHandlers,
+    emittedSignals,
+    addController,
+    keyController: {
+      connect: vi.fn((signal: string, handler: (...args: unknown[]) => boolean | void) => {
+        keyHandlers[signal] = handler;
+      }),
+    },
+  };
+
+  const store = {
+    find_by_id: vi.fn(),
+  };
+
+  const taskStore = {
+    get_default: () => store,
+  };
+
+  return { gtk, store, taskStore };
+});
+
 vi.mock('gi://Gtk', () => ({
   default: {
     Box: class {
-      constructor() {
-        this.add_controller = vi.fn();
-        this.get_template_child = vi.fn().mockImplementation(() => null);
-        this.get_first_child = vi.fn();
-      }
+      add_controller = gtk.addController;
+      get_template_child = vi.fn((_gtype: unknown, id: string) => gtk.children[id] ?? null);
+      emit = vi.fn((signal: string) => {
+        gtk.emittedSignals.push(signal);
+      });
     },
     CheckButton: class {
-      connect() {}
       set_active() {}
       get_active() {
         return false;
@@ -22,30 +82,7 @@ vi.mock('gi://Gtk', () => ({
       connect() {}
     },
     EventControllerKey: class {
-      connect() {}
-    },
-    EntryRow: class {
-      set_text() {}
-      get_text() {
-        return '';
-      }
-      get_first_child() {
-        return null;
-      }
-    },
-  },
-}));
-
-vi.mock('gi://Adw', () => ({
-  default: {
-    EntryRow: class {
-      set_text() {}
-      get_text() {
-        return '';
-      }
-      get_first_child() {
-        return null;
-      }
+      connect = gtk.keyController.connect;
     },
   },
 }));
@@ -56,129 +93,177 @@ vi.mock('gi://Gdk', () => ({
   },
 }));
 
+vi.mock('gi://Adw', () => ({
+  default: {},
+}));
+
+vi.mock('../../src/store/list-store.js', () => ({
+  TaskListStore: taskStore,
+}));
+
+vi.mock('../../src/views/task-item.js', () => ({
+  TaskItem: class MockTaskItem {
+    to_object() {
+      return {};
+    }
+    update() {}
+  },
+}));
+
 vi.mock('../../src/actions/toast.js', () => ({
   showToast: vi.fn(),
 }));
 
 vi.mock('../../src/utils/log-manager.js', () => ({
   log: vi.fn(),
+  warn: vi.fn(),
+  error: vi.fn(),
 }));
 
-describe('TaskForm Logic', () => {
-  // Test the logic patterns used in TaskForm without instantiating GTK
-  describe('has_task_loaded', () => {
-    const createTaskLoadedChecker = () => {
-      let taskId: string | null = null;
+import { TaskForm } from '../../src/views/task-form.js';
+import { showToast } from '../../src/actions/toast.js';
 
-      return {
-        has_task_loaded: () => taskId !== null,
-        load_task: (id: string) => {
-          taskId = id;
-        },
-        clear: () => {
-          taskId = null;
-        },
-      };
-    };
+describe('TaskForm', () => {
+  let form: TaskForm;
+  let taskItem: { to_object: ReturnType<typeof vi.fn>; update: ReturnType<typeof vi.fn> };
 
-    it('should return false when no task is loaded', () => {
-      const checker = createTaskLoadedChecker();
-      expect(checker.has_task_loaded()).toBe(false);
-    });
-
-    it('should return true after loading a task', () => {
-      const checker = createTaskLoadedChecker();
-      checker.load_task('task-123');
-      expect(checker.has_task_loaded()).toBe(true);
-    });
-
-    it('should return false after clearing', () => {
-      const checker = createTaskLoadedChecker();
-      checker.load_task('task-123');
-      checker.clear();
-      expect(checker.has_task_loaded()).toBe(false);
-    });
+  const mockTask = () => ({
+    id: 'task-1',
+    title: 'Buy milk',
+    project: 'Home',
+    done: false,
+    created_at: 1_700_000_000_000,
+    deleted: false,
   });
 
-  describe('find_task pattern', () => {
-    const createTaskFinder = (store: { find_by_id: (id: string) => any }) => {
-      let taskId: string | null = null;
-
-      return {
-        find_task: () => {
-          if (taskId === null) return null;
-          return store.find_by_id(taskId);
-        },
-        load_task: (id: string) => {
-          taskId = id;
-        },
-      };
+  const titleEntry = () =>
+    gtk.children[WidgetIds.TaskFormEntryTitle] as ReturnType<typeof vi.fn> & {
+      set_text: ReturnType<typeof vi.fn>;
+      get_text: ReturnType<typeof vi.fn>;
     };
 
-    it('should return null when no task is loaded', () => {
-      const mockStore = { find_by_id: vi.fn() };
-      const finder = createTaskFinder(mockStore);
+  const projectEntry = () =>
+    gtk.children[WidgetIds.TaskFormEntryProject] as ReturnType<typeof vi.fn> & {
+      set_text: ReturnType<typeof vi.fn>;
+      get_text: ReturnType<typeof vi.fn>;
+    };
 
-      expect(finder.find_task()).toBeNull();
-    });
+  const doneCheck = () =>
+    gtk.children[WidgetIds.TaskFormCheckDone] as ReturnType<typeof vi.fn> & {
+      set_active: ReturnType<typeof vi.fn>;
+      get_active: ReturnType<typeof vi.fn>;
+    };
 
-    it('should call store.find_by_id with correct id', () => {
-      const mockStore = { find_by_id: vi.fn().mockReturnValue({}) };
-      const finder = createTaskFinder(mockStore);
+  beforeEach(() => {
+    vi.clearAllMocks();
 
-      finder.load_task('task-456');
-      finder.find_task();
+    gtk.emittedSignals.length = 0;
+    Object.values(gtk.keyHandlers).forEach((handler) => delete gtk.keyHandlers[handler as never]);
 
-      expect(mockStore.find_by_id).toHaveBeenCalledWith('task-456');
-    });
+    taskItem = {
+      to_object: vi.fn(() => mockTask()),
+      update: vi.fn(),
+    };
 
-    it('should return null when task not found in store', () => {
-      const mockStore = { find_by_id: vi.fn().mockReturnValue(null) };
-      const finder = createTaskFinder(mockStore);
+    store.find_by_id.mockReturnValue(taskItem);
 
-      finder.load_task('task-789');
-      expect(finder.find_task()).toBeNull();
-    });
+    form = new TaskForm();
   });
 
-  describe('dispatch_save validation', () => {
-    const validateSave = (title: string): boolean => {
-      const trimmed = title.trim();
-      if (trimmed === '') {
-        return false; // Would show error
-      }
-      return true;
-    };
-
-    it('should not save empty title', () => {
-      expect(validateSave('')).toBe(false);
-    });
-
-    it('should not save whitespace-only title', () => {
-      expect(validateSave('   ')).toBe(false);
-    });
-
-    it('should save valid title', () => {
-      expect(validateSave('My Task')).toBe(true);
-    });
+  it('should report no loaded task when empty', () => {
+    expect(form.has_task_loaded()).toBe(false);
   });
 
-  describe('update_task pattern', () => {
-    const createTaskUpdater = (store: { persist_store: () => void }) => {
-      return {
-        update: (task: ITask) => {
-          store.persist_store();
-        },
-      };
-    };
+  it('should load a task and populate the form fields', () => {
+    const data = mockTask();
 
-    it('should call persist_store after update', () => {
-      const mockStore = { persist_store: vi.fn() };
-      const updater = createTaskUpdater(mockStore);
+    form.load_task(data.id);
 
-      updater.update({ title: 'Test', created_at: Date.now() });
+    expect(form.has_task_loaded()).toBe(true);
+    expect(store.find_by_id).toHaveBeenCalledWith(data.id);
+    expect(titleEntry().set_text).toHaveBeenCalledWith(data.title);
+    expect(projectEntry().set_text).toHaveBeenCalledWith(data.project);
+    expect(doneCheck().set_active).toHaveBeenCalledWith(false);
+  });
 
-      expect(mockStore.persist_store).toHaveBeenCalled();
+  it('should not populate fields when the task is not found', () => {
+    store.find_by_id.mockReturnValue(undefined);
+
+    form.load_task('missing-task');
+
+    expect(form.has_task_loaded()).toBe(true);
+    expect(titleEntry().set_text).not.toHaveBeenCalled();
+  });
+
+  it('should show an error toast when saving with an empty title', () => {
+    form.load_task('task-1');
+    titleEntry().get_text.mockReturnValue('   ');
+
+    form.dispatch_save();
+
+    expect(showToast).toHaveBeenCalled();
+    expect(taskItem.update).not.toHaveBeenCalled();
+    expect(gtk.emittedSignals).not.toContain('task-form-closed');
+  });
+
+  it('should save the task and close the form', () => {
+    form.load_task('task-1');
+
+    titleEntry().get_text.mockReturnValue('  Buy milk  ');
+    projectEntry().get_text.mockReturnValue('Home');
+    doneCheck().get_active.mockReturnValue(true);
+
+    form.dispatch_save();
+
+    expect(taskItem.update).toHaveBeenCalledWith({
+      ...mockTask(),
+      title: 'Buy milk',
+      project: 'Home',
+      done: true,
     });
+    expect(showToast).toHaveBeenCalled();
+    expect(gtk.emittedSignals).toContain('task-form-closed');
+  });
+
+  it('should clear the form and emit close on cancel', () => {
+    form.load_task('task-1');
+
+    form.dispatch_cancel();
+
+    expect(form.has_task_loaded()).toBe(false);
+    expect(gtk.emittedSignals).toContain('task-form-closed');
+  });
+
+  it('should mark the loaded task as deleted and close the form', () => {
+    form.load_task('task-1');
+
+    (
+      gtk.children[WidgetIds.TaskFormBtnDelete] as { connect: ReturnType<typeof vi.fn> }
+    ).connect.mock.calls[0][1]();
+
+    expect(taskItem.update).toHaveBeenCalledWith({
+      ...mockTask(),
+      deleted: true,
+    });
+    expect(gtk.emittedSignals).toContain('task-form-closed');
+  });
+
+  it('should not delete when no task is loaded', () => {
+    (
+      gtk.children[WidgetIds.TaskFormBtnDelete] as { connect: ReturnType<typeof vi.fn> }
+    ).connect.mock.calls[0][1]();
+
+    expect(taskItem.update).not.toHaveBeenCalled();
+    expect(gtk.emittedSignals).not.toContain('task-form-closed');
+  });
+
+  it('should cancel the form when the Escape key is pressed', () => {
+    form.load_task('task-1');
+
+    const handler = gtk.keyHandlers['key-pressed'];
+    const result = handler?.({}, 0xff1b);
+
+    expect(result).toBe(true);
+    expect(gtk.emittedSignals).toContain('task-form-closed');
   });
 });

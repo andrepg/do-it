@@ -25,6 +25,8 @@ export default {
     set_int = vi.fn();
     get_string = vi.fn();
     set_string = vi.fn();
+    get_enum = vi.fn();
+    set_enum = vi.fn();
   },
   _mockFile: mockFile, // Export for easy access in tests
 };

@@ -1,17 +1,21 @@
-import { describe, it, expect, vi } from 'vitest';
+import { describe, it, expect, vi, beforeEach } from 'vitest';
 import { sort_by } from '../../src/utils/tasks.sort.js';
 import { SortingField, SortingStrategy } from '../../src/app.enums.js';
 
-// Mock settings module
-vi.mock('../../src/utils/settings.js', () => ({
-  get_settings: () => ({
+const { settingsMock } = vi.hoisted(() => ({
+  settingsMock: {
     get_int: vi.fn(),
     get_string: vi.fn(),
     set_int: vi.fn(),
     set_string: vi.fn(),
     get_enum: vi.fn(),
     set_enum: vi.fn(),
-  }),
+  },
+}));
+
+// Mock settings module
+vi.mock('../../src/utils/settings.js', () => ({
+  get_settings: () => settingsMock,
 }));
 
 // Provide mocks for GI protocols
@@ -98,5 +102,51 @@ describe('sort_by', () => {
 
     expect((sorted[0] as any).to_object().project).toBe('Home');
     expect((sorted[1] as any).to_object().project).toBe('Work');
+  });
+});
+
+describe('retrieve_sort_preferences', () => {
+  it('should return persisted sorting mode and strategy', async () => {
+    settingsMock.get_string.mockReturnValue(SortingField.byStatus);
+    settingsMock.get_enum.mockReturnValue(SortingStrategy.descending);
+
+    const { retrieve_sort_preferences } = await import('../../src/utils/tasks.sort.js');
+
+    const prefs = retrieve_sort_preferences();
+
+    expect(prefs).toEqual({
+      mode: SortingField.byStatus,
+      strategy: SortingStrategy.descending,
+    });
+    expect(settingsMock.get_string).toHaveBeenCalledWith('sorting-mode');
+    expect(settingsMock.get_enum).toHaveBeenCalledWith('sorting-strategy');
+  });
+
+  it('should fall back to title ascending when nothing is persisted', async () => {
+    settingsMock.get_string.mockReturnValue('');
+    settingsMock.get_enum.mockReturnValue(0);
+
+    const { retrieve_sort_preferences } = await import('../../src/utils/tasks.sort.js');
+
+    const prefs = retrieve_sort_preferences();
+
+    expect(prefs).toEqual({
+      mode: SortingField.byTitle,
+      strategy: SortingStrategy.ascending,
+    });
+  });
+});
+
+describe('persist_sort_preferences', () => {
+  it('should persist the given sorting mode and strategy', async () => {
+    const { persist_sort_preferences } = await import('../../src/utils/tasks.sort.js');
+
+    persist_sort_preferences(SortingField.byProject, SortingStrategy.descending);
+
+    expect(settingsMock.set_string).toHaveBeenCalledWith('sorting-mode', SortingField.byProject);
+    expect(settingsMock.set_enum).toHaveBeenCalledWith(
+      'sorting-strategy',
+      SortingStrategy.descending,
+    );
   });
 });

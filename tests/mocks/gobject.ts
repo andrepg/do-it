@@ -7,5 +7,7 @@ export default {
     disconnect(id: number) {}
     emit(signal: string, ...args: any[]) {}
   },
+  registerClass: () => {},
   TYPE_STRING: 'string',
+  TYPE_OBJECT: 'object',
 };
