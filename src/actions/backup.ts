@@ -25,7 +25,8 @@ import { error } from '~/utils/log-manager.js';
 
 import { GioFilePersistence } from '~/persistence/gio-persistence.js';
 import { AppSignals } from '~/app.enums.js';
-import { ActionNames } from "~/static/actions.js";
+import { ActionNames } from '~/static/actions.js';
+import { TaskListStore } from '~/store/list-store.js';
 
 import { showToast } from './toast.js';
 
@@ -68,7 +69,8 @@ const backup = () => {
     const dialog = createFileChooser(AppLocale.app.backup.export);
 
     dialog.save(parent, null, (dialog, result) => {
-      const tasks = new GioFilePersistence().load();
+      const persistence = new GioFilePersistence();
+      const tasks = persistence.load();
       const file = dialog?.save_finish(result);
 
       try {
@@ -99,6 +101,7 @@ const backup = () => {
         if (!ok || !content) return;
         const tasks = JSON.parse(decoder.decode(content)) as ITask[];
         new GioFilePersistence().save(tasks);
+        TaskListStore.get_default().reload_tasks();
 
         showToast(AppLocale.app.backup.importSuccess);
       } catch (err) {

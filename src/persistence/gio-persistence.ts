@@ -21,10 +21,11 @@ import Gio from 'gi://Gio';
 
 import type { ITask } from '../app.types.js';
 import { log } from '~/utils/log-manager.js';
+import { AppDebug } from '~/static/messages.js';
 
 interface IPersistence {
-  load(): Promise<ITask[]>;
-  save(tasks: ITask[]): Promise<void>;
+  load(): ITask[];
+  save(tasks: ITask[]): void;
 }
 
 export class GioFilePersistence implements IPersistence {
@@ -50,15 +51,15 @@ export class GioFilePersistence implements IPersistence {
     if (this.databaseFileHandler.query_exists(null)) return;
 
     try {
-      log(GioFilePersistence.name, 'First app execution. Creating database');
+      log(GioFilePersistence.name, AppDebug.PERSISTENCE_CREATE);
       this.databaseLocation.make_directory_with_parents(null);
       this.databaseFileHandler.create(Gio.FileCreateFlags.PRIVATE, null);
     } catch {
-      log(GioFilePersistence.name, 'Error creating database');
+      log(GioFilePersistence.name, AppDebug.PERSISTENCE_CREATE_ERROR);
     }
   }
 
-  async load(): Promise<ITask[]> {
+  load(): ITask[] {
     this.check_database_existence();
 
     const [, content] = this.databaseFileHandler.load_contents(null);
@@ -67,7 +68,7 @@ export class GioFilePersistence implements IPersistence {
     return file_content === '' ? [] : (JSON.parse(file_content) as ITask[]);
   }
 
-  async save(tasks: ITask[]): Promise<void> {
+  save(tasks: ITask[]): void {
     this.check_database_existence();
 
     const file = this.encoder.encode(JSON.stringify(tasks));
