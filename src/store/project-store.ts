@@ -90,10 +90,12 @@ export class ProjectStore extends GObject.Object {
    * @param project The name of the project to filter by, or null for all tasks.
    */
   public set_filter(project: string | null) {
-    if (this._current_filter === project) return;
+    const filter = project ?? MagicFilters.all;
 
-    this._current_filter = project;
-    this.emit(AppSignals.FilterChanged, project);
+    if (this._current_filter === filter) return;
+
+    this._current_filter = filter;
+    this.emit(AppSignals.FilterChanged, filter);
   }
 
   /**
