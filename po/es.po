@@ -5,7 +5,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: io.github.andrepg.Doit\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-04-13 13:22-0300\n"
+"POT-Creation-Date: 2026-08-09 17:35-0300\n"
 "PO-Revision-Date: 2026-04-07 21:05-0300\n"
 "Last-Translator: André Paul Grandsire <andrepg@users.noreply.github.com>\n"
 "Language-Team: Spanish\n"
@@ -72,101 +72,119 @@ msgstr "Tareas"
 
 #: src/app.strings.ts:49
 msgctxt "task-list"
-msgid "No tasks found"
-msgstr "No hay tareas"
-
-#: src/app.strings.ts:50
-msgctxt "task-list"
 msgid "All tasks"
 msgstr "Todas las tareas"
 
-#: src/app.strings.ts:51
+#: src/app.strings.ts:50
 msgctxt "task-list"
 msgid "Without project"
 msgstr "Sin proyecto"
 
-#: src/app.strings.ts:52
+#: src/app.strings.ts:51
 #, javascript-format
 msgctxt "task-group"
 msgid "%s finished, %s deleted"
 msgstr "%s completadas, %s eliminadas"
 
-#: src/app.strings.ts:56
+#: src/app.strings.ts:55
 msgctxt "task-form"
 msgid "Title cannot be empty"
 msgstr "El título no puede estar vacío"
 
-#: src/app.strings.ts:60
+#: src/app.strings.ts:59
 msgctxt "toast"
 msgid "Task created"
 msgstr "Tarea creada"
 
-#: src/app.strings.ts:61
+#: src/app.strings.ts:60
 msgctxt "toast"
 msgid "Task edited"
 msgstr "Tarea editada"
 
-#: src/app.strings.ts:62
+#: src/app.strings.ts:61
 msgctxt "toast"
 msgid "Task updated"
 msgstr "Tarea actualizada"
 
-#: src/app.strings.ts:63
+#: src/app.strings.ts:62
 msgctxt "toast"
 msgid "Task restored"
 msgstr "Tarea restaurada"
 
-#: src/app.strings.ts:64
+#: src/app.strings.ts:63
 msgctxt "toast"
 msgid "Task deleted"
 msgstr "Tarea eliminada"
 
-#: src/app.strings.ts:65
+#: src/app.strings.ts:64
 msgctxt "toast"
 msgid "Tasks purged"
 msgstr "Tareas eliminadas"
 
-#: src/app.strings.ts:66
+#: src/app.strings.ts:65
 msgctxt "toast"
 msgid "Task finished"
 msgstr "Tarea completada"
 
-#: src/app.strings.ts:72
+#: src/app.strings.ts:71
+#, fuzzy
+msgctxt "common"
+msgid "Discard"
+msgstr "Descartar"
+
+#: src/app.strings.ts:74
 msgctxt "backup"
 msgid "Save Tasks As…"
 msgstr "Guardar Tareas Como…"
 
-#: src/app.strings.ts:73
+#: src/app.strings.ts:75
 msgctxt "backup"
 msgid "Import Tasks…"
 msgstr "Importar Tareas…"
 
-#: src/app.strings.ts:75
+#: src/app.strings.ts:77
 msgctxt "backup"
 msgid "Database exported successfully"
 msgstr "Exportación completada con éxito"
 
-#: src/app.strings.ts:76
+#: src/app.strings.ts:78
 msgctxt "backup"
 msgid "Error exporting database"
 msgstr "Error al exportar datos"
 
-#: src/app.strings.ts:78
+#: src/app.strings.ts:80
+#, fuzzy
+msgctxt "backup"
+msgid "Import tasks?"
+msgstr "Importar Tareas…"
+
+#: src/app.strings.ts:81
+#, javascript-format
+msgctxt "backup"
+msgid "This will replace all current tasks with the contents of %s."
+msgstr ""
+
+#: src/app.strings.ts:82
+msgctxt "backup"
+msgid "Import"
+msgstr ""
+
+#: src/app.strings.ts:84
 msgctxt "backup"
 msgid "Database imported successfully"
 msgstr "Importación completada con éxito"
 
-#: src/app.strings.ts:79
+#: src/app.strings.ts:85
 msgctxt "backup"
 msgid "Error importing database"
 msgstr "Error al importar datos"
 
-#: src/app.strings.ts:82
+#: src/app.strings.ts:88
 msgctxt "about"
 msgid "translators-credits"
 msgstr "André Paul Grandsire/andrepg@users.noreply.github.com"
 
-#: src/app.strings.ts:83
+#: src/app.strings.ts:89
 msgctxt "about"
 msgid "Donate"
 msgstr "Donar"
@@ -195,42 +213,59 @@ msgstr "Acerca de Do It"
 msgid "Create a new task"
 msgstr "Crear nueva tarea"
 
-#: src/widgets/shortcuts-dialog.ui:6
+#: src/widgets/application.ui:82
+msgid "Try to add a new task on bottom bar or with Ctrl + N"
+msgstr ""
+
+#: src/widgets/application.ui:84
+#, fuzzy
+msgid "No tasks (yet)"
+msgstr "Ordenar tareas por"
+
+#: src/widgets/popover-sort.ui:20
+msgid "Sort tasks by"
+msgstr "Ordenar tareas por"
+
+#: src/widgets/popover-sort.ui:41
+msgid "Order strategy"
+msgstr "Estrategia de ordenación"
+
+#: src/widgets/shortcuts-dialog.ui:9
 msgctxt "shortcut window"
 msgid "General"
 msgstr "General"
 
-#: src/widgets/shortcuts-dialog.ui:9
+#: src/widgets/shortcuts-dialog.ui:12
 msgctxt "shortcut window"
 msgid "Show Shortcuts"
 msgstr "Mostrar atajos"
 
-#: src/widgets/shortcuts-dialog.ui:16
+#: src/widgets/shortcuts-dialog.ui:19
 msgctxt "shortcut window"
 msgid "New Task"
 msgstr "Nueva tarea"
 
-#: src/widgets/shortcuts-dialog.ui:23
+#: src/widgets/shortcuts-dialog.ui:26
 msgctxt "shortcut window"
 msgid "Toggle Sidebar"
 msgstr "Mostrar/ocultar barra lateral"
 
-#: src/widgets/shortcuts-dialog.ui:30
+#: src/widgets/shortcuts-dialog.ui:33
 msgctxt "shortcut window"
 msgid "Quit"
 msgstr "Salir"
 
-#: src/widgets/shortcuts-dialog.ui:39
+#: src/widgets/shortcuts-dialog.ui:42
 msgctxt "shortcut window"
 msgid "Task Editing"
 msgstr "Editar tarea"
 
-#: src/widgets/shortcuts-dialog.ui:42
+#: src/widgets/shortcuts-dialog.ui:45
 msgctxt "shortcut window"
 msgid "Save Task"
 msgstr "Guardar tarea"
 
-#: src/widgets/shortcuts-dialog.ui:49
+#: src/widgets/shortcuts-dialog.ui:52
 msgctxt "shortcut window"
 msgid "Discard Changes"
 msgstr "Descartar cambios"
@@ -275,13 +310,9 @@ msgctxt "task-form"
 msgid "Discard"
 msgstr "Descartar"
 
-#: src/widgets/popover-sort.ui:20
-msgid "Sort tasks by"
-msgstr "Ordenar tareas por"
-
-#: src/widgets/popover-sort.ui:49
-msgid "Order strategy"
-msgstr "Estrategia de ordenación"
+#~ msgctxt "task-list"
+#~ msgid "No tasks found"
+#~ msgstr "No hay tareas"
 
 #~ msgid "Projects"
 #~ msgstr "Proyectos"

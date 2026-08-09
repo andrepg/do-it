@@ -4,53 +4,10 @@
 #
 
 # Main application files
-src/app.static.ts
 src/app.strings.ts
-src/app.enums.ts
-src/app.types.ts
-src/app.wrapper.ts
-src/app.entrypoint.ts
-
-# Actions
-src/actions/new-task.ts
-src/actions/projects.ts
-src/actions/projects-sidebar.ts
-src/actions/purge-deleted.ts
-src/actions/sidebar.ts
-src/actions/shortcuts.ts
-src/actions/task-edit.ts
-src/actions/toast.ts
-src/actions/quit.ts
-src/actions/backup.ts
-src/actions/about.ts
-src/persistence/gio-persistence.ts
-
-# Views
-src/views/doit.ts
-src/views/popover-sort.ts
-src/views/sidebar-button.ts
-src/views/task-form.ts
-src/views/task-item.ts
-src/views/task-list.ts
-src/views/task-list-store.ts
-src/views/task-group.ts
-src/views/index.ts
-
-# Stores
-src/store/project-store.ts
-
-# Utils
-src/utils/log-manager.ts
-src/utils/tasks.sort.ts
-src/utils/settings.ts
 
 # UI files
 src/widgets/application.ui
-src/widgets/shortcuts-dialog.ui
-src/widgets/task.ui
-src/widgets/task-list.ui
-src/widgets/task-group.ui
-src/widgets/task-form.ui
-src/widgets/sidebar-button.ui
 src/widgets/popover-sort.ui
-src/widgets/empty-list.ui
+src/widgets/shortcuts-dialog.ui
+src/widgets/task-form.ui
