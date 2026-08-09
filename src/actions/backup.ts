@@ -94,20 +94,36 @@ const backup = () => {
 
     dialog.open(parent, null, (dialog, result) => {
       const file = dialog?.open_finish(result);
+      if (!file) return;
 
-      try {
-        const decoder = new TextDecoder();
-        const [ok, content] = file?.load_contents(null) || [false, null];
-        if (!ok || !content) return;
-        const tasks = JSON.parse(decoder.decode(content)) as ITask[];
-        new GioFilePersistence().save(tasks);
-        TaskListStore.get_default().reload_tasks();
+      const alertDialog = new Adw.AlertDialog({
+        heading: AppLocale.app.backup.importConfirmTitle,
+        body: AppLocale.app.backup.importConfirmBody.replace('%s', file.get_basename() ?? ''),
+      });
+      alertDialog.add_response('cancel', AppLocale.app.common.discard);
+      alertDialog.add_response('import', AppLocale.app.backup.importConfirmAction);
+      alertDialog.set_response_appearance('import', Adw.ResponseAppearance.DESTRUCTIVE);
+      alertDialog.set_default_response('cancel');
+      alertDialog.set_close_response('cancel');
 
-        showToast(AppLocale.app.backup.importSuccess);
-      } catch (err) {
-        error(LogClass, String(err));
-        showToast(AppLocale.app.backup.importError);
-      }
+      alertDialog.choose(parent, null, (dialog, result) => {
+        const response = dialog?.choose_finish(result);
+        if (response !== 'import') return;
+
+        try {
+          const decoder = new TextDecoder();
+          const [ok, content] = file.load_contents(null) || [false, null];
+          if (!ok || !content) return;
+          const tasks = JSON.parse(decoder.decode(content)) as ITask[];
+          new GioFilePersistence().save(tasks);
+          TaskListStore.get_default().reload_tasks();
+
+          showToast(AppLocale.app.backup.importSuccess);
+        } catch (err) {
+          error(LogClass, String(err));
+          showToast(AppLocale.app.backup.importError);
+        }
+      });
     });
   };
 

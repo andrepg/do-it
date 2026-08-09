@@ -67,12 +67,19 @@ const TaskStrings = {
 };
 
 const AppStrings = {
+  common: {
+    discard: C_('common', 'Discard'),
+  },
   backup: {
     export: C_('backup', 'Save Tasks As…'),
     import: C_('backup', 'Import Tasks…'),
 
     exportSuccess: C_('backup', 'Database exported successfully'),
     exportError: C_('backup', 'Error exporting database'),
+
+    importConfirmTitle: C_('backup', 'Import tasks?'),
+    importConfirmBody: C_('backup', 'This will replace all current tasks with the contents of %s.'),
+    importConfirmAction: C_('backup', 'Import'),
 
     importSuccess: C_('backup', 'Database imported successfully'),
     importError: C_('backup', 'Error importing database'),
