@@ -18,8 +18,9 @@
  */
 import Adw from 'gi://Adw';
 import GLib from 'gi://GLib';
+import Gtk from 'gi://Gtk';
 
-import { AppSignals, SortingField } from '~/app.enums.js';
+import { AppSignals, SortingField, WidgetIds } from '~/app.enums.js';
 import { AppLocale } from '~/app.strings.js';
 import { MagicFilters } from '~/static/sidebar.js';
 
@@ -40,17 +41,19 @@ interface ProjectGroupEntry {
 /**
  * Dynamically renders the global task list as one Adw.PreferencesGroup per project.
  *
- * Hierarchy: DoItMainWindow (Main view list_container) -> PreferencesGroup(s) -> TaskItem(s)
+ * Hierarchy: DoItMainWindow (Main view list_stack) -> [list_empty | list_container -> PreferencesGroup(s) -> TaskItem(s)]
  *
  * Instead of binding a filtered model per project, it walks the TaskListStore
  * in a single pass, groups tasks by their project and builds one
  * Adw.PreferencesGroup per project directly into the given PreferencesPage.
  * TaskItem rows are added straight to the groups, so no Gtk.ListBox or
- * Gtk.CustomFilter is needed.
+ * Gtk.CustomFilter is needed. It also owns the switch between the task list
+ * and the empty state page, based on whether the store holds any tasks.
  */
 export class TaskList {
   private store = TaskListStore.get_default();
   private container: Adw.PreferencesPage;
+  private stack: Gtk.Stack;
   private projectGroups: Map<string, Adw.PreferencesGroup> = new Map();
   private groupRows: Map<Adw.PreferencesGroup, TaskItem[]> = new Map();
   private currentFilter: string | null = null;
@@ -60,15 +63,36 @@ export class TaskList {
   /**
    * @constructor
    * @param {Adw.PreferencesPage} container - The page that will hold the generated groups
+   * @param {Gtk.Stack} stack - The stack toggling between the task list and the empty state
    */
-  constructor(container: Adw.PreferencesPage) {
+  constructor(container: Adw.PreferencesPage, stack: Gtk.Stack) {
     this.container = container;
+    this.stack = stack;
 
-    this.store.connect(AppSignals.ItemsChanged, () => this.schedule_rebuild());
-    this.store.connect(AppSignals.TaskUpdated, () => this.schedule_rebuild());
-    this.store.connect(AppSignals.TaskDeleted, () => this.schedule_rebuild());
+    this.store.connect(AppSignals.ItemsChanged, () => this.on_store_changed());
+    this.store.connect(AppSignals.TaskUpdated, () => this.on_store_changed());
+    this.store.connect(AppSignals.TaskDeleted, () => this.on_store_changed());
 
+    this.update_empty_state();
     this.rebuild();
+  }
+
+  /**
+   * Reacts to store changes by toggling the empty state and queuing a rebuild.
+   */
+  private on_store_changed(): void {
+    this.update_empty_state();
+    this.schedule_rebuild();
+  }
+
+  /**
+   * Switches the stack to the empty state page when no tasks are present,
+   * and back to the task list otherwise.
+   */
+  private update_empty_state(): void {
+    this.stack.set_visible_child_name(
+      this.store.get_count() > 0 ? WidgetIds.WindowListContainer : WidgetIds.WindowListEmpty,
+    );
   }
 
   /**

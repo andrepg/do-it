@@ -17,6 +17,7 @@
  * SPDX-License-Identifier: GPL-3.0-or-later
  */
 import Adw from 'gi://Adw';
+import Gtk from 'gi://Gtk';
 
 import { AppSignals, WidgetIds } from '~/app.enums.js';
 import { DoItMainWindow } from '../views/doit.js';
@@ -39,7 +40,12 @@ export default function projects(projectStore: ProjectStore) {
       WidgetIds.WindowListContainer,
     ) as Adw.PreferencesPage;
 
-    const taskList = new TaskList(listContainer);
+    const listStack = window.get_template_child(
+      DoItMainWindow.$gtype,
+      WidgetIds.WindowListStack,
+    ) as Gtk.Stack;
+
+    const taskList = new TaskList(listContainer, listStack);
 
     projectStore.connect(AppSignals.FilterChanged, (_: unknown, filter: string | null) => {
       taskList.set_filter(filter);

@@ -117,32 +117,6 @@ export class DoItMainWindow extends Adw.ApplicationWindow {
       WidgetIds.WindowButtonSorting,
     ) as Gtk.MenuButton;
     this.button_sorting.set_popover(new PopoverSort(this));
-
-    this.setup_empty_state();
-  }
-
-  /**
-   * Toggles between the task list and the empty state placeholder page
-   * based on whether the task store holds any tasks.
-   */
-  private setup_empty_state(): void {
-    const store = TaskListStore.get_default();
-
-    const listStack = this.get_template_child(
-      DoItMainWindow.$gtype,
-      WidgetIds.WindowListStack,
-    ) as Gtk.Stack;
-
-    const update = () =>
-      listStack.set_visible_child_name(
-        store.get_count() > 0 ? WidgetIds.WindowListContainer : WidgetIds.WindowListEmpty,
-      );
-
-    store.connect(AppSignals.ItemsChanged, update);
-    store.connect(AppSignals.TaskUpdated, update);
-    store.connect(AppSignals.TaskDeleted, update);
-
-    update();
   }
 
   private initialize_project_store(): void {
