@@ -22,9 +22,12 @@ import Gio from 'gi://Gio';
 import { AppSignals, WidgetIds } from '~/app.enums.js';
 import { ActionNames } from '~/static/actions.js';
 import { AppLocale } from '~/app.strings.js';
+import { MagicFilters } from '~/static/sidebar.js';
 
 import { DoItMainWindow } from '~/views/doit.js';
+import { ProjectStore } from '~/store/project-store.js';
 import { TaskListStore } from '~/store/list-store.js';
+import { parseProject } from '~/utils/tasks.project.js';
 
 import { showToast } from './toast.js';
 
@@ -37,29 +40,10 @@ export const newTask = () => {
   const fieldNewTaskId = WidgetIds.WindowTaskNewEntry;
 
   let fieldNewTask: Gtk.Entry;
+  let hintLabel: Gtk.Label;
 
   const get_widget = <T>(window: DoItMainWindow, id: string): T =>
     window.get_template_child(DoItMainWindow.$gtype, id) as unknown as T;
-
-  /**
-   * Parses the input string to extract a trailing project tag (`@ProjectName`).
-   *
-   * @param text The raw text typed by the user.
-   * @returns An object containing the capitalized project name and the remaining clean text.
-   */
-  const parseProject = (text: string) => {
-    let project = '';
-    let parsedText = text;
-    const projectMatch = text.match(/@(\S+)/);
-
-    if (projectMatch) {
-      const rawProject = projectMatch[1];
-      project = rawProject.charAt(0).toUpperCase() + rawProject.slice(1).toLowerCase();
-      parsedText = text.replace(projectMatch[0], '').trim();
-    }
-
-    return { project, parsedText };
-  };
 
   /**
    * Creates and appends a new task to the store.
@@ -78,6 +62,61 @@ export const newTask = () => {
   };
 
   /**
+   * Resolves the real project behind a filter value, or null when the
+   * filter targets no real project (all tasks, tasks without a project).
+   *
+   * @param filter The filter value from the project store.
+   * @returns The project name, or null when the filter is not project bound.
+   */
+  const real_project_from = (filter: string | null): string | null => {
+    if (filter === null || filter === MagicFilters.all || filter === MagicFilters.none) {
+      return null;
+    }
+
+    return filter;
+  };
+
+  /**
+   * Retrieves the project currently targeted by the active filter.
+   *
+   * @returns The filtered project name, or null when no project is filtered.
+   */
+  const active_project_filter = (): string | null =>
+    real_project_from(ProjectStore.get_default().get_filter());
+
+  /**
+   * Reflects the effective project in the entry hint label.
+   *
+   * @param project The project name, or null when no project applies.
+   */
+  const update_hint = (project: string | null) => {
+    hintLabel.set_text(project !== null ? AppLocale.tasks.entry.projectHint.format(project) : '');
+    hintLabel.set_visible(project !== null);
+  };
+
+  /**
+   * Resolves the project that will be applied to a new task.
+   *
+   * A project explicitly typed in the entry wins over the active filter.
+   *
+   * @returns The effective project name, or an empty string when none applies.
+   */
+  const current_project = (): string => {
+    const { project } = parseProject(fieldNewTask.get_text());
+
+    return project || active_project_filter() || '';
+  };
+
+  /**
+   * Reflects the effective project in the entry hint label.
+   */
+  const refresh_hint = () => {
+    const project = current_project();
+
+    update_hint(project !== '' ? project : null);
+  };
+
+  /**
    * Wires the new task button and entry field signals to their handlers.
    */
   const setup = (window: DoItMainWindow) => {
@@ -86,6 +125,14 @@ export const newTask = () => {
 
     fieldNewTask = get_widget<Gtk.Entry>(window, fieldNewTaskId);
     fieldNewTask.connect(AppSignals.EntryActivated, save_new_task);
+    fieldNewTask.connect(AppSignals.Changed, refresh_hint);
+
+    hintLabel = get_widget<Gtk.Label>(window, WidgetIds.WindowTaskNewEntryHint);
+    const projectStore = ProjectStore.get_default();
+
+    // Keep the hint label in sync with filter changes and typed projects
+    projectStore.connect(AppSignals.FilterChanged, refresh_hint);
+    refresh_hint();
 
     const action = new Gio.SimpleAction({ name: ActionNames.NewTask });
     action.connect(AppSignals.Activate, () => {
@@ -99,10 +146,11 @@ export const newTask = () => {
 
     if (text.length == 0) return;
 
-    const { project, parsedText: title } = parseProject(text);
+    const { parsedText: title } = parseProject(text);
     if (title.length == 0) return;
 
-    create_task(title, project);
+    // Fall back to the filtered project when no explicit project was typed
+    create_task(title, current_project());
 
     fieldNewTask.set_text('');
 

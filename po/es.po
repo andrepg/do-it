@@ -87,6 +87,12 @@ msgid "%s finished, %s deleted"
 msgstr "%s completadas, %s eliminadas"
 
 #: src/app.strings.ts:55
+#, javascript-format
+msgctxt "task-entry"
+msgid "Adding to %s"
+msgstr ""
+
+#: src/app.strings.ts:59
 msgctxt "task-form"
 msgid "Title cannot be empty"
 msgstr "El título no puede estar vacío"

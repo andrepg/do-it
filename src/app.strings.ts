@@ -51,6 +51,10 @@ const TaskStrings = {
     groupDescription: C_('task-group', '%s finished, %s deleted'),
   },
 
+  entry: {
+    projectHint: C_('task-entry', 'Adding to %s'),
+  },
+
   form: {
     errorEmptyTitle: C_('task-form', 'Title cannot be empty'),
   },

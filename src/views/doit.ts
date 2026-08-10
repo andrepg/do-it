@@ -44,6 +44,7 @@ const options = {
     WidgetIds.WindowToastOverlay,
     WidgetIds.WindowSplitView,
     WidgetIds.WindowTaskNewEntry,
+    WidgetIds.WindowTaskNewEntryHint,
 
     // Header bar buttons
     WidgetIds.WindowButtonNewTask,

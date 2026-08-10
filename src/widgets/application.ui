@@ -52,6 +52,14 @@
                         <property name="enable-emoji-completion">True</property>
                         <property name="show-apply-button">False</property>
                         <property name="title" translatable="yes">Create a new task</property>
+                        <child type="suffix">
+                          <object class="GtkLabel" id="task_new_entry_hint">
+                            <property name="visible">False</property>
+                            <style>
+                              <class name="caption"/>
+                            </style>
+                          </object>
+                        </child>
                       </object>
                     </property>
                     <property name="content">

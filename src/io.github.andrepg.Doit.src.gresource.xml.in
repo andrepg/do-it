@@ -20,6 +20,7 @@
     <file>utils/settings.js</file>
     <file>utils/sort.js</file>
     <file>utils/tasks.sort.js</file>
+    <file>utils/tasks.project.js</file>
     <file alias="utils/application.js">application.js</file>
 
     <file>persistence/gio-persistence.js</file>
