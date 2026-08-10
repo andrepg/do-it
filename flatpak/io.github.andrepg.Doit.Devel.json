@@ -37,10 +37,7 @@
             "name": "Doit",
             "buildsystem": "simple",
             "build-options": {
-                "append-path": "/usr/lib/sdk/node24/bin:/usr/lib/sdk/typescript/bin",
-                "env": {
-                    "YARN_CACHE_FOLDER": "/run/build/Doit/flatpak-node/yarn-mirror"
-                }
+                "append-path": "/usr/lib/sdk/node24/bin:/usr/lib/sdk/typescript/bin"
             },
             "build-commands": [
                 "meson setup --reconfigure _build --prefix=/app --libdir=lib -Ddevelopment=true",

@@ -32,12 +32,18 @@
             "build-options": {
                 "append-path": "/usr/lib/sdk/typescript/bin:/usr/lib/sdk/node24/bin",
                 "env": {
-                    "YARN_CACHE_FOLDER": "/run/build/Doit/flatpak-node/yarn-mirror"
+                    "XDG_CACHE_HOME": "/run/build/Doit/flatpak-node/cache",
+                    "npm_config_nodedir": "/usr/lib/sdk/node24",
+                    "YARN_ENABLE_INLINE_BUILDS": "1",
+                    "YARN_ENABLE_TELEMETRY": "0",
+                    "YARN_ENABLE_NETWORK": "0",
+                    "YARN_GLOBAL_FOLDER": "/run/build/Doit/flatpak-node/yarn-berry"
                 }
             },
             "build-commands": [
-                "echo 'yarn-offline-mirror \"/run/build/Doit/flatpak-node/yarn-mirror\"' > .yarnrc",
-                "yarn install --offline --frozen-lockfile --production=false --ignore-scripts",
+                "node flatpak-node/yarn-berry.cjs plugin import $FLATPAK_BUILDER_BUILDDIR/flatpak-node/flatpak-yarn.js",
+                "node flatpak-node/yarn-berry.cjs convertToZip $(which yarn)",
+                "node flatpak-node/yarn-berry.cjs install",
                 "meson setup _build --prefix=/app --libdir=lib -Ddevelopment=false",
                 "meson compile -C _build",
                 "meson install -C _build"
@@ -53,6 +59,13 @@
                     }
                 },
                 "generated-sources.json",
+                {
+                    "type": "file",
+                    "url": "https://repo.yarnpkg.com/4.17.0/packages/yarnpkg-cli/bin/yarn.js",
+                    "sha256": "ea2af31ee4a6535e8559e3e1a6e34cb716112c9bed86edea71c3a5b36d472265",
+                    "dest": "flatpak-node",
+                    "dest-filename": "yarn-berry.cjs"
+                },
                 {
                     "type": "file",
                     "path": "../package.json"
