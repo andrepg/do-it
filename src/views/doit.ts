@@ -136,6 +136,7 @@ export class DoItMainWindow extends Adw.ApplicationWindow {
     Actions.toast().setup(this);
     Actions.newTask().setup(this);
     Actions.purgeDeleted().setup(this);
+    Actions.purgeFinished().setup(this);
     Actions.sidebar().setup(this);
     Actions.taskEdit(this.task_form).setup(this);
   }

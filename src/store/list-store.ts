@@ -176,6 +176,19 @@ export class TaskListStore extends Gio.ListStore<TaskItem> {
   /**
    * Permanently removes soft-deleted tasks from the store and database.
    */
+  purge_finished_tasks(): void {
+    for (let index = this.get_count() - 1; index >= 0; index--) {
+      const item = this.get_item(index) as TaskItem;
+
+      if (item.done) this.remove(index);
+    }
+
+    this.persist_tasks(true);
+  }
+
+  /**
+   * Permanently removes soft-deleted tasks from the store and database.
+   */
   purge_deleted_tasks(): void {
     for (let index = this.get_count() - 1; index >= 0; index--) {
       const item = this.get_item(index) as TaskItem;

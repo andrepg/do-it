@@ -9,8 +9,11 @@
     <section>
       <item>
         <attribute name="action">win.purge_deleted_tasks</attribute>
-        <attribute name="icon">user-trash-full-symbolic</attribute>
         <attribute name="label" translatable="yes">Purge deleted tasks</attribute>
+      </item>
+      <item>
+        <attribute name="action">win.purge_finished_tasks</attribute>
+        <attribute name="label" translatable="yes">Purge finished tasks</attribute>
       </item>
     </section>
     <section>

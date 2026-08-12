@@ -8,6 +8,7 @@ export enum ActionNames {
   ExportDatabase = 'export_database',
   ImportDatabase = 'import_database',
   PurgeDeletedTasks = 'purge_deleted_tasks',
+  PurgeFinishedTasks = 'purge_finished_tasks',
   ToggleSidebar = 'toggle-sidebar',
   CollapseSidebar = 'collapse-sidebar',
   ShowToast = 'show-toast',

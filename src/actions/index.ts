@@ -26,6 +26,7 @@ import shortcuts from './shortcuts.js';
 import projectSidebar from './projects-sidebar.js';
 import purgeDeleted from './purge-deleted.js';
 import taskEdit from './task-edit.js';
+import purgeFinished from '~/actions/purge-finished.js';
 
 export { newTask } from './new-task.js';
 export { showToast } from './toast.js';
@@ -40,5 +41,6 @@ export {
   projects,
   projectSidebar,
   purgeDeleted,
+  purgeFinished,
   taskEdit,
 };
