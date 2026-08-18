@@ -139,7 +139,7 @@ export class ProjectStore extends GObject.Object {
     }
 
     const groups = collect_project_groups(tasks);
-    const currentProjectsOrdered = Array.from(groups.keys());
+    const currentProjectsOrdered = Array.from(groups.keys()).sort((a, b) => a.localeCompare(b));
 
     // Find projects to remove (previously discovered but no longer present)
     for (const project of this._projects_ordered) {

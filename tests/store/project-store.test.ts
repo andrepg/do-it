@@ -151,6 +151,6 @@ describe('ProjectStore', () => {
     mock_tasks_with_projects(['Work', '', 'Home']);
     trigger_store_signal('items-changed');
 
-    expect(projectStore.get_projects()).toEqual(['Work', 'Home']);
+    expect(projectStore.get_projects()).toEqual(['Home', 'Work']);
   });
 });
