@@ -20,23 +20,18 @@ import Adw from 'gi://Adw';
 import GLib from 'gi://GLib';
 import Gtk from 'gi://Gtk';
 
-import { AppSignals, SortingField, WidgetIds } from '~/app.enums.js';
+import { AppSignals, WidgetIds } from '~/app.enums.js';
 import { AppLocale } from '~/app.strings.js';
-import { MagicFilters } from '~/static/sidebar.js';
 
-import { retrieve_sort_preferences } from '~/utils/tasks.sort.js';
-
+import { Task } from '~/models/task.js';
 import { TaskItem } from './task-item.js';
 import { TaskListStore } from '../store/list-store.js';
-
-/**
- * A single project's collected tasks and their status counters.
- */
-interface ProjectGroupEntry {
-  tasks: TaskItem[];
-  finished: number;
-  deleted: number;
-}
+import {
+  ProjectGroupEntry,
+  collect_project_groups,
+  is_group_visible,
+} from '~/utils/task-grouping.js';
+import { order_projects } from '~/utils/tasks.sort.js';
 
 /**
  * Dynamically renders the global task list as one Adw.PreferencesGroup per project.
@@ -56,6 +51,7 @@ export class TaskList {
   private stack: Gtk.Stack;
   private projectGroups: Map<string, Adw.PreferencesGroup> = new Map();
   private groupRows: Map<Adw.PreferencesGroup, TaskItem[]> = new Map();
+  private widgetCache: Map<Task, TaskItem> = new Map();
   private currentFilter: string | null = null;
   private lastGroupOrder: string[] = [];
   private _rebuild_queued = false;
@@ -103,22 +99,8 @@ export class TaskList {
     this.currentFilter = project;
 
     for (const [projectName, preferencesGroup] of this.projectGroups) {
-      preferencesGroup.set_visible(this.is_group_visible(projectName, project));
+      preferencesGroup.set_visible(is_group_visible(projectName, project));
     }
-  }
-
-  /**
-   * Returns whether the given project group should be visible under the
-   * current filter, honoring the magic filters for all and none.
-   *
-   * @param projectName The project name of the group.
-   * @param filter The active project filter.
-   */
-  private is_group_visible(projectName: string, filter: string | null): boolean {
-    if (filter === MagicFilters.all || filter === null) return true;
-    if (filter === MagicFilters.none) return projectName === '';
-
-    return projectName === filter;
   }
 
   /**
@@ -139,10 +121,17 @@ export class TaskList {
    * Rebuilds the project groups from the current store state in a single pass.
    */
   private rebuild(): void {
-    const projectGroupList = this.collect_project_groups();
-    const orderedProjects = this.order_projects(projectGroupList);
+    const tasks: Task[] = [];
+
+    for (let i = 0; i < this.store.get_count(); i++) {
+      tasks.push(this.store.get_item(i) as Task);
+    }
+
+    const projectGroupList = collect_project_groups(tasks);
+    const orderedProjects = order_projects(projectGroupList);
 
     this.detach_all_rows();
+    this.prune_widget_cache();
 
     this.reconcile_groups(orderedProjects, projectGroupList);
   }
@@ -166,61 +155,44 @@ export class TaskList {
   }
 
   /**
-   * Groups all store tasks by project, counting finished/deleted per project.
-   * @returns A map of project name to its collected tasks and counters.
+   * Removes cached TaskItem widgets for Tasks no longer in the store.
    */
-  private collect_project_groups(): Map<string, ProjectGroupEntry> {
-    const projectGroupList = new Map<string, ProjectGroupEntry>();
+  private prune_widget_cache(): void {
+    const storeTasks = new Set<Task>();
 
     for (let i = 0; i < this.store.get_count(); i++) {
-      const item = this.store.get_item(i);
-      if (!(item instanceof TaskItem)) continue;
-
-      let projectGroup = projectGroupList.get(item.project);
-      if (!projectGroup) {
-        projectGroup = { tasks: [], finished: 0, deleted: 0 };
-        projectGroupList.set(item.project, projectGroup);
-      }
-
-      projectGroup.tasks.push(item);
-      if (item.done) projectGroup.finished++;
-      if (item.deleted) projectGroup.deleted++;
+      storeTasks.add(this.store.get_item(i) as Task);
     }
 
-    return projectGroupList;
+    for (const [task] of this.widgetCache) {
+      if (!storeTasks.has(task)) {
+        this.widgetCache.delete(task);
+      }
+    }
   }
 
   /**
-   * Orders the project names based on the current sorting preference.
-   *
-   * The group without a project always stays at the top, regardless of the
-   * sort field or strategy. When sorting by project, the remaining groups
-   * follow the project name and the active strategy. Otherwise the groups
-   * stay alphabetically ordered, as the sort only applies to the tasks
-   * inside each group.
-   *
-   * @param projectGroupList The collected project groups.
-   * @returns The ordered list of project names.
+   * Retrieves or creates a TaskItem widget for the given Task.
+   * TaskItem signals are wired to the store on first creation.
    */
-  private order_projects(projectGroupList: Map<string, ProjectGroupEntry>): string[] {
-    const prefs = retrieve_sort_preferences();
-    const projects = Array.from(projectGroupList.keys());
+  private get_or_create_widget(task: Task): TaskItem {
+    let taskItem = this.widgetCache.get(task);
 
-    // The no-project group is pinned to the top; it must not move with the sort
-    const by_name = (a: string, b: string) => a.localeCompare(b);
-    const no_project_first = (a: string, b: string) => {
-      if (a === '') return -1;
-      if (b === '') return 1;
-      return 0;
-    };
+    if (!taskItem) {
+      taskItem = new TaskItem(task);
 
-    if (prefs.mode !== SortingField.byProject) {
-      return projects.sort((a, b) => no_project_first(a, b) || by_name(a, b));
+      taskItem.connect(AppSignals.TaskUpdated, () =>
+        this.store.on_task_changed(AppSignals.TaskUpdated, task),
+      );
+
+      taskItem.connect(AppSignals.TaskDeleted, () =>
+        this.store.on_task_changed(AppSignals.TaskDeleted, task),
+      );
+
+      this.widgetCache.set(task, taskItem);
     }
 
-    const direction = prefs.strategy;
-
-    return projects.sort((a, b) => no_project_first(a, b) || by_name(a, b) * direction);
+    return taskItem;
   }
 
   /**
@@ -244,7 +216,7 @@ export class TaskList {
 
       this.refresh_preferences_group(preferencesGroup, projectGroup);
 
-      preferencesGroup.set_visible(this.is_group_visible(projectName, this.currentFilter));
+      preferencesGroup.set_visible(is_group_visible(projectName, this.currentFilter));
     }
 
     this.reorder_groups(orderedProjects);
@@ -280,11 +252,15 @@ export class TaskList {
     preferencesGroup: Adw.PreferencesGroup,
     projectGroup: ProjectGroupEntry,
   ): void {
+    const rows: TaskItem[] = [];
+
     for (const task of projectGroup.tasks) {
-      preferencesGroup.add(task);
+      const taskItem = this.get_or_create_widget(task);
+      preferencesGroup.add(taskItem);
+      rows.push(taskItem);
     }
 
-    this.groupRows.set(preferencesGroup, [...projectGroup.tasks]);
+    this.groupRows.set(preferencesGroup, rows);
 
     preferencesGroup.set_description(
       AppLocale.tasks.list.groupDescription.format(projectGroup.finished, projectGroup.deleted),

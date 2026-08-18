@@ -26,10 +26,10 @@ export default defineConfig({
     include: ['tests/**/*.test.ts'],
     exclude: IGNORED_FILES,
     alias: {
-      'gi://GLib': path.resolve(__dirname, './tests/mocks/glib.ts'),
-      'gi://Gio': path.resolve(__dirname, './tests/mocks/gio.ts'),
-      'gi://GObject': path.resolve(__dirname, './tests/mocks/gobject.ts'),
-      '~': path.resolve(__dirname, './src'),
+      'gi://GLib': path.resolve(import.meta.dirname, './tests/mocks/glib.ts'),
+      'gi://Gio': path.resolve(import.meta.dirname, './tests/mocks/gio.ts'),
+      'gi://GObject': path.resolve(import.meta.dirname, './tests/mocks/gobject.ts'),
+      '~': path.resolve(import.meta.dirname, './src'),
     },
   },
   server: {
@@ -39,7 +39,7 @@ export default defineConfig({
   },
   resolve: {
     alias: {
-      '~': path.resolve(__dirname, './src'),
+      '~': path.resolve(import.meta.dirname, './src'),
     },
   },
 });

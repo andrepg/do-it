@@ -27,6 +27,8 @@ import {
   sort_by_title,
 } from '~/utils/sort.js';
 
+import { ProjectGroupEntry } from '~/utils/task-grouping.js';
+
 /**
  * Dictionary that maps sorting fields to their corresponding sorting functions.
  */
@@ -73,4 +75,36 @@ export const persist_sort_preferences = (
   const settings = get_settings();
   settings.set_string(SortingModeSchema.MODE, sortingField);
   settings.set_enum(SortingModeSchema.STRATEGY, sortingStrategy);
+};
+
+/**
+ * Orders the project names based on the current sorting preference.
+ *
+ * The group without a project always stays at the top, regardless of the
+ * sort field or strategy. When sorting by project, the remaining groups
+ * follow the project name and the active strategy. Otherwise the groups
+ * stay alphabetically ordered, as the sort only applies to the tasks
+ * inside each group.
+ *
+ * @param projectGroupList The collected project groups.
+ * @returns The ordered list of project names.
+ */
+export const order_projects = (projectGroupList: Map<string, ProjectGroupEntry>): string[] => {
+  const prefs = retrieve_sort_preferences();
+  const projects = Array.from(projectGroupList.keys());
+
+  const by_name = (a: string, b: string) => a.localeCompare(b);
+  const no_project_first = (a: string, b: string) => {
+    if (a === '') return -1;
+    if (b === '') return 1;
+    return 0;
+  };
+
+  if (prefs.mode !== SortingField.byProject) {
+    return projects.sort((a, b) => no_project_first(a, b) || by_name(a, b));
+  }
+
+  const direction = prefs.strategy;
+
+  return projects.sort((a, b) => no_project_first(a, b) || by_name(a, b) * direction);
 };

@@ -12,9 +12,9 @@ const purgeFinished = () => {
     action.connect(AppSignals.Activate, () => TaskListStore.get_default().purge_finished_tasks());
 
     window.add_action(action);
-  }
+  };
 
-  return { setup }
-}
+  return { setup };
+};
 
 export default purgeFinished;

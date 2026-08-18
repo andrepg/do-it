@@ -1,6 +1,7 @@
 import { describe, it, expect, vi, beforeEach } from 'vitest';
 import { sort_by } from '../../src/utils/tasks.sort.js';
 import { SortingField, SortingStrategy } from '../../src/app.enums.js';
+import type { ProjectGroupEntry } from '../../src/utils/task-grouping.js';
 
 const { settingsMock } = vi.hoisted(() => ({
   settingsMock: {
@@ -148,5 +149,65 @@ describe('persist_sort_preferences', () => {
       'sorting-strategy',
       SortingStrategy.descending,
     );
+  });
+});
+
+describe('order_projects', () => {
+  const makeGroups = (...projects: string[]): Map<string, ProjectGroupEntry> => {
+    const map = new Map<string, ProjectGroupEntry>();
+    for (const p of projects) {
+      map.set(p, { tasks: [], finished: 0, deleted: 0 });
+    }
+    return map;
+  };
+
+  it('should pin empty project first regardless of sort mode', async () => {
+    settingsMock.get_string.mockReturnValue(SortingField.byTitle);
+    settingsMock.get_enum.mockReturnValue(SortingStrategy.ascending);
+
+    const { order_projects } = await import('../../src/utils/tasks.sort.js');
+    const groups = makeGroups('Work', 'Home', '');
+
+    expect(order_projects(groups)).toEqual(['', 'Home', 'Work']);
+  });
+
+  it('should sort alphabetically when not sorting by project', async () => {
+    settingsMock.get_string.mockReturnValue(SortingField.byTitle);
+    settingsMock.get_enum.mockReturnValue(SortingStrategy.ascending);
+
+    const { order_projects } = await import('../../src/utils/tasks.sort.js');
+    const groups = makeGroups('Zebra', 'Apple', 'Mango');
+
+    expect(order_projects(groups)).toEqual(['Apple', 'Mango', 'Zebra']);
+  });
+
+  it('should sort by project name ascending when mode is byProject', async () => {
+    settingsMock.get_string.mockReturnValue(SortingField.byProject);
+    settingsMock.get_enum.mockReturnValue(SortingStrategy.ascending);
+
+    const { order_projects } = await import('../../src/utils/tasks.sort.js');
+    const groups = makeGroups('Zebra', 'Apple', '');
+
+    expect(order_projects(groups)).toEqual(['', 'Apple', 'Zebra']);
+  });
+
+  it('should sort by project name descending when mode is byProject', async () => {
+    settingsMock.get_string.mockReturnValue(SortingField.byProject);
+    settingsMock.get_enum.mockReturnValue(SortingStrategy.descending);
+
+    const { order_projects } = await import('../../src/utils/tasks.sort.js');
+    const groups = makeGroups('Apple', 'Zebra', '');
+
+    expect(order_projects(groups)).toEqual(['', 'Zebra', 'Apple']);
+  });
+
+  it('should return empty array for empty groups', async () => {
+    settingsMock.get_string.mockReturnValue(SortingField.byTitle);
+    settingsMock.get_enum.mockReturnValue(SortingStrategy.ascending);
+
+    const { order_projects } = await import('../../src/utils/tasks.sort.js');
+    const groups = new Map<string, ProjectGroupEntry>();
+
+    expect(order_projects(groups)).toEqual([]);
   });
 });

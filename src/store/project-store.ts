@@ -23,8 +23,9 @@ import Gtk from 'gi://Gtk';
 import { AppSignals } from '~/app.enums.js';
 import { MagicFilters } from '~/static/sidebar.js';
 
-import { TaskItem } from '~/views/task-item.js';
+import { Task } from '~/models/task.js';
 import { TaskListStore } from '~/store/list-store.js';
+import { collect_project_groups } from '~/utils/task-grouping.js';
 
 /**
  * Stores the list of projects discovered from the task store.
@@ -131,24 +132,18 @@ export class ProjectStore extends GObject.Object {
   }
 
   private _do_update_projects() {
-    const currentProjectsOrdered: string[] = [];
-    const currentProjectsSet = new Set<string>();
-    const n_items = this._store.get_count();
+    const tasks: Task[] = [];
 
-    for (let i = 0; i < n_items; i++) {
-      const item = this._store.get_item(i);
-      if (item instanceof TaskItem) {
-        const project = item.project || '';
-        if (!currentProjectsSet.has(project)) {
-          currentProjectsSet.add(project);
-          currentProjectsOrdered.push(project);
-        }
-      }
+    for (let i = 0; i < this._store.get_count(); i++) {
+      tasks.push(this._store.get_item(i) as Task);
     }
+
+    const groups = collect_project_groups(tasks);
+    const currentProjectsOrdered = Array.from(groups.keys());
 
     // Find projects to remove (previously discovered but no longer present)
     for (const project of this._projects_ordered) {
-      if (!currentProjectsSet.has(project)) {
+      if (!groups.has(project)) {
         this.emit(AppSignals.ProjectRemoved, project);
       }
     }

@@ -1,17 +1,15 @@
 import GObject from 'gi://GObject';
 import Gio from 'gi://Gio';
+import GLib from 'gi://GLib';
 
 import { GioFilePersistence } from '../persistence/gio-persistence.js';
 
 import { log } from '~/utils/log-manager.js';
 
-import { TaskItem } from '~/views/task-item.js';
+import { Task } from '~/models/task.js';
 import { ITask } from '~/app.types.js';
-import GLib from 'gi://GLib';
 import { AppSignals } from '~/app.enums.js';
 import { retrieve_sort_preferences, sort_by } from '~/utils/tasks.sort.js';
-import { DoItMainWindow } from '~/views/doit.js';
-import { ActionNames } from '~/static/actions.js';
 import { AppDebug } from '~/static/messages.js';
 
 const TaskListStoreType = {
@@ -22,7 +20,7 @@ const TaskListStoreType = {
   },
 };
 
-export class TaskListStore extends Gio.ListStore<TaskItem> {
+export class TaskListStore extends Gio.ListStore<Task> {
   static {
     GObject.registerClass(TaskListStoreType, this);
   }
@@ -56,7 +54,7 @@ export class TaskListStore extends Gio.ListStore<TaskItem> {
     const items: ITask[] = [];
 
     for (let index = 0; index < this.get_count(); index++) {
-      const item = this.get_item(index) as TaskItem;
+      const item = this.get_item(index) as Task;
       items.push(item.to_object());
     }
 
@@ -64,34 +62,16 @@ export class TaskListStore extends Gio.ListStore<TaskItem> {
   }
 
   /**
-   * Appends a new TaskItem to the list store.
-   * @param task The task to append.
+   * Appends a new Task to the list store.
+   * Signal wiring is handled externally by the view layer.
+   * @param task The task data to append.
    */
   append_task(task: ITask) {
     log(TaskListStore.LogClass, AppDebug.TASK_STORE_APPEND.concat(task.id ?? 'new'));
 
-    const taskId = task.id ?? GLib.uuid_string_random();
+    const newTask = new Task(task);
 
-    const taskItem = new TaskItem(
-      taskId,
-      task.title,
-      task.done,
-      task.created_at,
-      task.project,
-      task.deleted,
-    );
-
-    taskItem.connect(AppSignals.TaskUpdated, () =>
-      this.task_changed(AppSignals.TaskUpdated, taskItem),
-    );
-
-    taskItem.connect(AppSignals.TaskDeleted, () =>
-      this.task_changed(AppSignals.TaskDeleted, taskItem),
-    );
-
-    taskItem.connect(AppSignals.Activated, () => this.task_activated(taskItem));
-
-    this.insert_sorted(taskItem, this.get_sorting_preferences());
+    this.insert_sorted(newTask, this.get_sorting_preferences());
   }
 
   private get_sorting_preferences() {
@@ -101,29 +81,15 @@ export class TaskListStore extends Gio.ListStore<TaskItem> {
   }
 
   /**
-   * Handles widget activation, triggering the form
-   * exhibition to edit a task
-   *
-   * @param task origin's task
-   */
-  private task_activated(task: TaskItem) {
-    const window = task.get_root() as DoItMainWindow;
-
-    if (window?.activate_action)
-      window.activate_action(
-        ActionNames.TaskEdit,
-        new GLib.Variant('s', task.to_object().id as string),
-      );
-  }
-
-  /**
    * Handles internal state changes on a task, triggering updates
    * and re-ordering in a sorted list.
    *
-   * @param signal signal emited by widget
-   * @param task signal origin's task
+   * Called by the view layer when a TaskItem signal fires.
+   *
+   * @param signal signal emitted by TaskItem
+   * @param task the Task model that changed
    */
-  private task_changed(signal: string, task: TaskItem) {
+  public on_task_changed(signal: string, task: Task) {
     log(TaskListStore.LogClass, `Received ${signal} signal.`);
 
     this.emit(signal, task);
@@ -140,13 +106,13 @@ export class TaskListStore extends Gio.ListStore<TaskItem> {
    * Finds a task in the list store by its ID.
    *
    * @param id The ID of the task to find.
-   * @returns The task with the specified ID, or null if not found.
+   * @returns The task with the specified ID, or undefined if not found.
    */
-  find_by_id(id: string) {
+  find_by_id(id: string): Task | undefined {
     for (let index = 0; index < this.get_count(); index++) {
-      const task = this.get_item(index) as TaskItem;
+      const task = this.get_item(index) as Task;
 
-      if (task.to_object().id === id) return task;
+      if (task.taskId === id) return task;
     }
   }
 
@@ -174,11 +140,11 @@ export class TaskListStore extends Gio.ListStore<TaskItem> {
   }
 
   /**
-   * Permanently removes soft-deleted tasks from the store and database.
+   * Permanently removes finished tasks from the store and database.
    */
   purge_finished_tasks(): void {
     for (let index = this.get_count() - 1; index >= 0; index--) {
-      const item = this.get_item(index) as TaskItem;
+      const item = this.get_item(index) as Task;
 
       if (item.done) this.remove(index);
     }
@@ -191,7 +157,7 @@ export class TaskListStore extends Gio.ListStore<TaskItem> {
    */
   purge_deleted_tasks(): void {
     for (let index = this.get_count() - 1; index >= 0; index--) {
-      const item = this.get_item(index) as TaskItem;
+      const item = this.get_item(index) as Task;
 
       if (item.deleted) this.remove(index);
     }

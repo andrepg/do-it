@@ -101,12 +101,30 @@ vi.mock('../../src/store/list-store.js', () => ({
   TaskListStore: taskStore,
 }));
 
-vi.mock('../../src/views/task-item.js', () => ({
-  TaskItem: class MockTaskItem {
+vi.mock('../../src/models/task.js', () => ({
+  Task: class MockTask {
+    constructor(public data: Record<string, unknown>) {}
     to_object() {
-      return {};
+      return this.data;
     }
-    update() {}
+    update(data: Record<string, unknown>) {
+      Object.assign(this.data, data);
+    }
+    get taskId() {
+      return this.data.id;
+    }
+    get title() {
+      return this.data.title;
+    }
+    get project() {
+      return this.data.project;
+    }
+    get done() {
+      return this.data.done;
+    }
+    get deleted() {
+      return this.data.deleted;
+    }
   },
 }));
 
@@ -122,12 +140,21 @@ vi.mock('../../src/utils/log-manager.js', () => ({
 
 import { TaskForm } from '../../src/views/task-form.js';
 import { showToast } from '../../src/actions/toast.js';
+import { Task } from '../../src/models/task.js';
 
 describe('TaskForm', () => {
   let form: TaskForm;
-  let taskItem: { to_object: ReturnType<typeof vi.fn>; update: ReturnType<typeof vi.fn> };
+  let mockTask: {
+    to_object: ReturnType<typeof vi.fn>;
+    update: ReturnType<typeof vi.fn>;
+    taskId: string;
+    title: string;
+    project: string;
+    done: boolean;
+    deleted: boolean;
+  };
 
-  const mockTask = () => ({
+  const taskData = () => ({
     id: 'task-1',
     title: 'Buy milk',
     project: 'Home',
@@ -160,12 +187,18 @@ describe('TaskForm', () => {
     gtk.emittedSignals.length = 0;
     Object.values(gtk.keyHandlers).forEach((handler) => delete gtk.keyHandlers[handler as never]);
 
-    taskItem = {
-      to_object: vi.fn(() => mockTask()),
+    const data = taskData();
+    mockTask = {
+      to_object: vi.fn(() => ({ ...data })),
       update: vi.fn(),
+      taskId: data.id,
+      title: data.title,
+      project: data.project,
+      done: data.done,
+      deleted: data.deleted,
     };
 
-    store.find_by_id.mockReturnValue(taskItem);
+    store.find_by_id.mockReturnValue(mockTask);
 
     form = new TaskForm();
   });
@@ -175,7 +208,7 @@ describe('TaskForm', () => {
   });
 
   it('should load a task and populate the form fields', () => {
-    const data = mockTask();
+    const data = taskData();
 
     form.load_task(data.id);
 
@@ -202,7 +235,7 @@ describe('TaskForm', () => {
     form.dispatch_save();
 
     expect(showToast).toHaveBeenCalled();
-    expect(taskItem.update).not.toHaveBeenCalled();
+    expect(mockTask.update).not.toHaveBeenCalled();
     expect(gtk.emittedSignals).not.toContain('task-form-closed');
   });
 
@@ -215,8 +248,8 @@ describe('TaskForm', () => {
 
     form.dispatch_save();
 
-    expect(taskItem.update).toHaveBeenCalledWith({
-      ...mockTask(),
+    expect(mockTask.update).toHaveBeenCalledWith({
+      ...taskData(),
       title: 'Buy milk',
       project: 'Home',
       done: true,
@@ -241,8 +274,8 @@ describe('TaskForm', () => {
       gtk.children[WidgetIds.TaskFormBtnDelete] as { connect: ReturnType<typeof vi.fn> }
     ).connect.mock.calls[0][1]();
 
-    expect(taskItem.update).toHaveBeenCalledWith({
-      ...mockTask(),
+    expect(mockTask.update).toHaveBeenCalledWith({
+      ...taskData(),
       deleted: true,
     });
     expect(gtk.emittedSignals).toContain('task-form-closed');
@@ -253,7 +286,7 @@ describe('TaskForm', () => {
       gtk.children[WidgetIds.TaskFormBtnDelete] as { connect: ReturnType<typeof vi.fn> }
     ).connect.mock.calls[0][1]();
 
-    expect(taskItem.update).not.toHaveBeenCalled();
+    expect(mockTask.update).not.toHaveBeenCalled();
     expect(gtk.emittedSignals).not.toContain('task-form-closed');
   });
 

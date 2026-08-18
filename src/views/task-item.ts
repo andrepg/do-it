@@ -28,6 +28,7 @@ import { TaskDeleteButtonIcon, TaskEntryStyle } from '~/static/tasks.js';
 import { ITask } from '~/app.types.js';
 
 import { get_template_path } from '~/utils/application.js';
+import { Task } from '~/models/task.js';
 
 const TaskItemProperties = {
   GTypeName: 'TaskItem',
@@ -95,47 +96,32 @@ const TaskItemProperties = {
  * Inherits from Adw.ActionRow. This widget displays the task's title,
  * creation date as a subtitle, and provides interactions such as a checkbox
  * for marking the task as done and a button for deleting it.
+ *
+ * Wraps a {@link Task} model instance — all data reads/writes delegate
+ * to the wrapped task. Signals (TaskUpdated, TaskDeleted) remain here
+ * because they are triggered by user interaction with the UI.
  */
 export class TaskItem extends Adw.ActionRow {
   static {
     GObject.registerClass(TaskItemProperties, this);
   }
 
-  private _taskId = '';
-
-  private _title = '';
-
-  private _created_at: Date;
-
-  private _project = '';
-
-  private _deleted = false;
+  private task: Task;
 
   private task_done!: Gtk.CheckButton;
   private task_delete!: Gtk.Button;
 
-  constructor(
-    taskId = '',
-    title = '',
-    done = false,
-    created: number | null = null,
-    project = '',
-    deleted = false,
-  ) {
+  constructor(task: Task) {
     super({
-      title,
-      subtitle: new Date(created ?? Date.now()).toLocaleDateString(),
+      title: task.title,
+      subtitle: new Date(task.created_at).toLocaleDateString(),
     });
 
-    this._taskId = taskId;
-    this._title = title;
-    this._project = project;
-    this._created_at = new Date(created ?? Date.now());
-    this._deleted = deleted;
+    this.task = task;
 
     this._init_widgets();
 
-    this.task_done.set_active(done);
+    this.task_done.set_active(task.done);
 
     this.task_delete.connect(AppSignals.Clicked, this._delete_task.bind(this));
     this.task_done.connect_after(AppSignals.Toggled, this._finish_task.bind(this));
@@ -144,16 +130,15 @@ export class TaskItem extends Adw.ActionRow {
   }
 
   get taskId() {
-    return this._taskId;
+    return this.task.taskId;
   }
 
   get title() {
-    return this._title;
+    return this.task.title;
   }
 
   set title(value) {
-    if (this._title === value) return;
-    this._title = value;
+    this.task.title = value;
     this.notify('title');
   }
 
@@ -168,33 +153,24 @@ export class TaskItem extends Adw.ActionRow {
   }
 
   get created() {
-    return this._created_at.toISOString();
-  }
-
-  set created(value) {
-    const date = new Date(value);
-    if (this._created_at.getTime() === date.getTime()) return;
-    this._created_at = date;
-    this.notify('created');
+    return this.task.created;
   }
 
   get project() {
-    return this._project;
+    return this.task.project;
   }
 
   set project(value) {
-    if (this._project === value) return;
-    this._project = value;
+    this.task.project = value;
     this.notify('project');
   }
 
   get deleted() {
-    return this._deleted;
+    return this.task.deleted;
   }
 
   set deleted(value) {
-    if (this._deleted === value) return;
-    this._deleted = value;
+    this.task.deleted = value;
     this.notify('deleted');
   }
 
@@ -215,8 +191,8 @@ export class TaskItem extends Adw.ActionRow {
   }
 
   private _update_widget_style(): void {
-    const is_done = this.done;
-    const is_deleted = this._deleted;
+    const is_done = this.task.done;
+    const is_deleted = this.task.deleted;
 
     let style = TaskEntryStyle.enabled;
 
@@ -227,21 +203,23 @@ export class TaskItem extends Adw.ActionRow {
     }
 
     this.set_opacity(style.opacity);
-    this.set_title(this._title);
+    this.set_title(this.task.title);
   }
 
   private _update_widget_interface(): void {
-    const delete_icon = this._deleted ? TaskDeleteButtonIcon.deleted : TaskDeleteButtonIcon.default;
+    const delete_icon = this.task.deleted
+      ? TaskDeleteButtonIcon.deleted
+      : TaskDeleteButtonIcon.default;
 
     this.task_delete.set_icon_name(delete_icon);
-    this.task_done.set_sensitive(!this._deleted);
-    this.set_activatable(!this._deleted);
+    this.task_done.set_sensitive(!this.task.deleted);
+    this.set_activatable(!this.task.deleted);
   }
 
   private _delete_task() {
-    this.deleted = !this.deleted;
+    this.task.deleted = !this.task.deleted;
 
-    const message = this.deleted
+    const message = this.task.deleted
       ? AppLocale.tasks.toast.softDeleted
       : AppLocale.tasks.toast.restored;
 
@@ -253,7 +231,11 @@ export class TaskItem extends Adw.ActionRow {
   }
 
   private _finish_task() {
-    const message = this.done ? AppLocale.tasks.toast.finished : AppLocale.tasks.toast.restored;
+    this.task.done = this.task_done.get_active();
+
+    const message = this.task.done
+      ? AppLocale.tasks.toast.finished
+      : AppLocale.tasks.toast.restored;
 
     showToast(message);
 
@@ -263,23 +245,11 @@ export class TaskItem extends Adw.ActionRow {
   }
 
   public to_object(): ITask {
-    return {
-      id: this._taskId,
-      title: this.title,
-      project: this.project,
-      done: this.done,
-      created_at: this._created_at.getTime(),
-      deleted: this.deleted,
-    };
+    return this.task.to_object();
   }
 
-  public update(task: ITask): void {
-    this._taskId = task.id ?? '';
-    this.title = task.title;
-    this.done = task.done ?? false;
-    this.deleted = task.deleted ?? false;
-    this.project = task.project ?? '';
-    this.created = new Date(task.created_at).toISOString();
+  public update(data: ITask): void {
+    this.task.update(data);
     this._update_interface();
     this.emit(AppSignals.TaskUpdated, this);
   }

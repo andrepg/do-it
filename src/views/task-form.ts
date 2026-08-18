@@ -31,7 +31,7 @@ import { ITask } from '~/app.types.js';
 import { get_template_path } from '~/utils/application.js';
 import { log } from '~/utils/log-manager.js';
 
-import { TaskItem } from './task-item.js';
+import { Task } from '~/models/task.js';
 import { TaskListStore } from '~/store/list-store.js';
 
 const TaskFormProperties = {
@@ -147,23 +147,22 @@ export class TaskForm extends Gtk.Box {
     log(TaskForm.LogClass, `${AppDebug.TASK_FORM_LOAD}${taskId}`);
     this._taskId = taskId;
 
-    const taskItem = this.find_task();
+    const task = this.find_task();
 
-    if (!taskItem) {
+    if (!task) {
       log(TaskForm.LogClass, `${AppDebug.TASK_FORM_LOAD_FAILED}${taskId}`);
       return;
     }
 
-    const data = taskItem.to_object();
-    this.entry_title.set_text(data.title);
-    this.entry_project.set_text(data.project || '');
-    this.check_done.set_active(data.done || false);
+    this.entry_title.set_text(task.title);
+    this.entry_project.set_text(task.project || '');
+    this.check_done.set_active(task.done || false);
   }
 
   /**
    * Finds the task currently loaded in the form.
    */
-  private find_task(): TaskItem | undefined {
+  private find_task(): Task | undefined {
     if (this._taskId === null) return;
 
     return this._store.find_by_id(this._taskId);
@@ -174,7 +173,7 @@ export class TaskForm extends Gtk.Box {
    */
   public dispatch_save(): void {
     log(TaskForm.LogClass, AppDebug.TASK_FORM_SAVE);
-    const task = this.find_task()?.to_object();
+    const task = this.find_task();
     const title = this.entry_title.get_text().trim();
 
     if (title === '') {
@@ -182,17 +181,15 @@ export class TaskForm extends Gtk.Box {
       return;
     }
 
-    if (!task || !task.id) {
+    if (!task) {
       log(TaskForm.LogClass, AppDebug.TASK_FORM_NO_TASK);
       return;
     }
 
-    log(TaskForm.LogClass, `${AppDebug.TASK_FORM_UPDATE}${task.id}`);
+    log(TaskForm.LogClass, `${AppDebug.TASK_FORM_UPDATE}${task.taskId}`);
 
-    // Update existing task data
-    // We recreate it by removing and re-appending, which is the pattern in TaskListStore
     this.update_task({
-      ...task,
+      ...task.to_object(),
       title: title,
       project: this.entry_project.get_text().trim(),
       done: this.check_done.get_active(),
@@ -203,11 +200,11 @@ export class TaskForm extends Gtk.Box {
     showToast(AppLocale.tasks.toast.updated);
   }
 
-  private update_task(task: ITask) {
-    const taskItem = this.find_task();
-    if (!taskItem) return;
+  private update_task(data: ITask) {
+    const task = this.find_task();
+    if (!task) return;
 
-    taskItem.update(task);
+    task.update(data);
   }
 
   /**
@@ -232,11 +229,11 @@ export class TaskForm extends Gtk.Box {
 
     if (this._taskId === null) return;
 
-    const taskItem = this.find_task();
+    const task = this.find_task();
 
-    if (taskItem) {
+    if (task) {
       this.update_task({
-        ...taskItem.to_object(),
+        ...task.to_object(),
         deleted: true,
       });
 

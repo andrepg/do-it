@@ -21,7 +21,7 @@ import Adw from 'gi://Adw';
 import Gtk from 'gi://Gtk';
 
 import { AppSignals } from '~/app.enums.js';
-import { ActionNames } from "~/static/actions.js";
+import { ActionNames } from '~/static/actions.js';
 import { APPLICATION_RES } from '~/utils/application.js';
 
 /**

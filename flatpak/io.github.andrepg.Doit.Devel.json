@@ -1,5 +1,4 @@
 {
-    "$schema": "../.vscode/schemas/flatpak-manifest.schema.json",
     "id": "io.github.andrepg.Doit.Devel",
     "branch": "main",
     "command": "io.github.andrepg.Doit.Devel",

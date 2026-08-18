@@ -24,10 +24,14 @@ vi.mock('gi://Gtk', () => ({
   },
 }));
 
-vi.mock('../../src/views/task-item.js', () => {
+vi.mock('../../src/models/task.js', () => {
   return {
-    TaskItem: class MockTaskItem {
+    Task: class MockTask {
       project = '';
+
+      constructor(data?: { project?: string }) {
+        if (data?.project !== undefined) this.project = data.project;
+      }
     },
   };
 });
@@ -39,7 +43,7 @@ vi.mock('../../src/store/list-store.js', () => ({
 }));
 
 import { ProjectStore } from '../../src/store/project-store.js';
-import { TaskItem } from '../../src/views/task-item.js';
+import { Task } from '../../src/models/task.js';
 
 type MockStore = {
   connect: ReturnType<typeof vi.fn>;
@@ -76,9 +80,7 @@ describe('ProjectStore', () => {
   const mock_tasks_with_projects = (projects: string[]) => {
     mockStore.get_count.mockReturnValue(projects.length);
     mockStore.get_item.mockImplementation((index: number) => {
-      const task = new TaskItem();
-      task.project = projects[index] ?? '';
-      return task;
+      return new Task({ project: projects[index] ?? '' });
     });
   };
 

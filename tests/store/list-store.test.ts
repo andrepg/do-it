@@ -3,11 +3,10 @@ import { describe, it, expect, vi, beforeEach } from 'vitest';
 import { AppSignals } from '../../src/app.enums.js';
 import type { ITask } from '../../src/app.types.js';
 
-const { persistenceRef, windowMock } = vi.hoisted(() => ({
+const { persistenceRef } = vi.hoisted(() => ({
   persistenceRef: {
     current: null as null | { load: ReturnType<typeof vi.fn>; save: ReturnType<typeof vi.fn> },
   },
-  windowMock: { activate_action: vi.fn() },
 }));
 
 vi.mock('gi://Gio', () => ({
@@ -33,37 +32,68 @@ vi.mock('gi://Gio', () => ({
   },
 }));
 
-vi.mock('../../src/views/task-item.js', () => ({
-  TaskItem: class MockTaskItem {
-    handlers: Record<string, () => void> = {};
-    deleted: boolean;
-    connect = vi.fn((signal: string, callback: () => void) => {
-      this.handlers[signal] = callback;
-      return 1;
-    });
-    constructor(
-      public id: string,
-      public title: string,
-      public done: boolean,
-      public created_at: number,
-      public project: string,
-      public deleted: boolean = false,
-    ) {}
-    to_object(): ITask {
-      return {
-        id: this.id,
-        title: this.title,
-        done: this.done,
-        created_at: this.created_at,
-        project: this.project,
-        deleted: this.deleted,
-      };
-    }
-    get_root() {
-      return windowMock;
-    }
-  },
-}));
+vi.mock('../../src/models/task.js', () => {
+  let uuidCounter = 0;
+
+  return {
+    Task: class MockTask {
+      handlers: Record<string, () => void> = {};
+      private _data: ITask;
+
+      connect = vi.fn((signal: string, callback: () => void) => {
+        this.handlers[signal] = callback;
+        return 1;
+      });
+
+      constructor(task: ITask) {
+        this._data = {
+          id: task.id ?? `test-uuid-${++uuidCounter}`,
+          title: task.title ?? '',
+          done: task.done ?? false,
+          created_at: task.created_at ?? 1_700_000_000_000,
+          project: task.project ?? '',
+          deleted: task.deleted ?? false,
+        };
+      }
+
+      get taskId() {
+        return this._data.id ?? '';
+      }
+
+      get title() {
+        return this._data.title;
+      }
+
+      get done() {
+        return this._data.done ?? false;
+      }
+
+      set done(value: boolean) {
+        this._data.done = value;
+      }
+
+      get deleted() {
+        return this._data.deleted ?? false;
+      }
+
+      set deleted(value: boolean) {
+        this._data.deleted = value;
+      }
+
+      get project() {
+        return this._data.project ?? '';
+      }
+
+      to_object(): ITask {
+        return { ...this._data };
+      }
+
+      update(task: ITask) {
+        this._data = { ...this._data, ...task };
+      }
+    },
+  };
+});
 
 vi.mock('../../src/persistence/gio-persistence.js', () => ({
   GioFilePersistence: class MockPersistence {
@@ -72,6 +102,18 @@ vi.mock('../../src/persistence/gio-persistence.js', () => ({
     constructor() {
       persistenceRef.current = this;
     }
+  },
+}));
+
+vi.mock('gi://GLib', () => ({
+  default: {
+    uuid_string_random: vi.fn(() => 'test-uuid'),
+    idle_add: vi.fn((_priority: number, callback: () => number) => {
+      callback();
+      return 0;
+    }),
+    PRIORITY_DEFAULT_IDLE: 0,
+    SOURCE_REMOVE: 0,
   },
 }));
 
@@ -86,6 +128,7 @@ vi.mock('../../src/views/doit.js', () => ({
 
 import { TaskListStore } from '../../src/store/list-store.js';
 import { ActionNames } from '../../src/static/actions.js';
+import { Task } from '../../src/models/task.js';
 
 describe('TaskListStore', () => {
   let store: TaskListStore;
@@ -110,18 +153,13 @@ describe('TaskListStore', () => {
     expect(TaskListStore.get_default()).toBe(TaskListStore.get_default());
   });
 
-  it('should append a task, wiring signals and inserting it sorted', () => {
+  it('should append a task, inserting it sorted', () => {
     const data = task();
 
     store.append_task(data);
 
     expect(store.get_count()).toBe(1);
     expect(store.get_item(0).to_object()).toEqual(data);
-
-    const item = store.get_item(0) as { connect: ReturnType<typeof vi.fn> };
-    expect(item.connect).toHaveBeenCalledWith(AppSignals.TaskUpdated, expect.any(Function));
-    expect(item.connect).toHaveBeenCalledWith(AppSignals.TaskDeleted, expect.any(Function));
-    expect(item.connect).toHaveBeenCalledWith(AppSignals.Activated, expect.any(Function));
   });
 
   it('should generate an id when appending a task without one', () => {
@@ -129,7 +167,7 @@ describe('TaskListStore', () => {
 
     store.append_task(data);
 
-    expect(store.get_item(0).to_object().id).toBe('test-uuid');
+    expect(store.get_item(0).to_object().id).toBeTruthy();
   });
 
   it('should return all tasks as plain objects', () => {
@@ -176,27 +214,15 @@ describe('TaskListStore', () => {
     expect(store.get_item(0).to_object().id).toBe('task-2');
   });
 
-  it('should emit and re-sort when a task changes', () => {
+  it('should emit and re-sort when on_task_changed is called', () => {
     store.append_task(task());
-    const item = store.get_item(0) as { handlers: Record<string, () => void> };
+    const taskObj = store.get_item(0) as Task;
 
-    item.handlers[AppSignals.TaskUpdated]();
+    store.on_task_changed(AppSignals.TaskUpdated, taskObj);
 
-    expect(store.emit).toHaveBeenCalledWith(AppSignals.TaskUpdated, expect.anything());
+    expect(store.emit).toHaveBeenCalledWith(AppSignals.TaskUpdated, taskObj);
     expect(store.sort).toHaveBeenCalled();
     expect(persistenceRef.current?.save).toHaveBeenCalled();
-  });
-
-  it('should trigger task edit action when a task is activated', () => {
-    store.append_task(task());
-    const item = store.get_item(0) as { handlers: Record<string, () => void> };
-
-    item.handlers[AppSignals.Activated]();
-
-    expect(windowMock.activate_action).toHaveBeenCalledWith(
-      ActionNames.TaskEdit,
-      expect.anything(),
-    );
   });
 
   it('should persist all tasks', () => {
@@ -218,6 +244,19 @@ describe('TaskListStore', () => {
     store.append_task(task({ id: 'task-2', title: 'Walk dog', deleted: true }));
 
     store.purge_deleted_tasks();
+
+    expect(store.get_count()).toBe(1);
+    expect(store.get_item(0).to_object().id).toBe('task-1');
+    expect(persistenceRef.current?.save).toHaveBeenCalledWith(
+      expect.arrayContaining([expect.objectContaining({ id: 'task-1' })]),
+    );
+  });
+
+  it('should purge finished tasks and persist the remaining ones', () => {
+    store.append_task(task());
+    store.append_task(task({ id: 'task-2', title: 'Walk dog', done: true }));
+
+    store.purge_finished_tasks();
 
     expect(store.get_count()).toBe(1);
     expect(store.get_item(0).to_object().id).toBe('task-1');

@@ -19,7 +19,7 @@
     <section>
       <attribute name="label">Backup</attribute>
       <item>
-        <attribute name="action">win.export_database</attribute>
+        <attribute name="icon">win.export_database</attribute>
         <attribute name="icon">document-save-symbolic</attribute>
         <attribute name="label" translatable="yes">Export Tasks…</attribute>
       </item>
@@ -90,7 +90,9 @@
                             <property name="child">
                               <object class="AdwStatusPage" id="list_empty">
                                 <property name="can-focus">False</property>
-                                <property name="description" translatable="yes">Try to add a new task on bottom bar or with Ctrl + N</property>
+                                <property name="description" translatable="yes">Try to add a new task on bottom bar or
+                                  with Ctrl + N
+                                </property>
                                 <property name="icon-name">document-new-symbolic</property>
                                 <property name="title" translatable="yes">No tasks (yet)</property>
                               </object>

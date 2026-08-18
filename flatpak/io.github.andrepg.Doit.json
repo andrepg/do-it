@@ -1,5 +1,4 @@
 {
-    "$schema": "../.vscode/schemas/flatpak-manifest.schema.json",
     "id": "io.github.andrepg.Doit",
     "tags": ["tasks", "todo", "productivity"],
     "runtime": "org.gnome.Platform",
