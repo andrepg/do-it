@@ -18,7 +18,6 @@
 
     <file>utils/log-manager.js</file>
     <file>utils/settings.js</file>
-    <file>utils/sort.js</file>
     <file>utils/tasks.sort.js</file>
     <file>utils/tasks.project.js</file>
     <file>utils/task-grouping.js</file>

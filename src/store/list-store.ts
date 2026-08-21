@@ -141,29 +141,43 @@ export class TaskListStore extends Gio.ListStore<Task> {
   }
 
   /**
-   * Permanently removes finished tasks from the store and database.
+   * Permanently removes tasks matching the predicate from the store and
+   * database.
+   *
+   * @param shouldPurge Predicate selecting the tasks to remove.
    */
-  purge_finished_tasks(): void {
+  private purge_tasks(shouldPurge: (task: Task) => boolean): void {
     for (let index = this.get_count() - 1; index >= 0; index--) {
       const item = this.get_item(index) as Task;
 
-      if (item.done) this.remove(index);
+      if (shouldPurge(item)) this.remove(index);
     }
 
     this.persist_tasks(true);
   }
 
   /**
+   * Permanently removes finished tasks from the store and database.
+   */
+  purge_finished_tasks(): void {
+    this.purge_tasks((task) => task.done);
+  }
+
+  /**
    * Permanently removes soft-deleted tasks from the store and database.
    */
   purge_deleted_tasks(): void {
-    for (let index = this.get_count() - 1; index >= 0; index--) {
-      const item = this.get_item(index) as Task;
+    this.purge_tasks((task) => task.deleted);
+  }
 
-      if (item.deleted) this.remove(index);
+  /**
+   * Cancels a pending debounced persist, if any.
+   */
+  private cancel_persist_timer(): void {
+    if (this._persist_timer !== null) {
+      GLib.source_remove(this._persist_timer);
+      this._persist_timer = null;
     }
-
-    this.persist_tasks(true);
   }
 
   /**
@@ -175,10 +189,7 @@ export class TaskListStore extends Gio.ListStore<Task> {
    * @param purge If true, soft-deleted tasks will be removed from the database.
    */
   persist_tasks(purge: boolean = false): void {
-    if (this._persist_timer !== null) {
-      GLib.source_remove(this._persist_timer);
-      this._persist_timer = null;
-    }
+    this.cancel_persist_timer();
 
     this._persist_timer = GLib.timeout_add(GLib.PRIORITY_DEFAULT_IDLE, 300, () => {
       this._do_persist(purge);
@@ -195,10 +206,7 @@ export class TaskListStore extends Gio.ListStore<Task> {
    * @param purge If true, soft-deleted tasks will be removed from the database.
    */
   flush(purge: boolean = false): void {
-    if (this._persist_timer !== null) {
-      GLib.source_remove(this._persist_timer);
-      this._persist_timer = null;
-    }
+    this.cancel_persist_timer();
 
     this._do_persist(purge);
   }
