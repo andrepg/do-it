@@ -15,6 +15,10 @@ package-lock.json
 node_modules/
 .vscode/
 
+# IDE and assistant artifacts
+.idea/
+.opencode/
+
 # OS and bundle files
 .DS_Store
 *.flatpak
