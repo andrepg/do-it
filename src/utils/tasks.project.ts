@@ -25,7 +25,7 @@
  * @param text The raw text typed by the user.
  * @returns An object containing the capitalized project name and the remaining clean text.
  */
-export const parseProject = (text: string): { project: string; parsedText: string } => {
+export const parse_project = (text: string): { project: string; parsedText: string } => {
   let project = '';
   let parsedText = text;
   const projectMatch = text.match(/@(\S+)/);

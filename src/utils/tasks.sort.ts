@@ -20,9 +20,8 @@ import GLib from 'gi://GLib';
 
 import { SortingModeSchema } from '~/static/settings.js';
 import { SortingField, SortingStrategy } from '~/app.enums.js';
+import type { ProjectGroupEntry } from '~/app.types.js';
 import { get_settings } from '~/utils/settings.js';
-
-import { ProjectGroupEntry } from '~/utils/task-grouping.js';
 
 /**
  * Minimal task view consumed by the sorting comparators.

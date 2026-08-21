@@ -1,7 +1,7 @@
 import { describe, it, expect, vi, beforeEach } from 'vitest';
 import { sort_by } from '../../src/utils/tasks.sort.js';
 import { SortingField, SortingStrategy } from '../../src/app.enums.js';
-import type { ProjectGroupEntry } from '../../src/utils/task-grouping.js';
+import type { ProjectGroupEntry } from '../../src/app.types.js';
 
 const { settingsMock } = vi.hoisted(() => ({
   settingsMock: {

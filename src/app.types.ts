@@ -17,6 +17,7 @@
  * SPDX-License-Identifier: GPL-3.0-or-later
  */
 import { SortingField, SortingStrategy } from './app.enums.js';
+import type { Task } from './models/task.js';
 
 /**
  * Represents a single task entity in the application.
@@ -28,6 +29,15 @@ export interface ITask {
   project?: string;
   deleted?: boolean;
   done?: boolean;
+}
+
+/**
+ * A single project's collected tasks and their status counters.
+ */
+export interface ProjectGroupEntry {
+  tasks: Task[];
+  finished: number;
+  deleted: number;
 }
 
 /**

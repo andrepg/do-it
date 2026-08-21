@@ -19,10 +19,11 @@
 import Adw from 'gi://Adw';
 
 import { AppLocale } from '~/app.strings.js';
+import type { ProjectGroupEntry } from '~/app.types.js';
 
 import { Task } from '~/models/task.js';
 import { TaskItem } from './task-item.js';
-import { ProjectGroupEntry, is_group_visible } from '~/utils/task-grouping.js';
+import { is_group_visible } from '~/utils/task-grouping.js';
 
 /**
  * Renders a single project as one Adw.PreferencesGroup with its tasks.

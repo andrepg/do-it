@@ -19,15 +19,7 @@
 import { MagicFilters } from '~/static/sidebar.js';
 
 import { Task } from '~/models/task.js';
-
-/**
- * A single project's collected tasks and their status counters.
- */
-export interface ProjectGroupEntry {
-  tasks: Task[];
-  finished: number;
-  deleted: number;
-}
+import type { ProjectGroupEntry } from '~/app.types.js';
 
 /**
  * Groups an array of tasks by their project, counting finished and deleted

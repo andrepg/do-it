@@ -22,12 +22,13 @@ import GObject from 'gi://GObject';
 import Gtk from 'gi://Gtk';
 
 import { AppSignals, WidgetIds } from '~/app.enums.js';
+import type { ProjectGroupEntry } from '~/app.types.js';
 
 import { Task } from '~/models/task.js';
 import { TaskItem } from './task-item.js';
 import { ProjectGroup } from './project-group.js';
 import { TaskListStore } from '../store/list-store.js';
-import { ProjectGroupEntry, collect_project_groups } from '~/utils/task-grouping.js';
+import { collect_project_groups } from '~/utils/task-grouping.js';
 import { order_projects } from '~/utils/tasks.sort.js';
 
 const TaskListType = {

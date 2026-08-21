@@ -27,7 +27,7 @@ import { MagicFilters } from '~/static/sidebar.js';
 import { DoItMainWindow } from '~/views/doit.js';
 import { ProjectStore } from '~/store/project-store.js';
 import { TaskListStore } from '~/store/list-store.js';
-import { parseProject } from '~/utils/tasks.project.js';
+import { parse_project } from '~/utils/tasks.project.js';
 
 import { showToast } from './toast.js';
 
@@ -102,7 +102,7 @@ export const newTask = () => {
    * @returns The effective project name, or an empty string when none applies.
    */
   const current_project = (): string => {
-    const { project } = parseProject(fieldNewTask.get_text());
+    const { project } = parse_project(fieldNewTask.get_text());
 
     return project || active_project_filter() || '';
   };
@@ -146,7 +146,7 @@ export const newTask = () => {
 
     if (text.length == 0) return;
 
-    const { parsedText: title } = parseProject(text);
+    const { parsedText: title } = parse_project(text);
     if (title.length == 0) return;
 
     // Fall back to the filtered project when no explicit project was typed

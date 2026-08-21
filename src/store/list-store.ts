@@ -1,3 +1,21 @@
+/* list-store.ts
+ * Copyright 2025 André Paul Grandsire
+ *
+ * This program is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with this program.  If not, see <https://www.gnu.org/licenses/>.
+ *
+ * SPDX-License-Identifier: GPL-3.0-or-later
+ */
 import GObject from 'gi://GObject';
 import Gio from 'gi://Gio';
 import GLib from 'gi://GLib';
@@ -90,7 +108,7 @@ export class TaskListStore extends Gio.ListStore<Task> {
    * @param signal signal emitted by TaskItem
    * @param task the Task model that changed
    */
-  public on_task_changed(signal: string, task: Task) {
+  public on_task_changed(signal: AppSignals, task: Task) {
     log(TaskListStore.LogClass, `Received ${signal} signal.`);
 
     this.emit(signal, task);
