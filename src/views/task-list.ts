@@ -18,42 +18,56 @@
  */
 import Adw from 'gi://Adw';
 import GLib from 'gi://GLib';
+import GObject from 'gi://GObject';
 import Gtk from 'gi://Gtk';
 
 import { AppSignals, WidgetIds } from '~/app.enums.js';
-import { AppLocale } from '~/app.strings.js';
 
 import { Task } from '~/models/task.js';
 import { TaskItem } from './task-item.js';
+import { ProjectGroup } from './project-group.js';
 import { TaskListStore } from '../store/list-store.js';
-import {
-  ProjectGroupEntry,
-  collect_project_groups,
-  is_group_visible,
-} from '~/utils/task-grouping.js';
+import { ProjectGroupEntry, collect_project_groups } from '~/utils/task-grouping.js';
 import { order_projects } from '~/utils/tasks.sort.js';
 
+const TaskListType = {
+  GTypeName: 'TaskList',
+  Signals: {
+    [AppSignals.TaskActivated]: { param_types: [GObject.TYPE_OBJECT] },
+    [AppSignals.TaskUpdated]: { param_types: [GObject.TYPE_OBJECT] },
+    [AppSignals.TaskDeleted]: { param_types: [GObject.TYPE_OBJECT] },
+  },
+};
+
 /**
- * Dynamically renders the global task list as one Adw.PreferencesGroup per project.
+ * Dynamically renders the global task list as one ProjectGroup per project.
  *
- * Hierarchy: DoItMainWindow (Main view list_stack) -> [list_empty | list_container -> PreferencesGroup(s) -> TaskItem(s)]
+ * Hierarchy: DoItMainWindow (Main view list_stack) -> [list_empty | list_container -> TaskList -> ProjectGroup(s) -> TaskItem(s)]
  *
  * Instead of binding a filtered model per project, it walks the TaskListStore
- * in a single pass, groups tasks by their project and builds one
- * Adw.PreferencesGroup per project directly into the given PreferencesPage.
- * TaskItem rows are added straight to the groups, so no Gtk.ListBox or
- * Gtk.CustomFilter is needed. It also owns the switch between the task list
- * and the empty state page, based on whether the store holds any tasks.
+ * in a single pass, groups tasks by their project and syncs one ProjectGroup
+ * per project into the given PreferencesPage. TaskItem widgets are cached and
+ * reused across rebuilds; group rendering itself is delegated to ProjectGroup.
+ *
+ * It also owns the switch between the task list and the empty state page,
+ * based on whether the store holds any tasks.
+ *
+ * Signals: row interactions bubble up as TaskUpdated/TaskDeleted (also
+ * forwarded to the store), and row activation fires TaskActivated. Side
+ * effects like opening the edit form or showing toasts belong to listeners
+ * (the actions layer), never to this widget.
  */
-export class TaskList {
+export class TaskList extends GObject.Object {
+  static {
+    GObject.registerClass(TaskListType, this);
+  }
+
   private store = TaskListStore.get_default();
   private container: Adw.PreferencesPage;
   private stack: Gtk.Stack;
-  private projectGroups: Map<string, Adw.PreferencesGroup> = new Map();
-  private groupRows: Map<Adw.PreferencesGroup, TaskItem[]> = new Map();
+  private groups: Map<string, ProjectGroup> = new Map();
   private widgetCache: Map<Task, TaskItem> = new Map();
   private currentFilter: string | null = null;
-  private lastGroupOrder: string[] = [];
   private _rebuild_queued = false;
 
   /**
@@ -62,6 +76,8 @@ export class TaskList {
    * @param {Gtk.Stack} stack - The stack toggling between the task list and the empty state
    */
   constructor(container: Adw.PreferencesPage, stack: Gtk.Stack) {
+    super();
+
     this.container = container;
     this.stack = stack;
 
@@ -98,8 +114,8 @@ export class TaskList {
   public set_filter(project: string | null): void {
     this.currentFilter = project;
 
-    for (const [projectName, preferencesGroup] of this.projectGroups) {
-      preferencesGroup.set_visible(is_group_visible(projectName, project));
+    for (const projectGroup of this.groups.values()) {
+      projectGroup.apply_filter(project);
     }
   }
 
@@ -118,54 +134,40 @@ export class TaskList {
   }
 
   /**
-   * Rebuilds the project groups from the current store state in a single pass.
+   * Syncs the project groups from the current store state in a single pass.
    */
   private rebuild(): void {
+    const tasks = this.get_store_tasks();
+
+    const projectGroupList = collect_project_groups(tasks);
+    const orderedProjects = order_projects(projectGroupList);
+
+    this.prune_widget_cache(tasks);
+    this.sync_groups(orderedProjects, projectGroupList);
+  }
+
+  /**
+   * Collects all tasks currently held by the store.
+   */
+  private get_store_tasks(): Task[] {
     const tasks: Task[] = [];
 
     for (let i = 0; i < this.store.get_count(); i++) {
       tasks.push(this.store.get_item(i) as Task);
     }
 
-    const projectGroupList = collect_project_groups(tasks);
-    const orderedProjects = order_projects(projectGroupList);
-
-    this.detach_all_rows();
-    this.prune_widget_cache();
-
-    this.reconcile_groups(orderedProjects, projectGroupList);
-  }
-
-  /**
-   * Detaches every cached row from its group before rows are re-added.
-   *
-   * Rows live in the group's internal GtkListBox and cannot be enumerated
-   * from the group itself, so previously added rows are tracked and removed
-   * through the group API. This also unparents tasks that moved to another
-   * project regardless of the order in which groups are rebuilt.
-   */
-  private detach_all_rows(): void {
-    for (const [preferencesGroup, rows] of this.groupRows) {
-      for (const row of rows) {
-        preferencesGroup.remove(row);
-      }
-    }
-
-    this.groupRows.clear();
+    return tasks;
   }
 
   /**
    * Removes cached TaskItem widgets for Tasks no longer in the store.
+   * @param storeTasks The tasks currently held by the store.
    */
-  private prune_widget_cache(): void {
-    const storeTasks = new Set<Task>();
-
-    for (let i = 0; i < this.store.get_count(); i++) {
-      storeTasks.add(this.store.get_item(i) as Task);
-    }
+  private prune_widget_cache(storeTasks: Task[]): void {
+    const liveTasks = new Set(storeTasks);
 
     for (const [task] of this.widgetCache) {
-      if (!storeTasks.has(task)) {
+      if (!liveTasks.has(task)) {
         this.widgetCache.delete(task);
       }
     }
@@ -176,125 +178,106 @@ export class TaskList {
    * TaskItem signals are wired to the store on first creation.
    */
   private get_or_create_widget(task: Task): TaskItem {
-    let taskItem = this.widgetCache.get(task);
+    const cached = this.widgetCache.get(task);
+    if (cached) return cached;
 
-    if (!taskItem) {
-      taskItem = new TaskItem(task);
+    const taskItem = new TaskItem(task);
 
-      taskItem.connect(AppSignals.TaskUpdated, () =>
-        this.store.on_task_changed(AppSignals.TaskUpdated, task),
-      );
+    taskItem.connect(AppSignals.TaskUpdated, () =>
+      this.forward_row_signal(AppSignals.TaskUpdated, task),
+    );
 
-      taskItem.connect(AppSignals.TaskDeleted, () =>
-        this.store.on_task_changed(AppSignals.TaskDeleted, task),
-      );
+    taskItem.connect(AppSignals.TaskDeleted, () =>
+      this.forward_row_signal(AppSignals.TaskDeleted, task),
+    );
 
-      this.widgetCache.set(task, taskItem);
-    }
+    taskItem.connect(AppSignals.Activated, () => this.emit(AppSignals.TaskActivated, task));
+
+    this.widgetCache.set(task, taskItem);
 
     return taskItem;
   }
 
   /**
-   * Ensures one PreferencesGroup exists per ordered project, refreshing its
-   * rows and description, then prunes groups with no remaining tasks.
+   * Bubbles a row signal to this widget's listeners and forwards it to
+   * the store, which re-emits, sorts and persists.
+   * @param signal The bubbling signal name.
+   * @param task The task the signal originated from.
+   */
+  private forward_row_signal(signal: AppSignals, task: Task): void {
+    this.emit(signal, task);
+
+    this.store.on_task_changed(signal, task);
+  }
+
+  /**
+   * Ensures one ProjectGroup exists per ordered project, re-rendering its
+   * rows and visibility, then re-appends every group in order and prunes
+   * groups with no remaining tasks.
    * @param orderedProjects The ordered project names.
    * @param projectGroupList The collected project groups.
    */
-  private reconcile_groups(
+  private sync_groups(
     orderedProjects: string[],
     projectGroupList: Map<string, ProjectGroupEntry>,
   ): void {
-    const visibleProjects = new Set<string>();
+    const seenProjects = new Set<string>();
 
     for (const projectName of orderedProjects) {
-      const projectGroup = projectGroupList.get(projectName);
-      if (!projectGroup) continue;
+      const projectEntry = projectGroupList.get(projectName);
+      if (!projectEntry) continue;
 
-      const preferencesGroup = this.ensure_preferences_group(projectName);
-      visibleProjects.add(projectName);
+      const projectGroup = this.ensure_project_group(projectName);
 
-      this.refresh_preferences_group(preferencesGroup, projectGroup);
+      projectGroup.render(projectEntry, (task) => this.get_or_create_widget(task));
+      projectGroup.apply_filter(this.currentFilter);
 
-      preferencesGroup.set_visible(is_group_visible(projectName, this.currentFilter));
+      seenProjects.add(projectName);
     }
 
     this.reorder_groups(orderedProjects);
-    this.prune_missing_groups(visibleProjects);
+    this.prune_missing_groups(seenProjects);
   }
 
   /**
-   * Creates or retrieves the cached PreferencesGroup for the given project.
+   * Creates or retrieves the cached ProjectGroup for the given project.
    * @param projectName The project name.
-   * @returns The matching PreferencesGroup widget.
+   * @returns The matching ProjectGroup wrapper.
    */
-  private ensure_preferences_group(projectName: string): Adw.PreferencesGroup {
-    let preferencesGroup = this.projectGroups.get(projectName);
+  private ensure_project_group(projectName: string): ProjectGroup {
+    let projectGroup = this.groups.get(projectName);
 
-    if (!preferencesGroup) {
-      preferencesGroup = new Adw.PreferencesGroup({
-        title: projectName === '' ? AppLocale.tasks.list.noProject : projectName,
-      });
-
-      this.projectGroups.set(projectName, preferencesGroup);
-      this.container.add(preferencesGroup);
+    if (!projectGroup) {
+      projectGroup = new ProjectGroup(projectName);
+      this.groups.set(projectName, projectGroup);
     }
 
-    return preferencesGroup;
+    return projectGroup;
   }
 
   /**
-   * Refreshes a group's rows (re-adding tasks in store order) and its description.
-   * @param preferencesGroup The group widget to refresh.
-   * @param projectGroup The collected tasks and counters for the group.
-   */
-  private refresh_preferences_group(
-    preferencesGroup: Adw.PreferencesGroup,
-    projectGroup: ProjectGroupEntry,
-  ): void {
-    const rows: TaskItem[] = [];
-
-    for (const task of projectGroup.tasks) {
-      const taskItem = this.get_or_create_widget(task);
-      preferencesGroup.add(taskItem);
-      rows.push(taskItem);
-    }
-
-    this.groupRows.set(preferencesGroup, rows);
-
-    preferencesGroup.set_description(
-      AppLocale.tasks.list.groupDescription.format(projectGroup.finished, projectGroup.deleted),
-    );
-  }
-
-  /**
-   * Re-appends the groups in the desired order, but only when that order changed.
+   * Re-appends every group widget to the page in the desired order.
    * @param orderedProjects The desired project order.
    */
   private reorder_groups(orderedProjects: string[]): void {
-    if (orderedProjects.join('|') === this.lastGroupOrder.join('|')) return;
-
-    this.lastGroupOrder = [...orderedProjects];
-
     for (const projectName of orderedProjects) {
-      const preferencesGroup = this.projectGroups.get(projectName);
-      if (preferencesGroup) {
-        this.container.remove(preferencesGroup);
-        this.container.add(preferencesGroup);
-      }
+      const projectGroup = this.groups.get(projectName);
+      if (!projectGroup) continue;
+
+      this.container.remove(projectGroup.widget);
+      this.container.add(projectGroup.widget);
     }
   }
 
   /**
-   * Removes cached groups whose project no longer has any tasks.
-   * @param visibleProjects The projects that survived this rebuild.
+   * Drops cached groups whose project no longer has any tasks.
+   * @param seenProjects The projects that survived this rebuild.
    */
-  private prune_missing_groups(visibleProjects: Set<string>): void {
-    for (const [projectName, preferencesGroup] of this.projectGroups) {
-      if (!visibleProjects.has(projectName)) {
-        this.container.remove(preferencesGroup);
-        this.groupRows.delete(preferencesGroup);
-        this.projectGroups.delete(projectName);
+  private prune_missing_groups(seenProjects: Set<string>): void {
+    for (const [projectName, projectGroup] of this.groups) {
+      if (!seenProjects.has(projectName)) {
+        this.container.remove(projectGroup.widget);
+        this.groups.delete(projectName);
       }
     }
   }

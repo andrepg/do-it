@@ -22,8 +22,12 @@ import Adw from 'gi://Adw';
 
 import { AppSignals, WidgetIds } from '~/app.enums.js';
 import { ActionNames } from '~/static/actions.js';
+import { AppLocale } from '~/app.strings.js';
 import { DoItMainWindow } from '../views/doit.js';
 import { TaskForm } from '../views/task-form.js';
+import { showToast } from './toast.js';
+import { TaskListStore } from '~/store/list-store.js';
+import { Task } from '~/models/task.js';
 import { log } from '~/utils/log-manager.js';
 import { AppDebug } from '~/static/messages.js';
 
@@ -43,6 +47,7 @@ export default function taskEdit(taskForm: TaskForm) {
     task_edit_close_action();
     task_save_action(window);
     task_close_action(window);
+    task_form_signals_action();
   };
 
   const toggle_bottom_sheet = () => {
@@ -75,6 +80,26 @@ export default function taskEdit(taskForm: TaskForm) {
     taskForm.connect(AppSignals.TaskFormClosed, () => {
       log(DoItMainWindow.LogClass, AppDebug.TASK_EDIT_CLOSE);
       close_bottom_sheet();
+    });
+  };
+
+  /**
+   * Forwards the form's own signals to the store (re-emits, sorts and
+   * persists) and shows the corresponding feedback toast.
+   */
+  const task_form_signals_action = () => {
+    const store = TaskListStore.get_default();
+
+    taskForm.connect(AppSignals.TaskUpdated, (_source, task: Task) => {
+      store.on_task_changed(AppSignals.TaskUpdated, task);
+
+      showToast(AppLocale.tasks.toast.updated);
+    });
+
+    taskForm.connect(AppSignals.TaskDeleted, (_source, task: Task) => {
+      store.on_task_changed(AppSignals.TaskDeleted, task);
+
+      showToast(AppLocale.tasks.toast.softDeleted);
     });
   };
 

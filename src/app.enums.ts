@@ -14,6 +14,7 @@ export enum AppSignals {
   SortingChanged = 'sorting-changed',
   TaskUpdated = 'task-updated',
   TaskDeleted = 'task-deleted',
+  TaskActivated = 'task-activated',
   TaskFormClosed = 'task-form-closed',
 }
 

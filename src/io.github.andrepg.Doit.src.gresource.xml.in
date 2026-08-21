@@ -32,6 +32,7 @@
     <file>views/task-form.js</file>
     <file>views/doit.js</file>
     <file>views/popover-sort.js</file>
+    <file>views/project-group.js</file>
     <file>views/task-item.js</file>
     <file>views/task-list.js</file>
 

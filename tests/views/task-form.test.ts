@@ -254,7 +254,7 @@ describe('TaskForm', () => {
       project: 'Home',
       done: true,
     });
-    expect(showToast).toHaveBeenCalled();
+    expect(gtk.emittedSignals).toContain('task-updated');
     expect(gtk.emittedSignals).toContain('task-form-closed');
   });
 
@@ -278,6 +278,7 @@ describe('TaskForm', () => {
       ...taskData(),
       deleted: true,
     });
+    expect(gtk.emittedSignals).toContain('task-deleted');
     expect(gtk.emittedSignals).toContain('task-form-closed');
   });
 

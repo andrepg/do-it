@@ -20,10 +20,7 @@ import Adw from 'gi://Adw';
 import GObject from 'gi://GObject';
 import Gtk from 'gi://Gtk';
 
-import { showToast } from '../actions/toast.js';
-
 import { AppSignals, WidgetIds } from '~/app.enums.js';
-import { AppLocale } from '~/app.strings.js';
 import { TaskDeleteButtonIcon, TaskEntryStyle } from '~/static/tasks.js';
 import { ITask } from '~/app.types.js';
 
@@ -216,12 +213,6 @@ export class TaskItem extends Adw.ActionRow {
   private _delete_task() {
     this.task.deleted = !this.task.deleted;
 
-    const message = this.task.deleted
-      ? AppLocale.tasks.toast.softDeleted
-      : AppLocale.tasks.toast.restored;
-
-    showToast(message);
-
     this.emit(AppSignals.TaskDeleted, this);
 
     this._update_interface();
@@ -229,12 +220,6 @@ export class TaskItem extends Adw.ActionRow {
 
   private _finish_task() {
     this.task.done = this.task_done.get_active();
-
-    const message = this.task.done
-      ? AppLocale.tasks.toast.finished
-      : AppLocale.tasks.toast.restored;
-
-    showToast(message);
 
     this.emit(AppSignals.TaskUpdated, this);
 

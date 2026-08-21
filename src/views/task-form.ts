@@ -49,6 +49,12 @@ const TaskFormProperties = {
     [AppSignals.TaskFormClosed]: {
       param_types: [GObject.TYPE_OBJECT],
     },
+    [AppSignals.TaskUpdated]: {
+      param_types: [GObject.TYPE_OBJECT],
+    },
+    [AppSignals.TaskDeleted]: {
+      param_types: [GObject.TYPE_OBJECT],
+    },
   },
 };
 
@@ -188,23 +194,32 @@ export class TaskForm extends Gtk.Box {
 
     log(TaskForm.LogClass, `${AppDebug.TASK_FORM_UPDATE}${task.taskId}`);
 
-    this.update_task({
+    const updated = this.update_task({
       ...task.to_object(),
       title: title,
       project: this.entry_project.get_text().trim(),
       done: this.check_done.get_active(),
     });
 
-    this.dispatch_cancel();
+    if (!updated) return;
 
-    showToast(AppLocale.tasks.toast.updated);
+    this.emit(AppSignals.TaskUpdated, updated);
+
+    this.dispatch_cancel();
   }
 
-  private update_task(data: ITask) {
+  /**
+   * Applies the given data to the loaded task.
+   * @param data The new task data.
+   * @returns The updated task, or undefined when no task is loaded.
+   */
+  private update_task(data: ITask): Task | undefined {
     const task = this.find_task();
     if (!task) return;
 
     task.update(data);
+
+    return task;
   }
 
   /**
@@ -231,15 +246,17 @@ export class TaskForm extends Gtk.Box {
 
     const task = this.find_task();
 
-    if (task) {
-      this.update_task({
-        ...task.to_object(),
-        deleted: true,
-      });
+    if (!task) return;
 
-      this.dispatch_cancel();
+    const deleted = this.update_task({
+      ...task.to_object(),
+      deleted: true,
+    });
 
-      showToast(AppLocale.tasks.toast.softDeleted);
-    }
+    if (!deleted) return;
+
+    this.emit(AppSignals.TaskDeleted, deleted);
+
+    this.dispatch_cancel();
   }
 }
