@@ -22,7 +22,6 @@ import Gtk from 'gi://Gtk';
 
 import { AppSignals, WidgetIds } from '~/app.enums.js';
 import { TaskDeleteButtonIcon, TaskEntryStyle } from '~/static/tasks.js';
-import { ITask } from '~/app.types.js';
 
 import { get_template_path } from '~/utils/application.js';
 import { Task } from '~/models/task.js';
@@ -146,10 +145,6 @@ export class TaskItem extends Adw.ActionRow {
     this.notify('done');
   }
 
-  get created() {
-    return this.task.created;
-  }
-
   get project() {
     return this.task.project;
   }
@@ -224,15 +219,5 @@ export class TaskItem extends Adw.ActionRow {
     this.emit(AppSignals.TaskUpdated, this);
 
     this._update_interface();
-  }
-
-  public to_object(): ITask {
-    return this.task.to_object();
-  }
-
-  public update(data: ITask): void {
-    this.task.update(data);
-    this._update_interface();
-    this.emit(AppSignals.TaskUpdated, this);
   }
 }

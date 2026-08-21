@@ -3,14 +3,6 @@ const APPLICATION_NAME = '@APPLICATION_NAME@';
 const APPLICATION_RES = '@APPLICATION_RES@';
 const IS_DEVEL = '@is_devel@' === 'true';
 
-function get_application_id() {
-  return APPLICATION_ID;
-}
-
-function get_resource_path() {
-  return APPLICATION_RES;
-}
-
 function get_template_path(path) {
   return `resource://${APPLICATION_RES}/widgets/${path}`;
 }
@@ -24,8 +16,6 @@ export {
   APPLICATION_RES,
   APPLICATION_NAME,
   IS_DEVEL,
-  get_resource_path,
-  get_application_id,
   get_template_path,
   is_development_mode,
 };

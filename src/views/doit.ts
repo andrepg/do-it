@@ -35,8 +35,6 @@ import * as Actions from '../actions/index.js';
 import { TaskListStore } from '~/store/list-store.js';
 import { AppDebug } from '~/static/messages.js';
 
-const settings = get_settings();
-
 const options = {
   GTypeName: 'DoItMainWindow',
   Template: get_template_path('application.ui'),
@@ -80,14 +78,14 @@ export class DoItMainWindow extends Adw.ApplicationWindow {
 
   private task_form!: TaskForm;
 
-  private settings = get_settings();
-
   static {
     GObject.type_ensure(TaskForm.$gtype);
     GObject.registerClass(options, this);
   }
 
   constructor(application: Adw.Application) {
+    const settings = get_settings();
+
     super({
       application,
       title: APPLICATION_NAME,
@@ -145,9 +143,10 @@ export class DoItMainWindow extends Adw.ApplicationWindow {
     log(DoItMainWindow.LogClass, AppDebug.WINDOW_PERSIST_SIZE);
 
     const [width, height] = this.get_default_size();
+    const settings = get_settings();
 
-    this.settings.set_int(DoItSettings.windowWidth, width);
-    this.settings.set_int(DoItSettings.windowHeight, height);
+    settings.set_int(DoItSettings.windowWidth, width);
+    settings.set_int(DoItSettings.windowHeight, height);
   }
 
   private persist_task_store() {
