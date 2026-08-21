@@ -29,6 +29,7 @@ export default defineConfig({
       'gi://GLib': path.resolve(import.meta.dirname, './tests/mocks/glib.ts'),
       'gi://Gio': path.resolve(import.meta.dirname, './tests/mocks/gio.ts'),
       'gi://GObject': path.resolve(import.meta.dirname, './tests/mocks/gobject.ts'),
+      'gi://Gtk': path.resolve(import.meta.dirname, './tests/mocks/gtk.ts'),
       '~': path.resolve(import.meta.dirname, './src'),
     },
   },
