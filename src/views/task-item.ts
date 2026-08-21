@@ -29,6 +29,7 @@ import { ITask } from '~/app.types.js';
 
 import { get_template_path } from '~/utils/application.js';
 import { Task } from '~/models/task.js';
+import { log } from '~/utils/log-manager.js';
 
 const TaskItemProperties = {
   GTypeName: 'TaskItem',
@@ -39,13 +40,6 @@ const TaskItemProperties = {
       'Task Id',
       'Task unique id',
       GObject.ParamFlags.READABLE,
-      '',
-    ),
-    title: GObject.ParamSpec.string(
-      'title',
-      'Title',
-      'Title task',
-      GObject.ParamFlags.READWRITE,
       '',
     ),
     done: GObject.ParamSpec.boolean(
@@ -112,12 +106,15 @@ export class TaskItem extends Adw.ActionRow {
   private task_delete!: Gtk.Button;
 
   constructor(task: Task) {
+    // `title` must not be passed to super(): the overridden getter dereferences
+    // `this.task`, which is only assigned after parent construction completes.
     super({
-      title: task.title,
       subtitle: new Date(task.created_at).toLocaleDateString(),
     });
 
     this.task = task;
+
+    log(TaskItemProperties.GTypeName, `Initializing task ${task.title} - ${task.taskId}`);
 
     this._init_widgets();
 
