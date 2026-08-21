@@ -22,6 +22,12 @@ import Gtk from 'gi://Gtk';
 
 import { ITask } from '~/app.types.js';
 
+/**
+ * Runtime Gtk statics including APIs missing from the pinned
+ * @girs/gtk-4.0 typings (`get_default_locale` landed in GTK 4.10).
+ */
+type LocaleAwareGtk = typeof Gtk & { get_default_locale(): string };
+
 const TaskProperties = {
   GTypeName: 'Task',
   Properties: {
@@ -139,7 +145,9 @@ export class Task extends GObject.Object {
    * against the application's default locale.
    */
   public formatted_created_at(): string {
-    return new Date(this._data.created_at).toLocaleDateString(Gtk.get_default_locale());
+    const gtk = Gtk as LocaleAwareGtk;
+
+    return new Date(this._data.created_at).toLocaleDateString(gtk.get_default_locale());
   }
 
   get project(): string {
