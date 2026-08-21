@@ -112,6 +112,11 @@ vi.mock('gi://GLib', () => ({
       callback();
       return 0;
     }),
+    timeout_add: vi.fn((_priority: number, _interval: number, callback: () => number) => {
+      callback();
+      return 1;
+    }),
+    source_remove: vi.fn(),
     PRIORITY_DEFAULT_IDLE: 0,
     SOURCE_REMOVE: 0,
   },

@@ -36,6 +36,7 @@ export class TaskListStore extends Gio.ListStore<Task> {
   }
 
   private persistence: GioFilePersistence;
+  private _persist_timer: number | null = null;
 
   constructor() {
     super();
@@ -166,11 +167,43 @@ export class TaskListStore extends Gio.ListStore<Task> {
   }
 
   /**
-   * Saves all tasks to the database.
+   * Saves all tasks to the database, debounced.
+   *
+   * Batches rapid mutations into a single write within a 300ms window.
+   * Use {@link flush} to bypass the debounce and write immediately.
    *
    * @param purge If true, soft-deleted tasks will be removed from the database.
    */
   persist_tasks(purge: boolean = false): void {
+    if (this._persist_timer !== null) {
+      GLib.source_remove(this._persist_timer);
+      this._persist_timer = null;
+    }
+
+    this._persist_timer = GLib.timeout_add(GLib.PRIORITY_DEFAULT_IDLE, 300, () => {
+      this._do_persist(purge);
+      this._persist_timer = null;
+      return GLib.SOURCE_REMOVE;
+    });
+  }
+
+  /**
+   * Immediately persists all tasks, bypassing the debounce timer.
+   *
+   * Called on app close to guarantee data is written before shutdown.
+   *
+   * @param purge If true, soft-deleted tasks will be removed from the database.
+   */
+  flush(purge: boolean = false): void {
+    if (this._persist_timer !== null) {
+      GLib.source_remove(this._persist_timer);
+      this._persist_timer = null;
+    }
+
+    this._do_persist(purge);
+  }
+
+  private _do_persist(purge: boolean): void {
     log(TaskListStore.LogClass, AppDebug.TASK_STORE_PERSIST);
 
     let tasks = this.get_all();

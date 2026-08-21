@@ -153,7 +153,7 @@ export class DoItMainWindow extends Adw.ApplicationWindow {
   private persist_task_store() {
     log(DoItMainWindow.LogClass, AppDebug.TASK_STORE_PERSIST);
 
-    TaskListStore.get_default().persist_tasks();
+    TaskListStore.get_default().flush();
   }
 
   public override vfunc_close_request(): boolean {
