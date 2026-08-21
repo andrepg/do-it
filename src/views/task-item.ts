@@ -105,7 +105,7 @@ export class TaskItem extends Adw.ActionRow {
     // `title` must not be passed to super(): the overridden getter dereferences
     // `this.task`, which is only assigned after parent construction completes.
     super({
-      subtitle: new Date(task.created_at).toLocaleDateString(),
+      subtitle: task.formatted_created_at(),
     });
 
     this.task = task;

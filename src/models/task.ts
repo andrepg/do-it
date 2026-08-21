@@ -18,6 +18,7 @@
  */
 import GObject from 'gi://GObject';
 import GLib from 'gi://GLib';
+import Gtk from 'gi://Gtk';
 
 import { ITask } from '~/app.types.js';
 
@@ -131,6 +132,14 @@ export class Task extends GObject.Object {
 
   get created_at(): number {
     return this._data.created_at;
+  }
+
+  /**
+   * Localized date string of the creation timestamp, resolved
+   * against the application's default locale.
+   */
+  public formatted_created_at(): string {
+    return new Date(this._data.created_at).toLocaleDateString(Gtk.get_default_locale());
   }
 
   get project(): string {
