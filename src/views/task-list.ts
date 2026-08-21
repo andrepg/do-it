@@ -258,6 +258,10 @@ export class TaskList extends GObject.Object {
 
   /**
    * Re-appends every group widget to the page in the desired order.
+   *
+   * Groups created on this cycle are not attached yet, so removal is
+   * skipped for them to avoid Adwaita non-child warnings.
+   *
    * @param orderedProjects The desired project order.
    */
   private reorder_groups(orderedProjects: string[]): void {
@@ -265,7 +269,10 @@ export class TaskList extends GObject.Object {
       const projectGroup = this.groups.get(projectName);
       if (!projectGroup) continue;
 
-      this.container.remove(projectGroup.widget);
+      if (projectGroup.widget.get_parent() === this.container) {
+        this.container.remove(projectGroup.widget);
+      }
+
       this.container.add(projectGroup.widget);
     }
   }
